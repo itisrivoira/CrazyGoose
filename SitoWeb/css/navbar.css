@@ -1,0 +1,36 @@
+/*NAVIGATION BAR*/
+
+.navbar {
+    width: 100%;
+    background-color: rgb(71, 67, 67);
+}
+
+#titoloGioco {
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+}
+
+#logo {
+    width: 80px;
+    height: 80px;
+}
+
+.navbar a {
+    float: left;
+    padding: 0.9vw;
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.navbar a:hover {
+    background-color: #000;
+}
+
+@media screen and (max-width: 500px) {
+    .navbar a {
+        float: none;
+        display: block;
+    }
+}

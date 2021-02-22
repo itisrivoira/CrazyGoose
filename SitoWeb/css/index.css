@@ -1,0 +1,153 @@
+.container-fluid {
+    background-color: rgb(233, 160, 76);
+    border: 1px black solid;
+}
+
+#corpoCentrale {
+    padding: 4vh;
+}
+
+
+/* CSS per le flip-card delle 4 pedine */
+
+.flip-card {
+    top: 10px;
+    float: left;
+    background-color: transparent;
+    width: 250px;
+    height: 250px;
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.flip-card-front {
+    background-color: rgb(226 103 22);
+    color: black;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+
+.colContainerFlipCard {
+    margin-bottom: 10px;
+}
+
+.cardBackOcaGialla {
+    background-color: gold;
+    color: black;
+}
+
+.cardFrontOcaGialla {
+    color: gold;
+}
+
+.cardBackOcaBlu {
+    background-color: blue;
+    color: rgb(235, 223, 116);
+}
+
+.cardFrontOcaBlu {
+    color: blue;
+}
+
+.cardBackOcaVerde {
+    background-color: green;
+    color: rgb(13, 16, 170);
+}
+
+.cardFrontOcaVerde {
+    color: green;
+}
+
+.cardBackOcaRossa {
+    background-color: red;
+    color: black;
+}
+
+.cardFrontOcaRossa {
+    color: rgb(172, 5, 5);
+}
+
+
+/*Collapsible (Domande del FAQ)*/
+
+.containerDomande {
+    padding-left: 3vw;
+    padding-top: 1vh;
+    margin-right: 3vw;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    ;
+}
+
+.content {
+    margin-right: 10vw;
+    margin-bottom: 0.8vh;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    background-color: #f1f1f1;
+}
+
+.collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100vw;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+
+/*.active {
+	background-color: #2174e0;
+}*/
+
+.active,
+.collapsible:hover {
+    background-color: #555;
+}
+
+.active:after {
+    content: "\1796";
+    /* codice del segno - */
+}
+
+.collapsible:after {
+    content: '\2795';
+    /*codice del segno + */
+    font-size: 13px;
+    color: white;
+    float: right;
+    margin-left: 8px;
+}
+
+#FAQ {
+    margin-bottom: 2vh;
+}
