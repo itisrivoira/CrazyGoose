@@ -20,7 +20,7 @@ class Game():
         self.window = pygame.display.set_mode(((self.DISPLAY_W, self.DISPLAY_H)))
         self.font_name = pygame.font.get_default_font()
         self.title = pygame.display.set_caption("Crazy Goose")
-        icon = pygame.image.load("../Logo/logo_32x32.png")
+        icon = pygame.image.load("../../Logo/logo_32x32.png")
         pygame.display.set_icon(icon)
 
         #richiamo le funzioni del menu
@@ -65,6 +65,11 @@ class Game():
                 if event.key == pygame.K_UP:
                     self.UP_KEY = True
 
+            if(self.crazyGoose != None and self.crazyGoose.gameStarted == True):
+                if(event.type == pygame.MOUSEBUTTONDOWN):
+                    self.crazyGoose.mousePressed(pygame.mouse.get_pos())
+                self.crazyGoose.mouseOver(pygame.mouse.get_pos())
+            
     #resetta a false i 4 tasti UP, DOWN, START(INVIO), BACK(TORNA INDIETRO)
     def reset_keys(self):
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False

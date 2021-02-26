@@ -18,12 +18,45 @@ class Dado():
 			#Tira il dado, ossia un numero casuale tra 1 e 6 (estremi INCLUSI)
 		self.dado = random.randint(1,6)
 		return self.dado
-		
 
+class Button:
+	def __init__(self, crazyGoose, game, x, y, width, height, text):
+		self.crazyGoose = crazyGoose
+		self.game = game
+		self.x = x
+		self.y = y
+		self.width = width
+		self.height = height
+		self.rect = pygame.Rect(x, y, width, height)
+		
+		pygame.draw.rect(self.game.display, self.game.BLACK, self.rect, 1, 4)
+		self.write_text(text, width, height, x, y)
+	
+	def write_text(self, text, width, height, x, y):
+		font = pygame.font.Font(self.game.font_name, 13)
+		text_surface = font.render(text, True, self.game.BLACK)
+		text_rect = text_surface.get_rect()
+		text_rect.center = ((x+width/2), (y+height/2))
+		self.game.display.blit(text_surface, text_rect)
+	
+	def pressed(self, mouse):
+		mouse_x = mouse[0]
+		mouse_y = mouse[1]
+		
+		if(self.x <= mouse_x <= self.x+self.width
+				and self.y <= mouse_y <= self.y + self.height):
+			self.crazyGoose.tiraDado()
+	
+	def detectMouseOver(self, mouse):
+		if(self.rect.collidepoint(mouse)):
+			#codice per "evidenziare" il rettangolo (per far capire all'utente che ci sta passando sopra)
+			pass
+	
 class CrazyGoose():
 	def __init__(self, game):
 		self.game = game
 		self.gameStarted = False
+		self.buttonDadoPL1 = None
 		
 	# sovrappone
 	def blit_screen(self):
@@ -38,7 +71,13 @@ class CrazyGoose():
 	
 			self.creaWidgets()
 			self.blit_screen()
-			
+	
+	def mousePressed(self, mousePosition):
+		if(self.buttonDadoPL1 != None):
+			self.buttonDadoPL1.pressed(mousePosition)
+	
+	def mouseOver(self, mousePosition):
+		self.buttonDadoPL1.detectMouseOver(mousePosition)
 	
 	def creaWidgets(self):
 			#"ripulisce" tutto
@@ -55,13 +94,7 @@ class CrazyGoose():
 		self.draw_text("Tu (PL1)", 15, 50, 20)
 		self.draw_text("Dado PL1", 14, 55, 60)
 		
-		"""
-		self.valDadoPL1 = tk.IntVar()
-		self.valDadoPL1.set(0)
-			#Pulsante che funge da dado (brutto brutto per ora ma vabbè)
-		self.btnDadoPL1 = tk.Button(self.finestra, textvariable=self.valDadoPL1, command=lambda:self.tiraDado())
-		self.btnDadoPL1.place(x=120, y=60, anchor=tk.CENTER)
-		"""
+		self.buttonDadoPL1 = Button(self, self.game, 100, 43, 35, 35, "0")
 		
 		self.draw_text("Computer (COM)", 14, 930, 20)
 		self.draw_text((INFO_DADO_COM+"0"), 14, 917, 60)
@@ -307,20 +340,3 @@ class CrazyGoose():
 		text_rect = text_surface.get_rect()
 		text_rect.center = (x,y)
 		self.game.display.blit(text_surface,text_rect)
-
-
-class Button():
-	def __init__(self, text, game, x=0, y=0, bg="black"):
-		self.game = game
-		self.x = 0
-		self.y = 0
-		self.change_text(text, bg)
-	
-	def change_text(self, text, bg="black"):
-		font = pygame.font.Font(self.game.font_name, 15)
-		self.text = font.render(text, 1, self.game.BLACK)
-		self.size = self.text.get_size()
-		self.surface = pygame.Surface(self.size)
-		self.surface.fill(bg)
-		self.surface.blit(self.text, (0, 0))
-		self.rect = pygame.Rect(self.x, self.y, self.size[0], self.size[1])
