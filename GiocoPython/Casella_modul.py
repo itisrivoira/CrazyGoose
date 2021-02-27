@@ -10,24 +10,23 @@ from Percorso_modul import FERMO_DA_DUE
 from Percorso_modul import TORNA_ALL_INIZIO
 from Percorso_modul import VITTORIA
 
-import tkinter as tk
+import pygame
 
 class Casella():
-	def __init__(self, finestra, objCanvas, posx, posy, tagChosen="", width=90, height=60):
-		self.finestra = finestra
+	def __init__(self, display, posx, posy, width=90, height=60):
+		self.display = display
 		
-		self.x1 = posx
-		self.y1 = posy
-		self.x2 = posx + width
-		self.y2 = posy + height
+		self.x = posx
+		self.y = posy
+		self.width = width
+		self.height = height
 
-			#il tag mi serve ad individuare l'oggetto canvas (ad es. serve per eliminarlo)
-		objCanvas.create_oval(self.x1, self.y1, self.x2, self.y2, tag=tagChosen)
+		pygame.draw.ellipse(self.display, (0, 0, 0, 1), (self.x, self.y, self.width, self.height), 1)
 	
-	def settaEffetto(self, codCasella):
-		""" Metodo con il quale "nascondo" una casella, rimuovendo il testo all'interno (per ora),
-				oppure la mostro, inserendo il testo relativo al codCasella associato """
-
+	def settaEffetto(self, codCasella, font_name):
+		#Metodo con il inserisco il testo relativo al codCasella associato
+		# nella casella, cioè l'effetto
+		testo = ""
 		if(codCasella == TIRA_DI_NUOVO[0]):
 			testo = "Ri-tira\nil dado"
 		elif(codCasella == INDIETRO_DI_UNO[0]):
@@ -46,17 +45,41 @@ class Casella():
 			testo = "Torna\nall'inizio !"
 		elif(codCasella == VITTORIA):
 			testo = "HAI\nVINTO !!!"
-		else:
-			testo = ""
-
-		self.lbl = tk.Label(self.finestra, text=testo)
-		self.lbl.place(x=self.getCenterX(), y=self.getCenterY(), anchor=tk.CENTER)
-
-
+		
+		if(len(testo) > 0):
+			font = pygame.font.Font(font_name, 14)
+			#Prendo l'altezza che avrà il testo (non cambia l'altezza se
+			# cambia il testo, quindi richiamo il metodo .size con una
+			# qualunque stringa)
+			#Il metodo .size(testo) ritorna una tupla con la larghezza
+			# e l'altezza del testo (prendo solo l'altezza ora)
+			heightOfText = font.size("TXT")[1]
+			
+			#CON PYGAME NON SI POSSONO SCRIVERE STRINGHE CON DEGLI A CAPO
+			# BISOGNA SPEZZARE E FARE PIÙ "AREE DI TESTO"
+			
+			#Divide il testo dove ci sono "\n"
+			text = testo.splitlines()
+			
+			#N.B. SONO SICURO CHE text AVRÀ SOLO 2 RIGHE XKÈ SO COSA PUç CONTENERE "testo"
+			# QUINDI QUESTO NON FUNZIONA CON FRASI CON PIÙ DI 1 "\n"
+			
+			text_surface = font.render(text[0], True, (0, 0, 0, 1))
+			text_rect = text_surface.get_rect()
+			#Posiziona la prima riga leggermente sopra il centro dell'ellisse
+			text_rect.center = (self.getCenterX(), self.getCenterY()-(heightOfText/3)-5)
+			self.display.blit(text_surface, text_rect)
+			
+			text_surface = font.render(text[1], True, (0, 0, 0, 1))
+			text_rect = text_surface.get_rect()
+			#Posiziona la seconda riga leggermente sotto il centro dell'ellisse
+			# (per non collidere con l'altra scritta)
+			text_rect.center = (self.getCenterX(), self.getCenterY()+heightOfText-5)
+			self.display.blit(text_surface, text_rect)
+		
+		
 	def getCenterX(self):
-		       #[                   ] => il risultato di questo è il width
-		return ( (self.x2-self.x1)/2 + self.x1 )
+		return ( self.width/2 + self.x )
 		
 	def getCenterY(self):
-		       #[                   ] => il risultato di questo è la height
-		return ( (self.y2-self.y1)/2 + self.y1 )
+		return ( self.height/2 + self.y )

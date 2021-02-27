@@ -1,5 +1,6 @@
+import time
+
 from Casella_modul import *
-import tkinter as tk
 
 #Per non importare l'intera classe (il modulo) Percorso, che non mi serve, importo solo le costanti
 from Percorso_modul import QTA_CASELLE_TOTALI
@@ -16,14 +17,31 @@ from Percorso_modul import VITTORIA
 #x/y delle CASELLE INIZIALI dei due giocatori
 X_PLAYER1 = 25
 X_PLAYER2 = 25
-Y_PLAYER1 = 575
-Y_PLAYER2 = 640
+Y_PLAYER1 = 565
+Y_PLAYER2 = 630
 
+
+#Metodo per disegnare testo (per scrivere) con un
+# determinato font, dimensione e colore, il tutto
+# centrato in un rettangolo alle coordinate passate
+
+#N.B. NON POSSO IMPORTARE IL METODO DAL FILE crazyGoose
+# XKE SENNÒ DA ERRORE:
+#ImportError: cannot import name 'draw_text' from partially initialized module 'crazyGoose'
+def draw_text(game, text, size, color, x, y):
+	font = pygame.font.Font(game.font_name, size)
+	text_surface = font.render(text, True, color)
+	text_rect = text_surface.get_rect()
+	text_rect.center = (x, y)
+	# Ora va realmente a disegnare la scritta
+	game.display.blit(text_surface, text_rect)
+	
 
 class Giocatore():
-	def __init__(self, finestra, objCanvas, caselle, percorso, tag):
-		self.finestra = finestra
-		self.objCanvas = objCanvas
+	def __init__(self, crazyGoose, game, caselle, percorso, tag):
+			#Mi serve per lanciare un suo metodo
+		self.crazyGoose = crazyGoose
+		self.game = game
 		self.caselle = caselle
 		self.percorso = percorso
 		self.tag = tag
@@ -31,9 +49,9 @@ class Giocatore():
 		self.posizione = 0
 		self.turnoMio = False
 		self.turniFermo = 0
-		self.creaCasellaIniziale()
-
 		self.vincitore = False
+
+		self.creaCasellaIniziale()
 
 
 	def creaCasellaIniziale(self):
@@ -42,21 +60,15 @@ class Giocatore():
 		else:
 			x, y = X_PLAYER2, Y_PLAYER2
 		
-			#crea e posiziona l'ellisse (la casella) prima dell'inizio del percorso
-			# poi inserisce la scritta che identifica il giocatore
-		casellaIniziale = Casella(self.finestra, self.objCanvas, x, y, self.tag)
-		self.player = tk.Label(self.finestra, text=self.tag, fg="#f00f0f")
-		self.player.place(x=casellaIniziale.getCenterX(), y=casellaIniziale.getCenterY(), anchor=tk.CENTER)	
-
+		#crea e posiziona l'ellisse (la casella) prima dell'inizio del percorso
+		# poi inserisce la scritta che identifica il giocatore
+		self.casellaIniziale = Casella(self.game.display, x, y)
+		
+		draw_text(self.game, self.tag, 12, (255,0,0,1)
+				  , self.casellaIniziale.getCenterX(), self.casellaIniziale.getCenterY())
+	
 	
 	def posiziona(self, spostamento):
-
-		try:
-				#Elimina la casella iniziale (l'ellisse prima dell'inizio del percorso)
-			self.objCanvas.delete(self.tag)
-		except Exception:
-			pass
-
 			#Controlla che con il numero che ha fatto non "esca" dal percorso
 		if(self.posizione+spostamento <= QTA_CASELLE_TOTALI):
 				#aggiorno la posizione
@@ -66,33 +78,49 @@ class Giocatore():
 					#prendo il codice della casella in cui si trova il giocatore 
 				codCasella = self.percorso.dictCaselle[self.posizione]
 
-					#metodo che "fisicamente" muove la pedina
-				self.spostaPedina()
+				self.ridisegnaTutto()
+				
+				#Controlla l'effetto contenuto nella casella
 				self.controllaCodiceCasella(codCasella)
 
 			except KeyError:
-					#Non ha trovato quella posizione nel dizionario, perciò dev'essere una casella VUOTA
-				codCasella = -1
-				self.spostaPedina()
+				#Non ha trovato quella posizione nel dizionario, perciò dev'essere una casella VUOTA
+				self.ridisegnaTutto()
 
 		else:
 				#Calcolo lo spostamento che dovrà fare dalla casella attuale
-			newSpostamento = (QTA_CASELLE_TOTALI-(spostamento - (QTA_CASELLE_TOTALI - self.posizione))) - self.posizione
+			newSpostamento = (QTA_CASELLE_TOTALI-(spostamento - (QTA_CASELLE_TOTALI - self.posizione))
+							  ) - self.posizione
 			#( se servisse mai la posizione della casella in cui finirà... è newSpostamento+self.posizione
 			# (cioè il calcolo qua sopra senza quel "- self.posizione") )
 			
-				#Riposiziona il giocatore
+			#Riposiziona il giocatore
 			self.posiziona(newSpostamento)
+	
+	def ridisegnaTutto(self):
+		# "sposterà" il giocatore. In realtà ripartirà da
+		# un "foglio bianco" e disegnare il giocatore in
+		# una certa posizione
 		
+		#Piccolo fermo per far capire all'utente cosa stia succedendo
+		time.sleep(0.5)
+		
+		self.crazyGoose.disegnaTutto()
+		
+	def spostaPedina(self, posAvvessario):
+		if(self.posizione > 0):
+			x = self.caselle[self.posizione-1].getCenterX()
 			
-	def spostaPedina(self):
-			#Sposta semplicemente il nome del player (per ora)
-		self.player.place(
-				#quella è una lista di Casella, le liste sono 0-based !
-			x=self.caselle[self.posizione-1].getCenterX(),
-			y=self.caselle[self.posizione-1].getCenterY(),
-			anchor=tk.CENTER)
-
+			y = self.caselle[self.posizione - 1].getCenterY()
+			if(posAvvessario == self.posizione):
+				if(self.tag == "PL1"):
+					#più in alto
+					y -= 20
+				else:
+					# più in basso
+					y += 20
+				
+			draw_text(self.game, self.tag, 12, (255, 0, 0, 1), x, y)
 
 
 	def avanza(self, spostamento):
@@ -115,7 +143,7 @@ class Giocatore():
 		 su una casella che fa muovere il giocatore ==> richiamo di nuovo il "self.posiziona()"
 		"""
 
-		#TODO !!! PRINT DI CONTROLLO DA RIMUOVERE POI
+		#TODO !!! PRINT DI CONTROLLO DA SOSTITUIRE CON AVVISO AL GIOCATORE OPPURE TOGLIERE PROPRIO
 		
 		spostamento = 0
 

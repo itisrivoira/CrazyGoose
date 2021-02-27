@@ -1,4 +1,3 @@
-import tkinter as tk
 import random
 
 QTA_CASELLE_TOTALI = 40

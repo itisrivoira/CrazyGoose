@@ -1,9 +1,9 @@
 import pygame
 
-
 class Menu():
     def __init__(self, game):
         self.game = game
+        #Mi salvo le coordinate del centro dello schermo
         self.mid_w, self.mid_h = self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2
         self.run_display = True
         self.cursor_rect = pygame.Rect(0, 0, 0, 0)
@@ -13,11 +13,13 @@ class Menu():
     def draw_cursor(self):
         self.game.draw_text("*", 30, self.cursor_rect.x, self.cursor_rect.y)
 
-    #sovrappone
+    #sovrappone, cioè disegna tutto ciò che c'è da disegnare
+    # (a partire dall'angolo in alto a sx, coord. x=0, y=0)
     def blit_screen(self):
         self.game.window.blit(self.game.display, (0, 0))
         pygame.display.update()
         self.game.reset_keys()
+
 
 class MainMenu(Menu):
     def __init__(self, game):
@@ -29,12 +31,14 @@ class MainMenu(Menu):
         self.quitx, self.quity = self.mid_w, self.mid_h + 150
         self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
 
-    #è il menu principale
+    
     def display_menu(self):
+        #Mostra il menu e richiama il metodo che controlla se ci sono eventi
         self.run_display = True
         while self.run_display:
             self.game.check_events()
             self.check_input()
+            #Rimpe tutto lo schemo di Azzurro (sovvrascrivendo tutto ciò che c'era di disegnato prima)
             self.game.display.fill(self.game.AZZURRO)
             self.game.draw_text('CRAZY GOOSE', 70, self.game.DISPLAY_W/2, self.game.DISPLAY_H/2 - 200)
             self.game.draw_text("Start Game", 30, self.startx, self.starty)
@@ -44,7 +48,8 @@ class MainMenu(Menu):
             self.draw_cursor()
             self.blit_screen()
 
-    #movimento su e giu del cursore nel menu
+
+    #Metodo per muovere su e giù il cursore
     def move_cursor(self):
         if self.game.DOWN_KEY:
             if self.state == 'Start':
@@ -73,22 +78,27 @@ class MainMenu(Menu):
                 self.cursor_rect.midtop = (self.creditsx + self.offset, self.creditsy)
                 self.state = 'Credits'
 
-    #controlla quale menu è stato scelto
+
+    #Controlla quale menu è stato scelto
     def check_input(self):
         self.move_cursor()
         if self.game.START_KEY:
             if self.state == 'Start':
                 self.game.playing = True
+                self.game.curr_menu = None
             elif self.state == 'Options':
                 self.game.curr_menu = self.game.options
             elif self.state == 'Credits':
                 self.game.curr_menu = self.game.credits
             elif self.state == 'Quit':
-                #self.game.running = False
+                #CHIUDE LA FINESTRA E TERMINA L'ESECUZIONE DEL PROGRAMMA
                 pygame.quit()
                 exit()
-                
+            
+            #Se ha premuto invio di certo andrà in un altro menu/entrerà
+            # nel gioco/chiuderà la finestra, quindi questo menu non deve più essere mostrato
             self.run_display = False
+
 
 class OptionsMenu(Menu):
     def __init__(self, game):
@@ -97,6 +107,7 @@ class OptionsMenu(Menu):
         self.volx, self.voly = self.mid_w, self.mid_h + 20
         self.controlsx, self.controlsy = self.mid_w, self.mid_h + 40
         self.cursor_rect.midtop = (self.volx + self.offset, self.voly - 50)
+
 
     #cosa esce quando entri in Options Menu
     def display_menu(self):
@@ -115,6 +126,7 @@ class OptionsMenu(Menu):
             self.game.draw_text("Future Release", 30, self.volx, self.voly)
             self.blit_screen()
 
+
     #da implementare ma tipo controllerebbe il volume e i controlli ma sono da aggiungere
     def check_input(self):
         if self.game.BACK_KEY:
@@ -128,8 +140,9 @@ class OptionsMenu(Menu):
                 self.state = 'Volume'
                 self.cursor_rect.midtop = (self.volx + self.offset, self.voly - 50)
         elif self.game.START_KEY:
-            # TO-DO: Create a Volume Menu and a Controls Menu
+            # TODO: Create a Volume Menu and a Controls Menu
             pass
+
 
 class CreditsMenu(Menu):
     def __init__(self, game):
@@ -144,6 +157,12 @@ class CreditsMenu(Menu):
                 self.game.curr_menu = self.game.main_menu
                 self.run_display = False
             self.game.display.fill(self.game.AZZURRO)
-            self.game.draw_text('Credits', 50, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 150)
-            self.game.draw_text('Made by Crazy Goose Team', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + 10)
+            self.game.draw_text('Credits', 50, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 180)
+            self.game.draw_text('Made by Crazy Goose Team:', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 120)
+            self.game.draw_text('Bellone Giulio', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 -30)
+            self.game.draw_text('Calzia Mattia', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +20)
+            self.game.draw_text('Dastrù Alessandro', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +70)
+            self.game.draw_text('Durante Andrea', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +120)
+            self.game.draw_text('Hila Kledi', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +170)
+            self.game.draw_text('Hu Qiyan', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +220)
             self.blit_screen()
