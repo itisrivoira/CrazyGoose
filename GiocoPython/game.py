@@ -25,7 +25,7 @@ class Game():
         self.title = pygame.display.set_caption("Crazy Goose")
         
         #Carico l'icona
-        icon = pygame.image.load("../../Logo/logo_32x32.png")
+        icon = pygame.image.load("../Logo/logo_32x32.png")
         pygame.display.set_icon(icon)
 
         #Creo i vari menu e il GIOCO
