@@ -33,9 +33,13 @@ class MainMenu(Menu):
 
     
     def display_menu(self):
+        clock = pygame.time.Clock()
         #Mostra il menu e richiama il metodo che controlla se ci sono eventi
         self.run_display = True
         while self.run_display:
+            #Per non occupare moolta CPU faccio meno giri al secondo, abbasso gli fps
+            clock.tick(10)
+            
             self.game.check_events()
             self.check_input()
             #Rimpe tutto lo schemo di Azzurro (sovvrascrivendo tutto ciò che c'era di disegnato prima)

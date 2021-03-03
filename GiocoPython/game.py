@@ -38,7 +38,10 @@ class Game():
         self.curr_menu = self.main_menu
 
     def game_loop(self):
+        clock = pygame.time.Clock()
         while self.playing:
+            #Per non occupare moolta CPU faccio meno giri al secondo, abbasso gli fps
+            clock.tick(10)
             self.check_events()
             
             #Dopo il check events potrebbe essere cambiato il self.playing
@@ -58,12 +61,7 @@ class Game():
                     self.running = False
                     self.curr_menu.run_display = False
                 else:
-                    self.running = True
-                    #Risetto il flag a False così potrà RIAPRIRE il gioco
-                    # (andando di nuovo su "start game")
-                    self.crazyGoose.giocoPartito = False
-                    #Risetto il menu principale per farlo mostrare
-                    self.curr_menu = self.main_menu
+                    self.fermaGioco()
                     
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
@@ -74,12 +72,26 @@ class Game():
                     self.DOWN_KEY = True
                 if event.key == pygame.K_UP:
                     self.UP_KEY = True
+                
 
             #Se sta giocando controllo anche l'evento del mouse
             if(not self.crazyGoose == None and self.crazyGoose.giocoPartito == True):
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.playing = False
+                        self.fermaGioco()
+                
                 if(event.type == pygame.MOUSEBUTTONDOWN):
                     self.crazyGoose.mousePremuto(pygame.mouse.get_pos())
                 self.crazyGoose.mouseOver(pygame.mouse.get_pos())
+
+    def fermaGioco(self):
+        self.running = True
+        #Risetto il flag a False così potrà RIAPRIRE il gioco
+        # (andando di nuovo su "start game")
+        self.crazyGoose.giocoPartito = False
+        #Risetto il menu principale per farlo mostrare
+        self.curr_menu = self.main_menu           
             
     #resetta a false i 4 tasti UP, DOWN, START(INVIO), BACK(TORNA INDIETRO)
     def reset_keys(self):
