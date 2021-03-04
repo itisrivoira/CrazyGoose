@@ -12,13 +12,12 @@
 }
 
 #logo {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
 }
 
 .navbar a {
     float: left;
-    padding: 0.9vw;
     color: white;
     text-decoration: none;
     font-size: 17px;
@@ -33,4 +32,8 @@
         float: none;
         display: block;
     }
+}
+
+.vociDellaNavBar {
+    width: 70vw;
 }
