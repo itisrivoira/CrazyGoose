@@ -189,7 +189,7 @@ class Giocatore():
 			self.posiziona(-(self.posizione-1))
 
 		elif(codCasella == VITTORIA):
-			# print("HAI VINTO "+self.tag+" !!!" )
+			print("HAI VINTO "+self.tag+" !!!" )
 			self.vincitore = True
 
 

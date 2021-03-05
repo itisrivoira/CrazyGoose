@@ -193,7 +193,7 @@ class CrazyGoose {
         // per far avanzare PL1)
         if (this.com.turniFermo == 0) {
             //dopo 2000ms (2sec) entra nella funzine, che a sua volta lancia la funzione avanzaCOM
-            setTimeout(() => { this.avanzaCOM(numEstratto) }, 2000);
+            setTimeout(() => { this.avanzaCOM(numEstratto) }, 2000)
         } else {
             this.avanzaCOM(numEstratto)
         }
@@ -302,13 +302,33 @@ class CrazyGoose {
     }
 
     segnalaChiTocca(turnoPlayer1) {
-        /*Codice per segnalare a chi tocca
-        if(turnoPlayer1):
-        	this.lblInfoPl.configure(bg="red")
-        	this.lblInfoCom.configure(bg="grey")
-        else:
-        	this.lblInfoPl.configure(bg="grey")
-        	this.lblInfoCom.configure(bg="red")*/
+        let colorPL1 = ""
+        let colorCOM = ""
+
+        //Il colore è formato da R G B A dove la A è la trasparenza (0 "completamente trasparente" 255 "completamente visibile")
+        if (turnoPlayer1) {
+            colorPL1 = "#ff0000ff"
+            colorCOM = "#ff000000"
+        } else {
+            colorPL1 = "#ff000000"
+            colorCOM = "#ff0000ff"
+        }
+
+        this.ctx.beginPath()
+        this.ctx.lineWidth = "2"
+        this.ctx.strokeStyle = colorPL1
+        this.ctx.rect(15, 5, 70, 20)
+        this.ctx.stroke()
+
+        this.ctx.beginPath()
+        this.ctx.lineWidth = "2"
+        this.ctx.strokeStyle = colorCOM
+        this.ctx.rect(867, 5, 125, 20)
+        this.ctx.stroke()
+
+        //risetto al valore di default
+        this.ctx.lineWidth = "1";
+        this.ctx.strokeStyle = "#000000";
     }
 
     segnalaVincitore(haVintoPlayer1) {
@@ -400,11 +420,17 @@ canvas.height = 650
 let gioco = new CrazyGoose(ctx, canvas, null)
 gioco.start()
 
+//Aggiungo l'ascoltatore del click del mouse all'oggetto canvas (non potevo farlo nel file html xke mi serve l'oggetto gioco per lanciare un suo metodo)
 canvas.addEventListener("mousedown", (event) => {
-    //event avrà la posizione del mouse. RISPETTO alla pagina non al CANVAS (il canvas È PIÙ PICCOLO DELL'INTERA PAGINA, ed è centrato. Quindi lascia tot spazio vuoto a dx e sx)
-    //(canvas non occupa neanche l'intero schermo, ma se lascia spazio vuoto lo lascia sotto non sopra quindi non è un problema)
 
+    //cliccato col tasto sx del mouse (se == 1 tasto centrale, se == 2 tasto dx)
+    if (event.button == 0) {
 
-    let posMouse = new Array((event.clientX - ((window.innerWidth - canvas.width) / 2)), event.clientY)
-    gioco.mousePremuto(posMouse)
+        /*Con event.offsetX prendo le coord. X RISPETTO l'oggetto su cui c'è l'ascoltatore 
+        (quindi non considera tutto quello spazio bianco, non occupato dal canvas)
+        event.offsetY / event.clientY mi restituivano non so xke un valore TROPPO basso rispetto quello che mi aspettavo. Con event.pageY prendo le coord. Y RISPETTO la posizione nella PAGINA
+        */
+        let posMouse = new Array(event.offsetX, event.pageY)
+        gioco.mousePremuto(posMouse)
+    }
 })

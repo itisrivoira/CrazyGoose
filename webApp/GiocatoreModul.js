@@ -79,18 +79,7 @@ class Giocatore {
     }
 
     ridisegnaTutto() {
-        // "sposterà" il giocatore. In realtà ripartirà da
-        // un "foglio bianco" e disegnare il giocatore in
-        // una certa posizione
-
-        //Piccolo fermo (mezzo sec) per far capire all'utente cosa stia succedendo
-        /*console.log("prima");
-        let date = 0
-        let dat = new Date()
-        while (date <= dat + 2000) {
-            date = new Date()
-        }
-        console.log("dopo");*/
+        //Da trovare modo per stoppare mezzo secondo tutto per far capire all'utente cosa sta succedendo (se il giocatore finisce su +4 va SUBITO avanti di 4 caselle senza nenche far capire che la pedina è andata sul +4)
         this.crazyGoose.disegnaTutto()
     }
 
@@ -138,7 +127,7 @@ class Giocatore {
 
         if (codCasella == TIRA_DI_NUOVO[0]) {
             console.log("TIRA ANCORA IL DADO " + this.tag)
-            this.turnoMio = True
+            this.turnoMio = true
 
         } else if (codCasella == INDIETRO_DI_UNO[0]) {
 

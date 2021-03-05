@@ -1,6 +1,7 @@
 from Giocatore_modul import *
 from Percorso_modul import *
 from Casella_modul import *
+from menu import *
 
 import pygame
 import random
@@ -16,7 +17,7 @@ INFO_DADO_COM = "Dado COM: "
 #Metodo per disegnare testo (per scrivere) con un
 # determinato font, dimensione e colore, il tutto
 # centrato in un rettangolo alle coordinate passate
-def draw_text(game, text, size, color, x, y):
+def draw_text(game, text, size, color, x, y, xRect=-1, yRect=-1, widthRect=-1, heightRect=-1, colorRect=-1):
 	font = pygame.font.Font(game.font_name, size)
 	text_surface = font.render(text, True, color)
 	text_rect = text_surface.get_rect()
@@ -32,6 +33,7 @@ class Dado():
 	def tiraDado(self):
 			#Tira il dado, ossia un numero casuale tra 1 e 6 (estremi INCLUSI)
 		self.dado = random.randint(1,6)
+		#self.dado = 40
 		return self.dado
 
 """Non essendoci un widget/view Button in pygame ho dovuto "crearlo".
@@ -106,7 +108,9 @@ class CrazyGoose():
 			
 			self.valDadoCOM = "0"
 			self.valDadoPL1 = "0"
-			
+			self.colorInfoPlayer = self.game.BLACK
+			self.colorInfoCOM = self.game.BLACK
+
 			self.buttonDadoPL1 = None
 			self.player = None
 			self.com = None
@@ -137,14 +141,14 @@ class CrazyGoose():
 			#Scrive nelle caselle il loro effetto
 		self.riempiCaselle()
 		
-		draw_text(self.game, INFO_PL1, 15, self.game.BLACK, 50, 20)
+		draw_text(self.game, INFO_PL1, 15, self.colorInfoPlayer, 50, 20, 50, 20)
 		draw_text(self.game, INFO_DADO_PL1, 14, self.game.BLACK, 55, 60)
 		
 		#Il primo argomento è self xke necessita di questa classe per
 		# richiamarne il metodo "tiraDado"
 		self.buttonDadoPL1 = Button(self, self.game, 100, 43, 35, 35, self.valDadoPL1)
 		
-		draw_text(self.game, INFO_COM, 14, self.game.BLACK, 930, 20)
+		draw_text(self.game, INFO_COM, 14, self.colorInfoCOM, 930, 20)
 		draw_text(self.game, (INFO_DADO_COM+self.valDadoCOM), 14, self.game.BLACK, 917, 60)
 		
 		if(self.player == None or self.player.posizione == 0):
@@ -186,7 +190,6 @@ class CrazyGoose():
 			#Se la partita è terminata "blocca" la funzionalità del dado
 		if(not self.partitaTerminata):
 			numEstratto = Dado().tiraDado()
-			
 			if(self.player.turnoMio):
 				self.avanzaPlayer1(numEstratto)
 			else:
@@ -302,25 +305,27 @@ class CrazyGoose():
 
 
 	def segnalaChiTocca(self, turnoPlayer1):
-		pass
-		"""Codice per segnalare a chi tocca
 		if(turnoPlayer1):
-			self.lblInfoPl.configure(bg="red")
-			self.lblInfoCom.configure(bg="grey")
-		else:
-			self.lblInfoPl.configure(bg="grey")
-			self.lblInfoCom.configure(bg="red")"""
-	
-	def segnalaVincitore(self, haVintoPlayer1):
-		pass
-		"""Codice per segnalare a chi tocca
-		if(haVintoPlayer1):
-			self.lblInfoPl.configure(bg="orange")
-			self.lblInfoCom.configure(bg="grey")
-		else:
-			self.lblInfoPl.configure(bg="grey")
-			self.lblInfoCom.configure(bg="orange")"""
+			pygame.draw.rect(self.game.display, self.game.RED, pygame.Rect(15, 10, 70, 20), 1)
+			
+			#se < 0 NON LO DISEGNA, se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO
+			pygame.draw.rect(self.game.display, (255,0,0), pygame.Rect(867, 10, 125, 20), -1)
+		else:	
+			#se < 0 NON LO DISEGNA, se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO
+			pygame.draw.rect(self.game.display, (255,0,0,0), pygame.Rect(15, 10, 70, 20), -1)
 
+			pygame.draw.rect(self.game.display, self.game.RED, pygame.Rect(867, 10, 125, 20), 1)
+
+		self.blit_screen()
+
+	def segnalaVincitore(self, haVintoPlayer1):
+		if(haVintoPlayer1):
+			# print("HA VINTO e sono in PLAYER  !!!")
+			self.game.gameWin()
+
+		else:
+			# print("HA PERSO E sono in COM  !!!")
+			self.game.gameOver()
 			
 	def riempiCaselle(self):
 		"""Cicla per ogni casella e controlla, se la posizione della casella

@@ -1,7 +1,6 @@
 from Giocatore_modul import *
 from Percorso_modul import *
 from Casella_modul import *
-from menu import *
 
 import pygame
 import random
@@ -33,7 +32,6 @@ class Dado():
 	def tiraDado(self):
 			#Tira il dado, ossia un numero casuale tra 1 e 6 (estremi INCLUSI)
 		self.dado = random.randint(1,6)
-		#self.dado = 40
 		return self.dado
 
 """Non essendoci un widget/view Button in pygame ho dovuto "crearlo".
@@ -188,6 +186,7 @@ class CrazyGoose():
 			#Se la partita è terminata "blocca" la funzionalità del dado
 		if(not self.partitaTerminata):
 			numEstratto = Dado().tiraDado()
+			
 			if(self.player.turnoMio):
 				self.avanzaPlayer1(numEstratto)
 			else:
@@ -311,16 +310,17 @@ class CrazyGoose():
 		else:
 			self.lblInfoPl.configure(bg="grey")
 			self.lblInfoCom.configure(bg="red")"""
-
-
+	
 	def segnalaVincitore(self, haVintoPlayer1):
+		pass
+		"""Codice per segnalare a chi tocca
 		if(haVintoPlayer1):
-			# print("HA VINTO e sono in PLAYER  !!!")
-			self.game.gameWin()
-
+			self.lblInfoPl.configure(bg="orange")
+			self.lblInfoCom.configure(bg="grey")
 		else:
-			# print("HA PERSO E sono in COM  !!!")
-			self.game.gameOver()
+			self.lblInfoPl.configure(bg="grey")
+			self.lblInfoCom.configure(bg="orange")"""
+
 			
 	def riempiCaselle(self):
 		"""Cicla per ogni casella e controlla, se la posizione della casella

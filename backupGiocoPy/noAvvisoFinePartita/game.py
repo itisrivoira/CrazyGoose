@@ -25,8 +25,8 @@ class Game():
         self.title = pygame.display.set_caption("Crazy Goose")
         
         #Carico l'icona
-        icon = pygame.image.load("Logo/logo_32x32.png")
-        pygame.display.set_icon(icon)
+        #icon = pygame.image.load("../Logo/logo_32x32.png")
+        #pygame.display.set_icon(icon)
 
         #Creo i vari menu e il GIOCO
         self.main_menu = MainMenu(self)
@@ -92,35 +92,7 @@ class Game():
         self.crazyGoose.giocoPartito = False
         #Risetto il menu principale per farlo mostrare
         self.curr_menu = self.main_menu           
-
-    def gameWin(self):
-        self.running = False
-        """
-        self.window.fill(self.AZZURRO) funziona ma successivamente
-        non riesce a scrivere dentro
-        pygame.display.flip()
-        
-        quindi usando il:
-        da lo stesso effetto del self.window.fill(self.AZZURRO) usando ->
-            -> window.blit
-            -> display.update()
-        dato che ce gia questa funzione del sovradisegnare 
-        allora richiamo la funzione blit_screen dal main_menu
-        self.main_menu.blit_screen() ->
-            -> che ha anche il reset_keys cosi resetta le key e se vuole può cliccare ESC
-            per tornare al menu
-        """
-        self.display.fill(self.AZZURRO)
-        self.draw_text("HAI VINTO", 50, self.DISPLAY_W / 2, self.DISPLAY_H / 2 - 200)
-        self.draw_text("Premi ESC per rigiocare", 30, self.DISPLAY_W / 2, self.DISPLAY_H / 2)
-        self.main_menu.blit_screen()
-
-    def gameOver(self):
-        self.running = False
-        self.display.fill(self.AZZURRO)
-        self.draw_text("HAI PERSO", 50, self.DISPLAY_W / 2, self.DISPLAY_H / 2 - 200)
-        self.draw_text("Premi ESC per riprovare", 30, self.DISPLAY_W / 2, self.DISPLAY_H / 2)
-        self.main_menu.blit_screen()
+            
     #resetta a false i 4 tasti UP, DOWN, START(INVIO), BACK(TORNA INDIETRO)
     def reset_keys(self):
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
