@@ -203,7 +203,7 @@ class CrazyGoose():
 	def toccaAlCOM(self, numEstratto=-1):
 		#Se il num del dado non viene passato viene settato a -1 e allora lancia il dado
 		if(numEstratto == -1):
-			numEstratto = 40#Dado().tiraDado()
+			numEstratto = Dado().tiraDado()
 		
 		#Non voglio bloccare il PL1 per 2 secondi, quindi se il COM ha un fermo non
 		# faccio la sleep di 2 sec (dopo aver decrementato il fermo lancia il metodo
