@@ -8,13 +8,6 @@ const Y_PLAYER2 = 605
  determinato font, dimensione e colore, il tutto
  centrato in un rettangolo alle coordinate passate*/
 
-function draw_text(ctx, text, size, color, x, y) {
-    ctx.font = size + "px Arial"
-    ctx.fillStyle = color
-    ctx.textAlign = "center"
-    ctx.fillText(text, x, y)
-}
-
 class Giocatore {
     constructor(crazyGoose, ctx, caselle, percorso, tag) {
         //Mi serve per lanciare un suo metodo
@@ -47,7 +40,7 @@ class Giocatore {
         // poi inserisce la scritta che identifica il giocatore
         this.casellaIniziale = new Casella(this.ctx, x, y)
 
-        draw_text(this.ctx, this.tag, 12, "#ff0000", this.casellaIniziale.getCenterX(), this.casellaIniziale.getCenterY())
+        draw_text(this.ctx, this.tag, 12, "#ff0000", this.casellaIniziale.getCenterX(), this.casellaIniziale.getCenterY(), "Arial", "bold")
     }
 
     posiziona(spostamento) {
@@ -58,15 +51,14 @@ class Giocatore {
             try {
                 //prendo il codice della casella in cui si trova il giocatore 
                 let codCasella = this.percorso.dictCaselle[this.posizione]
-                this.ridisegnaTutto()
-                    //Controlla l'effetto contenuto nella casella
-                this.controllaCodiceCasella(codCasella)
+                this.crazyGoose.disegnaTutto()
+                    /*Controlla l'effetto contenuto nella casella. Lo fa dopo un attimo (mezzo sec) così che l'utente possa "capire cosa sta succedendo" e non veda la pedina andare 8 posizioni avanti xke ha tirato 4 e ha preso "avanti di 4" 
+                    (In questo modo si ferma un attimo sulla casella del "+4" e POI avanza)*/
+                setTimeout(() => { this.controllaCodiceCasella(codCasella) }, 500)
             } catch (err) {
                 //Non ha trovato quella posizione nel dizionario, perciò dev'essere una casella VUOTA
-                this.ridisegnaTutto()
+                this.crazyGoose.disegnaTutto()
             }
-
-
         } else {
             //Calcolo lo spostamento che dovrà fare dalla casella attuale
             newSpostamento = (QTA_CASELLE_TOTALI - (spostamento - (QTA_CASELLE_TOTALI - this.posizione))) - this.posizione
@@ -78,12 +70,6 @@ class Giocatore {
         }
     }
 
-    ridisegnaTutto() {
-        //Da trovare modo per stoppare mezzo secondo tutto per far capire all'utente cosa sta succedendo (se il giocatore finisce su +4 va SUBITO avanti di 4 caselle senza nenche far capire che la pedina è andata sul +4)
-        this.crazyGoose.disegnaTutto()
-    }
-
-
     spostaPedina(posAvvessario) {
         if (this.posizione > 0) {
             let x = this.caselle[this.posizione - 1].getCenterX()
@@ -92,13 +78,13 @@ class Giocatore {
             if (posAvvessario == this.posizione) {
                 if (this.tag == "PL1") {
                     //più in alto
-                    y -= 20
+                    y -= 15
                 } else {
                     //più in basso
-                    y += 20
+                    y += 15
                 }
             }
-            draw_text(this.ctx, this.tag, 12, "#ff0000", x, y)
+            draw_text(this.ctx, this.tag, 12, "#ff0000", x, y, "Arial", "bold")
         }
     }
 
@@ -167,7 +153,7 @@ class Giocatore {
 
         } else if (codCasella == VITTORIA) {
             console.log("HAI VINTO " + this.tag + " !!!")
-            this.vincitore = True
+            this.vincitore = true
         }
 
         if (spostamento != 0) {

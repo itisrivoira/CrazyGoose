@@ -120,9 +120,12 @@ class CrazyGoose():
 			
 	
 	def mousePremuto(self, mousePosition):
-		if(not self.buttonDadoPL1 == None):
-			self.buttonDadoPL1.controllaPosCursore(mousePosition)
-	
+		#Controllo che sia il turno del PL1 (cioè che sia il suo turno OPPURE l'avversario abbia un fermo)
+		if(self.player != None and self.player.turniFermo == 0):
+			if(self.player.turnoMio == True or (self.player.turnoMio == False and self.com.turniFermo > 0)):
+				if(not self.buttonDadoPL1 == None):
+					self.buttonDadoPL1.controllaPosCursore(mousePosition)
+
 	def mouseOver(self, mousePosition):
 		if (not self.buttonDadoPL1 == None):
 			self.buttonDadoPL1.detectMouseOver(mousePosition)
@@ -200,7 +203,7 @@ class CrazyGoose():
 	def toccaAlCOM(self, numEstratto=-1):
 		#Se il num del dado non viene passato viene settato a -1 e allora lancia il dado
 		if(numEstratto == -1):
-			numEstratto = Dado().tiraDado()
+			numEstratto = 40#Dado().tiraDado()
 		
 		#Non voglio bloccare il PL1 per 2 secondi, quindi se il COM ha un fermo non
 		# faccio la sleep di 2 sec (dopo aver decrementato il fermo lancia il metodo

@@ -1,10 +1,3 @@
-function draw_text(ctx, text, size, color, x, y) {
-    ctx.font = size.toString() + "px Verdana";
-    ctx.textAlign = "center"
-    ctx.fillStyle = color
-    ctx.fillText(text, x, y);
-}
-
 class Casella {
     constructor(context, x, y, raggioMaggiore = 40, raggioMinore = 25, rotazione = 0, angoloInizio = 0, angoloFine = Math.PI * 2) {
         this.ctx = context
@@ -49,8 +42,8 @@ class Casella {
                 //N.B. SONO SICURO CHE text AVRÀ SOLO 2 RIGHE XKÈ SO COSA PUç CONTENERE "testo"
                 // QUINDI QUESTO NON FUNZIONA CON FRASI CON PIÙ DI 1 "\n"
 
-            draw_text(this.ctx, text[0], 13, "#000000", this.getCenterX(), this.getCenterY() - 2.5)
-            draw_text(this.ctx, text[1], 13, "#000000", this.getCenterX(), this.getCenterY() + 7.5)
+            draw_text(this.ctx, text[0], 13, "#000000", this.getCenterX(), this.getCenterY() - 10, "Arial", "bold")
+            draw_text(this.ctx, text[1], 13, "#000000", this.getCenterX(), this.getCenterY() + 10, "Arial", "bold")
         }
 
     }

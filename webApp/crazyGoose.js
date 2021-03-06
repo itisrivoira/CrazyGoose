@@ -3,13 +3,6 @@ const INFO_COM = "Computer (COM)"
 const INFO_DADO_PL1 = "Dado PL1: "
 const INFO_DADO_COM = "Dado COM: "
 
-function draw_text(ctx, text, size, color, x, y) {
-    ctx.font = size.toString() + "px Arial";
-    ctx.textAlign = "center"
-    ctx.fillStyle = color
-    ctx.fillText(text, x, y);
-}
-
 class Dado {
     tiraDado() {
         //num casuale tra 0 e 5 => +1 => num casuale tra 1 e 6
@@ -34,7 +27,7 @@ class Button {
         this.ctx.beginPath()
         this.ctx.rect(x, y, width, height)
         this.ctx.stroke()
-        draw_text(this.ctx, text, 14, "#000000", (x + this.width / 2), (y + this.height / 2 + 3))
+        draw_text(this.ctx, text, 14, "#000000", (x + this.width / 2), (y + this.height / 2))
     }
 
     controllaPosCursore(mouse) {
@@ -52,7 +45,6 @@ class Button {
             mouse[1] > this.y && mouse[1] < this.y + this.height) {
             //codice per "evidenziare" il rettangolo
             // (per far capire all'utente che ci sta passando sopra)
-            console.log("sopra");
         }
     }
 
@@ -92,8 +84,13 @@ class CrazyGoose {
     }
 
     mousePremuto(mousePosition) {
-        if (this.buttonDadoPL1 != null) {
-            this.buttonDadoPL1.controllaPosCursore(mousePosition)
+        //Controllo che sia il turno del PL1 (cioè che sia il suo turno OPPURE l'avversario abbia un fermo)
+        if (this.player != null && this.player.turniFermo == 0) {
+            if (this.player.turnoMio == true || (this.player.turnoMio == false && this.com.turniFermo > 0)) {
+                if (this.buttonDadoPL1 != null) {
+                    this.buttonDadoPL1.controllaPosCursore(mousePosition)
+                }
+            }
         }
     }
 
@@ -104,15 +101,15 @@ class CrazyGoose {
     }
 
     disegnaTutto() {
-        console.log(this);
+        console.log("disegna");
+        /*"ripulisce" tutto.
+			  Purtroppo pygame funziona in questo modo, non posso "spostare" un elemento
+			  posso solo ripartire da foglio bianco a disegnare*/
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
             /*this.ctx.beginPath()
             this.ctx.rect(0, 0, this.canvas.width, this.canvas.height)
             this.ctx.stroke()*/
         let flagPrimoGiro = (this.player == null && this.com == null)
-            /*"ripulisce" tutto.
-			  Purtroppo pygame funziona in questo modo, non posso "spostare" un elemento
-			  posso solo ripartire da foglio bianco a disegnare*/
             //Riempe la lista di caselle, cioè "disegna" gli ellissi.
         this.posizionaLeCaselle()
             //Scrive nelle caselle il loro effetto
@@ -123,7 +120,7 @@ class CrazyGoose {
 
         //Il primo argomento è this xke necessita di questa classe per
         // richiamarne il metodo "tiraDado"
-        this.buttonDadoPL1 = new Button(this.ctx, this, this.game, 100, 40, 35, 35, this.valDadoPL1)
+        this.buttonDadoPL1 = new Button(this.ctx, this, this.game, 100, 42, 35, 35, this.valDadoPL1)
 
         draw_text(this.ctx, INFO_COM, 14, "#000000", 930, 20)
         draw_text(this.ctx, (INFO_DADO_COM + this.valDadoCOM), 14, "#000000", 917, 60)
@@ -175,11 +172,10 @@ class CrazyGoose {
                 this.avanzaPlayer1(numEstratto)
 
                 //Per cambiare il numero uscito nel button nel html
-                return numEstratto
             } else {
                 this.toccaAlCOM()
             }
-        } else { return 0 }
+        }
     }
 
     toccaAlCOM(numEstratto = -1) {
@@ -317,13 +313,13 @@ class CrazyGoose {
         this.ctx.beginPath()
         this.ctx.lineWidth = "2"
         this.ctx.strokeStyle = colorPL1
-        this.ctx.rect(15, 5, 70, 20)
+        this.ctx.rect(15, 9, 70, 20)
         this.ctx.stroke()
 
         this.ctx.beginPath()
         this.ctx.lineWidth = "2"
         this.ctx.strokeStyle = colorCOM
-        this.ctx.rect(867, 5, 125, 20)
+        this.ctx.rect(867, 9, 125, 20)
         this.ctx.stroke()
 
         //risetto al valore di default
@@ -332,13 +328,21 @@ class CrazyGoose {
     }
 
     segnalaVincitore(haVintoPlayer1) {
-        /*Codice per segnalare a chi tocca
-        if(haVintoPlayer1):
-        	this.lblInfoPl.configure(bg="orange")
-        	this.lblInfoCom.configure(bg="grey")
-        else:
-        	this.lblInfoPl.configure(bg="grey")
-        	this.lblInfoCom.configure(bg="orange")*/
+        //Ripulisco tutto
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+        this.ctx.beginPath()
+        this.ctx.rect(0, 0, this.canvas.width, this.canvas.height)
+        this.ctx.fillStyle = "#0080FF"
+        this.ctx.fill()
+
+        let msg = ""
+        if (haVintoPlayer1) {
+            msg = "HAI VINTO"
+        } else {
+            msg = "HAI PERSO"
+        }
+        draw_text(this.ctx, msg, 50, "#ffffff", this.canvas.width / 2, this.canvas.height / 2 - 200, "helvetica", "bold")
+        draw_text(this.ctx, "Premi ESC per rigiocare", 30, "#ffffff", this.canvas.width / 2, this.canvas.height / 2, "helvetica", "bold")
     }
 
     riempiCaselle() {
@@ -432,5 +436,11 @@ canvas.addEventListener("mousedown", (event) => {
         */
         let posMouse = new Array(event.offsetX, event.pageY)
         gioco.mousePremuto(posMouse)
+    }
+})
+
+window.addEventListener("keydown", (event) => {
+    if (event.key == "Escape") {
+        /*Codice per tornare alla schermata prec*/
     }
 })
