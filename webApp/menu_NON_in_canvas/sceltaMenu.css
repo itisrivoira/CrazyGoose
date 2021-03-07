@@ -1,0 +1,92 @@
+#perimetroGioco {
+    width: 1000px;
+    height: 690px;
+    border: 1px solid rgb(0, 127, 255);
+    background: rgb(0, 127, 255);
+}
+
+#distanzaTitolo {
+    margin-top: 30px;
+    text-align: center;
+    border: 1px solid rgb(0, 127, 255);
+}
+
+#distStart {
+    margin-left: 422px;
+    margin-top: 75px;
+    border: 1px solid rgb(0, 127, 255);
+}
+
+#distOptions {
+    margin-left: 422px;
+    padding-left: 20px;
+    margin-top: 10px;
+    border: 1px solid rgb(0, 127, 255);
+}
+
+#distCredits {
+    margin-left: 422px;
+    margin-top: 10px;
+    padding-left: 26px;
+    border: 1px solid rgb(0, 127, 255);
+}
+
+#titolo {
+    padding: 0px;
+    font-size: 70px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    font-family: Helvetica;
+}
+
+#start_custom {
+    /*margin-left:50%;
+    margin-top: 30px;*/
+    font-size: 30px;
+    padding: 1px;
+    background-color: rgb(0, 127, 255);
+    border: 0px;
+    color: white;
+    cursor: pointer;
+    /* modifico il cursore quando passa sul bottone */
+    outline: none;
+    /* tolgo il bordo al bottone quando viene premuto */
+    font-family: 'helvetica';
+    font-weight: bold;
+    /* trasformo il testo del bottone in grassetto */
+}
+
+#options_custom {
+    /*margin-left:400px;
+    margin-top: 30px;*/
+    font-size: 30px;
+    padding: 5px;
+    background-color: rgb(0, 127, 255);
+    border: 0px;
+    color: white;
+    cursor: pointer;
+    /* modifico il cursore quando passa sul bottone */
+    outline: none;
+    /* tolgo il bordo al bottone quando viene premuto */
+    font-family: 'helvetica';
+    font-weight: bold;
+    /* trasformo il testo del bottone in grassetto */
+}
+
+#credits_custom {
+    /*margin-left:400px;
+    margin-top: 30px;*/
+    font-size: 30px;
+    padding: 5px;
+    background-color: rgb(0, 127, 255);
+    border: 0px;
+    color: white;
+    cursor: pointer;
+    /* modifico il cursore quando passa sul bottone */
+    outline: none;
+    /* tolgo il bordo al bottone quando viene premuto */
+    font-family: 'helvetica';
+    font-weight: bold;
+    /* trasformo il testo del bottone in grassetto */
+}
