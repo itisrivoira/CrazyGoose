@@ -1,7 +1,7 @@
 import time
 
 from Casella_modul import *
-from globalFunction import *
+
 #Per non importare l'intera classe (il modulo) Percorso, che non mi serve, importo solo le costanti
 from Percorso_modul import QTA_CASELLE_TOTALI
 from Percorso_modul import TIRA_DI_NUOVO
@@ -21,6 +21,22 @@ Y_PLAYER1 = 565
 Y_PLAYER2 = 630
 
 
+#Metodo per disegnare testo (per scrivere) con un
+# determinato font, dimensione e colore, il tutto
+# centrato in un rettangolo alle coordinate passate
+
+#N.B. NON POSSO IMPORTARE IL METODO DAL FILE crazyGoose
+# XKE SENNÒ DA ERRORE:
+#ImportError: cannot import name 'draw_text' from partially initialized module 'crazyGoose'
+def draw_text(game, text, size, color, x, y):
+	font = pygame.font.Font(game.font_name, size)
+	text_surface = font.render(text, True, color)
+	text_rect = text_surface.get_rect()
+	text_rect.center = (x, y)
+	# Ora va realmente a disegnare la scritta
+	game.display.blit(text_surface, text_rect)
+	
+
 class Giocatore():
 	def __init__(self, crazyGoose, game, caselle, percorso, tag):
 			#Mi serve per lanciare un suo metodo
@@ -34,9 +50,6 @@ class Giocatore():
 		self.turnoMio = False
 		self.turniFermo = 0
 		self.vincitore = False
-			
-		self.ultimoMsg = ""
-		self.penultimoMsg = ""
 
 		self.creaCasellaIniziale()
 
@@ -65,11 +78,11 @@ class Giocatore():
 					#prendo il codice della casella in cui si trova il giocatore 
 				codCasella = self.percorso.dictCaselle[self.posizione]
 
-				#La pedina si muoverà (prima di un eventuale nuovo spostamento)
 				self.ridisegnaTutto()
 				
 				#Controlla l'effetto contenuto nella casella
 				self.controllaCodiceCasella(codCasella)
+
 			except KeyError:
 				#Non ha trovato quella posizione nel dizionario, perciò dev'essere una casella VUOTA
 				self.ridisegnaTutto()
@@ -102,10 +115,10 @@ class Giocatore():
 			if(posAvvessario == self.posizione):
 				if(self.tag == "PL1"):
 					#più in alto
-					y -= 15
+					y -= 20
 				else:
 					# più in basso
-					y += 15
+					y += 20
 				
 			draw_text(self.game, self.tag, 12, (255, 0, 0, 1), x, y)
 
@@ -130,53 +143,55 @@ class Giocatore():
 		 su una casella che fa muovere il giocatore ==> richiamo di nuovo il "self.posiziona()"
 		"""
 
+		#TODO !!! PRINT DI CONTROLLO DA SOSTITUIRE CON AVVISO AL GIOCATORE OPPURE TOGLIERE PROPRIO
 		
 		spostamento = 0
-		msg = ""
 
 		if(codCasella == TIRA_DI_NUOVO[0]):
-			msg = "TIRA ANCORA IL DADO"
+			print("TIRA ANCORA IL DADO "+self.tag)
 			self.turnoMio = True
 
 		elif(codCasella == INDIETRO_DI_UNO[0]):
-			msg = "INDIETRO DI UNA CASELLA"
+			
 			spostamento = -1
+			print("INDIETRO DI UNA CASELLA "+self.tag)
 
 		elif(codCasella == INDIETRO_DI_TRE[0]):
-			msg = "INDIETRO DI TRE CASELLE"
+			
 			spostamento = -3
+			print("INDIETRO DI TRE CASELLA "+self.tag)
 
 		elif(codCasella == AVANTI_DI_UNO[0]):
-			msg = "AVANTI DI UNA CASELLA"
+			
 			spostamento = 1
+			print("AVANTI DI UNA CASELLA "+self.tag)
 
 		elif(codCasella == AVANTI_DI_QUATTRO[0]):
-			msg = "AVANTI DI QUATTRO CASELLE"
+			
 			spostamento = 4
+			print("AVANTI DI QUATTRO CASELLE "+self.tag)
 
 		elif(codCasella == FERMO_DA_UNO[0]):
-			msg = "FERMO PER UN GIRO"
+			
+			print("STATTE FERMO PER UN GIRO "+self.tag)
 			self.turniFermo = 1
-
+		
 		elif(codCasella == FERMO_DA_DUE[0]):
-			msg = "FERMO PER DUE GIRI"
+		
+			print("STATTE FERMO PER DUE GIRI "+self.tag)
 			self.turniFermo = 2
 
 		elif(codCasella == TORNA_ALL_INIZIO):
-			msg = "RICOMINCIA DA CAPO !!!"
+			print(self.tag+" TORNA DA CAPO !!!" )
+			
 			#Lo fa ritornare alla 1° casella
 			#Dalla posizione == 39 va alla 1° ==> si muove di 38 posizioni indietro
 			self.posiziona(-(self.posizione-1))
+
 		elif(codCasella == VITTORIA):
 			# print("HAI VINTO "+self.tag+" !!!" )
 			self.vincitore = True
 
-		if(msg != ""):
-			self.penultimoMsg = self.ultimoMsg
-			self.ultimoMsg = msg
-
-			#per mostrare i msg
-			self.crazyGoose.disegnaTutto()
 
 		if(spostamento != 0):
 			self.posiziona(spostamento)

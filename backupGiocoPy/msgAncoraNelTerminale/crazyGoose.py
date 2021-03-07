@@ -2,7 +2,6 @@ from Giocatore_modul import *
 from Percorso_modul import *
 from Casella_modul import *
 from menu import *
-from globalFunction import *
 
 import pygame
 import random
@@ -13,6 +12,19 @@ INFO_PL1 = "Tu (PL1)"
 INFO_COM = "Computer (COM)"
 INFO_DADO_PL1 = "Dado PL1: "
 INFO_DADO_COM = "Dado COM: "
+
+
+#Metodo per disegnare testo (per scrivere) con un
+# determinato font, dimensione e colore, il tutto
+# centrato in un rettangolo alle coordinate passate
+def draw_text(game, text, size, color, x, y, xRect=-1, yRect=-1, widthRect=-1, heightRect=-1, colorRect=-1):
+	font = pygame.font.Font(game.font_name, size)
+	text_surface = font.render(text, True, color)
+	text_rect = text_surface.get_rect()
+	text_rect.center = (x, y)
+	# Ora va realmente a disegnare la scritta
+	game.display.blit(text_surface, text_rect)
+
 
 class Dado():
 	def __init__(self):
@@ -96,6 +108,8 @@ class CrazyGoose():
 			
 			self.valDadoCOM = "0"
 			self.valDadoPL1 = "0"
+			self.colorInfoPlayer = self.game.BLACK
+			self.colorInfoCOM = self.game.BLACK
 
 			self.buttonDadoPL1 = None
 			self.player = None
@@ -130,20 +144,16 @@ class CrazyGoose():
 			#Scrive nelle caselle il loro effetto
 		self.riempiCaselle()
 		
-		draw_text(self.game, INFO_PL1, 15, self.game.BLACK, 50, 20)
+		draw_text(self.game, INFO_PL1, 15, self.colorInfoPlayer, 50, 20, 50, 20)
 		draw_text(self.game, INFO_DADO_PL1, 14, self.game.BLACK, 55, 60)
-		self.scriviEffetti(self.player, True)
-
-
+		
 		#Il primo argomento è self xke necessita di questa classe per
 		# richiamarne il metodo "tiraDado"
 		self.buttonDadoPL1 = Button(self, self.game, 100, 43, 35, 35, self.valDadoPL1)
 		
-		draw_text(self.game, INFO_COM, 14, self.game.BLACK, 930, 20)
+		draw_text(self.game, INFO_COM, 14, self.colorInfoCOM, 930, 20)
 		draw_text(self.game, (INFO_DADO_COM+self.valDadoCOM), 14, self.game.BLACK, 917, 60)
-		self.scriviEffetti(self.com, False)
-
-
+		
 		if(self.player == None or self.player.posizione == 0):
 			#Se posizione == 0 vuol dire che è nella casella iniziale (quella "prima" del percorso)
 			self.player = Giocatore(self, self.game, self.caselle, self.percorso, "PL1")
@@ -178,47 +188,7 @@ class CrazyGoose():
 		
 		self.blit_screen()
 	
-
-	def scriviEffetti(self, player_com, isPL1):
-		if(player_com != None):
-			pxTesto = 13
-			font = pygame.font.Font(self.game.font_name, pxTesto)
-			xRect = 20
-
-			if(player_com.ultimoMsg != ""):
-				dimTesto = font.size(player_com.ultimoMsg)
-				if(not isPL1):
-					xRect = self.game.DISPLAY_W - 20 - dimTesto[0]
-
-				yRect = 90
-				#3.5px distanza dal bordo dx e sx del rettangolo
-				xText = xRect+(dimTesto[0])/2 +3.5
-				#(i "/2" xkè scriverò il testo CENTRATO, quindi mi servono le x e y CENTRALI)
-				#1px distanza dal bordo sup. e inf. del rettangolo
-				yText = yRect+(dimTesto[1]/2) +1
-
-				#dimTesto[0]+7  = larghezza del testo più distanza dal bordo a dx + sx
-				#dimTesto[0]+2  = larghezza del testo più distanza dal bordo in alto + in basso
-				pygame.draw.rect(self.game.display, self.game.BLACK, pygame.Rect(xRect, yRect, dimTesto[0]+7, dimTesto[1]+2), 1)
-				draw_text(self.game, player_com.ultimoMsg, pxTesto, self.game.BLACK, xText, yText)
-
-				if(player_com.penultimoMsg != ""):
-					dimTesto = font.size(player_com.penultimoMsg)
-					if(not isPL1):
-						xRect = self.game.DISPLAY_W - 20 - dimTesto[0]
-
-					yRect += (dimTesto[1]+2+1)
-					#3.5px distanza dal bordo dx e sx del rettangolo
-					xText = xRect+(dimTesto[0])/2 +3.5
-					#(i "/2" xkè scriverò il testo CENTRATO, quindi mi servono le x e y CENTRALI)
-					#1px distanza dal bordo sup. e inf. del rettangolo
-					yText = yRect+(dimTesto[1]/2) +1
-					
-					pygame.draw.rect(self.game.display, self.game.BLACK, pygame.Rect(xRect, yRect, dimTesto[0]+7, dimTesto[1]+2), 1)
-				
-					draw_text(self.game, player_com.penultimoMsg, pxTesto, self.game.BLACK, xText, yText)
 		
-
 	def tiraDado(self):
 			#Se la partita è terminata "blocca" la funzionalità del dado
 		if(not self.partitaTerminata):
@@ -233,7 +203,7 @@ class CrazyGoose():
 	def toccaAlCOM(self, numEstratto=-1):
 		#Se il num del dado non viene passato viene settato a -1 e allora lancia il dado
 		if(numEstratto == -1):
-			numEstratto = Dado().tiraDado()
+			numEstratto = 40#Dado().tiraDado()
 		
 		#Non voglio bloccare il PL1 per 2 secondi, quindi se il COM ha un fermo non
 		# faccio la sleep di 2 sec (dopo aver decrementato il fermo lancia il metodo
@@ -338,22 +308,20 @@ class CrazyGoose():
 
 
 	def segnalaChiTocca(self, turnoPlayer1):
-		#TODO ottimizzare, fa la stessa cosa, basta mettere var 1 o -1
 		if(turnoPlayer1):
 			pygame.draw.rect(self.game.display, self.game.RED, pygame.Rect(15, 10, 70, 20), 1)
 			
 			#se < 0 NON LO DISEGNA, se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO
-			pygame.draw.rect(self.game.display, self.game.RED, pygame.Rect(867, 10, 125, 20), -1)
+			pygame.draw.rect(self.game.display, (255,0,0), pygame.Rect(867, 10, 125, 20), -1)
 		else:	
 			#se < 0 NON LO DISEGNA, se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO
-			pygame.draw.rect(self.game.display, self.game.RED, pygame.Rect(15, 10, 70, 20), -1)
+			pygame.draw.rect(self.game.display, (255,0,0,0), pygame.Rect(15, 10, 70, 20), -1)
 
 			pygame.draw.rect(self.game.display, self.game.RED, pygame.Rect(867, 10, 125, 20), 1)
 
 		self.blit_screen()
 
 	def segnalaVincitore(self, haVintoPlayer1):
-		time.sleep(1)
 		if(haVintoPlayer1):
 			# print("HA VINTO e sono in PLAYER  !!!")
 			self.game.gameWin()

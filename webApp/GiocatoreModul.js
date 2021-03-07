@@ -22,6 +22,9 @@ class Giocatore {
         this.turniFermo = 0
         this.vincitore = false
 
+        this.penultimoMsg = ""
+        this.ultimoMsg = ""
+
         this.creaCasellaIniziale()
     }
 
@@ -49,12 +52,21 @@ class Giocatore {
             //aggiorno la posizione
             this.posizione += spostamento
             try {
-                //prendo il codice della casella in cui si trova il giocatore 
+                this.controllato = false
+                    //prendo il codice della casella in cui si trova il giocatore 
                 let codCasella = this.percorso.dictCaselle[this.posizione]
+                    //La pedina si muoverà (prima di un eventuale nuovo spostamento)
                 this.crazyGoose.disegnaTutto()
-                    /*Controlla l'effetto contenuto nella casella. Lo fa dopo un attimo (mezzo sec) così che l'utente possa "capire cosa sta succedendo" e non veda la pedina andare 8 posizioni avanti xke ha tirato 4 e ha preso "avanti di 4" 
-                    (In questo modo si ferma un attimo sulla casella del "+4" e POI avanza)*/
-                setTimeout(() => { this.controllaCodiceCasella(codCasella) }, 500)
+
+                //Controlla l'effetto contenuto nella casella.
+                this.controllaCodiceCasella(codCasella)
+                    /*DA TROVARE UN MODO xke non funzia:
+                     Lo fa dopo un attimo (mezzo sec) così che l'utente possa "capire cosa sta succedendo" e non veda la pedina andare 8 posizioni avanti xke ha tirato 4 e ha preso "avanti di 4" 
+                        (In questo modo si ferma un attimo sulla casella del "+4" e POI avanza)*/
+                    //setTimeout(() => { this.controllaCodiceCasella(codCasella) }, 500)
+                    /*!!! HO DOVUTO COMMENTARLA xke nel mentre che passano i 500ms l'esecuzione del programma VA 
+                        AVANTI, NON SI FERMA ! E quindi si sballano i turni (magari è caduto su tira di nuovo ma il 
+                        programma andrà avanti e farà giocare l'avversario )*/
             } catch (err) {
                 //Non ha trovato quella posizione nel dizionario, perciò dev'essere una casella VUOTA
                 this.crazyGoose.disegnaTutto()
@@ -94,7 +106,7 @@ class Giocatore {
         	giocatore finisce sulla casella TIRA_DI_NUOVO*/
         this.turnoMio = false
         this.posiziona(spostamento)
-
+        while (this.controllato == false) {}
         //Ritorna indietro il flag, in questo modo si saprà a chi toccherà
         return this.turnoMio
     }
@@ -108,57 +120,56 @@ class Giocatore {
          su una casella che fa muovere il giocatore ==> richiamo di nuovo il "this.posiziona()"
         */
 
-        //TODO!!!PRINT DI CONTROLLO DA SOSTITUIRE CON AVVISO AL GIOCATORE OPPURE TOGLIERE PROPRIO
         let spostamento = 0
+        let msg = ""
 
         if (codCasella == TIRA_DI_NUOVO[0]) {
-            console.log("TIRA ANCORA IL DADO " + this.tag)
+            msg = "TIRA ANCORA IL DADO"
             this.turnoMio = true
 
         } else if (codCasella == INDIETRO_DI_UNO[0]) {
-
+            msg = "INDIETRO DI UNA CASELLA"
             spostamento = -1
-            console.log("INDIETRO DI UNA CASELLA " + this.tag)
 
         } else if (codCasella == INDIETRO_DI_TRE[0]) {
-
+            msg = "INDIETRO DI TRE CASELLE"
             spostamento = -3
-            console.log("INDIETRO DI TRE CASELLA " + this.tag)
 
         } else if (codCasella == AVANTI_DI_UNO[0]) {
-
+            msg = "AVANTI DI UNA CASELLA"
             spostamento = 1
-            console.log("AVANTI DI UNA CASELLA " + this.tag)
 
         } else if (codCasella == AVANTI_DI_QUATTRO[0]) {
-
+            msg = "AVANTI DI QUATTRO CASELLE"
             spostamento = 4
-            console.log("AVANTI DI QUATTRO CASELLE " + this.tag)
 
         } else if (codCasella == FERMO_DA_UNO[0]) {
-
-            console.log("STATTE FERMO PER UN GIRO " + this.tag)
+            msg = "FERMO PER UN GIRO"
             this.turniFermo = 1
 
         } else if (codCasella == FERMO_DA_DUE[0]) {
-
-            console.log("STATTE FERMO PER DUE GIRI " + this.tag)
+            msg = "FERMO PER DUE GIRI"
             this.turniFermo = 2
 
         } else if (codCasella == TORNA_ALL_INIZIO) {
-            console.log(this.tag + " TORNA DA CAPO !!!")
-
-            // Lo fa ritornare alla 1° casella# Dalla posizione == 39 va alla 1° == > si muove di 38 posizioni indietro
+            msg = "RICOMINCIA DA CAPO !!!"
+                // Lo fa ritornare alla 1° casella# Dalla posizione == 39 va alla 1° == > si muove di 38 posizioni indietro
             this.posiziona(-(this.posizione - 1))
-
         } else if (codCasella == VITTORIA) {
-            console.log("HAI VINTO " + this.tag + " !!!")
             this.vincitore = true
+        }
+
+        if (msg != "") {
+            this.penultimoMsg = this.ultimoMsg
+            this.ultimoMsg = msg
+
+            //per mostrare i msg
+            this.crazyGoose.disegnaTutto()
         }
 
         if (spostamento != 0) {
             this.posiziona(spostamento)
-        }
+        } else { this.controllato = true }
     }
 
 }

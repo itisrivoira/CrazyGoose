@@ -1,5 +1,4 @@
 import pygame
-from globalFunction import *
 
 class Menu():
     def __init__(self, game):
@@ -12,7 +11,7 @@ class Menu():
 
     #disegna il cursore quindi se bisogna modificarlo si fa qua
     def draw_cursor(self):
-        draw_text(self.game, "*", 30, self.game.WHITE, self.cursor_rect.x, self.cursor_rect.y)
+        self.game.draw_text("*", 30, self.cursor_rect.x, self.cursor_rect.y)
 
     #sovrappone, cioè disegna tutto ciò che c'è da disegnare
     # (a partire dall'angolo in alto a sx, coord. x=0, y=0)
@@ -45,11 +44,11 @@ class MainMenu(Menu):
             self.check_input()
             #Rimpe tutto lo schemo di Azzurro (sovvrascrivendo tutto ciò che c'era di disegnato prima)
             self.game.display.fill(self.game.AZZURRO)
-            draw_text(self.game, 'CRAZY GOOSE', 70, self.game.WHITE, self.game.DISPLAY_W/2, self.game.DISPLAY_H/2 - 200)
-            draw_text(self.game, "Start Game", 30, self.game.WHITE, self.startx, self.starty)
-            draw_text(self.game, "Options", 30, self.game.WHITE, self.optionsx, self.optionsy)
-            draw_text(self.game, "Credits", 30, self.game.WHITE, self.creditsx, self.creditsy)
-            draw_text(self.game, "Quit", 30, self.game.WHITE, self.quitx, self.quity)
+            self.game.draw_text('CRAZY GOOSE', 70, self.game.DISPLAY_W/2, self.game.DISPLAY_H/2 - 200)
+            self.game.draw_text("Start Game", 30, self.startx, self.starty)
+            self.game.draw_text("Options", 30, self.optionsx, self.optionsy)
+            self.game.draw_text("Credits", 30, self.creditsx, self.creditsy)
+            self.game.draw_text("Quit", 30, self.quitx, self.quity)
             self.draw_cursor()
             self.blit_screen()
 
@@ -124,11 +123,11 @@ class OptionsMenu(Menu):
                 self.game.curr_menu = self.game.main_menu
                 self.run_display = False
             self.game.display.fill((self.game.AZZURRO))
-            draw_text(self.game, 'Options', 50, self.game.WHITE, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 150)
-            #draw_text(self.game, "Volume", 30, self.volx, self.voly - 50)
-            #draw_text(self.game, "Controls", 30, self.controlsx, self.controlsy)
+            self.game.draw_text('Options', 50, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 150)
+            #self.game.draw_text("Volume", 30, self.volx, self.voly - 50)
+            #self.game.draw_text("Controls", 30, self.controlsx, self.controlsy)
             #self.draw_cursor()
-            draw_text(self.game, "Future Release", 30, self.game.WHITE, self.volx, self.voly)
+            self.game.draw_text("Future Release", 30, self.volx, self.voly)
             self.blit_screen()
 
 
@@ -162,12 +161,12 @@ class CreditsMenu(Menu):
                 self.game.curr_menu = self.game.main_menu
                 self.run_display = False
             self.game.display.fill(self.game.AZZURRO)
-            draw_text(self.game, 'Credits', 50, self.game.WHITE, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 180)
-            draw_text(self.game, 'Made by Crazy Goose Team:', 30, self.game.WHITE, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 120)
-            draw_text(self.game, 'Bellone Giulio', 30, self.game.WHITE, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 -30)
-            draw_text(self.game, 'Calzia Mattia', 30, self.game.WHITE, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +20)
-            draw_text(self.game, 'Dastrù Alessandro', 30, self.game.WHITE, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +70)
-            draw_text(self.game, 'Durante Andrea', 30, self.game.WHITE, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +120)
-            draw_text(self.game, 'Hila Kledi', 30, self.game.WHITE, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +170)
-            draw_text(self.game, 'Hu Qiyan', 30, self.game.WHITE, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +220)
+            self.game.draw_text('Credits', 50, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 180)
+            self.game.draw_text('Made by Crazy Goose Team:', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 120)
+            self.game.draw_text('Bellone Giulio', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 -30)
+            self.game.draw_text('Calzia Mattia', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +20)
+            self.game.draw_text('Dastrù Alessandro', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +70)
+            self.game.draw_text('Durante Andrea', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +120)
+            self.game.draw_text('Hila Kledi', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +170)
+            self.game.draw_text('Hu Qiyan', 30, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 +220)
             self.blit_screen()

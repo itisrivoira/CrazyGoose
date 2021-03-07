@@ -1,7 +1,6 @@
 import pygame
 from menu import *
 from crazyGoose import *
-from globalFunction import *
 
 class Game():
     def __init__(self):
@@ -112,16 +111,24 @@ class Game():
             per tornare al menu
         """
         self.display.fill(self.AZZURRO)
-        draw_text(self, "HAI VINTO", 50, self.WHITE, self.DISPLAY_W / 2, self.DISPLAY_H / 2 - 200)
-        draw_text(self, "Premi ESC per rigiocare", 30, self.WHITE, self.DISPLAY_W / 2, self.DISPLAY_H / 2)
+        self.draw_text("HAI VINTO", 50, self.DISPLAY_W / 2, self.DISPLAY_H / 2 - 200)
+        self.draw_text("Premi ESC per rigiocare", 30, self.DISPLAY_W / 2, self.DISPLAY_H / 2)
         self.main_menu.blit_screen()
 
     def gameOver(self):
         self.running = False
         self.display.fill(self.AZZURRO)
-        draw_text(self, "HAI PERSO", 50, self.WHITE, self.DISPLAY_W / 2, self.DISPLAY_H / 2 - 200)
-        draw_text(self, "Premi ESC per riprovare", 30, self.WHITE, self.DISPLAY_W / 2, self.DISPLAY_H / 2)
+        self.draw_text("HAI PERSO", 50, self.DISPLAY_W / 2, self.DISPLAY_H / 2 - 200)
+        self.draw_text("Premi ESC per riprovare", 30, self.DISPLAY_W / 2, self.DISPLAY_H / 2)
         self.main_menu.blit_screen()
     #resetta a false i 4 tasti UP, DOWN, START(INVIO), BACK(TORNA INDIETRO)
     def reset_keys(self):
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
+
+    #Metodo usato dai vari menu per scrivere il testo
+    def draw_text(self, text, size, x, y):
+        font = pygame.font.Font(self.font_name,size)
+        text_surface = font.render(text, True, self.WHITE)
+        text_rect = text_surface.get_rect()
+        text_rect.center = (x,y)
+        self.display.blit(text_surface,text_rect)

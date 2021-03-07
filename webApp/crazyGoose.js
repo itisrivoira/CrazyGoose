@@ -101,7 +101,6 @@ class CrazyGoose {
     }
 
     disegnaTutto() {
-        console.log("disegna");
         /*"ripulisce" tutto.
 			  Purtroppo pygame funziona in questo modo, non posso "spostare" un elemento
 			  posso solo ripartire da foglio bianco a disegnare*/
@@ -117,6 +116,7 @@ class CrazyGoose {
 
         draw_text(this.ctx, INFO_PL1, 15, "#000000", 50, 20)
         draw_text(this.ctx, INFO_DADO_PL1, 14, "#000000", 55, 60)
+        this.scriviEffetti(this.player, true)
 
         //Il primo argomento è this xke necessita di questa classe per
         // richiamarne il metodo "tiraDado"
@@ -124,6 +124,7 @@ class CrazyGoose {
 
         draw_text(this.ctx, INFO_COM, 14, "#000000", 930, 20)
         draw_text(this.ctx, (INFO_DADO_COM + this.valDadoCOM), 14, "#000000", 917, 60)
+        this.scriviEffetti(this.com, false)
 
         if (this.player == null || this.player.posizione == 0) {
             //Se posizione == 0 vuol dire che è nella casella iniziale (quella "prima" del percorso)
@@ -159,6 +160,58 @@ class CrazyGoose {
                 this.toccaAlCOM()
 
                 this.segnalaChiTocca(false)
+            }
+        }
+    }
+
+    scriviEffetti(player_com, isPL1) {
+        if (player_com != null) {
+            let pxTesto = 13
+            let heightOfText = 13
+            let xRect = 20
+
+            if (player_com.ultimoMsg != "") {
+                //l'oggetto che ritorna, tra le altre cose, contiene la larghezza del testo NON L'ALTEZZA
+                let dimTesto = this.ctx.measureText(player_com.ultimoMsg)
+                if (!isPL1) {
+                    xRect = this.canvas.width - 20 - dimTesto.width
+                }
+
+                let yRect = 90
+                    //3.5px distanza dal bordo dx e sx del rettangolo
+                let xText = xRect + (dimTesto.width / 2) + 3.5
+                    //(i "/2" xkè scriverò il testo CENTRATO, quindi mi servono le x e y CENTRALI)
+                    //1px distanza dal bordo sup. e inf. del rettangolo
+                let yText = yRect + (heightOfText / 2) + 1
+
+                this.ctx.beginPath()
+                    //dimTesto[0]+7  = larghezza del testo più distanza dal bordo a dx + sx
+                    //dimTesto[0]+2  = larghezza del testo più distanza dal bordo in alto + in basso
+                this.ctx.rect(xRect, yRect, (dimTesto.width + 7), heightOfText + 2)
+                this.ctx.stroke()
+
+                draw_text(this.ctx, player_com.ultimoMsg, pxTesto, "#000000", xText, yText)
+
+                if (player_com.penultimoMsg != "") {
+                    dimTesto = this.ctx.measureText(player_com.penultimoMsg)
+                    if (!isPL1) {
+                        xRect = this.canvas.width - 20 - dimTesto.width
+                    }
+
+                    yRect += heightOfText + 2 + 2
+                        //3.5px distanza dal bordo dx e sx del rettangolo
+                    xText = xRect + (dimTesto.width) / 2 + 3.5
+                        //(i "/2" xkè scriverò il testo CENTRATO, quindi mi servono le x e y CENTRALI) 
+                        //1px distanza dal bordo sup. e inf. del rettangolo
+                    yText = yRect + heightOfText / 2 + 1
+
+                    this.ctx.beginPath()
+                        //dimTesto[0]+7  = larghezza del testo più distanza dal bordo a dx + sx
+                    this.ctx.rect(xRect, yRect, (dimTesto.width + 7), heightOfText + 2)
+                    this.ctx.stroke()
+
+                    draw_text(this.ctx, player_com.penultimoMsg, pxTesto, "#000000", xText, yText)
+                }
             }
         }
     }
@@ -271,9 +324,8 @@ class CrazyGoose {
 
             let toccaAncoraA_Me = this.com.avanza(numEstratto)
 
-            this.player.turnoMio = !toccaAncoraA_Me
             if (!this.com.vincitore) {
-
+                this.player.turnoMio = !toccaAncoraA_Me
                 if (this.com.turniFermo > 0) {
                     this.player.turniFermo = 0
                     this.segnalaChiTocca(true)
