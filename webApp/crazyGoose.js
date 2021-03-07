@@ -471,7 +471,7 @@ let canvas = document.getElementById("canvas")
 var ctx = canvas.getContext("2d")
 
 canvas.width = 1000
-canvas.height = 650
+canvas.height = window.innerHeight
 
 let gioco = new CrazyGoose(ctx, canvas, null)
 gioco.start()
