@@ -1,5 +1,5 @@
 .container-fluid {
-    background-color: rgb(223, 95, 255);
+    background-color: rgb(91, 58, 142);
 }
 
 #corpoCentrale {
@@ -58,6 +58,7 @@
     color: gold;
     background-image: url(../img/ocagialla.png);
 }
+
 .cardBackOcaGialla {
     background-image: url(../img/ocagialla.png);
 }
@@ -66,6 +67,7 @@
     color: blue;
     background-image: url(../img/ocablu.png);
 }
+
 .cardBackOcaBlu {
     background-color: blue;
     background-image: url(../img/ocablu.png);
@@ -75,6 +77,7 @@
     color: green;
     background-image: url(../img/ocaverde.png);
 }
+
 .cardBackOcaVerde {
     background-color: green;
     background-image: url(../img/ocaverde.png);
@@ -84,6 +87,7 @@
     background-image: url(../img/ocarossa.png);
     color: rgb(172, 5, 5);
 }
+
 .cardBackOcaRossa {
     background-color: red;
     background-image: url(../img/ocarossa.png);
@@ -171,7 +175,7 @@
 
 #miniBar {
     float: left;
-    color: #ce22bf;
+    color: rgb(91, 58, 142);
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
@@ -179,7 +183,7 @@
 }
 
 #miniBar {
-    background-color: rgb(231, 31, 238);
+    background-color: rgb(91, 58, 142);
     color: black;
 }
 
