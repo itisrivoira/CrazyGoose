@@ -4,10 +4,6 @@ const X_PLAYER2 = 45
 const Y_PLAYER1 = 540
 const Y_PLAYER2 = 605
 
-/*Metodo per disegnare testo (per scrivere) con un
- determinato font, dimensione e colore, il tutto
- centrato in un rettangolo alle coordinate passate*/
-
 class Giocatore {
     constructor(crazyGoose, ctx, caselle, percorso, tag) {
         //Mi serve per lanciare un suo metodo
@@ -55,18 +51,23 @@ class Giocatore {
                 this.controllato = false
                     //prendo il codice della casella in cui si trova il giocatore 
                 let codCasella = this.percorso.dictCaselle[this.posizione]
-                    //La pedina si muoverà (prima di un eventuale nuovo spostamento)
+                    //La pedina si muove nella casella (che in questo caso avrà un effetto)
                 this.crazyGoose.disegnaTutto()
+
+                /*Qui ci andrebbe un FERMO per POCHISSIMO (cos' da fermare la pedina sulla casella con
+                    l'effetto per un attimo e "far capire all'utente cosa sta succedendo").*/
 
                 //Controlla l'effetto contenuto nella casella.
                 this.controllaCodiceCasella(codCasella)
-                    /*DA TROVARE UN MODO xke non funzia:
-                     Lo fa dopo un attimo (mezzo sec) così che l'utente possa "capire cosa sta succedendo" e non veda la pedina andare 8 posizioni avanti xke ha tirato 4 e ha preso "avanti di 4" 
-                        (In questo modo si ferma un attimo sulla casella del "+4" e POI avanza)*/
-                    //setTimeout(() => { this.controllaCodiceCasella(codCasella) }, 500)
-                    /*!!! HO DOVUTO COMMENTARLA xke nel mentre che passano i 500ms l'esecuzione del programma VA 
-                        AVANTI, NON SI FERMA ! E quindi si sballano i turni (magari è caduto su tira di nuovo ma il 
-                        programma andrà avanti e farà giocare l'avversario )*/
+
+                /*Riferito a prima: TODO TROVARE UN MODO XKE QUESTI NON FUNZIONANO:
+                
+                    1) setTimeout(() => { this.controllaCodiceCasella(codCasella) }, 500)
+                     funziona ma NON FERMA l'esecuzione del programma ! (i turni si sballano)
+                    2)let prima = new Date().getTime(); while(new Date().getTime() < prima+2000){}
+                     funzionerebbe se non fosse che gira TROPPO VELOCE, TROPPE VOLTE e il browser lo ferma
+                */
+
             } catch (err) {
                 //Non ha trovato quella posizione nel dizionario, perciò dev'essere una casella VUOTA
                 this.crazyGoose.disegnaTutto()
@@ -87,6 +88,7 @@ class Giocatore {
             let x = this.caselle[this.posizione - 1].getCenterX()
             let y = this.caselle[this.posizione - 1].getCenterY()
 
+            //Se sono nella stessa casella devono distanziarsi un minimo tra loro
             if (posAvvessario == this.posizione) {
                 if (this.tag == "PL1") {
                     //più in alto
@@ -153,7 +155,7 @@ class Giocatore {
 
         } else if (codCasella == TORNA_ALL_INIZIO) {
             msg = "RICOMINCIA DA CAPO !!!"
-                // Lo fa ritornare alla 1° casella# Dalla posizione == 39 va alla 1° == > si muove di 38 posizioni indietro
+                // Lo fa ritornare alla 1° casella. Dalla posizione 39 va alla 1° ==> si muove di 38 posizioni indietro
             this.posiziona(-(this.posizione - 1))
         } else if (codCasella == VITTORIA) {
             this.vincitore = true

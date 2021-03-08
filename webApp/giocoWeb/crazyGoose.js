@@ -10,13 +10,12 @@ class Dado {
     }
 }
 
-/*Non essendoci un widget/view Button neanche nel canvas ho dovuto "crearlo".
+/* Non essendoci un widget/view Button neanche nel canvas ho dovuto "crearlo".
 	Questo Button non è altro che un rettangolo
-	con il testo centrato all'interno
-*/
+	con il testo centrato all'interno */
 class Button {
-    constructor(ctx, crazyGoose, x, y, width, height, text) {
-        this.ctx = ctx
+    constructor(crazyGoose, x, y, width, height, text) {
+        this.ctx = crazyGoose.ctx
         this.crazyGoose = crazyGoose
         this.x = x
         this.y = y
@@ -42,7 +41,7 @@ class Button {
     detectMouseOver(mouse) {
         if (mouse[0] > this.x && mouse[0] < this.x + this.width &&
             mouse[1] > this.y && mouse[1] < this.y + this.height) {
-            //codice per "evidenziare" il rettangolo
+            //TODO codice per "evidenziare" il rettangolo
             // (per far capire all'utente che ci sta passando sopra)
         }
     }
@@ -101,14 +100,13 @@ class CrazyGoose {
 
     disegnaTutto() {
         /*"ripulisce" tutto.
-			  Purtroppo pygame funziona in questo modo, non posso "spostare" un elemento
-			  posso solo ripartire da foglio bianco a disegnare*/
+			Purtroppo anche nel canvas funziona in questo modo, non posso "spostare" un elemento
+			posso solo ripartire da foglio bianco a disegnare*/
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-            /*this.ctx.beginPath()
-            this.ctx.rect(0, 0, this.canvas.width, this.canvas.height)
-            this.ctx.stroke()*/
+
         let flagPrimoGiro = (this.player == null && this.com == null)
-            //Riempe la lista di caselle, cioè "disegna" gli ellissi.
+
+        //Riempe la lista di caselle, cioè "disegna" gli ellissi.
         this.posizionaLeCaselle()
             //Scrive nelle caselle il loro effetto
         this.riempiCaselle()
@@ -119,7 +117,7 @@ class CrazyGoose {
 
         //Il primo argomento è this xke necessita di questa classe per
         // richiamarne il metodo "tiraDado"
-        this.buttonDadoPL1 = new Button(this.ctx, this, 100, 42, 35, 35, this.valDadoPL1)
+        this.buttonDadoPL1 = new Button(this, 100, 42, 35, 35, this.valDadoPL1)
 
         draw_text(this.ctx, INFO_COM, 14, "#000000", 930, 20)
         draw_text(this.ctx, (INFO_DADO_COM + this.valDadoCOM), 14, "#000000", 917, 60)
@@ -142,7 +140,7 @@ class CrazyGoose {
         if (flagPrimoGiro == true) {
             // Decide chi incomincia, tira il dado e vede se il numero tirato è pari o dispari
             // (tra 1 e 6 ci sono 3 pari e 3 dispari, perciò 50% possbilità a testa)
-            let random = 3 //(new Dado()).tiraDado()
+            let random = (new Dado()).tiraDado()
             if (random % 2 == 0) {
                 this.player.turnoMio = true
                 this.com.turnoMio = false
@@ -151,10 +149,6 @@ class CrazyGoose {
             } else {
                 this.player.turnoMio = false
                 this.com.turnoMio = true
-
-                //Fa giocare il COM. Aspetterà 2 sec e lancierà il dado....
-                // il tutto in un altro thread (altro processo) xkè sennò
-                // si bloccherebbe TUTTO per 2 secondi (a causa della sleep di 2 sec)
 
                 this.toccaAlCOM()
 
@@ -172,6 +166,8 @@ class CrazyGoose {
     scriviEffetti(player_com, isPL1) {
         if (player_com != null) {
             let pxTesto = 13
+                /*NON HO MODO DI PRENDERE L'ALTEZZA !!! Con vari tentativi ho notato che 13px era 
+                    l'altezza giusta. È SOLO UNA CONCIDENZA CHE I PX DEL FONT SIANO ANCHE 13, L'ALTEZZA NON È CORRELATA A QUELLO !!!! */
             let heightOfText = 13
             let xRect = 20
 
@@ -222,7 +218,7 @@ class CrazyGoose {
     }
 
     tiraDado() {
-        //Se la partita è terminata "blocca" la funzionalità del dado
+        //Se la partita è terminata "blocca" la funzionalità del dado (anche se in realtà non serve xke non dovrebbe più vederlo il dado, e quindi cliccarlo)
         if (!this.partitaTerminata) {
             let numEstratto = (new Dado()).tiraDado()
 
@@ -246,7 +242,7 @@ class CrazyGoose {
         // faccio la sleep di 2 sec (dopo aver decrementato il fermo lancia il metodo
         // per far avanzare PL1)
         if (this.com.turniFermo == 0) {
-            //dopo 2000ms (2sec) entra nella funzine, che a sua volta lancia la funzione avanzaCOM
+            //dopo 2000ms (2sec) entra nella funzione, che a sua volta lancia la funzione avanzaCOM
             this.timeoutCOM = setTimeout(() => { this.avanzaCOM(numEstratto) }, 2000)
         } else {
             this.avanzaCOM(numEstratto)
@@ -264,10 +260,10 @@ class CrazyGoose {
 
             this.segnalaChiTocca(false)
 
-            this.toccaAlCOM()
+            this.toccaAlCOM(numEstratto)
         } else {
-            //(La prossima volta che verrà richiamato "disegnaTutto" il numero
-            // del dado sarà cambiato)
+            /*(La prossima volta che verrà richiamato "disegnaTutto" il numero
+                del dado sarà cambiato) */
             this.valDadoPL1 = numEstratto
 
             let toccaAncoraA_Me = this.player.avanza(numEstratto)
@@ -358,7 +354,8 @@ class CrazyGoose {
         let colorPL1 = ""
         let colorCOM = ""
 
-        //Il colore è formato da R G B A dove la A è la trasparenza (0 "completamente trasparente" 255 "completamente visibile")
+        /*Il colore è formato da R G B A dove la A è la trasparenza (0 "completamente trasparente" 255 
+            "completamente visibile")*/
         if (turnoPlayer1) {
             colorPL1 = "#ff0000ff"
             colorCOM = "#ff000000"
@@ -398,6 +395,7 @@ class CrazyGoose {
         } else {
             msg = "HAI PERSO"
         }
+
         draw_text(this.ctx, msg, 50, "#ffffff", this.canvas.width / 2, this.canvas.height / 2 - 200, "helvetica", "bold")
         draw_text(this.ctx, "Premi ESC per rigiocare", 30, "#ffffff", this.canvas.width / 2, this.canvas.height / 2, "helvetica", "bold")
     }
@@ -412,7 +410,8 @@ class CrazyGoose {
             let casella = this.caselle[i - 1]
             try {
                 casella.settaEffetto(this.percorso.dictCaselle[i])
-            } catch (err) { //chiave inesistente (cioè posizione VUOTA)
+            } catch (err) {
+                //chiave inesistente (cioè posizione VUOTA)
                 casella.settaEffetto(-1)
             }
         }
@@ -472,24 +471,6 @@ class CrazyGoose {
 
 }
 
-function creaGioco(ctx, canvas, crazyGoose) {
-    crazyGoose.start()
-
-    //Aggiungo l'ascoltatore del click del mouse all'oggetto canvas (non potevo farlo nel file html xke mi serve l'oggetto gioco per lanciare un suo metodo)
-    canvas.addEventListener("mousedown", (event) => {
-
-        //cliccato col tasto sx del mouse (se == 1 tasto centrale, se == 2 tasto dx)
-        if (event.button == 0) {
-
-            /*Con event.offsetX prendo le coord. X RISPETTO l'oggetto su cui c'è l'ascoltatore 
-            (quindi non considera tutto quello spazio bianco, non occupato dal canvas)
-            event.offsetY / event.clientY mi restituivano non so xke un valore TROPPO basso rispetto quello che mi aspettavo. Con event.pageY prendo le coord. Y RISPETTO la posizione nella PAGINA*/
-            let posMouse = new Array(event.offsetX, event.pageY)
-            crazyGoose.mousePremuto(posMouse)
-        }
-    })
-}
-
 let canvas = document.getElementById("canvas")
 var ctx = canvas.getContext("2d")
 
@@ -517,6 +498,6 @@ canvas.addEventListener("mousedown", (event) => {
 window.addEventListener("keydown", (event) => {
     if (event.key == "Escape") {
         gioco.stopCOM()
-        window.location = "./index.html"
+        window.location = "../html/index.html"
     }
 })

@@ -6,6 +6,7 @@ class Casella {
         this.width = raggioMaggiore * 2
         this.height = raggioMinore * 2
 
+        //Disegna l'ellisse con CENTRO alle X e Y DATE
         this.ctx.beginPath()
         this.ctx.ellipse(x, y, raggioMaggiore, raggioMinore, rotazione, angoloInizio, angoloFine)
         this.ctx.stroke()
@@ -39,7 +40,7 @@ class Casella {
             //CON il CANVAS NON SI POSSONO SCRIVERE STRINGHE CON DEGLI A CAPO
             // BISOGNA SPEZZARE E FARE PIÙ "AREE DI TESTO"
             let text = testo.split("\n")
-                //N.B. SONO SICURO CHE text AVRÀ SOLO 2 RIGHE XKÈ SO COSA PUç CONTENERE "testo"
+                //N.B. SONO SICURO CHE text AVRÀ SOLO 2 RIGHE XKÈ HO DECISO IO COSA AVRA' "testo"
                 // QUINDI QUESTO NON FUNZIONA CON FRASI CON PIÙ DI 1 "\n"
 
             draw_text(this.ctx, text[0], 13, "#000000", this.getCenterX(), this.getCenterY() - 10, "Arial", "bold")
@@ -48,7 +49,9 @@ class Casella {
 
     }
 
-    //Con il canvas disegniamo l'ellise alle coordinate x|y. Al contrario di pygame l'ellisse con il canvas viene disegnato a partire dal CENTRO, quindi in pygame le coordinate x|y si riferiscono all'angolo in alto a sx dell'oggetto, qui invece si riferiscono al centro dell'ellisse 
+    /*Con il canvas disegniamo l'ellise alle coordinate x|y. Al contrario di pygame l'ellisse con il canvas 
+        viene disegnato con il CENTRO in x y, quindi in pygame le coordinate x|y si riferiscono all'angolo in alto a sx dell'oggetto, qui invece si riferiscono al centro dell'ellisse.
+     Percio' non ho bisogno di fare alcun calcolo per avere la x e y centrale */
     getCenterX() {
         return this.x
     }

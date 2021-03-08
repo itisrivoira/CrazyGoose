@@ -2,7 +2,7 @@ const QTA_CASELLE_TOTALI = 40
     //caselle con effetto randomico (NON include l'ultima e la penultima casella che sono SEMPRE UGUALI)
 const QTA_CASELLE_DINAMICHE = 22
 
-//Per ogni effetto c'è un array con due elementi{ il codice identificativo 
+//Per ogni effetto c'è un array con due elementi: il codice identificativo 
 //	e il totale di volte in cui deve apparire
 const TIRA_DI_NUOVO = [0, 4]
 const INDIETRO_DI_UNO = [1, 4]
@@ -25,16 +25,16 @@ class Percorso {
         this.dictCaselle = {}
 
         /*Cicla finchè non sono stati "piazzati " tutti gli effetti. Ad ogni giro tira a sorte
-una posizione casuale, e se non è ancora mai stata sorteggiata, tira a sorte un codice
-    (il codice dell 'effetto), e se il codice è valido, aggiunge nel dizionario un elemento
-        con chiave la posizione N della casella e come valore il codice uscito.
+            una posizione casuale, e se non è ancora mai stata sorteggiata, tira a sorte un codice
+            (il codice dell 'effetto), e se il codice è valido, aggiunge nel dizionario un elemento
+            con chiave la posizione N della casella e come valore il codice uscito.
 
-        Il codice sorteggiato può non essere valido per due motivi{
-        1 - quel determinato effetto è stato già piazzato il massimo di volte 2 - quel determinato effetto causa UN LOOP INFINITO.Dato che gli effetti vengono applicati anche quando si finisce su uno di essi a causa di un altro effetto potrebbero crearsi LOOP infiniti.Un ESEMPIO BANALE{
-        sulla casella 5 c 'è "Avanti di 1" e sulla casella 6 c'
-        è "Indietro di 1" ==
-        >
-        la pedina continuerà ad andare avanti di 1 e tornare indietro di 1 */
+        Il codice sorteggiato può non essere valido per due motivi:
+        1 - quel determinato effetto è stato già piazzato il massimo di volte
+        2 - quel determinato effetto causa UN LOOP INFINITO.Dato che gli effetti vengono applicati anche     
+         quando si finisce su uno di essi a causa di un altro effetto potrebbero crearsi LOOP infiniti.Un ESEMPIO BANALE:
+        sulla casella 5 c 'è "Avanti di 1" e sulla casella 6 c'è "Indietro di 1"
+         ==> la pedina continuerà ad andare avanti di 1 e tornare indietro di 1 */
 
         let flagTuttiEffettiSettati = false
         while (!flagTuttiEffettiSettati) {
@@ -75,8 +75,8 @@ una posizione casuale, e se non è ancora mai stata sorteggiata, tira a sorte un
                         flagEffettoNonValido = false
                     }
                 } else if (randomCodCasella == AVANTI_DI_QUATTRO[0]) {
-                    if (this.contaEffettiSettati(AVANTI_DI_QUATTRO[0]) < AVANTI_DI_QUATTRO[1]) { //intanto QTA_CASELLE_TOTALI - 1 NON PUÒ ESSERE(es.su 40 caselle NON DEVE ESSSERE la 38°)
-
+                    if (this.contaEffettiSettati(AVANTI_DI_QUATTRO[0]) < AVANTI_DI_QUATTRO[1]) {
+                        //Creerebbe un loop (perchè la vittoria vi è con un tiro perfetto)
                         if (randomPos < QTA_CASELLE_TOTALI - 2) {
                             flagEffettoNonValido = false
                         }
@@ -103,8 +103,7 @@ una posizione casuale, e se non è ancora mai stata sorteggiata, tira a sorte un
 
 
     contaEffettiSettati(codEffetto = -1) {
-        //Prende i valori del dizionario e usa il metodo ".count" delle liste
-        // per contare le occorenze di un certo valore
+        //Prende i valori del dizionario conta le occorenze di un certo valore
         let values = Object.values(this.dictCaselle)
         let tot = 0
         if (codEffetto == -1) {
@@ -152,7 +151,6 @@ una posizione casuale, e se non è ancora mai stata sorteggiata, tira a sorte un
 
     controllaLoop(codCasella, posizione) {
         let loopTrovato = false
-            //"not this.dictCaselle.get(posizione-1) == None" (non funzia se non lo metto)
         if (codCasella == INDIETRO_DI_TRE[0]) {
             /*Esempio: casella 2 c'è "Avanti di 4" ==> il giocatore finirà sulla casella 6
 						e su questa vi è "Indietro di 1" ==> il giocatore finirà sulla

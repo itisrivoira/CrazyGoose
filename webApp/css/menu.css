@@ -1,8 +1,9 @@
 /*Proprietà CSS usati anche in altri file*/
 
-#perimetroGioco {
+#areaMenu {
     width: 1000px;
-    height: 690px;
+    height: 100vh;
+    /*100%*/
     border: 1px solid rgb(0, 127, 255);
     background: rgb(0, 127, 255);
     display: block;
@@ -10,8 +11,9 @@
     margin-right: auto;
 }
 
-#distanzaTitolo {
+#divTitolo {
     margin-top: 30px;
     text-align: center;
     border: 1px solid rgb(0, 127, 255);
+    height: 100px;
 }

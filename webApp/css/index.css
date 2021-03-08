@@ -1,7 +1,3 @@
-.link {
-    text-decoration: none;
-}
-
 #perimetroGioco {
     width: 1000px;
     height: 690px;
@@ -12,30 +8,34 @@
     margin-right: auto;
 }
 
-#distanzaTitolo {
+#divTitolo {
     margin-top: 30px;
     text-align: center;
     border: 1px solid rgb(0, 127, 255);
 }
 
-#distStart {
+#divStart {
     margin-left: 422px;
-    margin-top: 75px;
+    margin-top: 95px;
     border: 1px solid rgb(0, 127, 255);
 }
 
-#distOptions {
+#divOptions {
     margin-left: 422px;
     padding-left: 20px;
-    margin-top: 10px;
+    margin-top: 40px;
     border: 1px solid rgb(0, 127, 255);
 }
 
-#distCredits {
+#divCredits {
     margin-left: 422px;
-    margin-top: 10px;
+    margin-top: 40px;
     padding-left: 26px;
     border: 1px solid rgb(0, 127, 255);
+}
+
+.link {
+    text-decoration: none;
 }
 
 #titolo {
@@ -47,53 +47,42 @@
     font-family: Helvetica;
 }
 
-#start_custom {
-    /*margin-left:50%;
-    margin-top: 30px;*/
+#start {
     font-size: 30px;
     padding: 1px;
     background-color: rgb(0, 127, 255);
     border: 0px;
     color: white;
-    cursor: pointer;
     /* modifico il cursore quando passa sul bottone */
+    cursor: pointer;
     outline: none;
-    /* tolgo il bordo al bottone quando viene premuto */
     font-family: 'helvetica';
+    /* trasformo il testo in grassetto */
     font-weight: bold;
-    /* trasformo il testo del bottone in grassetto */
 }
 
-#options_custom {
-    /*margin-left:400px;
-    margin-top: 30px;*/
+#options {
     font-size: 30px;
     padding: 5px;
     background-color: rgb(0, 127, 255);
     border: 0px;
     color: white;
-    cursor: pointer;
     /* modifico il cursore quando passa sul bottone */
-    outline: none;
-    /* tolgo il bordo al bottone quando viene premuto */
+    cursor: pointer;
     font-family: 'helvetica';
+    /* trasformo del bottone in grassetto */
     font-weight: bold;
-    /* trasformo il testo del bottone in grassetto */
 }
 
-#credits_custom {
-    /*margin-left:400px;
-    margin-top: 30px;*/
+#credits {
     font-size: 30px;
     padding: 5px;
     background-color: rgb(0, 127, 255);
     border: 0px;
     color: white;
-    cursor: pointer;
     /* modifico il cursore quando passa sul bottone */
-    outline: none;
-    /* tolgo il bordo al bottone quando viene premuto */
+    cursor: pointer;
     font-family: 'helvetica';
+    /* trasformo del bottone in grassetto */
     font-weight: bold;
-    /* trasformo il testo del bottone in grassetto */
 }
