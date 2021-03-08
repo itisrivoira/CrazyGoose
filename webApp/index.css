@@ -1,3 +1,7 @@
+.link {
+    text-decoration: none;
+}
+
 #perimetroGioco {
     width: 1000px;
     height: 690px;

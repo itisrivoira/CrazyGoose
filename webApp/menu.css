@@ -1,0 +1,17 @@
+/*Proprietà CSS usati anche in altri file*/
+
+#perimetroGioco {
+    width: 1000px;
+    height: 690px;
+    border: 1px solid rgb(0, 127, 255);
+    background: rgb(0, 127, 255);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#distanzaTitolo {
+    margin-top: 30px;
+    text-align: center;
+    border: 1px solid rgb(0, 127, 255);
+}

@@ -517,6 +517,6 @@ canvas.addEventListener("mousedown", (event) => {
 window.addEventListener("keydown", (event) => {
     if (event.key == "Escape") {
         gioco.stopCOM()
-        window.location = "./sceltaMenu.html"
+        window.location = "./index.html"
     }
 })

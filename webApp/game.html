@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Crazy Goose</title>
+</head>
+
+<body style="margin:0px;">
+    <center>
+        <canvas style="border:1px solid black" id="canvas"></canvas>
+    </center>
+    <!--Se in uno script X ho bisogno di importare un nuovo file js Y basta che importi qui Y PRIMA di X -->
+    <script>
+        //Funzione usata in tutti i file
+        function draw_text(ctx, text, size, color, x, y, font = "Sans-serif", weight = "normal") {
+            ctx.font = weight + " " + size.toString() + "px " + font;
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.fillStyle = color
+            ctx.fillText(text, x, y);
+        }
+    </script>
+    <script src="./percorsoModul.js "></script>
+    <script src="./casellaModul.js "></script>
+    <script src="./GiocatoreModul.js "></script>
+    <script src="./crazyGoose.js "></script>
+</body>
+
+</html>

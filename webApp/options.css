@@ -1,0 +1,23 @@
+#titolo {
+    padding: 0px;
+    font-size: 70px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    font-family: Helvetica;
+}
+
+#distFutRelease {
+    margin-left: 400px;
+    margin-top: 60px;
+    border: 1px solid rgb(0, 127, 255);
+}
+
+#futureRelease {
+    font-size: 30px;
+    background-color: rgb(0, 127, 255);
+    color: white;
+    font-family: 'helvetica';
+    /* trasformo il testo del bottone in grassetto */
+    font-weight: bold;
+}
