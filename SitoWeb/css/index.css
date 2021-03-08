@@ -1,6 +1,5 @@
 .container-fluid {
-    background-color: rgb(233, 160, 76);
-    border: 1px black solid;
+    background-color: rgb(223, 95, 255);
 }
 
 #corpoCentrale {
@@ -47,6 +46,7 @@
 }
 
 .flip-card-back {
+    color: black;
     transform: rotateY(180deg);
 }
 
@@ -54,40 +54,39 @@
     margin-bottom: 10px;
 }
 
-.cardBackOcaGialla {
-    background-color: gold;
-    color: black;
-}
-
 .cardFrontOcaGialla {
     color: gold;
+    background-image: url(../img/ocagialla.png);
 }
-
-.cardBackOcaBlu {
-    background-color: blue;
-    color: rgb(235, 223, 116);
+.cardBackOcaGialla {
+    background-image: url(../img/ocagialla.png);
 }
 
 .cardFrontOcaBlu {
     color: blue;
+    background-image: url(../img/ocablu.png);
 }
-
-.cardBackOcaVerde {
-    background-color: green;
-    color: rgb(13, 16, 170);
+.cardBackOcaBlu {
+    background-color: blue;
+    background-image: url(../img/ocablu.png);
 }
 
 .cardFrontOcaVerde {
     color: green;
+    background-image: url(../img/ocaverde.png);
 }
-
-.cardBackOcaRossa {
-    background-color: red;
-    color: black;
+.cardBackOcaVerde {
+    background-color: green;
+    background-image: url(../img/ocaverde.png);
 }
 
 .cardFrontOcaRossa {
+    background-image: url(../img/ocarossa.png);
     color: rgb(172, 5, 5);
+}
+.cardBackOcaRossa {
+    background-color: red;
+    background-image: url(../img/ocarossa.png);
 }
 
 
@@ -150,4 +149,43 @@
 
 #FAQ {
     margin-bottom: 2vh;
+}
+
+#imgRegole {
+    background-image: url(../img/regole.jpg);
+    width: 100%;
+    height: 250px;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* Needed to position the navbar */
+    position: relative;
+}
+
+#contRegole {
+    position: absolute;
+    margin: 20px;
+    width: auto;
+}
+
+#miniBar {
+    float: left;
+    color: #ce22bf;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+#miniBar {
+    background-color: rgb(231, 31, 238);
+    color: black;
+}
+
+.fondoPagina {
+    background-color: rgb(248, 248, 248);
+    width: 100%;
+    height: 200px;
+    text-align: center;
 }

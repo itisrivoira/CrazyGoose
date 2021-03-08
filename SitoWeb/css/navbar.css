@@ -2,29 +2,21 @@
 
 .navbar {
     width: 100%;
-    background-color: rgb(71, 67, 67);
-}
-
-#titoloGioco {
-    color: white;
-    text-decoration: none;
-    font-size: 30px;
+    background-color: rgb(255, 255, 255);
 }
 
 #logo {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
 }
 
 .navbar a {
     float: left;
-    color: white;
+    padding: 0.9vw;
+    color: rgb(129, 7, 123);
     text-decoration: none;
     font-size: 17px;
-}
-
-.navbar a:hover {
-    background-color: #000;
+    font-family:fantasy;
 }
 
 @media screen and (max-width: 500px) {
@@ -32,8 +24,4 @@
         float: none;
         display: block;
     }
-}
-
-.vociDellaNavBar {
-    width: 70vw;
 }

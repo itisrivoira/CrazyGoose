@@ -20,18 +20,16 @@
     <div class="container-fluid">
         <div class="row">
             <div class="navbar">
-                <div class="col-lg-4 col-12 col-md-3 d-flex justify-content-center align-items-center">
+                <div class="justify-content-left align-items-left">
                     <img id="logo" src="./img/logo_32x32.png">
-                    <a href="./CrazyGoose.html"><i id="titoloGioco"> CRAZY GOOSE</i></a>
                 </div>
                 <!--trasformati in flex così da poter centrare gli elem. figli-->
                 <div class="col-lg-2 col-6 col-md-3 d-flex justify-content-center">
-                    <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                    <a href="./index.html"><i class="fa fa-home"></i><b>Home</b></a>
                 </div>
                 <div class="col-lg-2 col-6 col-md-6 d-flex justify-content-center">
                     <a href="./aboutUs.html"><i class="fa fa-users"></i> About Us </a>
                 </div>
-
                 <div class="col-lg-2 col-6 col-md-3 d-flex justify-content-center">
                     <a href="./GiocoPython.zip" download><i class="fa fa-download"></i> Latest Download</a>
                 </div>
@@ -39,20 +37,43 @@
                     <a href="./Login.html"><i class="fa fa-user"></i> Login</a>
                 </div>
             </div>
-
         </div>
-        <div id="corpoCentrale" class="row justify-content-center">
-            <div class="col-12 d-flex justify-content-center">
-                <p style="width: 70vw; font-family: monospace; font-size: 16px;"><i>Il gioco dell'oca &egrave; sempre stato uno dei fondamentali per passare del tempo in compagnia di famigliari, amici, compagni di classe e non. Benvenuto in Crazy Goose il gioco dell'oca che riprende i fondamentali della tradizione aggiundone
+        <div class="row">
+            <div id="corpoCentrale" class="row justify-content-center">
+                <div class="col-12 d-flex justify-content-center">
+                    <p style="width: 70vw; font-family: monospace; font-size: 16px;"><i>Il gioco dell'oca &egrave; sempre stato uno dei fondamentali per passare del tempo in compagnia di famigliari, amici, compagni di classe e non. Benvenuto in Crazy Goose il gioco dell'oca che riprende i fondamentali della tradizione aggiundone
                     una piccola rivisitazione: c'&egrave; la possibilit&agrave; di scegliere tra <b>4 pedine</b>:</i>
-                </p>
+                    </p>
+                </div>
             </div>
-            <br>
+        </div>
+        <br><br><br>
+        <div class="row">
+            <div id="imgRegole">
+                <div id="contRegole">
+                    <div style=""><b>REGOLAMENTO E DOMANDE</b></div>
+                    <div id="zonaRegole" class=""></div>
+                    <p style="">
+                        Queste sono le regole del nostro gioco, qui potrai scoprire <br>quanti 'passi' dovrai fare per vincere <br>quali e quante sono le caselle speciali, <br>quante volte un'abilità potrà essere attivata e....se hai delle domande passa
+                        da qui passa da noi.
+                    </p>
+                    <a href="regole.html" id="miniBar">REGOLE</a>
+                </div>
+            </div>
+        </div>
+        <br><br><br>
+        <div class="row" style="justify-content: center; align-items: center;">
+            <div style="align-items: center; justify-content: center;">
+                <h2 style="justify-content: center; align-items: center; right: 20px;"><b>LE ABILITÀ: </b></h2>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
             <div class="colContainerFlipCard col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center">
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="cardFrontOcaGialla flip-card-front d-flex align-items-center justify-content-center">
-                            <h1><b>OCA GIALLA</b></h1>
+                            <h1><b>OCA<br>GIALLA</b></h1>
                         </div>
                         <div class="cardBackOcaGialla flip-card-back">
                             <p>Con l'abilit&agrave; dell'<b>oca gialla</b> si potr&agrave; <b>avanzare di 3</b> invece che di 1 quando si capita su una casella <b>"avanti di 1 casella"</b>. In modo da poter evitare delle possibili insidie !</p>
@@ -64,7 +85,7 @@
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="cardFrontOcaVerde flip-card-front d-flex align-items-center justify-content-center">
-                            <h1><b>OCA VERDE</b></h1>
+                            <h1><b>OCA<br>VERDE</b></h1>
                         </div>
                         <div class="cardBackOcaVerde flip-card-back">
                             <p>Con l'abilit&agrave; dell'<b>oca verde</b> si potr&agrave; <b>tirare di nuovo</b> il dado. In modo da spiazzare l'avversario e andare in vantaggio !</p>
@@ -76,7 +97,7 @@
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="cardFrontOcaBlu flip-card-front d-flex align-items-center justify-content-center">
-                            <h1><b>OCA BLU</b></h1>
+                            <h1><b>OCA<br>BLU</b></h1>
                         </div>
                         <div class="cardBackOcaBlu flip-card-back">
                             <p>Con l'abilit&agrave; dell'<b>oca blu</b> si potr&agrave; <b>avanzare di 2</b> così da saltare una casella negativa o addirittura raggiungere il traguardo !</p>
@@ -88,7 +109,7 @@
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="cardFrontOcaRossa flip-card-front d-flex align-items-center justify-content-center">
-                            <h1><b>OCA ROSSA</b></h1>
+                            <h1><b>OCA<br>ROSSA</b></h1>
                         </div>
                         <div class="cardBackOcaRossa flip-card-back">
                             <p>Con l'abilit&agrave; dell'<b>oca rossa</b> si potr&agrave; <b>annullare</b> l'effetto di una casella !</p>
@@ -97,67 +118,28 @@
                 </div>
             </div>
         </div>
-        <br>
-        <br>
+
         <div class="row">
-            <div class="col">
-                <div>
-                    <a href="#FAQ">Vai alle FAQ</a>
-                </div>
-                <div>
-                    ...Tutorial per giocare sul PC...
-                </div>
+            <div class="fondoPagina">
+                <center>
+                    <h4>Sito creato da:</h4>
+                    <ul style="width: 200px;margin-top: 5px;">
+                        <li>Bellone Giulio</li>
+                        <li>Calzia Mattia</li>
+                        <li>Dastr&ugrave; Alessandro</li>
+                        <li>Durante Andrea</li>
+                        <li>Hila Kledi</li>
+                        <li>Hu Qiyan</li>
+                    </ul>
+                </center>
             </div>
-        </div><br>
-        <div class="row" id="FAQ">
-            <button class="collapsible">FAQ</button>
-            <div class="containerDomande">
-                <button class="collapsible">Domanda 1</button>
-                <div class="content">
-                    <p>Ciao come stai?.</p>
-                </div>
-                <button class="collapsible">Domanda 2</button>
-                <div class="content">
-                    <p>Ciao come stai?.</p>
-                </div>
-                <button class="collapsible">Domanda 3</button>
-                <div class="content">
-                    <p>Ciao come stai?.</p>
-                </div>
-                <button class="collapsible">Domanda 4</button>
-                <div class="content">
-                    <p>Ciao come stai?.</p>
-                </div>
-                <!-- PROBLEMA: NON SI RIESCE A VEDERE-->
-                <button class="collapsible">Domanda 5</button>
-                <div class="content">
-                    <p>Ciao come stai?.</p>
-                </div>
-            </div>
-
         </div>
-    </div>
 
-    <script>
-        var coll = document.getElementsByClassName("collapsible");
-        var i;
 
-        for (i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var content = this.nextElementSibling;
-                if (content.style.maxHeight) {
-                    content.style.maxHeight = null;
-                } else {
-                    content.style.maxHeight = content.scrollHeight + "px";
-                }
-            });
-        }
-    </script>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js " integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo " crossorigin="anonymous "></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js " integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 " crossorigin="anonymous "></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js " integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy " crossorigin="anonymous "></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js " integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo " crossorigin="anonymous "></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js " integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 " crossorigin="anonymous "></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js " integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy " crossorigin="anonymous "></script>
+        <div class="container">
 </body>
 
 </html>

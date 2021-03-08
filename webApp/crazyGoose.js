@@ -15,10 +15,9 @@ class Dado {
 	con il testo centrato all'interno
 */
 class Button {
-    constructor(ctx, crazyGoose, game, x, y, width, height, text) {
+    constructor(ctx, crazyGoose, x, y, width, height, text) {
         this.ctx = ctx
         this.crazyGoose = crazyGoose
-        this.game = game
         this.x = x
         this.y = y
         this.width = width
@@ -50,10 +49,9 @@ class Button {
 
 }
 class CrazyGoose {
-    constructor(ctx, canvas, game) {
+    constructor(ctx, canvas) {
         this.ctx = ctx
         this.canvas = canvas
-        this.game = game
         this.giocoPartito = false
     }
 
@@ -78,6 +76,7 @@ class CrazyGoose {
             this.player = null
             this.com = null
             this.turnoCOM = null
+            this.timeoutCOM = null
 
             this.disegnaTutto()
         }
@@ -120,7 +119,7 @@ class CrazyGoose {
 
         //Il primo argomento è this xke necessita di questa classe per
         // richiamarne il metodo "tiraDado"
-        this.buttonDadoPL1 = new Button(this.ctx, this, this.game, 100, 42, 35, 35, this.valDadoPL1)
+        this.buttonDadoPL1 = new Button(this.ctx, this, 100, 42, 35, 35, this.valDadoPL1)
 
         draw_text(this.ctx, INFO_COM, 14, "#000000", 930, 20)
         draw_text(this.ctx, (INFO_DADO_COM + this.valDadoCOM), 14, "#000000", 917, 60)
@@ -143,7 +142,7 @@ class CrazyGoose {
         if (flagPrimoGiro == true) {
             // Decide chi incomincia, tira il dado e vede se il numero tirato è pari o dispari
             // (tra 1 e 6 ci sono 3 pari e 3 dispari, perciò 50% possbilità a testa)
-            let random = (new Dado()).tiraDado()
+            let random = 3 //(new Dado()).tiraDado()
             if (random % 2 == 0) {
                 this.player.turnoMio = true
                 this.com.turnoMio = false
@@ -161,6 +160,12 @@ class CrazyGoose {
 
                 this.segnalaChiTocca(false)
             }
+        }
+    }
+
+    stopCOM() {
+        if (this.timeoutCOM != null) {
+            clearTimeout(this.timeoutCOM)
         }
     }
 
@@ -242,7 +247,7 @@ class CrazyGoose {
         // per far avanzare PL1)
         if (this.com.turniFermo == 0) {
             //dopo 2000ms (2sec) entra nella funzine, che a sua volta lancia la funzione avanzaCOM
-            setTimeout(() => { this.avanzaCOM(numEstratto) }, 2000)
+            this.timeoutCOM = setTimeout(() => { this.avanzaCOM(numEstratto) }, 2000)
         } else {
             this.avanzaCOM(numEstratto)
         }
@@ -467,6 +472,24 @@ class CrazyGoose {
 
 }
 
+function creaGioco(ctx, canvas, crazyGoose) {
+    crazyGoose.start()
+
+    //Aggiungo l'ascoltatore del click del mouse all'oggetto canvas (non potevo farlo nel file html xke mi serve l'oggetto gioco per lanciare un suo metodo)
+    canvas.addEventListener("mousedown", (event) => {
+
+        //cliccato col tasto sx del mouse (se == 1 tasto centrale, se == 2 tasto dx)
+        if (event.button == 0) {
+
+            /*Con event.offsetX prendo le coord. X RISPETTO l'oggetto su cui c'è l'ascoltatore 
+            (quindi non considera tutto quello spazio bianco, non occupato dal canvas)
+            event.offsetY / event.clientY mi restituivano non so xke un valore TROPPO basso rispetto quello che mi aspettavo. Con event.pageY prendo le coord. Y RISPETTO la posizione nella PAGINA*/
+            let posMouse = new Array(event.offsetX, event.pageY)
+            crazyGoose.mousePremuto(posMouse)
+        }
+    })
+}
+
 let canvas = document.getElementById("canvas")
 var ctx = canvas.getContext("2d")
 
@@ -493,6 +516,7 @@ canvas.addEventListener("mousedown", (event) => {
 
 window.addEventListener("keydown", (event) => {
     if (event.key == "Escape") {
-        /*Codice per tornare alla schermata prec*/
+        gioco.stopCOM()
+        window.location = "./sceltaMenu.html"
     }
 })
