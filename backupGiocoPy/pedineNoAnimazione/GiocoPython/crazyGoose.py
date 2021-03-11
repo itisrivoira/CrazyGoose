@@ -116,7 +116,7 @@ class CrazyGoose():
 		if (not self.buttonDadoPL1 == None):
 			self.buttonDadoPL1.detectMouseOver(mousePosition)
 	
-	def disegnaTutto(self, giocDaNonDisegnare=None):
+	def disegnaTutto(self):
 			#Se è il primo giro deve stabilire chi sarà il primo giocatore a giocare
 		flagPrimoGiro = (self.player == None and self.com == None)
 		
@@ -143,20 +143,19 @@ class CrazyGoose():
 		draw_text(self.game, (INFO_DADO_COM+self.valDadoCOM), 14, self.game.BLACK, 917, 60)
 		self.scriviEffetti(self.com, False)
 
-		if(giocDaNonDisegnare != "PL1"):
-			if(self.player == None or self.player.posizione == 0):
-				#Se posizione == 0 vuol dire che è nella casella iniziale (quella "prima" del percorso)
-				self.player = Giocatore(self, self.game, self.caselle, self.percorso, "PL1")
-			else:
-				self.player.mostraPedina(self.com.posizione)
-		
-		if (giocDaNonDisegnare != "COM"):
-			if(self.com == None or self.com.posizione == 0):
-				#Se posizione == 0 vuol dire che è nella casella iniziale (quella "prima" del percorso)
-				self.com = Giocatore(self, self.game, self.caselle, self.percorso, "COM")
-			else:
-				self.com.mostraPedina(self.player.posizione)
-		
+
+		if(self.player == None or self.player.posizione == 0):
+			#Se posizione == 0 vuol dire che è nella casella iniziale (quella "prima" del percorso)
+			self.player = Giocatore(self, self.game, self.caselle, self.percorso, "PL1")
+		else:
+			self.player.spostaPedina(self.com.posizione)
+			
+		if(self.com == None or self.com.posizione == 0):
+			#Se posizione == 0 vuol dire che è nella casella iniziale (quella "prima" del percorso)
+			self.com = Giocatore(self, self.game, self.caselle, self.percorso, "COM")
+		else:
+			self.com.spostaPedina(self.player.posizione)
+			
 		if(flagPrimoGiro):
 			# Decide chi incomincia, tira il dado e vede se il numero tirato è pari o dispari
 			# (tra 1 e 6 ci sono 3 pari e 3 dispari, perciò 50% possbilità a testa)
@@ -179,6 +178,7 @@ class CrazyGoose():
 		
 		self.blit_screen()
 	
+
 	def scriviEffetti(self, player_com, isPL1):
 		if(player_com != None):
 			pxTesto = 13
