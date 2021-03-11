@@ -30,7 +30,7 @@ class Giocatore():
 		self.percorso = percorso
 		self.tag = tag
 
-		self.posizione = 0
+		self.posizione = 30
 		self.newSpostamento = 0
 		self.turnoMio = False
 		self.turniFermo = 0
@@ -89,8 +89,6 @@ class Giocatore():
 			# 		e poi torno indietro di 3
 			if (self.newSpostamento == 0):
 				self.newSpostamento = -((self.posizione + spostamento) - QTA_CASELLE_TOTALI)
-				print(str(self.posizione)+" "+str(spostamento)+" "
-					  +str(self.newSpostamento)+" "+str(QTA_CASELLE_TOTALI))
 				
 			self.posiziona((QTA_CASELLE_TOTALI-self.posizione), False)
 			#ferma un attimo il giocatore sulla casella finale
@@ -106,56 +104,66 @@ class Giocatore():
 		# passo la posizione meno lo spostamento
 		self.spostaPedina((self.posizione-spostamento), spostamento)
 	
+	
 	def spostaPedina(self, partenza, spostamento):
-		if(partenza > 0):
-			if(spostamento > 0):
-				#una sorta di flag per il primo giro
-				x1 = None
-				
-				i = 0
-				while(i < spostamento):
-					if(x1 == None):
-						x1 = self.caselle[partenza-1].getCenterX()
-						y1 = self.caselle[partenza-1].getCenterY()
-					else:
-						x1 = self.caselle[partenza - 1 + i].getCenterX()
-						y1 = self.caselle[partenza - 1 + i].getCenterY()
-					
-					x2 = self.caselle[partenza - 1 + i + 1].getCenterX()
-					y2 = self.caselle[partenza - 1 + i + 1].getCenterY()
-					
-					self.spostaFraDueCaselle(x1, y1, x2, y2)
-					
-					i += 1
-			else:
-				spostamento = -spostamento
-				# una sorta di flag per il primo giro
-				x1 = None
-				
-				i = 0
-				while (i < spostamento):
-					if (x1 == None):
-						x1 = self.caselle[partenza - 1].getCenterX()
-						y1 = self.caselle[partenza - 1].getCenterY()
-					else:
-						x1 = self.caselle[partenza - 1 - i].getCenterX()
-						y1 = self.caselle[partenza - 1 - i].getCenterY()
-					
-					x2 = self.caselle[partenza - 1 - i - 1].getCenterX()
-					y2 = self.caselle[partenza - 1 - i - 1].getCenterY()
-					
-					self.spostaFraDueCaselle(x1, y1, x2, y2)
-					
-					i += 1
-		else:
-			x1 = self.casellaIniziale.getCenterX()
-			y1 = self.casellaIniziale.getCenterY()
-			
+		#cioè deve tornare alla prima casella
+		if(spostamento == -38):
+			x1 = self.caselle[partenza-1].getCenterX()
+			y1 = self.caselle[partenza-1].getCenterY()
 			x2 = self.caselle[0].getCenterX()
 			y2 = self.caselle[0].getCenterY()
 			
 			self.spostaFraDueCaselle(x1, y1, x2, y2)
-			self.spostaPedina(1, spostamento-1)
+		else:
+			if(partenza > 0):
+				if(spostamento > 0):
+					#una sorta di flag per il primo giro
+					x1 = None
+					
+					i = 0
+					while(i < spostamento):
+						if(x1 == None):
+							x1 = self.caselle[partenza-1].getCenterX()
+							y1 = self.caselle[partenza-1].getCenterY()
+						else:
+							x1 = self.caselle[partenza - 1 + i].getCenterX()
+							y1 = self.caselle[partenza - 1 + i].getCenterY()
+						
+						x2 = self.caselle[partenza - 1 + i + 1].getCenterX()
+						y2 = self.caselle[partenza - 1 + i + 1].getCenterY()
+						
+						self.spostaFraDueCaselle(x1, y1, x2, y2)
+						
+						i += 1
+				else:
+					spostamento = -spostamento
+					# una sorta di flag per il primo giro
+					x1 = None
+					
+					i = 0
+					while (i < spostamento):
+						if (x1 == None):
+							x1 = self.caselle[partenza - 1].getCenterX()
+							y1 = self.caselle[partenza - 1].getCenterY()
+						else:
+							x1 = self.caselle[partenza - 1 - i].getCenterX()
+							y1 = self.caselle[partenza - 1 - i].getCenterY()
+						
+						x2 = self.caselle[partenza - 1 - i - 1].getCenterX()
+						y2 = self.caselle[partenza - 1 - i - 1].getCenterY()
+						
+						self.spostaFraDueCaselle(x1, y1, x2, y2)
+						
+						i += 1
+			else:
+				x1 = self.casellaIniziale.getCenterX()
+				y1 = self.casellaIniziale.getCenterY()
+				
+				x2 = self.caselle[0].getCenterX()
+				y2 = self.caselle[0].getCenterY()
+				
+				self.spostaFraDueCaselle(x1, y1, x2, y2)
+				self.spostaPedina(1, spostamento-1)
 			
 	
 	def spostaFraDueCaselle(self, x1, y1, x2, y2):
@@ -276,7 +284,7 @@ class Giocatore():
 			msg = "RICOMINCIA DA CAPO !!!"
 			#Lo fa ritornare alla 1° casella
 			#Dalla posizione == 39 va alla 1° ==> si muove di 38 posizioni indietro
-			self.posiziona(-(self.posizione-1))
+			spostamento = -(self.posizione-1)
 		elif(codCasella == VITTORIA):
 			# print("HAI VINTO "+self.tag+" !!!" )
 			self.vincitore = True

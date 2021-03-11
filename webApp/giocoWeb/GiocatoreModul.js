@@ -48,8 +48,7 @@ class Giocatore {
             //aggiorno la posizione
             this.posizione += spostamento
             try {
-                this.controllato = false
-                    //prendo il codice della casella in cui si trova il giocatore 
+                //prendo il codice della casella in cui si trova il giocatore 
                 let codCasella = this.percorso.dictCaselle[this.posizione]
                     //La pedina si muove nella casella (che in questo caso avrà un effetto)
                 this.crazyGoose.disegnaTutto()
@@ -62,12 +61,11 @@ class Giocatore {
 
                 /*Riferito a prima: TODO TROVARE UN MODO XKE QUESTI NON FUNZIONANO:
                 
-                    1) setTimeout(() => { this.controllaCodiceCasella(codCasella) }, 500)
-                     funziona ma NON FERMA l'esecuzione del programma ! (i turni si sballano)
-                    2)let prima = new Date().getTime(); while(new Date().getTime() < prima+2000){}
-                     funzionerebbe se non fosse che gira TROPPO VELOCE, TROPPE VOLTE e il browser lo ferma
-                */
-
+                        1) setTimeout(() => { this.controllaCodiceCasella(codCasella) }, 500)
+                         funziona ma NON FERMA l'esecuzione del programma ! (i turni si sballano)
+                        2)let prima = new Date().getTime(); while(new Date().getTime() < prima+2000){}
+                         funzionerebbe se non fosse che gira TROPPO VELOCE, TROPPE VOLTE e il browser lo ferma
+                    */
             } catch (err) {
                 //Non ha trovato quella posizione nel dizionario, perciò dev'essere una casella VUOTA
                 this.crazyGoose.disegnaTutto()
@@ -108,8 +106,7 @@ class Giocatore {
         	giocatore finisce sulla casella TIRA_DI_NUOVO*/
         this.turnoMio = false
         this.posiziona(spostamento)
-        while (this.controllato == false) {}
-        //Ritorna indietro il flag, in questo modo si saprà a chi toccherà
+            //Ritorna indietro il flag, in questo modo si saprà a chi toccherà
         return this.turnoMio
     }
 
@@ -171,7 +168,7 @@ class Giocatore {
 
         if (spostamento != 0) {
             this.posiziona(spostamento)
-        } else { this.controllato = true }
+        }
     }
 
 }
