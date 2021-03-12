@@ -30,7 +30,7 @@ class Giocatore():
 		self.percorso = percorso
 		self.tag = tag
 
-		self.posizione = 30
+		self.posizione = 0
 		self.newSpostamento = 0
 		self.turnoMio = False
 		self.turniFermo = 0
@@ -92,7 +92,7 @@ class Giocatore():
 				
 			self.posiziona((QTA_CASELLE_TOTALI-self.posizione), False)
 			#ferma un attimo il giocatore sulla casella finale
-			time.sleep(0.3)
+			time.sleep(0.2)
 			
 			#Riposiziona il giocatore
 			self.posiziona(self.newSpostamento)
@@ -100,35 +100,50 @@ class Giocatore():
 	
 	
 	def ridisegnaTutto(self, spostamento):
-		#mi serve la pos di partenza, e io ho già aumentato la pos. quindi
+		#mi serve la pos di partenza, e io ho già aumentato la posizione. quindi
 		# passo la posizione meno lo spostamento
 		self.spostaPedina((self.posizione-spostamento), spostamento)
 	
 	
 	def spostaPedina(self, partenza, spostamento):
-		#cioè deve tornare alla prima casella
+		#cioè deve tornare alla prima casella.
+		# Si muoverà in diagonale tra penultima casella e prima
 		if(spostamento == -38):
 			x1 = self.caselle[partenza-1].getCenterX()
 			y1 = self.caselle[partenza-1].getCenterY()
 			x2 = self.caselle[0].getCenterX()
 			y2 = self.caselle[0].getCenterY()
 			
-			self.spostaFraDueCaselle(x1, y1, x2, y2)
+			self.spostaFraDueCaselle(x1, y1, x2, y2, 7)
 		else:
-			if(partenza > 0):
+			#Se parte dalla casella iniziale (prima dell'inizio del percorso) deve muoversi anche da lì
+			if(partenza == 0):
+				x1 = self.casellaIniziale.getCenterX()
+				y1 = self.casellaIniziale.getCenterY()
+				
+				x2 = self.caselle[0].getCenterX()
+				y2 = self.caselle[0].getCenterY()
+				
+				self.spostaFraDueCaselle(x1, y1, x2, y2)
+				#Ora si muoverà dalla prima casella a quella in cui deve arrivare
+				# (spostamento-1 xkè un spostamento l'ha già fatto)
+				self.spostaPedina(1, spostamento - 1)
+			else:
+				""" Ora muovo la pedina dello spostamento da fare.
+					 NON muovo la pedina dalla partenza alla fine DIRETTAMENTE,
+					 MA muovo di CASELLA IN CASELLA, per ogni casella che
+					 deve superare """
+				
 				if(spostamento > 0):
-					#una sorta di flag per il primo giro
-					x1 = None
 					
+					#partenza è la posizione della casella da 1 a 40,
+					# ma le caselle sono 0-based per questo "partenza-1
 					i = 0
 					while(i < spostamento):
-						if(x1 == None):
-							x1 = self.caselle[partenza-1].getCenterX()
-							y1 = self.caselle[partenza-1].getCenterY()
-						else:
-							x1 = self.caselle[partenza - 1 + i].getCenterX()
-							y1 = self.caselle[partenza - 1 + i].getCenterY()
+						x1 = self.caselle[partenza - 1 + i].getCenterX()
+						y1 = self.caselle[partenza - 1 + i].getCenterY()
 						
+						#prendo la casella successiva
 						x2 = self.caselle[partenza - 1 + i + 1].getCenterX()
 						y2 = self.caselle[partenza - 1 + i + 1].getCenterY()
 						
@@ -136,6 +151,9 @@ class Giocatore():
 						
 						i += 1
 				else:
+					#devo prendere le caselle in modo inverso !
+					
+					#lo trasformo in positivo, sennò "i" sarebbe maggiore di "spostamento"
 					spostamento = -spostamento
 					# una sorta di flag per il primo giro
 					x1 = None
@@ -155,21 +173,9 @@ class Giocatore():
 						self.spostaFraDueCaselle(x1, y1, x2, y2)
 						
 						i += 1
-			else:
-				x1 = self.casellaIniziale.getCenterX()
-				y1 = self.casellaIniziale.getCenterY()
-				
-				x2 = self.caselle[0].getCenterX()
-				y2 = self.caselle[0].getCenterY()
-				
-				self.spostaFraDueCaselle(x1, y1, x2, y2)
-				self.spostaPedina(1, spostamento-1)
 			
 	
-	def spostaFraDueCaselle(self, x1, y1, x2, y2):
-		mov_x = 4
-		mov_y = 4
-		
+	def spostaFraDueCaselle(self, x1, y1, x2, y2, mov_x=5, mov_y=5):
 		partenza_x = x1
 		partenza_y = y1
 		fine_x = x2
@@ -177,10 +183,10 @@ class Giocatore():
 		
 		#!!! Per tutta la durata del loop comincia ad usare moolta CPU...
 		continua = True
-		while(continua):
+		while(continua and self.crazyGoose.giocoPartito):
 			# metto un minuscolo fermo, altrimenti sarebbe troppo veloce
-			pygame.time.wait(15)
-			# Non disegnerà il giocatore
+			pygame.time.wait(14)
+			# Non disegnerà il giocatore (lo disegno dopo)
 			self.crazyGoose.disegnaTutto(self.tag)
 			
 			if(partenza_x < fine_x):
@@ -188,6 +194,7 @@ class Giocatore():
 			elif(partenza_x > fine_x):
 				partenza_x -= mov_x
 			
+			#Controllo se è già arrivato alla fine.
 			if(partenza_x >= fine_x-5 and partenza_x <= fine_x+5):
 				partenza_x = fine_x
 			
@@ -196,32 +203,35 @@ class Giocatore():
 			elif(partenza_y < fine_y):
 				partenza_y += mov_y
 			
+			#Controllo se è già arrivato alla fine
 			if(partenza_y >= fine_y-5 and partenza_y <= fine_y+5):
 				partenza_y = fine_y
 			
-				
+			# Non mi muovo in modo da arrivare PRECISAMENTE alle coordinate x y,
+			# quindi controllo se sono arrivato intorno alle coord x y
 			if (partenza_x >= fine_x-5 and partenza_x <= fine_x+5
 					and partenza_y >= fine_y-5 and partenza_y <= fine_y+5):
 				
+				# fermo il loop
 				continua = False
 				draw_text(self.game, self.tag, 12, (255, 0, 0, 1), fine_x, fine_y)
 			else:
 				draw_text(self.game, self.tag, 12, (255, 0, 0, 1), partenza_x, partenza_y)
 						
 						
-			# Per disegnare veramente sullo schermo
+			#"ricarico" la finestra, cioè disegno veramente tutto
 			self.crazyGoose.blit_screen()
 			
 			
 	def mostraPedina(self, posAvvessario):
 		if(self.posizione > 0):
 			x = self.caselle[self.posizione-1].getCenterX()
+			y = self.caselle[self.posizione-1].getCenterY()
 			
-			y = self.caselle[self.posizione - 1].getCenterY()
 			if(posAvvessario == self.posizione):
 				if(self.tag == "PL1"):
 					#più in alto
-					y -= 15
+					y -= 20
 				else:
 					# più in basso
 					y += 15

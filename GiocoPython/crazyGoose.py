@@ -37,16 +37,20 @@ class Button():
 		self.width = width
 		self.height = height
 		
-		#Crea un oggetto Rect (non lo disegna ancora)
-		self.rect = pygame.Rect(x, y, width, height)
-		#Crea il rettangolo proprio.
+		self.disegna(text)
+	
+	def disegna(self, valDado):
+		# Crea un oggetto Rect (non lo disegna ancora)
+		self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+		# Crea il rettangolo proprio.
 		#					Surface			colore			 Rect
 		pygame.draw.rect(self.game.display, self.game.BLACK, self.rect
-						 	#se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO, se < 0 NON DISEGNA
+						 # se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO, se < 0 NON DISEGNA
 						 , 1
-						 	#border-radius (per arrotondare gli angoli)
+						 # border-radius (per arrotondare gli angoli)
 						 , 4)
-		draw_text(self.game, text, 14, self.game.BLACK, (x+self.width/2), (y+self.height/2))
+		draw_text(self.game, valDado, 16, self.game.BLACK,
+				  (self.x + self.width / 2), (self.y + self.height / 2))
 		
 		
 	def controllaPosCursore(self, mouse):
@@ -75,9 +79,11 @@ class CrazyGoose():
 		
 	# sovrappone
 	def blit_screen(self):
-		#Va a disegnare. (a partire dall'angolo in alto a sx, coord. x=0 y=0)
-		self.game.window.blit(self.game.display, (0, 0))
-		pygame.display.update()
+		if(self.giocoPartito):
+			#Va a disegnare. (a partire dall'angolo in alto a sx, coord. x=0 y=0)
+			self.game.window.blit(self.game.display, (0, 0))
+			pygame.display.update()
+		#else: il gioco si è fermato, quindi smetto di disegnare
 	
 	def start(self):
 		#Questo metodo è richiamato all'interno di un ciclo, quindi ho settato un flag,
@@ -137,7 +143,10 @@ class CrazyGoose():
 
 		#Il primo argomento è self xke necessita di questa classe per
 		# richiamarne il metodo "tiraDado"
-		self.buttonDadoPL1 = Button(self, self.game, 100, 43, 35, 35, self.valDadoPL1)
+		if(self.buttonDadoPL1 == None):
+			self.buttonDadoPL1 = Button(self, self.game, 100, 43, 35, 35, self.valDadoPL1)
+		else:
+			self.buttonDadoPL1.disegna(self.valDadoPL1)
 		
 		draw_text(self.game, INFO_COM, 14, self.game.BLACK, 930, 20)
 		draw_text(self.game, (INFO_DADO_COM+self.valDadoCOM), 14, self.game.BLACK, 917, 60)
@@ -217,14 +226,14 @@ class CrazyGoose():
 					pygame.draw.rect(self.game.display, self.game.BLACK, pygame.Rect(xRect, yRect, dimTesto[0]+7, dimTesto[1]+2), 1)
 				
 					draw_text(self.game, player_com.penultimoMsg, pxTesto, self.game.BLACK, xText, yText)
-		
-
+	
 	def tiraDado(self):
 			#Se la partita è terminata "blocca" la funzionalità del dado
 		if(not self.partitaTerminata):
 			numEstratto = Dado().tiraDado()
 			if(self.player.turnoMio):
-				self.avanzaPlayer1(numEstratto)
+				self.turnoPL1 = threading.Thread(target=self.avanzaPlayer1, args=(numEstratto,))
+				self.turnoPL1.start()
 			else:
 				self.turnoCOM = threading.Thread(target=self.toccaAlCOM, args=(numEstratto,))
 				self.turnoCOM.start()
@@ -311,8 +320,9 @@ class CrazyGoose():
 			self.com.turnoMio = False
 
 			self.segnalaChiTocca(True)
-
-			self.avanzaPlayer1(numEstratto)
+			
+			self.turnoPL1 = threading.Thread(target=self.avanzaPlayer1, args=(numEstratto,))
+			self.turnoPL1.start()
 		else:
 			self.valDadoCOM = str(numEstratto)
 
