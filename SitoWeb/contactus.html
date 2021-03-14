@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/contattaci.css">
+
+</head>
+<body>
+    <div class="container">
+        <div style="text-align:center">
+          <h2 class="titoli">Contatta direttamente i creatori!!!</h2>
+          <p class="titoli">Se hai un dubbio scrivilo:</p>
+        </div>
+        <div class="row">
+          <div class="column">
+            <img id="logo" src="./img/logo_32x32.png" style="width: 500px; height: 500px;">
+          </div>
+          <div class="column">
+            <form action="/action_page.php">
+              <label style="font-family: 'Ubuntu', sans-serif;">Nome:</label>
+              <input class="caselle" type="text" id="fname" name="nome" placeholder="Giovanni..">
+              <label style="font-family: 'Ubuntu', sans-serif;">Cognome: </label>
+              <input class="caselle" type="text" id="lname" name="cognome" placeholder="Rossi..">
+              <label for="country" style="font-family: 'Ubuntu', sans-serif;">Regione: </label>
+              <select class="caselle" id="country" name="Regione">
+                <option value="abruzzo">Abruzzo</option>
+                <option value="basilicata">Basilicata</option>
+                <option value="calabria">Calabria</option>
+                <option value="campania">Campania</option>
+                <option value="emilia-romagna">Emilia-Romagna</option>
+                <option value="friuli">Friuli Venezia Giulia</option>
+                <option value="lazio">Lazio</option>
+                <option value="liguria">Liguria</option>
+                <option value="lombardia">Lombardia</option>
+                <option value="marche">Marche</option>
+                <option value="molise">Molise</option>
+                <option value="piemonte">Piemonte</option>
+                <option value="puglia">Puglia</option>
+                <option value="sardegna">Sardegna</option>
+                <option value="sicilia">Sicilia</option>
+                <option value="toscana">Toscana</option>
+                <option value="trentino">Trentino Alto-Adige</option>
+                <option value="umbria">Umbria</option>
+                <option value="valle D'aosta">Valle D'Aosta</option>
+                <option value="veneto">Veneto</option>
+              </select>
+              <label for="subject" style="font-family: 'Ubuntu', sans-serif;">Oggetto:</label><br>
+              <textarea class="caselle" id="testo" name="testo" style="height:170px"></textarea><br><br>
+              <input type="submit" value="Submit" class="submit">
+            </form>
+          </div>
+        </div>
+      </div>
+</body>
+</html>
+
+
