@@ -237,7 +237,10 @@ class Giocatore():
 					y += 15
 				
 			draw_text(self.game, self.tag, 12, (255, 0, 0, 1), x, y)
-
+		else:
+			#posizione "prima" del percorso
+			self.creaCasellaIniziale()
+			
 
 	def avanza(self, spostamento):
 		#Di default appena si muove, il giocatore ha finito il turno e quindi setto
