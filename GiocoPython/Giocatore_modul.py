@@ -20,15 +20,25 @@ X_PLAYER2 = 25
 Y_PLAYER1 = 565
 Y_PLAYER2 = 630
 
-
 class Giocatore():
-	def __init__(self, crazyGoose, game, caselle, percorso, tag):
+	def __init__(self, crazyGoose, game, caselle, percorso, tag, pedinaScelta=None):
 			#Mi serve per lanciare un suo metodo
 		self.crazyGoose = crazyGoose
 		self.game = game
 		self.caselle = caselle
 		self.percorso = percorso
 		self.tag = tag
+		
+		if(pedinaScelta == "gialla"):
+			self.colorePedina = (255,255,0)
+		elif(pedinaScelta == "verde"):
+			self.colorePedina = (0,255,0)
+		elif(pedinaScelta == "blu"):
+			self.colorePedina = (0,0,255)
+		elif(pedinaScelta == "rossa"):
+			self.colorePedina = (255,0,0)
+		else:		#caso None, il Giocatore è il COMPUTER
+			self.colorePedina = (255, 0, 0)
 
 		self.posizione = 0
 		self.newSpostamento = 0
@@ -52,7 +62,7 @@ class Giocatore():
 		# poi inserisce la scritta che identifica il giocatore
 		self.casellaIniziale = Casella(self.game.display, x, y)
 		
-		draw_text(self.game, self.tag, 12, (255,0,0,1)
+		draw_text(self.game, self.tag, 12, self.colorePedina
 				  , self.casellaIniziale.getCenterX(), self.casellaIniziale.getCenterY())
 	
 	
@@ -214,9 +224,9 @@ class Giocatore():
 				
 				# fermo il loop
 				continua = False
-				draw_text(self.game, self.tag, 12, (255, 0, 0, 1), fine_x, fine_y)
+				draw_text(self.game, self.tag, 12, self.colorePedina, fine_x, fine_y)
 			else:
-				draw_text(self.game, self.tag, 12, (255, 0, 0, 1), partenza_x, partenza_y)
+				draw_text(self.game, self.tag, 12, self.colorePedina, partenza_x, partenza_y)
 						
 						
 			#"ricarico" la finestra, cioè disegno veramente tutto
@@ -236,7 +246,7 @@ class Giocatore():
 					# più in basso
 					y += 15
 				
-			draw_text(self.game, self.tag, 12, (255, 0, 0, 1), x, y)
+			draw_text(self.game, self.tag, 12, self.colorePedina, x, y)
 		else:
 			#posizione "prima" del percorso
 			self.creaCasellaIniziale()

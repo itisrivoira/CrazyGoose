@@ -50,6 +50,7 @@ class MainMenu(Menu):
             draw_text(self.game, "Options", 30, self.game.WHITE, self.optionsx, self.optionsy)
             draw_text(self.game, "Credits", 30, self.game.WHITE, self.creditsx, self.creditsy)
             draw_text(self.game, "Quit", 30, self.game.WHITE, self.quitx, self.quity)
+            
             self.draw_cursor()
             self.blit_screen()
 

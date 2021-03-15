@@ -1,6 +1,7 @@
 from Giocatore_modul import *
 from Percorso_modul import *
 from Casella_modul import *
+from sceltaPedina_modul import *
 from menu import *
 from globalFunction import *
 
@@ -83,6 +84,10 @@ class CrazyGoose():
 	def __init__(self, game):
 		self.game = game
 		self.giocoPartito = False
+		self.partitaTerminata = False
+		self.sceltaPedina = SceltaPedina(self)
+		self.inizializzaAttributi()
+		
 		
 	# sovrappone
 	def blit_screen(self):
@@ -92,35 +97,47 @@ class CrazyGoose():
 			pygame.display.update()
 		#else: il gioco si è fermato, quindi smetto di disegnare
 	
+	
 	def start(self):
-		#Questo metodo è richiamato all'interno di un ciclo, quindi ho settato un flag,
-		# per INIZIALIZZARE le variabili una volta soltanto.
-		#(volendo il metodo può essere usato per RIAVVIARE il gioco
-		#	N.B. BISOGNA RISETTARE A FALSE il FLAG)
 		if(self.giocoPartito == False):
-			
-			self.giocoPartito = True
-			self.partitaTerminata = False
-			
-				#Dentro questa lista ci saranno gli oggetti Casella
-			self.caselle = list()
-				#Crea il percorso (casuale)
-			self.percorso = Percorso()
-			
-			self.valDadoCOM = "0"
-			self.valDadoPL1 = "0"
-
-			self.buttonDadoPL1 = None
-			self.mouseOverDadoPL1 = False
-			self.player = None
-			self.com = None
-			self.aChiTocca = None
-			self.turnoCOM = None
-			
-			self.disegnaTutto()
-			
+			if(self.sceltaPedina.sceltaFatta == False):
+				self.sceltaPedina.mostraScelte()
+			else:
+				self.mostraGioco()
+	
+	
+	def mostraGioco(self):
+		self.giocoPartito = True
+		self.partitaTerminata = False
+		
+		# Dentro questa lista ci saranno gli oggetti Casella
+		self.caselle = list()
+		# Crea il percorso (casuale)
+		self.percorso = Percorso()
+		
+		self.inizializzaAttributi()
+		
+		self.disegnaTutto()
+	
+	
+	def inizializzaAttributi(self):
+		self.valDadoCOM = "0"
+		self.valDadoPL1 = "0"
+		
+		self.buttonDadoPL1 = None
+		self.mouseOverDadoPL1 = False
+		self.player = None
+		self.com = None
+		self.aChiTocca = None
+		self.turnoCOM = None
+		
 	
 	def mousePremuto(self, mousePosition):
+		# controlli per la scelta della pedina
+		if (self.sceltaPedina.sceltaFatta == False):
+			self.sceltaPedina.sceltaFatta = True
+		
+		# Controlli per il dado (il button) del PL1
 		#Controllo che sia il turno del PL1 (cioè che sia il suo turno OPPURE l'avversario abbia un fermo)
 		if (self.aChiTocca and self.buttonDadoPL1 != None):
 			if(self.buttonDadoPL1.detectMouseOver(mousePosition)):
@@ -128,6 +145,12 @@ class CrazyGoose():
 
 
 	def mouseOver(self, mousePosition):
+		#controlli per la scelta della pedina
+		if(self.sceltaPedina.sceltaFatta == False):
+			self.sceltaPedina.controllaPosMouse(mousePosition)
+		
+		
+		#Controlli per il dado (il button) del PL1
 		# Controllo che sia il turno del PL1 (cioè che sia il suo turno OPPURE l'avversario abbia un fermo)
 		if (self.aChiTocca and self.buttonDadoPL1 != None):
 			
@@ -182,7 +205,7 @@ class CrazyGoose():
 
 		if(giocDaNonDisegnare != "PL1"):
 			if(self.player == None):
-				self.player = Giocatore(self, self.game, self.caselle, self.percorso, "PL1")
+				self.player = Giocatore(self, self.game, self.caselle, self.percorso, "PL1", self.sceltaPedina.mouseOver)
 			else:
 				self.player.mostraPedina(self.com.posizione)
 				
@@ -195,7 +218,7 @@ class CrazyGoose():
 		if(flagPrimoGiro):
 			# Decide chi incomincia, tira il dado e vede se il numero tirato è pari o dispari
 			# (tra 1 e 6 ci sono 3 pari e 3 dispari, perciò 50% possbilità a testa)
-			if (2%2 == 0):	#Dado().tiraDado() % 2 == 0
+			if (Dado().tiraDado() % 2 == 0):
 				self.player.turnoMio = True
 				self.com.turnoMio = False
 				

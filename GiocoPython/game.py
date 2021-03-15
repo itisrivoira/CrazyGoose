@@ -26,7 +26,7 @@ class Game():
         self.title = pygame.display.set_caption("Crazy Goose")
         
         #Carico l'icona
-        icon = pygame.image.load("../Logo/logo_32x32.png")
+        icon = pygame.image.load("../CrazyGoose/Logo/logo_32x32.png")
         pygame.display.set_icon(icon)
 
         #Creo i vari menu e il GIOCO
@@ -76,7 +76,7 @@ class Game():
                 
 
             #Se sta giocando controllo anche l'evento del mouse
-            if(not self.crazyGoose == None and self.crazyGoose.giocoPartito == True):
+            if(not self.crazyGoose == None and self.crazyGoose.partitaTerminata == False):
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.playing = False
@@ -91,6 +91,8 @@ class Game():
         #Risetto il flag a False così potrà RIAPRIRE il gioco
         # (andando di nuovo su "start game")
         self.crazyGoose.giocoPartito = False
+        #cosi potrà rifare la scelta della pedina
+        self.crazyGoose.sceltaPedina.sceltaFatta = False
         #Risetto il menu principale per farlo mostrare
         self.curr_menu = self.main_menu           
 
