@@ -7,13 +7,35 @@
     font-family: Helvetica;
 }
 
-#divFutRelease {
-    margin-left: 400px;
+#divVolume {
+    margin-left: 450px;
     margin-top: 60px;
+    height: 70px;
     border: 1px solid rgb(0, 127, 255);
 }
 
-#futureRelease {
+#divResolution {
+    margin-left: 430px;
+    margin-top: 0px;
+    height: 70px;
+    border: 1px solid rgb(0, 127, 255);
+}
+
+#divControls {
+    margin-left: 440px;
+    margin-top: 0px;
+    height: 70px;
+    border: 1px solid rgb(0, 127, 255);
+}
+
+#divBack {
+    margin-left: 465px;
+    margin-top: 0px;
+    height: 70px;
+    border: 1px solid rgb(0, 127, 255);
+}
+
+.vociOpzioni {
     font-size: 30px;
     background-color: rgb(0, 127, 255);
     color: white;

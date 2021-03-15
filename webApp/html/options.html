@@ -20,8 +20,17 @@
         <div id="divTitolo">
             <p id="titolo">Options</p>
         </div>
-        <div id="divFutRelease">
-            <p id="futureRelease">Future release</p>
+        <div id="divVolume">
+            <p class="vociOpzioni">Volume</p>
+        </div>
+        <div id="divResolution">
+            <p class="vociOpzioni">Resolution</p>
+        </div>
+        <div id="divControls">
+            <p class="vociOpzioni">Controls</p>
+        </div>
+        <div id="divBack">
+            <p class="vociOpzioni" onclick="exit()">Back</p>
         </div>
     </div>
     <script>
@@ -30,6 +39,10 @@
                 window.location = "./index.html"
             }
         })
+
+        function exit() {
+            window.location = "./index.html"
+        }
     </script>
 </body>
 
