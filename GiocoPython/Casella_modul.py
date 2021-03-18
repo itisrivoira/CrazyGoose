@@ -109,7 +109,8 @@ class Casella():
 		textWidth = font.size(numCasella)[0]
 		textHeight = font.size(numCasella)[1]
 		
-		pygame.draw.rect(self.display, (255,255,255),
+		#uno sfondo al numero della casella
+		pygame.draw.rect(self.display, (220,220,220),
 						 pygame.Rect(self.getCenterX()-textWidth/2,
 									 self.getCenterY()-self.height/2-textHeight/2,
 									 textWidth, textHeight))

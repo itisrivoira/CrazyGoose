@@ -64,15 +64,18 @@ class SceltaPedina():
         self.rectOcaBlu = pygame.Rect((self.game.DISPLAY_W / 2 - 25 - 300), 390, 280, 280)
         self.rectOcaRossa = pygame.Rect((self.game.DISPLAY_W / 2 + 25), 390, 280, 280)
         
-        pygame.draw.rect(self.game.display, (255, 255, 0), self.rectOcaGialla
-                         # se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO, se < 0 NON DISEGNA
-                         , 1
-                         # border-radius (per arrotondare gli angoli)
-                         , 6)
-        pygame.draw.rect(self.game.display, (0, 255, 0), self.rectOcaVerde, 1, 6)
-        pygame.draw.rect(self.game.display, (0, 0, 255), self.rectOcaBlu, 1, 6)
-        pygame.draw.rect(self.game.display, (255, 0, 0), self.rectOcaRossa, 1, 6)
+        self.mostraRettangoloOca(self.rectOcaGialla, (255,255,0))
+        self.mostraRettangoloOca(self.rectOcaVerde, (0,255,0))
+        self.mostraRettangoloOca(self.rectOcaBlu, (0,0,230))
+        self.mostraRettangoloOca(self.rectOcaRossa, (255,0,0))
         
+    
+    def mostraRettangoloOca(self, rectOca, color):
+        pygame.draw.rect(self.game.display, color, rectOca, 0, 6)
+        pygame.draw.rect(self.game.display, self.game.AZZURRO, pygame.Rect(
+            rectOca.x + 3, rectOca.y + 3,
+            rectOca.width - 6, rectOca.height - 6
+        ), 0, 6)
         
         
     def mostraOca(self):
@@ -106,11 +109,11 @@ class SceltaPedina():
                              , 50)
 
         if (self.mouseOver == "blu"):
-            self.mostraDescrOca(DESCR_OCA_BLU, self.rectOcaBlu, (0,0,255))
+            self.mostraDescrOca(DESCR_OCA_BLU, self.rectOcaBlu, (0,0,230))
         else:
-            self.mostraNomeOca("OCA BLU", self.rectOcaBlu, (0,0,255))
+            self.mostraNomeOca("OCA BLU", self.rectOcaBlu, (0,0,230))
             # TODO mettere l'img della pedina
-            pygame.draw.rect(self.game.display, (0,0,255),
+            pygame.draw.rect(self.game.display, (0,0,230),
                              pygame.Rect(self.rectOcaBlu.x + self.rectOcaBlu.width / 2 - 50,
                                          self.rectOcaBlu.y + self.rectOcaBlu.height / 2,
                                          100, 100)

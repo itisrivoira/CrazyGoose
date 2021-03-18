@@ -45,7 +45,14 @@ class Giocatore():
 		self.turnoMio = False
 		self.turniFermo = 0
 		self.vincitore = False
-			
+			# il flag mi serve per spostare la scritta che indentifica il giocatore
+			# quando esso si trova su una casella con un effetto (così da non stare
+			# sopra l'effetto (sennò non si capisce più nnt)
+		self.sopraEffetto = False
+			# il flag mi serve per "bloccare" il click sul dado mentre il giocatore non
+			# ha ancora finito di muoversi)
+		self.isMoving = False
+		
 		self.ultimoMsg = ""
 		self.penultimoMsg = ""
 
@@ -74,6 +81,7 @@ class Giocatore():
 		if(self.posizione+spostamento <= QTA_CASELLE_TOTALI):
 				#aggiorno la posizione
 			self.posizione += spostamento
+			self.sopraEffetto = False
 			
 			try:
 				if(controllaCasella):
@@ -241,10 +249,10 @@ class Giocatore():
 			x = self.caselle[self.posizione-1].getCenterX()
 			y = self.caselle[self.posizione-1].getCenterY()
 			
-			if(posAvvessario == self.posizione):
+			if(posAvvessario == self.posizione or self.sopraEffetto):
 				if(self.tag == "PL1"):
 					#più in alto
-					y -= 20
+					y -= 17
 				else:
 					# più in basso
 					y += 15
@@ -260,8 +268,14 @@ class Giocatore():
 			#subito turnoMio = False, tuttavia potrebbe essere risettato a True se il
 			# giocatore finisce sulla casella TIRA_DI_NUOVO
 		self.turnoMio = False
+		
+		#il flag tornerà a False solo quando l'animazione sarà finita (mi
+		# serve per "bloccare" il click sul dado mentre il giocatore non
+		# ha ancora finito di muoversi)
+		self.isMoving = True
 		self.posiziona(spostamento)
-
+		self.isMoving = False
+		
 			#Ritorna indietro il flag, in questo modo si saprà a chi toccherà
 		return self.turnoMio
 	
@@ -281,36 +295,45 @@ class Giocatore():
 		if(codCasella == TIRA_DI_NUOVO[0]):
 			msg = "TIRA ANCORA IL DADO"
 			self.turnoMio = True
+			self.sopraEffetto = True
 
 		elif(codCasella == INDIETRO_DI_UNO[0]):
 			msg = "INDIETRO DI UNA CASELLA"
 			spostamento = -1
+			self.sopraEffetto = True
 
 		elif(codCasella == INDIETRO_DI_TRE[0]):
 			msg = "INDIETRO DI TRE CASELLE"
 			spostamento = -3
+			self.sopraEffetto = True
 
 		elif(codCasella == AVANTI_DI_UNO[0]):
 			msg = "AVANTI DI UNA CASELLA"
 			spostamento = 1
+			self.sopraEffetto = True
 
 		elif(codCasella == AVANTI_DI_QUATTRO[0]):
 			msg = "AVANTI DI QUATTRO CASELLE"
 			spostamento = 4
+			self.sopraEffetto = True
 
 		elif(codCasella == FERMO_DA_UNO[0]):
 			msg = "FERMO PER UN GIRO"
 			self.turniFermo = 1
+			self.sopraEffetto = True
 
 		elif(codCasella == FERMO_DA_DUE[0]):
 			msg = "FERMO PER DUE GIRI"
 			self.turniFermo = 2
+			self.sopraEffetto = True
 
 		elif(codCasella == TORNA_ALL_INIZIO):
 			msg = "RICOMINCIA DA CAPO !!!"
 			#Lo fa ritornare alla 1° casella
 			#Dalla posizione == 39 va alla 1° ==> si muove di 38 posizioni indietro
 			spostamento = -(self.posizione-1)
+			self.sopraEffetto = True
+			
 		elif(codCasella == VITTORIA):
 			# print("HAI VINTO "+self.tag+" !!!" )
 			self.vincitore = True

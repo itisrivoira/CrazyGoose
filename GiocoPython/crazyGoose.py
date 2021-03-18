@@ -10,6 +10,7 @@ import random
 import time
 import threading
 
+NOME_GIOCO = "CRAZY GOOSE"
 INFO_PL1 = "Tu (PL1)"
 INFO_COM = "Computer (COM)"
 INFO_DADO_PL1 = "Dado PL1: "
@@ -139,10 +140,12 @@ class CrazyGoose():
 		
 		# Controlli per il dado (il button) del PL1
 		#Controllo che sia il turno del PL1 (cioè che sia il suo turno OPPURE l'avversario abbia un fermo)
-		if (self.aChiTocca and self.buttonDadoPL1 != None):
+		if (self.aChiTocca and (not self.player.isMoving) and self.buttonDadoPL1 != None):
 			if(self.buttonDadoPL1.detectMouseOver(mousePosition)):
 				self.tiraDado()
-
+		else:
+			if (self.player != None and self.player.isMoving):
+				print("muovendo")
 
 	def mouseOver(self, mousePosition):
 		#controlli per la scelta della pedina
@@ -182,6 +185,8 @@ class CrazyGoose():
 		self.posizionaLeCaselle()
 			#Scrive nelle caselle il loro effetto
 		self.riempiCaselle()
+			
+		draw_text(self.game, NOME_GIOCO, 45, (0, 127, 255), self.game.DISPLAY_W / 2, 40)
 		
 		draw_text(self.game, INFO_PL1, 15, self.game.BLACK, 50, 20)
 		draw_text(self.game, INFO_DADO_PL1, 16, self.game.BLACK, 55, 60)
@@ -200,7 +205,7 @@ class CrazyGoose():
 		
 		
 		draw_text(self.game, INFO_COM, 14, self.game.BLACK, 930, 20)
-		draw_text(self.game, (INFO_DADO_COM+self.valDadoCOM), 14, self.game.BLACK, 917, 60)
+		draw_text(self.game, (INFO_DADO_COM+self.valDadoCOM), 16, self.game.BLACK, 917, 60)
 		self.scriviEffetti(self.com, False)
 
 		if(giocDaNonDisegnare != "PL1"):
@@ -241,7 +246,7 @@ class CrazyGoose():
 	
 	def scriviEffetti(self, player_com, isPL1):
 		if(player_com != None):
-			pxTesto = 13
+			pxTesto = 14
 			font = pygame.font.Font(self.game.font_name, pxTesto)
 			xRect = 20
 
@@ -277,6 +282,7 @@ class CrazyGoose():
 					pygame.draw.rect(self.game.display, self.game.BLACK, pygame.Rect(xRect, yRect, dimTesto[0]+7, dimTesto[1]+2), 1)
 				
 					draw_text(self.game, player_com.penultimoMsg, pxTesto, self.game.BLACK, xText, yText)
+	
 	
 	def tiraDado(self):
 			#Se la partita è terminata "blocca" la funzionalità del dado
