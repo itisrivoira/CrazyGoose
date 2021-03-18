@@ -72,7 +72,7 @@ class Giocatore {
             }
         } else {
             //Calcolo lo spostamento che dovrà fare dalla casella attuale
-            newSpostamento = (QTA_CASELLE_TOTALI - (spostamento - (QTA_CASELLE_TOTALI - this.posizione))) - this.posizione
+            let newSpostamento = (QTA_CASELLE_TOTALI - (spostamento - (QTA_CASELLE_TOTALI - this.posizione))) - this.posizione
                 //( se servisse mai la posizione della casella in cui finirà... è newSpostamento+this.posizione
                 // (cioè il calcolo qua sopra senza quel "- this.posizione") )
 
