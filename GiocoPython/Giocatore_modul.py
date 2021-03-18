@@ -61,6 +61,9 @@ class Giocatore():
 		#crea e posiziona l'ellisse (la casella) prima dell'inizio del percorso
 		# poi inserisce la scritta che identifica il giocatore
 		self.casellaIniziale = Casella(self.game.display, x, y)
+		pygame.draw.ellipse(self.game.display, (255,255,255),
+							(self.casellaIniziale.x+2, self.casellaIniziale.y+2,
+							 self.casellaIniziale.width-4, self.casellaIniziale.height-4), 0)
 		
 		draw_text(self.game, self.tag, 12, self.colorePedina
 				  , self.casellaIniziale.getCenterX(), self.casellaIniziale.getCenterY())

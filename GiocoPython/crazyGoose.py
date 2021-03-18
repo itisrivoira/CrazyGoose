@@ -443,9 +443,9 @@ class CrazyGoose():
 		i=1
 		for i in range(QTA_CASELLE_TOTALI+1):
 			if(i in self.percorso.dictCaselle.keys()):
-				self.caselle[i-1].settaEffetto(self.percorso.dictCaselle[i], self.game.font_name)
+				self.caselle[i-1].settaEffetto(self.percorso.dictCaselle[i], self.game.font_name, i)
 			else:	#chiave inesistente (cioè posizione VUOTA)
-				self.caselle[i-1].settaEffetto(-1, self.game.font_name)
+				self.caselle[i-1].settaEffetto(-1, self.game.font_name, i)
 
 
 	def posizionaLeCaselle(self):

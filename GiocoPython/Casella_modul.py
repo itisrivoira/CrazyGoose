@@ -21,61 +21,103 @@ class Casella():
 		self.width = width
 		self.height = height
 
-		pygame.draw.ellipse(self.display, (0, 0, 0, 1), (self.x, self.y, self.width, self.height), 1)
+		pygame.draw.ellipse(self.display, (0, 0, 0, 1), (self.x, self.y, self.width, self.height), 0)
+		
 	
-	def settaEffetto(self, codCasella, font_name):
+	def settaEffetto(self, codCasella, font_name, numCasella):
 		#Metodo con il inserisco il testo relativo al codCasella associato
 		# nella casella, cioè l'effetto
 		testo = ""
+		color = (255,255,255)
 		if(codCasella == TIRA_DI_NUOVO[0]):
-			testo = "Ri-tira\nil dado"
+			testo = "X2"
+			color = (170,255,0)
 		elif(codCasella == INDIETRO_DI_UNO[0]):
-			testo = "Indetro\ndi 1"
+			testo = "-1"
+			color = (250, 160, 70)
 		elif(codCasella == INDIETRO_DI_TRE[0]):
-			testo = "Indietro\ndi 3"
+			testo = "-3"
+			color = (200, 80, 30)
 		elif(codCasella == AVANTI_DI_UNO[0]):
-			testo = "Avanti\ndi 1 !"
+			testo = "+1"
+			color = (30, 190, 30)
 		elif(codCasella == AVANTI_DI_QUATTRO[0]):
-			testo = "Avanti\ndi 4 !"
+			testo = "+4"
+			color = (20, 135, 20)
 		elif(codCasella == FERMO_DA_UNO[0]):
-			testo = "Fermo\nun giro"
+			testo = "ALT"
+			color = (220,60,60)
 		elif(codCasella == FERMO_DA_DUE[0]):
-			testo = "Fermo\ndue giri"
+			testo = "ALT X2"
+			color = (220, 0, 0)
 		elif(codCasella == TORNA_ALL_INIZIO):
-			testo = "Torna\nall'inizio !"
+			testo = "DA CAPO !"
+			color = (255, 0, 0)
 		elif(codCasella == VITTORIA):
 			testo = "HAI\nVINTO !!!"
+			color = (80, 80, 230)
+		
+		pygame.draw.ellipse(self.display, color, (self.x+2, self.y+2, self.width-4, self.height-4), 0)
 		
 		if(len(testo) > 0):
-			font = pygame.font.Font(font_name, 14)
-			#Prendo l'altezza che avrà il testo (non cambia l'altezza se
-			# cambia il testo, quindi richiamo il metodo .size con una
-			# qualunque stringa)
-			#Il metodo .size(testo) ritorna una tupla con la larghezza
-			# e l'altezza del testo (prendo solo l'altezza ora)
-			heightOfText = font.size("TXT")[1]
+			if(codCasella == VITTORIA):
+				
+				font = pygame.font.Font(font_name, 17)
+				#Prendo l'altezza che avrà il testo (non cambia l'altezza se
+				# cambia il testo, quindi richiamo il metodo .size con una
+				# qualunque stringa)
+				#Il metodo .size(testo) ritorna una tupla con la larghezza
+				# e l'altezza del testo (prendo solo l'altezza ora)
+				heightOfText = font.size("TXT")[1]
+				
+				#CON PYGAME NON SI POSSONO SCRIVERE STRINGHE CON DEGLI A CAPO
+				# BISOGNA SPEZZARE E FARE PIÙ "AREE DI TESTO"
+				
+				#Divide il testo dove ci sono "\n"
+				text = testo.splitlines()
+				
+				#N.B. SONO SICURO CHE text AVRÀ SOLO 2 RIGHE XKÈ SO COSA PUç CONTENERE "testo"
+				# QUINDI QUESTO NON FUNZIONA CON FRASI CON PIÙ DI 1 "\n"
+				
+				text_surface = font.render(text[0], True, (0, 0, 0, 1))
+				text_rect = text_surface.get_rect()
+				#Posiziona la prima riga leggermente sopra il centro dell'ellisse
+				text_rect.center = (self.getCenterX(), self.getCenterY()-(heightOfText/3)-5)
+				self.display.blit(text_surface, text_rect)
+				
+				text_surface = font.render(text[1], True, (0, 0, 0, 1))
+				text_rect = text_surface.get_rect()
+				#Posiziona la seconda riga leggermente sotto il centro dell'ellisse
+				# (per non collidere con l'altra scritta)
+				text_rect.center = (self.getCenterX(), self.getCenterY()+heightOfText-5)
+				self.display.blit(text_surface, text_rect)
+			else:
+				font = pygame.font.Font(font_name, 15)
+				
+				text_surface = font.render(testo, True, (0, 0, 0, 1))
+				text_rect = text_surface.get_rect()
+				text_rect.center = (self.getCenterX(), self.getCenterY())
+				self.display.blit(text_surface, text_rect)
 			
-			#CON PYGAME NON SI POSSONO SCRIVERE STRINGHE CON DEGLI A CAPO
-			# BISOGNA SPEZZARE E FARE PIÙ "AREE DI TESTO"
 			
-			#Divide il testo dove ci sono "\n"
-			text = testo.splitlines()
-			
-			#N.B. SONO SICURO CHE text AVRÀ SOLO 2 RIGHE XKÈ SO COSA PUç CONTENERE "testo"
-			# QUINDI QUESTO NON FUNZIONA CON FRASI CON PIÙ DI 1 "\n"
-			
-			text_surface = font.render(text[0], True, (0, 0, 0, 1))
-			text_rect = text_surface.get_rect()
-			#Posiziona la prima riga leggermente sopra il centro dell'ellisse
-			text_rect.center = (self.getCenterX(), self.getCenterY()-(heightOfText/3)-5)
-			self.display.blit(text_surface, text_rect)
-			
-			text_surface = font.render(text[1], True, (0, 0, 0, 1))
-			text_rect = text_surface.get_rect()
-			#Posiziona la seconda riga leggermente sotto il centro dell'ellisse
-			# (per non collidere con l'altra scritta)
-			text_rect.center = (self.getCenterX(), self.getCenterY()+heightOfText-5)
-			self.display.blit(text_surface, text_rect)
+		self.settaNumCasella(font_name, str(numCasella))
+	
+	
+	def settaNumCasella(self, font_name, numCasella):
+		font = pygame.font.Font(font_name, 13)
+		
+		textWidth = font.size(numCasella)[0]
+		textHeight = font.size(numCasella)[1]
+		
+		pygame.draw.rect(self.display, (255,255,255),
+						 pygame.Rect(self.getCenterX()-textWidth/2,
+									 self.getCenterY()-self.height/2-textHeight/2,
+									 textWidth, textHeight))
+		
+		text_surface = font.render(numCasella, True, (0, 0, 0, 1))
+		text_rect = text_surface.get_rect()
+		text_rect.center = (self.getCenterX()-1, self.getCenterY()-self.height/2)
+		self.display.blit(text_surface, text_rect)
 		
 		
 	def getCenterX(self):
