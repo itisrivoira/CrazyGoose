@@ -100,28 +100,7 @@ a {
     text-decoration: none
 }
 
-.btnRegistrati{
-    align-items: center;
-    align-content: center;
-    padding-top: 40px;
-    color: #56c0bb;
-    font-family: 'Ubuntu', sans-serif;
-    font-weight: bold;
-    font-size: 12px;
-}
-
-
-
-
-
-
-
-
-
 @media (max-width: 600px) {
     .main {
         border-radius: 0px;
     }
-
-
-

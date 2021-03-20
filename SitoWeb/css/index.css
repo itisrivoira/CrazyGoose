@@ -6,6 +6,10 @@
     padding: 4vh;
 }
 
+.newNavbar {
+    width: 100%;
+    background-color: rgba(92, 58, 142, 0.87);
+}
 
 /* CSS per le flip-card delle 4 pedine */
 
@@ -161,7 +165,7 @@
 }
 
 #imgRegole {
-    background-image: url(../img/regole.jpg);
+    background-image: url(../img/bianco.jpg);
     width: 100%;
     height: 250px;
     /* Center and scale the image nicely */
@@ -229,11 +233,31 @@ footer p {
 
 
 
+.btnIn {
+      cursor: pointer;
+      border-radius: 5em;
+      color: #fff;
+      background: purple;/*linear-gradient(to right, #c1a8c5, #000000);*/
+      border: 0;
+      padding-left: 40px;
+      padding-right: 40px;
+      padding-bottom: 10px;
+      padding-top: 10px;
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 13px;
+      box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
 
-
-
-
-
+}
+  
+.carousel-item {
+    height: 65vh;
+    min-height: 350px;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
 
 
 
