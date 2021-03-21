@@ -1,0 +1,34 @@
+/*Proprietà CSS usati anche in altri file*/
+
+#areaMenu {
+    /*margin-top: 90px;*/
+    width: 1000px;
+    height: 100vh;
+    /*100%*/
+    /* border: 1px solid rgb(0, 127, 255);
+    background: rgb(0, 127, 255); */
+    background: rgb(187, 2, 233);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#divTitolo {
+    /*margin-top: 30px;*/
+    text-align: center;
+    border: 1px solid rgb(187, 2, 233);
+    height: 100px;
+}
+
+#imgTitolo {
+    /*margin-top: 30px;*/
+    height: 250px;
+    text-align: center;
+    /* border: 1px solid black; */
+}
+
+#scritta {
+    height: 600px;
+    width: 1000px;
+    /* border: 1px solid black; */
+}
