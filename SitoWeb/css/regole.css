@@ -1,15 +1,68 @@
-#csbo{
+body {
     background-color: rgba(92, 58, 142, 0.87);
 }
 
-.titoli{
+.col {
+    padding: 0px;
+}
+
+#titolo {
     color: aliceblue;
     font-family: Ubuntu;
+    font-size: 40px;
     text-align: center;
 }
 
-.testo{
+.titoli {
     color: aliceblue;
     font-family: Ubuntu;
+    font-size: 27px;
     text-align: center;
+}
+
+#rowLogoGrande {
+    margin-bottom: 100px;
+}
+
+.rowParteDellaDoc {
+    margin-bottom: 70px;
+}
+
+.testo {
+    color: aliceblue;
+    font-family: Ubuntu;
+    font-size: 16px;
+    text-align: center;
+}
+
+
+/* CSS PER I COLLAPSIBLE */
+
+.collapsible {
+    background-color: rgb(82, 9, 116);
+    color: aliceblue;
+    font-family: Ubuntu;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+
+/*Cambia sfondo quando ci passi sopra col mouse*/
+
+.active,
+.collapsible:hover {
+    background-color: rgb(92, 0, 134);
+}
+
+.content {
+    color: aliceblue;
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: rgb(58, 0, 85);
 }

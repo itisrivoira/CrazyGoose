@@ -1,20 +1,38 @@
-* {
-    box-sizing: border-box;
+.row {
     background-color: #F3EBF6;
-  }
-  
- 
-  .titoli{
+}
+
+body {
+    background-color: #F3EBF6;
+    font-family: Ubuntu, sans-serif;
+}
+
+#primoTitolo {
+    margin-top: 30px;
+}
+
+.titoli {
     color: #8C55AA;
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
     font-size: 23px;
-  }
+}
 
+.column {
+    float: left;
+    width: 50%;
+    margin-top: 6px;
+    padding: 20px;
+}
 
+label {
+    float: left;
+    padding-top: 12px;
+    margin-right: 40px;
+    width: 80px;
+}
 
-
-.caselle{
+.caselle {
     width: 75%;
     color: rgb(38, 50, 56);
     font-weight: 700;
@@ -28,40 +46,25 @@
     box-sizing: border-box;
     border: 2px solid rgba(0, 0, 0, 0.02);
     margin-bottom: 50px;
-    margin-left: 46px;
+    margin-left: 0px;
     margin-bottom: 27px;
     font-family: 'Ubuntu', sans-serif;
+    float: left;
 }
-  
-  .submit {
+
+#testo {
+    height: 170px;
+}
+
+#submit {
     background-color: #883d7b;
-    color: white;
+    color: aliceblue;
+    width: 100px;
     padding: 12px 20px;
     border: none;
     cursor: pointer;
-  }
-  
-  .submit :hover {
-    background-color: #883d7b;
-  }
-  
+}
 
-  .container {
-    background-color: #F3EBF6;
-    padding: 15px;
-  }
-  
-  .column {
-    float: left;
-    width: 50%;
-    margin-top: 6px;
-    padding: 20px;
-  }
-  
-
-  .row:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-  
+#submit:hover {
+    background-color: #974c8b;
+}

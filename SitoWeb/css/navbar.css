@@ -1,27 +1,25 @@
 /*NAVIGATION BAR*/
 
-.navbar {
-    width: 100%;
-    background-color: rgb(255, 255, 255);
+#rowNavbar {
+    background-color: rgba(85, 48, 139, 0.87);
 }
 
 #logo {
     width: 80px;
     height: 80px;
+    float: left;
 }
 
-.navbar a {
+.linkNavbar {
+    padding: 10px;
+    margin-top: 15px;
     float: left;
-    padding: 0.9vw;
-    color: rgb(129, 7, 123);
     text-decoration: none;
     font-size: 17px;
-    font-family:fantasy;
+    font-family: fantasy;
+    color: aliceblue;
 }
 
-@media screen and (max-width: 500px) {
-    .navbar a {
-        float: none;
-        display: block;
-    }
+.linkNavbar:hover {
+    color: aliceblue;
 }

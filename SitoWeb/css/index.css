@@ -1,17 +1,80 @@
+/*Uso quasi ovunque questo font, quindi lo imposto come "default"*/
+
+body {
+    font-family: Ubuntu, sans-serif;
+    color: aliceblue;
+}
+
+.classTestoNero {
+    color: black;
+}
+
 .container-fluid {
     background-color: rgba(92, 58, 142, 0.87);
 }
 
-#corpoCentrale {
+.col {
+    padding: 0px;
+}
+
+.carousel-item {
+    height: 65vh;
+    min-height: 350px;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.titoloSchedaCarousel {
+    color: aliceblue;
+    font-size: 55px;
+}
+
+
+/*In questi due devo ribadire il colore xke ci sono dei tag <a>, link, che sono impostati per essere di colore 
+blu/azzurro (classe sopra e sotto il commento)*/
+
+.titoloSchedaCarousel:hover {
+    color: aliceblue;
+}
+
+.introduz_giocoERegole {
     padding: 4vh;
+    width: 70vw;
+    text-align: center;
 }
 
-.newNavbar {
-    width: 100%;
-    background-color: rgba(92, 58, 142, 0.87);
+.btnIn {
+    color: aliceblue;
+    cursor: pointer;
+    border-radius: 5em;
+    background: purple;
+    /*linear-gradient(to right, #c1a8c5, #000000);*/
+    border: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: 13px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
 }
 
-/* CSS per le flip-card delle 4 pedine */
+#rowAccediRegistrati {
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: white;
+    padding: 20px;
+}
+
+.btnIn:hover {
+    color: aliceblue;
+    text-decoration: underline;
+}
+
+
+/*--- CSS per le flip-card delle 4 pedine ---*/
 
 .flip-card {
     top: 10px;
@@ -45,13 +108,17 @@
 }
 
 .flip-card-front {
-    background-color: rgb(226 103 22);
+    background-color: rgb(226, 103, 22);
     color: black;
 }
 
 .flip-card-back {
     color: black;
     transform: rotateY(180deg);
+}
+
+.flip-card-inner p {
+    background-color: white;
 }
 
 .colContainerFlipCard {
@@ -68,6 +135,10 @@
     background-image: url(../img/ocagialla.png);
 }
 
+.cardBackOcaGialla p {
+    background-color: rgb(126, 116, 105);
+}
+
 .cardFrontOcaBlu {
     color: blue;
     background-image: url(../img/ocablu.png);
@@ -78,6 +149,10 @@
     background-color: blue;
     color: blue;
     background-image: url(../img/ocablu.png);
+}
+
+.cardBackOcaBlu p {
+    background-color: rgb(126, 116, 105);
 }
 
 .cardFrontOcaVerde {
@@ -97,189 +172,35 @@
 }
 
 .cardBackOcaRossa {
-    color:red;
+    color: red;
     background-color: red;
     background-image: url(../img/ocarossa.png);
 }
 
 
-/*Collapsible (Domande del FAQ)*/
+/*---------- FINE CSS per le flip-card delle 4 pedine --------------*/
 
-.containerDomande {
-    padding-left: 3vw;
-    padding-top: 1vh;
-    margin-right: 3vw;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease-out;
-    ;
+#footer {
+    margin-top: 100px;
+    background-color: rgb(63, 1, 92);
+    min-height: 250px;
+    padding: 10px 0px 25px 0px;
+    text-align: center;
 }
 
-.content {
-    margin-right: 10vw;
-    margin-bottom: 0.8vh;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease-out;
-    background-color: #f1f1f1;
-}
-
-.collapsible {
-    background-color: #777;
-    color: white;
-    cursor: pointer;
-    padding: 18px;
-    width: 100vw;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 15px;
-}
-
-
-/*.active {
-	background-color: #2174e0;
-}*/
-
-.active,
-.collapsible:hover {
-    background-color: #555;
-}
-
-.active:after {
-    content: "\1796";
-    /* codice del segno - */
-}
-
-.collapsible:after {
-    content: '\2795';
-    /*codice del segno + */
+#footer p {
     font-size: 13px;
-    color: white;
-    float: right;
-    margin-left: 8px;
+    color: #CCC;
+    padding-bottom: 0px;
+    margin-bottom: 8px;
 }
 
-#FAQ {
-    margin-bottom: 2vh;
+#margine {
+    border-bottom: 1px solid #ffffff;
+    padding-bottom: 20px;
 }
 
-#imgRegole {
-    background-image: url(../img/bianco.jpg);
-    width: 100%;
-    height: 250px;
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    /* Needed to position the navbar */
-    position: relative;
+.minititoli {
+    padding-top: 40px;
+    margin-bottom: 20px;
 }
-
-#contRegole {
-    position: absolute;
-    margin: 20px;
-    width: auto;
-}
-
-#miniBar {
-    float: left;
-    color: rgb(91, 58, 142);
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-}
-
-#miniBar {
-    background-color: rgb(91, 58, 142);
-    color: black;
-}
-
-.fondoPagina {
-    width: 100%;
-    height: 200px;
-    text-align: center;
-}
-
-
-.minititoli{
-    color:#FFF;
-    padding-top:40px ; 
-    margin-bottom:20px ;
-
-} 
-    
-.footer { 
-    width:100%; 
-    background-color:rgb(63, 1, 92); 
-    min-height:250px; 
-    padding:10px 0px 25px 0px ;
-}
-
-footer p { 
-    font-size:13px; 
-    color:#CCC; 
-    padding-bottom:0px; 
-    margin-bottom:8px;
-}
-
-
-
-.margine { 
-    border-bottom:1px solid #ffffff; 
-    padding-bottom:20px;
-}
-
-
-
-.btnIn {
-      cursor: pointer;
-      border-radius: 5em;
-      color: #fff;
-      background: purple;/*linear-gradient(to right, #c1a8c5, #000000);*/
-      border: 0;
-      padding-left: 40px;
-      padding-right: 40px;
-      padding-bottom: 10px;
-      padding-top: 10px;
-      font-family: 'Ubuntu', sans-serif;
-      font-size: 13px;
-      box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
-
-}
-  
-.carousel-item {
-    height: 65vh;
-    min-height: 350px;
-    background: no-repeat center center scroll;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

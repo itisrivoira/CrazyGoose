@@ -1,60 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CONTATTACI</title>
     <link rel="stylesheet" href="./css/contattaci.css">
+    <link rel="stylesheet" href="./css/navbar.css">
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
+
 <body>
-    <div class="container">
-        <div style="text-align:center">
-          <h2 class="titoli">Contatta direttamente i creatori!!!</h2>
-          <p class="titoli">Se hai un dubbio scrivilo:</p>
+    <div class="container-fluid">
+        <div class="row" id="rowNavbar">
+            <div class="col">
+                <img id="logo" src="./img/logo_32x32.png">
+                <a class="linkNavbar" href="./index.html"><b>Home</b></a>
+                <a class="linkNavbar" href="./Login.html"><b>Login</b></a>
+                <a class="linkNavbar" href="./registrati.html"><b>Registrati</b></a>
+            </div>
         </div>
         <div class="row">
-          <div class="column">
-            <img id="logo" src="./img/logo_dim_originale.png" style="width: 500px; height: 500px;">
-          </div>
-          <div class="column">
-            <form action="/action_page.php">
-              <label style="font-family: 'Ubuntu', sans-serif;">Nome:</label>
-              <input class="caselle" type="text" id="fname" name="nome" placeholder="Giovanni..">
-              <label style="font-family: 'Ubuntu', sans-serif;">Cognome: </label>
-              <input class="caselle" type="text" id="lname" name="cognome" placeholder="Rossi..">
-              <label for="country" style="font-family: 'Ubuntu', sans-serif;">Regione: </label>
-              <select class="caselle" id="country" name="Regione">
-                <option value="abruzzo">Abruzzo</option>
-                <option value="basilicata">Basilicata</option>
-                <option value="calabria">Calabria</option>
-                <option value="campania">Campania</option>
-                <option value="emilia-romagna">Emilia-Romagna</option>
-                <option value="friuli">Friuli Venezia Giulia</option>
-                <option value="lazio">Lazio</option>
-                <option value="liguria">Liguria</option>
-                <option value="lombardia">Lombardia</option>
-                <option value="marche">Marche</option>
-                <option value="molise">Molise</option>
-                <option value="piemonte">Piemonte</option>
-                <option value="puglia">Puglia</option>
-                <option value="sardegna">Sardegna</option>
-                <option value="sicilia">Sicilia</option>
-                <option value="toscana">Toscana</option>
-                <option value="trentino">Trentino Alto-Adige</option>
-                <option value="umbria">Umbria</option>
-                <option value="valle D'aosta">Valle D'Aosta</option>
-                <option value="veneto">Veneto</option>
-              </select>
-              <label for="subject" style="font-family: 'Ubuntu', sans-serif;">Oggetto:</label><br>
-              <textarea class="caselle" id="testo" name="testo" style="height:170px"></textarea><br><br>
-              <input type="submit" value="Submit" class="submit">
-            </form>
-          </div>
+            <div class="col d-flex justify-content-center">
+                <h2 id="primoTitolo" class="titoli">Contatta direttamente i creatori!!!</h2>
+            </div>
         </div>
-      </div>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <p class="titoli">Se hai un dubbio scrivilo:</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 column">
+                <img id="logo" src="./img/logo_dim_originale.png" style="width: 500px; height: 500px;">
+            </div>
+            <div class="col-6 column">
+                <form action="" method="get">
+                    <label>Nome:</label>
+                    <input class="caselle" type="text" name="nome" placeholder="Giovanni..">
+                    <br><label>Cognome:</label>
+                    <input class="caselle" type="text" name="cognome" placeholder="Rossi..">
+                    <br><label>Regione:</label>
+                    <select class="caselle" id="country" name="Regione">
+						<option value="abruzzo">Abruzzo</option>
+						<option value="basilicata">Basilicata</option>
+						<option value="calabria">Calabria</option>
+						<option value="campania">Campania</option>
+						<option value="emilia-romagna">Emilia-Romagna</option>
+						<option value="friuli">Friuli Venezia Giulia</option>
+						<option value="lazio">Lazio</option>
+						<option value="liguria">Liguria</option>
+						<option value="lombardia">Lombardia</option>
+						<option value="marche">Marche</option>
+						<option value="molise">Molise</option>
+						<option value="piemonte">Piemonte</option>
+						<option value="puglia">Puglia</option>
+						<option value="sardegna">Sardegna</option>
+						<option value="sicilia">Sicilia</option>
+						<option value="toscana">Toscana</option>
+						<option value="trentino">Trentino Alto-Adige</option>
+						<option value="umbria">Umbria</option>
+						<option value="valle D'aosta">Valle D'Aosta</option>
+						<option value="veneto">Veneto</option>
+					</select>
+                    <label>Oggetto:</label><br>
+                    <textarea class="caselle" id="testo" name="testo"></textarea><br><br>
+                    <center><input type="submit" value="Invia" id="submit"></center>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js " integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo " crossorigin="anonymous "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js " integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 " crossorigin="anonymous "></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js " integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy " crossorigin="anonymous "></script>
 </body>
+
 </html>
-
-
