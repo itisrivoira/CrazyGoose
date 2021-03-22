@@ -1,6 +1,8 @@
 import pygame
 from globalFunction import *
 
+imgCrazyGoose = pygame.image.load("../Logo/scrittaCrazyGoose_700x230_noBagliore.png")
+
 class Menu():
     def __init__(self, game):
         self.game = game
@@ -45,11 +47,14 @@ class MainMenu(Menu):
             self.check_input()
             #Rimpe tutto lo schemo di Azzurro (sovvrascrivendo tutto ciò che c'era di disegnato prima)
             self.game.display.fill(self.game.AZZURRO)
-            draw_text(self.game, 'CRAZY GOOSE', 70, self.game.WHITE, self.mid_w, self.mid_h - 200)
+
+            self.game.display.blit(imgCrazyGoose, (160, 50))
+
             draw_text(self.game, "Start Game", 30, self.game.WHITE, self.startx, self.starty)
             draw_text(self.game, "Options", 30, self.game.WHITE, self.optionsx, self.optionsy)
             draw_text(self.game, "Credits", 30, self.game.WHITE, self.creditsx, self.creditsy)
             draw_text(self.game, "Quit", 30, self.game.WHITE, self.quitx, self.quity)
+            
             
             self.draw_cursor()
             self.blit_screen()

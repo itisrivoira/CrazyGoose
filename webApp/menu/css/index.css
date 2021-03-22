@@ -7,8 +7,8 @@ COLORI USATI:   rgb(0, 127, 255);
 */
 
 #perimetroGioco {
-    width: 1000px;
-    height: 690px;
+    width: 1920px;
+    height: 1080px;
     border: 1px solid rgb(0, 127, 255);
     background: rgb(0, 127, 255);
     display: block;

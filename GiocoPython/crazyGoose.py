@@ -10,11 +10,13 @@ import random
 import time
 import threading
 
-NOME_GIOCO = "CRAZY GOOSE"
 INFO_PL1 = "Tu (PL1)"
 INFO_COM = "Computer (COM)"
 INFO_DADO_PL1 = "Dado PL1: "
 INFO_DADO_COM = "Dado COM: "
+
+imgCrazyGoose = pygame.image.load("../Logo/scrittaCrazyGoose_400x130_noBagliore.png")
+
 
 class Dado():
 	def __init__(self):
@@ -181,13 +183,13 @@ class CrazyGoose():
 			  posso solo ripartire da foglio bianco a disegnare"""
 		self.game.display.fill(self.game.WHITE)
 		
+		self.game.display.blit(imgCrazyGoose, (300,0))
+		
 			#Riempe la lista di caselle, cioè "disegna" gli ellissi.
 		self.posizionaLeCaselle()
 			#Scrive nelle caselle il loro effetto
 		self.riempiCaselle()
 			
-		draw_text(self.game, NOME_GIOCO, 45, (0, 127, 255), self.game.DISPLAY_W / 2, 40)
-		
 		draw_text(self.game, INFO_PL1, 15, self.game.BLACK, 50, 20)
 		draw_text(self.game, INFO_DADO_PL1, 16, self.game.BLACK, 55, 60)
 		self.scriviEffetti(self.player, True)

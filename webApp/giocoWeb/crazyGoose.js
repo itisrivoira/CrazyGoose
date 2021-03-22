@@ -498,6 +498,7 @@ canvas.addEventListener("mousedown", (event) => {
 window.addEventListener("keydown", (event) => {
     if (event.key == "Escape") {
         gioco.stopCOM()
-        window.location = "../html/index.html"
+            //il gioco gira in /webApp/menu/html/game.html
+        window.location = "./index.html"
     }
 })
