@@ -127,12 +127,12 @@ blu/azzurro (classe sopra e sotto il commento)*/
 
 .cardFrontOcaGialla {
     color: gold;
-    background-image: url(../img/ocagialla.png);
+    background-image: url(../images//ocagialla.png);
 }
 
 .cardBackOcaGialla {
     color: gold;
-    background-image: url(../img/ocagialla.png);
+    background-image: url(../images//ocagialla.png);
 }
 
 .cardBackOcaGialla p {
@@ -141,14 +141,14 @@ blu/azzurro (classe sopra e sotto il commento)*/
 
 .cardFrontOcaBlu {
     color: blue;
-    background-image: url(../img/ocablu.png);
+    background-image: url(../images//ocablu.png);
 }
 
 .cardBackOcaBlu {
     align-items: center;
     background-color: blue;
     color: blue;
-    background-image: url(../img/ocablu.png);
+    background-image: url(../images//ocablu.png);
 }
 
 .cardBackOcaBlu p {
@@ -157,24 +157,24 @@ blu/azzurro (classe sopra e sotto il commento)*/
 
 .cardFrontOcaVerde {
     color: green;
-    background-image: url(../img/ocaverde.png);
+    background-image: url(../images//ocaverde.png);
 }
 
 .cardBackOcaVerde {
     color: green;
     background-color: green;
-    background-image: url(../img/ocaverde.png);
+    background-image: url(../images//ocaverde.png);
 }
 
 .cardFrontOcaRossa {
-    background-image: url(../img/ocarossa.png);
+    background-image: url(../images//ocarossa.png);
     color: rgb(172, 5, 5);
 }
 
 .cardBackOcaRossa {
     color: red;
     background-color: red;
-    background-image: url(../img/ocarossa.png);
+    background-image: url(../images//ocarossa.png);
 }
 
 
