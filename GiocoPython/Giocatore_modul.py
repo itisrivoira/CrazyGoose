@@ -20,6 +20,9 @@ X_PLAYER2 = 25
 Y_PLAYER1 = 565
 Y_PLAYER2 = 630
 
+WIDTH_PEDINA = 65
+HEIGHT_PEDINA = 60
+
 class Giocatore():
 	def __init__(self, crazyGoose, game, caselle, percorso, tag, pedinaScelta=None):
 			#Mi serve per lanciare un suo metodo
@@ -28,17 +31,18 @@ class Giocatore():
 		self.caselle = caselle
 		self.percorso = percorso
 		self.tag = tag
+		self.pedinaScelta = pedinaScelta
 		
 		if(pedinaScelta == "gialla"):
-			self.colorePedina = (255,255,0)
+			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/pedina_gialla.png")
 		elif(pedinaScelta == "verde"):
-			self.colorePedina = (0,255,0)
+			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/pedina_verde.png")
 		elif(pedinaScelta == "blu"):
-			self.colorePedina = (0,0,255)
+			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/pedina_blu.png")
 		elif(pedinaScelta == "rossa"):
-			self.colorePedina = (255,0,0)
+			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/pedina_rossa.png")
 		else:		#caso None, il Giocatore è il COMPUTER
-			self.colorePedina = (255, 0, 0)
+			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/pedina_COM.png")
 
 		self.posizione = 0
 		self.newSpostamento = 0
@@ -55,7 +59,7 @@ class Giocatore():
 		
 		self.ultimoMsg = ""
 		self.penultimoMsg = ""
-
+		self.colorePedina = (255,0,0)
 		self.creaCasellaIniziale()
 
 
@@ -72,9 +76,10 @@ class Giocatore():
 							(self.casellaIniziale.x+2, self.casellaIniziale.y+2,
 							 self.casellaIniziale.width-4, self.casellaIniziale.height-4), 0)
 		
-		draw_text(self.game, self.tag, 12, self.colorePedina
-				  , self.casellaIniziale.getCenterX(), self.casellaIniziale.getCenterY())
-	
+		self.game.display.blit(self.imgPedina,
+							   (self.casellaIniziale.getCenterX() - WIDTH_PEDINA/2,
+								self.casellaIniziale.getCenterY() - HEIGHT_PEDINA/2) )
+		
 	
 	def posiziona(self, spostamento, controllaCasella=True):
 			#Controlla che con il numero che ha fatto non "esca" dal percorso
@@ -235,9 +240,14 @@ class Giocatore():
 				
 				# fermo il loop
 				continua = False
-				draw_text(self.game, self.tag, 12, self.colorePedina, fine_x, fine_y)
+				
+				self.game.display.blit(self.imgPedina,
+									   (fine_x - WIDTH_PEDINA / 2,
+										fine_y - HEIGHT_PEDINA / 2))
 			else:
-				draw_text(self.game, self.tag, 12, self.colorePedina, partenza_x, partenza_y)
+				self.game.display.blit(self.imgPedina,
+									   (partenza_x - WIDTH_PEDINA / 2,
+										partenza_y - HEIGHT_PEDINA / 2))
 						
 						
 			#"ricarico" la finestra, cioè disegno veramente tutto
@@ -249,15 +259,18 @@ class Giocatore():
 			x = self.caselle[self.posizione-1].getCenterX()
 			y = self.caselle[self.posizione-1].getCenterY()
 			
+			""" DA VEDÈ COME FARE
 			if(posAvvessario == self.posizione or self.sopraEffetto):
 				if(self.tag == "PL1"):
 					#più in alto
 					y -= 17
 				else:
 					# più in basso
-					y += 15
-				
-			draw_text(self.game, self.tag, 12, self.colorePedina, x, y)
+					y += 15"""
+			
+			self.game.display.blit(self.imgPedina,
+								   (x - WIDTH_PEDINA / 2,
+									y - HEIGHT_PEDINA / 2))
 		else:
 			#posizione "prima" del percorso
 			self.creaCasellaIniziale()

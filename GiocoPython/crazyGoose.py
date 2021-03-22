@@ -241,8 +241,7 @@ class CrazyGoose():
 				self.turnoCOM.start()
 			
 				self.aChiTocca = False
-			
-			
+		
 		self.segnalaChiTocca(False)
 		self.blit_screen()
 	

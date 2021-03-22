@@ -12,6 +12,11 @@ DESCR_OCA_BLU = "Con la sua abilità si potrà avanzare di 2 caselle per saltare
 
 DESCR_OCA_ROSSA = "Con la sua abilità si potrà annullare l'effetto di una casella!"
 
+pedinaGialla = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_gialla.png")
+pedinaVerde = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_verde.png")
+pedinaBlu = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_blu.png")
+pedinaRossa = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_rossa.png")
+
 
 class SceltaPedina():
     def __init__(self, crazyGoose):
@@ -83,58 +88,37 @@ class SceltaPedina():
             self.mostraDescrOca(DESCR_OCA_GIALLA, self.rectOcaGialla, (255, 255, 0))
         else:
             self.mostraNomeOca("OCA GIALLA", self.rectOcaGialla, (255, 255, 0))
-            #TODO mettere l'img della pedina
-            pygame.draw.rect(self.game.display, (255, 255, 0),
-                             pygame.Rect(self.rectOcaGialla.x + self.rectOcaGialla.width / 2 - 50,
-                                         self.rectOcaGialla.y + self.rectOcaGialla.height / 2,
-                                         100, 100)
-                             # se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO, se < 0 NON DISEGNA
-                             , 0
-                             # border-radius (per arrotondare gli angoli)
-                             , 50)
+            self.game.display.blit(pedinaGialla,
+                              (self.rectOcaGialla.x + 60,
+                                         self.rectOcaGialla.y + self.rectOcaGialla.height / 2.5))
             
 
         if (self.mouseOver == "verde"):
             self.mostraDescrOca(DESCR_OCA_VERDE, self.rectOcaVerde, (0, 255, 0))
         else:
             self.mostraNomeOca("OCA VERDE", self.rectOcaVerde, (0, 255, 0))
-            # TODO mettere l'img della pedina
-            pygame.draw.rect(self.game.display, (0, 255, 0),
-                             pygame.Rect(self.rectOcaVerde.x + self.rectOcaVerde.width / 2 - 50,
-                                         self.rectOcaVerde.y + self.rectOcaVerde.height / 2,
-                                         100, 100)
-                             # se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO, se < 0 NON DISEGNA
-                             , 0
-                             # border-radius (per arrotondare gli angoli)
-                             , 50)
+            self.game.display.blit(pedinaVerde,
+                                   (self.rectOcaVerde.x + 60,
+                                    self.rectOcaVerde.y + self.rectOcaVerde.height / 2.5))
+
 
         if (self.mouseOver == "blu"):
             self.mostraDescrOca(DESCR_OCA_BLU, self.rectOcaBlu, (0,0,230))
         else:
             self.mostraNomeOca("OCA BLU", self.rectOcaBlu, (0,0,230))
-            # TODO mettere l'img della pedina
-            pygame.draw.rect(self.game.display, (0,0,230),
-                             pygame.Rect(self.rectOcaBlu.x + self.rectOcaBlu.width / 2 - 50,
-                                         self.rectOcaBlu.y + self.rectOcaBlu.height / 2,
-                                         100, 100)
-                             # se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO, se < 0 NON DISEGNA
-                             , 0
-                             # border-radius (per arrotondare gli angoli)
-                             , 50)
+            self.game.display.blit(pedinaBlu,
+                                   (self.rectOcaBlu.x + 60,
+                                    self.rectOcaBlu.y + self.rectOcaBlu.height / 2.5))
 
+        
         if (self.mouseOver == "rossa"):
             self.mostraDescrOca(DESCR_OCA_ROSSA, self.rectOcaRossa, (255, 0, 0))
         else:
             self.mostraNomeOca("OCA ROSSA", self.rectOcaRossa, (255, 0, 0))
-            # TODO mettere l'img della pedina
-            pygame.draw.rect(self.game.display, (255, 0, 0),
-                             pygame.Rect(self.rectOcaRossa.x + self.rectOcaRossa.width / 2 - 50,
-                                         self.rectOcaRossa.y + self.rectOcaRossa.height / 2,
-                                         100, 100)
-                             # se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO, se < 0 NON DISEGNA
-                             , 0
-                             # border-radius (per arrotondare gli angoli)
-                             , 50)
+            self.game.display.blit(pedinaRossa,
+                                   (self.rectOcaRossa.x + 60,
+                                    self.rectOcaRossa.y + self.rectOcaRossa.height / 2.5))
+            
     
     def mostraNomeOca(self, nomeOca, rectOca, color):
         draw_text(self.game, nomeOca, 37, color,
