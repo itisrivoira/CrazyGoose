@@ -73,10 +73,10 @@
                 <p class="titoli"><b>Dettaglio Partita:</b></p>
                 <br>
                 <p class="testo">
-                    Una volta aperto il gioco per avviare la partita basterà premere "Inizia partita" e successivamente scegliere la propria pedina tra le 4 scelte possibili. La partita si svolge a turni ed i giocatori tirano il dado una volta a testa utilizzando l’icona
-                    del dado, a meno di non esser finiti su una casella con un effetto. Per vincere la partita il giocatore deve arrivare alla casella finale con un tiro perfetto, quindi che lo porti dalla casella su cui si trova alla fine spostandosi
-                    precisamente di tot caselle a seconda del numero uscito dal dado, in caso contrario finirà tot caselle prima della casella finale. La partita è unica e termina quando uno dei due giocatori vince, dopodiché si potrà scegliere se smettere
-                    di giocare o cominciare una nuova partita.
+                    Una volta aperto il gioco per avviare la partita basterà premere "Start game" e successivamente scegliere la propria pedina tra le 4 scelte possibili. La partita si svolge a turni ed i giocatori tirano il dado una volta a testa utilizzando l’icona del
+                    dado, a meno di non esser finiti su una casella con un effetto. Per vincere la partita il giocatore deve arrivare alla casella finale con un tiro perfetto, quindi che lo porti dalla casella su cui si trova alla fine spostandosi precisamente
+                    di tot caselle a seconda del numero uscito dal dado, in caso contrario finirà tot caselle prima della casella finale. La partita è unica e termina quando uno dei due giocatori vince, dopodiché si potrà scegliere se smettere di giocare
+                    o cominciare una nuova partita.
                 </p>
             </div>
         </div>
@@ -93,25 +93,25 @@
             <div class="col">
                 <p class="titoli"><b>DOMANDE UTILI:</b></p>
                 <div class="containerDomande">
-                    <button class="collapsible">Quante volte posso attivare l'abilità della mia oca??</button>
+                    <button class="collapsible">Quante volte posso attivare l'abilità della mia oca ?</button>
                     <div class="content">
-                        <p>L'abilità è attivabile una sola volta durante la partita in un momento a nostra scelta. Una volta utilizzata non sarà più disponibile per tutto l'arco della partita.Certe abilità tuttavia per essere utilizzate la pedina deve trovarsi
-                            su una data tabella.
+                        <p>L'abilità è attivabile una sola volta durante la partita in un momento a nostra scelta. Una volta utilizzata non sarà più disponibile per tutto l'arco della partita.Certe abilità tuttavia per essere utilizzate, la pedina deve trovarsi
+                            su una casella con un certo effetto.
                         </p>
                     </div>
-                    <button class="collapsible">Come posso giocare a CrazyGoose sul mio PC??</button>
+                    <button class="collapsible">Come posso giocare a CrazyGoose sul mio PC ?</button>
                     <div class="content">
                         <p>Molto semplice:<br> 1)Basta scaricare lo zip del gioco che trovi sempre sul nostro sito;<br> 2)Estrarre lo zip ed entrare nella cartella 'GiocoPython';<br> 3)Aprire il terminale in questa cartella;<br> 4)Installare Python3;<br>                            5)Installare PyGame con il comando: 'python3 -m pip install -u pygame --user';<br> 6)Lanciare il gioco con: 'python3 main.py';<br>
                         </p>
                     </div>
-                    <button class="collapsible">Come faccio a registrarmi a Cazy Goose??</button>
+                    <button class="collapsible">Come faccio a registrarmi a Cazy Goose ?</button>
                     <div class="content">
-                        <p>E' semplice e veloce registrarsi su Crazy Goose infatti vi basterà andare sulla schermata home del nostro sito e cliccando sul tasto: "Registrati " sarete portati alla pagina di registrazione una volta qui vi basterà inserire i
-                            campi richiesti con le vostre credenziali e il gioco sarà fatto!! Facile e Veloce!!</p>
+                        <p>E' semplice e veloce registrarsi su Crazy Goose infatti vi basterà andare sulla schermata home del nostro sito e cliccando sul tasto: "Registrati" sarete portati alla pagina di registrazione una volta qui vi basterà inserire i
+                            campi richiesti con le vostre credenziali e il gioco sarà fatto ! Facile e Veloce !</p>
                     </div>
-                    <button class="collapsible">Posso mettermi in contatto con voi??</button>
+                    <button class="collapsible">Posso mettermi in contatto con voi ?</button>
                     <div class="content">
-                        <p>Sicuro!!<br>Anche qui è un gico da ragazzi farlo sempre nella home del sito, più precisamente nella parte in alto del sito nello scorrimento delle immagini vi basterà andare sulla terza immagine cliccare su: "Contattaci " e verrete
+                        <p>Sicuro!!<br>Anche qui è un gico da ragazzi farlo sempre nella home del sito, più precisamente nella parte in alto del sito nello scorrimento delle immagini vi basterà andare sulla terza immagine cliccare su: "Contattaci" e verrete
                             portati nella pagina dei Contatti qui dovrete compilare i campi richiesti e cliccare il tasto invio per spedirci la vostra richiesta, il team provvederà al più presto al rispondere di ogni vostra richiesta</p>
                     </div>
                 </div>
@@ -120,17 +120,17 @@
     </div>
 
     <script>
-        var coll = document.getElementsByClassName("collapsible ");
+        var coll = document.getElementsByClassName("collapsible");
         var i;
 
         for (i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click ", function() {
-                this.classList.toggle("active ");
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
                 var content = this.nextElementSibling;
-                if (content.style.display === "block ") {
-                    content.style.display = "none ";
+                if (content.style.display === "block") {
+                    content.style.display = "none";
                 } else {
-                    content.style.display = "block ";
+                    content.style.display = "block";
                 }
             });
         }
