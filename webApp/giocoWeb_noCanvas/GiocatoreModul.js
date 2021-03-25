@@ -1,14 +1,13 @@
 //x/y delle CASELLE INIZIALI dei due giocatori
-const X_PLAYER1 = 45
-const X_PLAYER2 = 45
-const Y_PLAYER1 = 540
-const Y_PLAYER2 = 605
+const X_PLAYER1 = 30
+const X_PLAYER2 = 30
+const Y_PLAYER1 = 485
+const Y_PLAYER2 = 560
 
 class Giocatore {
-    constructor(crazyGoose, ctx, caselle, percorso, tag) {
+    constructor(crazyGoose, caselle, percorso, tag) {
         //Mi serve per lanciare un suo metodo
         this.crazyGoose = crazyGoose
-        this.ctx = ctx
         this.caselle = caselle
         this.percorso = percorso
         this.tag = tag
@@ -26,8 +25,8 @@ class Giocatore {
         this.isMoving = false*/
 
 
-        this.penultimoMsg = ""
-        this.ultimoMsg = ""
+        this.penultimoEff = ""
+        this.ultimoEff = ""
 
         this.creaCasellaIniziale()
     }
@@ -35,19 +34,32 @@ class Giocatore {
     creaCasellaIniziale() {
         let x = 0
         let y = 0
+        let indice = 0
+        let giocatore = document.getElementById(this.tag)
         if (this.tag == "PL1") {
             x = X_PLAYER1
             y = Y_PLAYER1
+            indice = 0
         } else {
             x = X_PLAYER2
             y = Y_PLAYER2
+            indice = -1
         }
 
         //crea e posiziona l'ellisse (la casella) prima dell'inizio del percorso
         // poi inserisce la scritta che identifica il giocatore
-        this.casellaIniziale = new Casella(this.ctx, x, y)
+        this.casellaIniziale = new Casella(indice, x, y)
 
-        draw_text(this.ctx, this.tag, 12, "#ff0000", this.casellaIniziale.getCenterX(), this.casellaIniziale.getCenterY(), "Arial", "bold")
+        giocatore.style.zIndex = 10
+        giocatore.style.fontWeight = "bold"
+        giocatore.style.position = "absolute"
+            //quel 14 e 19.5 sono la metà della LARGHEZZA del testo (NON SERVE A NIENTE SE CI METTIAMO POI LE IMG DELLE OCHE)
+        if (this.tag == "PL1") {
+            giocatore.style.left = (this.casellaIniziale.getCenterX() - 14) + "px"
+        } else {
+            giocatore.style.left = (this.casellaIniziale.getCenterX() - 19.5) + "px"
+        }
+        giocatore.style.top = (this.casellaIniziale.getCenterY() - 8.5) + "px"
     }
 
     posiziona(spostamento) {
@@ -67,7 +79,7 @@ class Giocatore {
                     l'effetto per un attimo e "far capire all'utente cosa sta succedendo").*/
 
                 //Controlla l'effetto contenuto nella casella.
-                //this.controllaCodiceCasella(codCasella)
+                this.controllaCodiceCasella(codCasella)
 
                 /*Riferito a prima: TODO TROVARE UN MODO XKE QUESTI NON FUNZIONANO:
                 
@@ -96,12 +108,11 @@ class Giocatore {
         //mi serve la pos di partenza, e io ho già aumentato la posizione. quindi
         // passo la posizione meno lo spostamento
         //this.crazyGoose.ctx.clearRect(0, 0, this.crazyGoose.canvas.width, this.crazyGoose.canvas.height)
-        this.finitoSpost = false
         this.spostaPedina((this.posizione - spostamento), spostamento)
     }
 
 
-    spostaPedina(partenza, spostamento) {
+    /*spostaPedina(partenza, spostamento) {
         //cioè deve tornare alla prima casella.
         // Si muoverà in diagonale tra penultima casella e prima
         if (spostamento == -38) {
@@ -123,10 +134,10 @@ class Giocatore {
                 this.spostaFraDueCaselle(x1, y1, x2, y2, 2, 2, spostamento)
 
             } else {
-                /*Ora muovo la pedina dello spostamento da fare.
-                     NON muovo la pedina dalla partenza alla fine DIRETTAMENTE,
-                     MA muovo di CASELLA IN CASELLA, per ogni casella che
-                     deve superare*/
+                //Ora muovo la pedina dello spostamento da fare.
+                  //   NON muovo la pedina dalla partenza alla fine DIRETTAMENTE,
+                  //   MA muovo di CASELLA IN CASELLA, per ogni casella che
+                  //   deve superare
 
                 if (spostamento > 0) {
                     //partenza è la posizione della casella da 1 a 40,
@@ -142,13 +153,9 @@ class Giocatore {
 
                     this.spostaFraDueCaselle(x1, y1, x2, y2, 2, 2, spostamento, 0, partenza)
 
-                } else {
-                    /*
+                } else {                   
+                    //!!! ANCORA DA AGGIUSTARE COME SOPRA
                     
-                    !!! ANCORA DA AGGIUSTARE COME SOPRA
-                    
-                    */
-
 
                     //devo prendere le caselle in modo inverso !
 
@@ -228,14 +235,14 @@ class Giocatore {
             // fermo il loop
             continua = false
             draw_text(this.ctx, this.tag, 12, "#ff0000", fine_x, fine_y, "Arial", "bold")
-                /*self.game.display.blit(self.imgPedina,
-                        (fine_x - WIDTH_PEDINA / 2,
-                            fine_y - HEIGHT_PEDINA / 2))*/
+                //self.game.display.blit(self.imgPedina,
+                        //(fine_x - WIDTH_PEDINA / 2,
+                            //fine_y - HEIGHT_PEDINA / 2))
         } else {
             draw_text(this.ctx, this.tag, 12, "#ff0000", partenza_x, partenza_y, "Arial", "bold")
-                /*self.game.display.blit(self.imgPedina,
-                    (partenza_x - WIDTH_PEDINA / 2,
-                        partenza_y - HEIGHT_PEDINA / 2))*/
+                //self.game.display.blit(self.imgPedina,
+                  //  (partenza_x - WIDTH_PEDINA / 2,
+                    //    partenza_y - HEIGHT_PEDINA / 2))
         }
 
         //dentro quella funzione perdo il riferimento a "this.Giocatore" quindi me lo devo salvare
@@ -285,11 +292,34 @@ class Giocatore {
 					y -= 15
 				else:
 					# più in basso
-					y += 15*/
+					y += 15
             draw_text(this.ctx, this.tag, 12, "#ff0000", x, y, "Arial", "bold")
         } else {
             //posizione "prima" del percorso
             this.creaCasellaIniziale()
+        }
+    }*/
+
+    spostaPedina(posAvvessario) {
+        if (this.posizione > 0) {
+            this.casellaIniziale.nascondi()
+
+            let x = this.caselle[this.posizione - 1].getCenterX()
+            let y = this.caselle[this.posizione - 1].getCenterY()
+
+            //Se sono nella stessa casella devono distanziarsi un minimo tra loro
+            if (posAvvessario == this.posizione) {
+                if (this.tag == "PL1") {
+                    //più in alto
+                    y -= 15
+                } else {
+                    //più in basso
+                    y += 15
+                }
+            }
+            let giocatore = document.getElementById(this.tag)
+            giocatore.style.top = y + "px"
+            giocatore.style.left = x + "px"
         }
     }
 
@@ -314,45 +344,45 @@ class Giocatore {
         */
 
         let spostamento = 0
-        let msg = ""
+        let eff = ""
 
         if (codCasella == TIRA_DI_NUOVO[0]) {
-            msg = "TIRA ANCORA IL DADO"
+            eff = "TIRA ANCORA IL DADO"
             this.turnoMio = true
             this.sopraEffetto = true
 
         } else if (codCasella == INDIETRO_DI_UNO[0]) {
-            msg = "INDIETRO DI UNA CASELLA"
+            eff = "INDIETRO DI UNA CASELLA"
             spostamento = -1
             this.sopraEffetto = true
 
         } else if (codCasella == INDIETRO_DI_TRE[0]) {
-            msg = "INDIETRO DI TRE CASELLE"
+            eff = "INDIETRO DI TRE CASELLE"
             spostamento = -3
             this.sopraEffetto = true
 
         } else if (codCasella == AVANTI_DI_UNO[0]) {
-            msg = "AVANTI DI UNA CASELLA"
+            eff = "AVANTI DI UNA CASELLA"
             spostamento = 1
             this.sopraEffetto = true
 
         } else if (codCasella == AVANTI_DI_QUATTRO[0]) {
-            msg = "AVANTI DI QUATTRO CASELLE"
+            eff = "AVANTI DI QUATTRO CASELLE"
             spostamento = 4
             this.sopraEffetto = true
 
         } else if (codCasella == FERMO_DA_UNO[0]) {
-            msg = "FERMO PER UN GIRO"
+            eff = "FERMO PER UN GIRO"
             this.turniFermo = 1
             this.sopraEffetto = true
 
         } else if (codCasella == FERMO_DA_DUE[0]) {
-            msg = "FERMO PER DUE GIRI"
+            eff = "FERMO PER DUE GIRI"
             this.turniFermo = 2
             this.sopraEffetto = true
 
         } else if (codCasella == TORNA_ALL_INIZIO) {
-            msg = "RICOMINCIA DA CAPO !!!"
+            eff = "RICOMINCIA DA CAPO !!!"
             this.sopraEffetto = true
                 // Lo fa ritornare alla 1° casella. Dalla posizione 39 va alla 1° ==> si muove di 38 posizioni indietro
             this.posiziona(-(this.posizione - 1))
@@ -360,12 +390,12 @@ class Giocatore {
             this.vincitore = true
         }
 
-        if (msg != "") {
-            this.penultimoMsg = this.ultimoMsg
-            this.ultimoMsg = msg
+        if (eff != "") {
+            this.penultimoEff = this.ultimoEff
+            this.ultimoEff = eff
 
-            //per mostrare i msg
-            this.crazyGoose.disegnaTutto()
+            //per mostrare i effetti
+            this.crazyGoose.scriviEffetti(this, (this.tag == "PL1"))
         }
 
         if (spostamento != 0) {

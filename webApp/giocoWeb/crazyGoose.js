@@ -98,13 +98,13 @@ class CrazyGoose {
         }
     }
 
-    disegnaTutto() {
+    disegnaTutto(giocDaNonDisegnare = null) {
+        let flagPrimoGiro = (this.player == null && this.com == null)
+
         /*"ripulisce" tutto.
 			Purtroppo anche nel canvas funziona in questo modo, non posso "spostare" un elemento
 			posso solo ripartire da foglio bianco a disegnare*/
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-
-        let flagPrimoGiro = (this.player == null && this.com == null)
 
         //Riempe la lista di caselle, cioè "disegna" gli ellissi.
         this.posizionaLeCaselle()
@@ -123,24 +123,28 @@ class CrazyGoose {
         draw_text(this.ctx, (INFO_DADO_COM + this.valDadoCOM), 14, "#000000", 917, 60)
         this.scriviEffetti(this.com, false)
 
-        if (this.player == null || this.player.posizione == 0) {
-            //Se posizione == 0 vuol dire che è nella casella iniziale (quella "prima" del percorso)
-            this.player = new Giocatore(this, this.ctx, this.caselle, this.percorso, "PL1")
-        } else {
-            this.player.spostaPedina(this.com.posizione)
+        if (giocDaNonDisegnare != "PL1") {
+            if (this.player == null) {
+                //Se posizione == 0 vuol dire che è nella casella iniziale (quella "prima" del percorso)
+                this.player = new Giocatore(this, this.ctx, this.caselle, this.percorso, "PL1")
+            } else {
+                this.player.mostraPedina(this.com.posizione)
+            }
         }
 
-        if (this.com == null || this.com.posizione == 0) {
-            //Se posizione == 0 vuol dire che è nella casella iniziale (quella "prima" del percorso)
-            this.com = new Giocatore(this, this.ctx, this.caselle, this.percorso, "COM")
-        } else {
-            this.com.spostaPedina(this.player.posizione)
+        if (giocDaNonDisegnare != "COM") {
+            if (this.com == null) {
+                //Se posizione == 0 vuol dire che è nella casella iniziale (quella "prima" del percorso)
+                this.com = new Giocatore(this, this.ctx, this.caselle, this.percorso, "COM")
+            } else {
+                this.com.mostraPedina(this.player.posizione)
+            }
         }
 
         if (flagPrimoGiro == true) {
             // Decide chi incomincia, tira il dado e vede se il numero tirato è pari o dispari
             // (tra 1 e 6 ci sono 3 pari e 3 dispari, perciò 50% possbilità a testa)
-            let random = (new Dado()).tiraDado()
+            let random = 2 //(new Dado()).tiraDado()
             if (random % 2 == 0) {
                 this.player.turnoMio = true
                 this.com.turnoMio = false
@@ -250,6 +254,7 @@ class CrazyGoose {
     }
 
     avanzaPlayer1(numEstratto) {
+        numEstratto = 2
         if (this.player.turniFermo > 0) {
             // Se il PL1 ha beccato un fermo in precedenza deve "consumarlo"
             // (sarà come se avesse tirato l'avversario)
@@ -309,7 +314,8 @@ class CrazyGoose {
     }
 
     avanzaCOM(numEstratto) {
-        //(Per i commenti VEDI "avanzaPlayer1")
+        numEstratto = 3
+            //(Per i commenti VEDI "avanzaPlayer1")
 
         if (this.com.turniFermo > 0) {
             this.com.turniFermo -= 1
