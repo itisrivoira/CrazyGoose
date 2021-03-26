@@ -76,7 +76,7 @@ class Game():
                 
 
             #Se sta giocando controllo anche l'evento del mouse
-            if(not self.crazyGoose == None and self.crazyGoose.partitaTerminata == False):
+            if(not self.crazyGoose == None:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.playing = False
