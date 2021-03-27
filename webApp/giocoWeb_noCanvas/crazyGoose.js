@@ -67,7 +67,7 @@ class CrazyGoose {
 
         // Decide chi incomincia, tira il dado e vede se il numero tirato è pari o dispari
         // (tra 1 e 6 ci sono 3 pari e 3 dispari, perciò 50% possbilità a testa)
-        let random = (new Dado()).tiraDado()
+        let random = 2 //(new Dado()).tiraDado()
         if (random % 2 == 0) {
             this.player.turnoMio = true
             this.com.turnoMio = false
@@ -84,7 +84,6 @@ class CrazyGoose {
     }
 
     scriviEffetti(player_com, isPL1) {
-        console.log("effetti")
         let eff1 = null
         let eff2 = null
         if (isPL1) {
@@ -134,11 +133,12 @@ class CrazyGoose {
         // faccio la sleep di 2 sec (dopo aver decrementato il fermo lancia il metodo
         // per far avanzare PL1)
         if (this.com.turniFermo == 0) {
-            //dopo 2000ms (2sec) entra nella funzione, che a sua volta lancia la funzione avanzaCOM
-            this.timeoutCOM = setTimeout(() => { this.avanzaCOM(numEstratto) }, 2000)
+            //dopo 1000ms (1sec) entra nella funzione, che a sua volta lancia la funzione avanzaCOM
+            this.timeoutCOM = setTimeout(() => { this.avanzaCOM(numEstratto) }, 1000)
         } else {
             this.avanzaCOM(numEstratto)
         }
+        console.log("toccherebbe al COM")
     }
 
     avanzaPlayer1(numEstratto) {
@@ -160,48 +160,57 @@ class CrazyGoose {
 
             let toccaAncoraA_Me = this.player.avanza(numEstratto)
 
-            if (!this.player.vincitore) {
-                //avanza() ritorna this.turnoMio, perciò
-                // se ritorna true non tocca all'avversario (gli setto false)
-                // se ritorna false tocca all'avversario (gli setto true)
-                this.com.turnoMio = !toccaAncoraA_Me
+            let idIntervalFineAvanza = setInterval(() => {
+                if (this.player.isMoving == false) {
+                    clearInterval(idIntervalFineAvanza)
 
-                //se prende un fermo ANNULLA il fermo dell'avversario 
-                //(SENNÒ NESSUNO GIOCHEREBBE PIÙ per alcuni turni)
-                if (this.player.turniFermo > 0) {
-                    this.com.turniFermo = 0
-                        //Ora il PL1 ha un fermo, quindi tocca all'avversario sicuro
-                    this.segnalaChiTocca(false)
+                    console.log("MA STO CONTINUANDO VERO ???")
 
-                    //Lancerà il dado, entrerà in avanzaPlayer1 che
-                    // decrementerà il suo fermo e lancerà avanzaCOM
-                    this.tiraDado()
-                } else {
-                    if (this.com.turniFermo > 0) {
-                        //Se l'avversario ha un fermo al 100% tocca al PL1...
-                        this.segnalaChiTocca(true)
-                    } else {
-                        //L'avversario non ha un fermo MA non è detto che tocchi a lui 
-                        // (PL1 potrebbe aver preso un TIRA DI NUOVO) quindi controllo
-                        if (this.com.turnoMio) {
+                    if (!this.player.vincitore) {
+                        //avanza() ritorna this.turnoMio, perciò
+                        // se ritorna true non tocca all'avversario (gli setto false)
+                        // se ritorna false tocca all'avversario (gli setto true)
+                        this.com.turnoMio = !toccaAncoraA_Me
+
+                        //se prende un fermo ANNULLA il fermo dell'avversario 
+                        //(SENNÒ NESSUNO GIOCHEREBBE PIÙ per alcuni turni)
+                        if (this.player.turniFermo > 0) {
+                            this.com.turniFermo = 0
+                                //Ora il PL1 ha un fermo, quindi tocca all'avversario sicuro
                             this.segnalaChiTocca(false)
 
-                            this.toccaAlCOM()
+                            //Lancerà il dado, entrerà in avanzaPlayer1 che
+                            // decrementerà il suo fermo e lancerà avanzaCOM
+                            this.tiraDado()
                         } else {
-                            this.segnalaChiTocca(true)
+                            if (this.com.turniFermo > 0) {
+                                //Se l'avversario ha un fermo al 100% tocca al PL1...
+                                this.segnalaChiTocca(true)
+                            } else {
+                                //L'avversario non ha un fermo MA non è detto che tocchi a lui 
+                                // (PL1 potrebbe aver preso un TIRA DI NUOVO) quindi controllo
+                                if (this.com.turnoMio) {
+                                    this.segnalaChiTocca(false)
+
+                                    this.toccaAlCOM()
+                                } else {
+                                    this.segnalaChiTocca(true)
+                                }
+                            }
                         }
+                    } else {
+                        //Segnala PL1 come vincitore e fa TERMINARE la partita
+                        this.segnalaVincitore(true)
+                        this.partitaTerminata = true
                     }
+
                 }
-            } else {
-                //Segnala PL1 come vincitore e fa TERMINARE la partita
-                this.segnalaVincitore(true)
-                this.partitaTerminata = true
-            }
+            }, 100)
         }
     }
 
     avanzaCOM(numEstratto) {
-        //(Per i commenti VEDI "avanzaPlayer1")
+        //* * *  Per i commenti VEDI "avanzaPlayer1" * * *
 
         if (this.com.turniFermo > 0) {
             this.com.turniFermo -= 1
@@ -217,28 +226,36 @@ class CrazyGoose {
 
             let toccaAncoraA_Me = this.com.avanza(numEstratto)
 
-            if (!this.com.vincitore) {
-                this.player.turnoMio = !toccaAncoraA_Me
-                if (this.com.turniFermo > 0) {
-                    this.player.turniFermo = 0
-                    this.segnalaChiTocca(true)
-                } else {
-                    if (this.player.turniFermo > 0) {
-                        this.segnalaChiTocca(false)
-                        this.tiraDado()
-                    } else {
-                        if (this.player.turnoMio) {
+            let idIntervalFineAvanza = setInterval(() => {
+                if (this.com.isMoving == false) {
+                    clearInterval(idIntervalFineAvanza)
+
+                    console.log("MA STO CONTINUANDO VERO ???")
+
+                    if (!this.com.vincitore) {
+                        this.player.turnoMio = !toccaAncoraA_Me
+                        if (this.com.turniFermo > 0) {
+                            this.player.turniFermo = 0
                             this.segnalaChiTocca(true)
                         } else {
-                            this.segnalaChiTocca(false)
-                            this.toccaAlCOM()
+                            if (this.player.turniFermo > 0) {
+                                this.segnalaChiTocca(false)
+                                this.tiraDado()
+                            } else {
+                                if (this.player.turnoMio) {
+                                    this.segnalaChiTocca(true)
+                                } else {
+                                    this.segnalaChiTocca(false)
+                                    this.toccaAlCOM()
+                                }
+                            }
                         }
+                    } else {
+                        this.segnalaVincitore(false)
+                        this.partitaTerminata = true
                     }
                 }
-            } else {
-                this.segnalaVincitore(false)
-                this.partitaTerminata = true
-            }
+            }, 100)
         }
     }
 
