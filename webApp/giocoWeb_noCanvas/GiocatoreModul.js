@@ -53,17 +53,14 @@ class Giocatore {
         // poi inserisce la scritta che identifica il giocatore
         this.casellaIniziale = new Casella(indice, x, y)
 
-        /*let giocatore = document.getElementById(this.tag)
-        giocatore.style.zIndex = 10
-        giocatore.style.fontWeight = "bold"
-        giocatore.style.position = "absolute"
-            //quel 14 e 19.5 sono la metà della LARGHEZZA del testo (NON SERVE A NIENTE SE CI METTIAMO POI LE IMG DELLE OCHE)
-        if (this.tag == "PL1") {
-            giocatore.style.left = (this.casellaIniziale.getCenterX() - 14) + "px"
-        } else {
-            giocatore.style.left = (this.casellaIniziale.getCenterX() - 19.5) + "px"
-        }
-        giocatore.style.top = (this.casellaIniziale.getCenterY() - 8.5) + "px"*/
+        this.gioc = document.createElement("LABEL")
+        this.gioc.innerHTML = this.tag
+        this.gioc.style.fontWeight = "bold"
+        this.gioc.style.position = "absolute"
+        this.gioc.style.top = this.casellaIniziale.getCenterY() + "px"
+        this.gioc.style.left = this.casellaIniziale.getCenterX() + "px"
+
+        document.body.appendChild(this.gioc)
     }
 
     posiziona(spostamento) {
@@ -77,17 +74,10 @@ class Giocatore {
                 //prendo il codice della casella in cui si trova il giocatore 
                 let codCasella = this.percorso.dictCaselle[this.posizione]
                     //La pedina si muove nella casella (che in questo caso avrà un effetto)
-                this.ridisegnaTutto(spostamento)
+                this.ridisegnaTutto(spostamento, false, codCasella)
 
                 /*Qui ci andrebbe un FERMO per POCHISSIMO (cos' da fermare la pedina sulla casella con
                     l'effetto per un attimo e "far capire all'utente cosa sta succedendo").*/
-
-                //Controlla l'effetto contenuto nella casella.
-                this.idTimeoutControlla = setTimeout(() => {
-                    clearTimeout(this.idTimeoutControlla)
-                    this.isMoving = false
-                        //this.controllaCodiceCasella(codCasella)
-                }, (spostamento * (PICCOLA_PAUSA + TEMPO_SPOST_FRA_CASELLE)))
 
                 /*Riferito a prima: TODO TROVARE UN MODO XKE QUESTI NON FUNZIONANO:
                 
@@ -102,7 +92,7 @@ class Giocatore {
             }
         } else {
             //Calcolo lo spostamento che dovrà fare dalla casella attuale
-            newSpostamento = (QTA_CASELLE_TOTALI - (spostamento - (QTA_CASELLE_TOTALI - this.posizione))) - this.posizione
+            let newSpostamento = (QTA_CASELLE_TOTALI - (spostamento - (QTA_CASELLE_TOTALI - this.posizione))) - this.posizione
                 //( se servisse mai la posizione della casella in cui finirà... è newSpostamento+this.posizione
                 // (cioè il calcolo qua sopra senza quel "- this.posizione") )
 
@@ -112,7 +102,7 @@ class Giocatore {
     }
 
 
-    ridisegnaTutto(spostamento, settaIsMovingFalse = false) {
+    ridisegnaTutto(spostamento, settaIsMovingFalse = false, codCasella = -1) {
         //mi serve la pos di partenza, e io ho già aumentato la posizione. quindi
         // passo la posizione meno lo spostamento
         //this.crazyGoose.ctx.clearRect(0, 0, this.crazyGoose.canvas.width, this.crazyGoose.canvas.height)
@@ -121,23 +111,37 @@ class Giocatore {
         let partenza = (this.posizione - spostamento)
 
         if (partenza == 0) {
-            this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse)
+            this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella)
         } else {
-            let casCorrente = partenza - 1
-            let prossimaCas = partenza - 1
-            if (spostamento > 0) {
-                prossimaCas += 1
-            } else {
-                prossimaCas -= 1
-            }
+            if (spostamento != -(QTA_CASELLE_TOTALI - 2)) {
+                let casCorrente = partenza - 1
+                let prossimaCas = partenza - 1
+                if (spostamento > 0) {
+                    prossimaCas += 1
+                } else {
+                    prossimaCas -= 1
+                }
 
-            this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse,
-                this.caselle[casCorrente].getCenterX(), this.caselle[casCorrente].getCenterY(),
-                this.caselle[prossimaCas].getCenterX(), this.caselle[prossimaCas].getCenterY())
+                this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella,
+                    this.caselle[casCorrente].getCenterX(), this.caselle[casCorrente].getCenterY(),
+                    this.caselle[prossimaCas].getCenterX(), this.caselle[prossimaCas].getCenterY())
+            } else {
+                var x1 = this.caselle[partenza - 1].getCenterX()
+                var y1 = this.caselle[partenza - 1].getCenterY()
+                var x2 = this.caselle[0].getCenterX()
+                var y2 = this.caselle[0].getCenterY()
+
+                //se lo setto a 1 quando incrementerà il contatore (per passare poi alla prossima
+                // casella normalmente) lui finirà il ciclo
+                spostamento = 1
+                    //Può settare a false isMOving xke intanto sulla prima casella non ci
+                    // può essere alcun effetto, qunidi non deve controllare il codice della casella
+                this.spostaFraDueCaselle(partenza, spostamento, true, codCasella, x1, y1, x2, y2)
+            }
         }
     }
 
-    spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse,
+    spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella,
         x1 = this.casellaIniziale.getCenterX(),
         y1 = this.casellaIniziale.getCenterY(),
         x2 = this.caselle[0].getCenterX(),
@@ -145,7 +149,8 @@ class Giocatore {
 
 
         if (this.gioc != null) {
-            //tra un turno e l'altro la pedina non dev'essere rimossa
+            //tra un turno e l'altro la pedina non dev'essere rimossa,
+            // ma ora si xke devo mouverla (e quindi rifare l'animazione CSS)
             document.body.removeChild(this.gioc)
         }
         this.gioc = document.createElement("LABEL")
@@ -158,27 +163,34 @@ class Giocatore {
         document.body.appendChild(this.gioc)
 
         //se non mi fermo un attimo non si vedrà lo spostamento, andrà direttamente a fine animazione
-        this.idTimeoutPiccolaPausa = setTimeout(() => {
-            clearTimeout(this.idTimeoutPiccolaPausa)
+        setTimeout(() => {
 
             this.gioc.style.transform = "translateX(" + (x2 - x1) + "px) translateY(" + (y2 - y1) + "px)"
             this.gioc.style.transition = TEMPO_SPOST_FRA_CASELLE + "ms"
 
             //animazione finita...
-            this.idTimeoutSpostCaselle = setTimeout(() => {
-                clearTimeout(this.idTimeoutSpostCaselle)
+            setTimeout(() => {
 
                 this.counter += 1
                 if (this.counter < Math.abs(spostamento)) {
                     document.body.removeChild(this.gioc)
                     this.gioc = null
 
-                    this.prossimoSpostamento(partenza, spostamento, settaIsMovingFalse)
+                    this.prossimoSpostamento(partenza, spostamento, settaIsMovingFalse, codCasella)
                 } else {
                     if (settaIsMovingFalse) {
                         //ha finito di muoversi (lo faccio solo quando SONO SICURO che abbia finito di muoversi.
                         // Normalmente infatti non lo faccio xke controllando l'effetto della casella potrebbe muoversi ancora)
                         this.isMoving = false
+                    } else {
+                        //sono nel caso in cui ha trovato un codice nella casella in cui si
+                        // trova la pedina (non è stata lanciata nessuna eccezione)
+
+                        //Controlla l'effetto contenuto nella casella (dopo un attimo)
+                        setTimeout(() => {
+                            this.controllaCodiceCasella(codCasella)
+                        }, 250)
+
                     }
                 }
             }, TEMPO_SPOST_FRA_CASELLE)
@@ -187,48 +199,36 @@ class Giocatore {
 
     }
 
-    prossimoSpostamento(partenza, spostamento, settaIsMovingFalse) {
+    prossimoSpostamento(partenza, spostamento, settaIsMovingFalse, codCasella) {
+        //Se parte dalla casella iniziale (prima dell'inizio del percorso) deve muoversi anche da lì
+        //Ora muovo la pedina dello spostamento da fare.
+        //   NON muovo la pedina dalla partenza alla fine DIRETTAMENTE,
+        //   MA muovo di CASELLA IN CASELLA, per ogni casella che
+        //   deve superare
+        if (spostamento > 0) {
+            //partenza è la posizione della casella da 1 a 40,
+            // ma le caselle sono 0-based per questo "partenza-1
 
-        //cioè deve tornare alla prima casella.
-        // Si muoverà in diagonale tra penultima casella e prima
-        if (spostamento == -38) {
-            var x1 = this.caselle[partenza - 1].getCenterX()
-            var y1 = this.caselle[partenza - 1].getCenterY()
-            var x2 = this.caselle[0].getCenterX()
-            var y2 = this.caselle[0].getCenterY()
+            var x1 = this.caselle[partenza - 1 + this.counter].getCenterX()
+            var y1 = this.caselle[partenza - 1 + this.counter].getCenterY()
 
-            this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, x1, y1, x2, y2)
+            //prendo la casella successiva
+            var x2 = this.caselle[partenza - 1 + this.counter + 1].getCenterX()
+            var y2 = this.caselle[partenza - 1 + this.counter + 1].getCenterY()
+
+            this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella, x1, y1, x2, y2)
         } else {
-            //Se parte dalla casella iniziale (prima dell'inizio del percorso) deve muoversi anche da lì
-            //Ora muovo la pedina dello spostamento da fare.
-            //   NON muovo la pedina dalla partenza alla fine DIRETTAMENTE,
-            //   MA muovo di CASELLA IN CASELLA, per ogni casella che
-            //   deve superare
-            if (spostamento > 0) {
-                //partenza è la posizione della casella da 1 a 40,
-                // ma le caselle sono 0-based per questo "partenza-1
+            //partenza è la posizione della casella da 1 a 40,
+            // ma le caselle sono 0-based per questo "partenza-1
 
-                var x1 = this.caselle[partenza - 1 + this.counter].getCenterX()
-                var y1 = this.caselle[partenza - 1 + this.counter].getCenterY()
+            var x1 = this.caselle[partenza - 1 - this.counter].getCenterX()
+            var y1 = this.caselle[partenza - 1 - this.counter].getCenterY()
 
-                //prendo la casella successiva
-                var x2 = this.caselle[partenza - 1 + this.counter + 1].getCenterX()
-                var y2 = this.caselle[partenza - 1 + this.counter + 1].getCenterY()
+            //prendo la casella successiva
+            var x2 = this.caselle[partenza - 1 - this.counter - 1].getCenterX()
+            var y2 = this.caselle[partenza - 1 - this.counter - 1].getCenterY()
 
-                this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, x1, y1, x2, y2)
-            } else {
-                //partenza è la posizione della casella da 1 a 40,
-                // ma le caselle sono 0-based per questo "partenza-1
-
-                var x1 = this.caselle[partenza - 1 - this.counter].getCenterX()
-                var y1 = this.caselle[partenza - 1 - this.counter].getCenterY()
-
-                //prendo la casella successiva
-                var x2 = this.caselle[partenza - 1 - this.counter - 1].getCenterX()
-                var y2 = this.caselle[partenza - 1 - this.counter - 1].getCenterY()
-
-                this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, x1, y1, x2, y2)
-            }
+            this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella, x1, y1, x2, y2)
         }
     }
 
@@ -240,7 +240,6 @@ class Giocatore {
 
         this.posiziona(spostamento)
             //Ritorna indietro il flag, in questo modo si saprà a chi toccherà
-        return this.turnoMio
     }
 
     controllaCodiceCasella(codCasella) {
@@ -294,7 +293,7 @@ class Giocatore {
             eff = "RICOMINCIA DA CAPO !!!"
             this.sopraEffetto = true
                 // Lo fa ritornare alla 1° casella. Dalla posizione 39 va alla 1° ==> si muove di 38 posizioni indietro
-            this.posiziona(-(this.posizione - 1))
+            spostamento = -(this.posizione - 1)
         } else if (codCasella == VITTORIA) {
             this.vincitore = true
         }

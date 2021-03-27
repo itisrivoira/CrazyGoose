@@ -138,10 +138,10 @@ class CrazyGoose {
         } else {
             this.avanzaCOM(numEstratto)
         }
-        console.log("toccherebbe al COM")
     }
 
     avanzaPlayer1(numEstratto) {
+        numEstratto = 39
         if (this.player.turniFermo > 0) {
             // Se il PL1 ha beccato un fermo in precedenza deve "consumarlo"
             // (sarà come se avesse tirato l'avversario)
@@ -158,19 +158,17 @@ class CrazyGoose {
                 del dado sarà cambiato) */
             this.buttonDadoPL1.innerHTML = numEstratto
 
-            let toccaAncoraA_Me = this.player.avanza(numEstratto)
+            this.player.avanza(numEstratto)
 
             let idIntervalFineAvanza = setInterval(() => {
                 if (this.player.isMoving == false) {
                     clearInterval(idIntervalFineAvanza)
 
-                    console.log("MA STO CONTINUANDO VERO ???")
-
                     if (!this.player.vincitore) {
                         //avanza() ritorna this.turnoMio, perciò
                         // se ritorna true non tocca all'avversario (gli setto false)
                         // se ritorna false tocca all'avversario (gli setto true)
-                        this.com.turnoMio = !toccaAncoraA_Me
+                        this.com.turnoMio = !this.player.turnoMio
 
                         //se prende un fermo ANNULLA il fermo dell'avversario 
                         //(SENNÒ NESSUNO GIOCHEREBBE PIÙ per alcuni turni)
@@ -224,16 +222,14 @@ class CrazyGoose {
         } else {
             document.getElementById("dado_com").innerHTML = numEstratto
 
-            let toccaAncoraA_Me = this.com.avanza(numEstratto)
+            this.com.avanza(numEstratto)
 
             let idIntervalFineAvanza = setInterval(() => {
                 if (this.com.isMoving == false) {
                     clearInterval(idIntervalFineAvanza)
 
-                    console.log("MA STO CONTINUANDO VERO ???")
-
                     if (!this.com.vincitore) {
-                        this.player.turnoMio = !toccaAncoraA_Me
+                        this.player.turnoMio = !this.com.turnoMio
                         if (this.com.turniFermo > 0) {
                             this.player.turniFermo = 0
                             this.segnalaChiTocca(true)
