@@ -136,10 +136,10 @@ class CrazyGoose():
 		
 	
 	def mousePremuto(self, mousePosition):
-		# controlli per la scelta della pedina
-		if (self.sceltaPedina.sceltaFatta == False):
-			self.sceltaPedina.sceltaFatta = True
-		
+		if(self.sceltaPedina.sceltaFatta == False):
+			self.sceltaPedina.mousePremuto()
+			
+			
 		# Controlli per il dado (il button) del PL1
 		#Controllo che sia il turno del PL1 (cioè che sia il suo turno OPPURE l'avversario abbia un fermo)
 		if (self.aChiTocca and (not self.player.isMoving) and self.buttonDadoPL1 != None):
@@ -157,7 +157,8 @@ class CrazyGoose():
 		
 		#Controlli per il dado (il button) del PL1
 		# Controllo che sia il turno del PL1 (cioè che sia il suo turno OPPURE l'avversario abbia un fermo)
-		if (self.aChiTocca and self.buttonDadoPL1 != None):
+		if (self.aChiTocca and self.buttonDadoPL1 != None and
+				(self.player.isMoving == False and self.com.isMoving == False)):
 			
 			valPrima = self.mouseOverDadoPL1
 			self.mouseOverDadoPL1 = self.buttonDadoPL1.detectMouseOver(mousePosition)
@@ -173,7 +174,7 @@ class CrazyGoose():
 				self.buttonDadoPL1.doBlitScreen = False
 		else:
 			self.mouseOverDadoPL1 = False
-				
+			
 	def disegnaTutto(self, giocDaNonDisegnare=None):
 			#Se è il primo giro deve stabilire chi sarà il primo giocatore a giocare
 		flagPrimoGiro = (self.player == None and self.com == None)
@@ -311,7 +312,7 @@ class CrazyGoose():
 		self.avanzaCOM(numEstratto)
 
 
-	def avanzaPlayer1(self, numEstratto):
+	def avanzaPlayer1(self, numEstratto, controllaCodCasella=True):
 		#numEstratto = 40
 		#se num estratto è < 0 vuol dire che è stata attivata l'abilità
 		# del COM, quindi non importa se il player ha o non ha un fermo
@@ -332,11 +333,11 @@ class CrazyGoose():
 			# del dado sarà cambiato)
 			self.valDadoPL1 = str(numEstratto)
 
-			toccaAncoraA_Me = self.player.avanza(numEstratto)
+			toccaAncoraA_Me = self.player.avanza(numEstratto, controllaCodCasella)
 			
-			if (self.player.posizione == self.com.posizione):
-				self.turnoPL1 = threading.Thread(target=self.avanzaPlayer1, args=(-2,))
-				self.turnoPL1.start()
+			if (self.player.posizione == self.com.posizione and
+				self.player.posizione > 2):
+				
 				self.attivaAbilitaCOM(True, toccaAncoraA_Me)
 			else:
 				if(not self.player.vincitore):
@@ -364,7 +365,7 @@ class CrazyGoose():
 							# (PL1 potrebbe aver preso un TIRA DI NUOVO) quindi controllo
 							if(self.com.turnoMio):
 								self.aChiTocca = False
-	
+								
 								self.turnoCOM = threading.Thread(target=self.toccaAlCOM)
 								self.turnoCOM.start()
 							else:
@@ -397,9 +398,9 @@ class CrazyGoose():
 
 			toccaAncoraA_Me = self.com.avanza(numEstratto)
 			
-			if(self.com.posizione == self.player.posizione):
-				self.turnoPL1 = threading.Thread(target=self.avanzaPlayer1, args=(-2,))
-				self.turnoPL1.start()
+			if(self.com.posizione == self.player.posizione and
+				self.player.posizione > 2):
+				
 				self.attivaAbilitaCOM(False, toccaAncoraA_Me)
 			else:
 				if(not self.com.vincitore):
@@ -427,66 +428,74 @@ class CrazyGoose():
 
 
 	def attivaAbilitaCOM(self, turnoPL1, toccaAncoraA_Me):
+		# micro-fermo
+		pygame.time.wait(400)
+		#sposta di 2 indietro il PL1
+		self.turnoPL1 = threading.Thread(target=self.player.avanza, args=(-2, False))
+		self.turnoPL1.start()
+		
 		#Aspetta che il PL1 sia tornato indietro di 2
 		while (self.player.isMoving):
-			pygame.time.wait(100)
+			#si ferma per un attimo così da non occupare girare moltissime volte in un
+			# loop "vuoto" che non fa nulla
+			pygame.time.wait(200)
 		
 		if(turnoPL1):
-			if(self.player.turniFermo == 0):
-				# avanza() ritorna self.turnoMio, perciò
-				# se ritorna True non tocca all'avversario (gli setto False)
-				# se ritorna False tocca all'avversario (gli setto True)
-				self.com.turnoMio = not toccaAncoraA_Me
+			# avanza() ritorna self.turnoMio, perciò
+			# se ritorna True non tocca all'avversario (gli setto False)
+			# se ritorna False tocca all'avversario (gli setto True)
+			
+			# se prende un fermo ANNULLA il fermo dell'avversario
+			# (SENNÒ NESSUNO GIOCHEREBBE PIÙ per alcuni turni)
+			if (self.player.turniFermo > 0):
+				self.com.turniFermo = 0
+				# Ora il PL1 ha un fermo, quindi tocca all'avversario sicuro
+				self.aChiTocca = False
 				
-				# se prende un fermo ANNULLA il fermo dell'avversario
-				# (SENNÒ NESSUNO GIOCHEREBBE PIÙ per alcuni turni)
+				# Lancerà il dado, entrerà in avanzaPlayer1 che
+				# decrementerà il suo fermo e lancerà avanzaCOM
+				self.tiraDado()
+			else:
+				if (self.com.turniFermo > 0):
+					# Se l'avversario ha un fermo al 100% tocca al PL1...
+					self.aChiTocca = True
+					self.player.turnoMio = True
+				else:
+					# L'avversario non ha un fermo MA non è detto che tocchi a lui
+					# (PL1 potrebbe aver preso un TIRA DI NUOVO) quindi controllo
+					if (not toccaAncoraA_Me):
+						self.aChiTocca = False
+						
+						self.turnoCOM = threading.Thread(target=self.toccaAlCOM)
+						self.turnoCOM.start()
+					else:
+						self.aChiTocca = True
+						self.player.turnoMio = True
+				
+		else:
+			if (self.com.turniFermo > 0):
+				self.player.turniFermo = 0
+				self.aChiTocca = True
+			else:
 				if (self.player.turniFermo > 0):
-					self.com.turniFermo = 0
-					# Ora il PL1 ha un fermo, quindi tocca all'avversario sicuro
 					self.aChiTocca = False
-					
-					# Lancerà il dado, entrerà in avanzaPlayer1 che
-					# decrementerà il suo fermo e lancerà avanzaCOM
+					print("PL1 Ha FERMO "+str(self.player.turnoMio))
 					self.tiraDado()
 				else:
-					if (self.com.turniFermo > 0):
-						# Se l'avversario ha un fermo al 100% tocca al PL1...
-						self.aChiTocca = True
-					else:
-						# L'avversario non ha un fermo MA non è detto che tocchi a lui
-						# (PL1 potrebbe aver preso un TIRA DI NUOVO) quindi controllo
-						if (self.com.turnoMio):
-							self.aChiTocca = False
-							
-							self.turnoCOM = threading.Thread(target=self.toccaAlCOM)
-							self.turnoCOM.start()
-						else:
-							self.aChiTocca = True
-				
-				# finito il turno, segnalerà a chi tocca
-				self.disegnaTutto()
-		else:
-			if(self.com.turniFermo == 0):
-				self.player.turnoMio = not toccaAncoraA_Me
-				if (self.com.turniFermo > 0):
-					self.player.turniFermo = 0
-					self.aChiTocca = True
-				else:
-					if (self.player.turniFermo > 0):
+					#(siamo nel turno del COM)
+					if (toccaAncoraA_Me):
 						self.aChiTocca = False
-						self.tiraDado()
+						self.turnoCOM = threading.Thread(target=self.toccaAlCOM)
+						self.turnoCOM.start()
 					else:
-						if (self.player.turnoMio):
-							self.aChiTocca = True
-						else:
-							self.aChiTocca = False
-							self.turnoCOM = threading.Thread(target=self.toccaAlCOM)
-							self.turnoCOM.start()
+						self.aChiTocca = True
+						self.player.turnoMio = True
 				
-				# finito il turno, segnalerà a chi tocca
-				self.disegnaTutto()
-
-
+				
+		# finito il turno, segnalerà a chi tocca
+		self.disegnaTutto()
+		
+			
 	def segnalaChiTocca(self, doBlitScreen=True):
 		if(self.aChiTocca):
 			valRectPL1 = 1

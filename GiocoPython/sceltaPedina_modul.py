@@ -43,6 +43,10 @@ class SceltaPedina():
         else:
             self.mouseOver = None
 
+    def mousePremuto(self):
+        if(self.mouseOver != None):
+            self.sceltaFatta = True
+
     # sovrappone
     def blit_screen(self):
         # Va a disegnare. (a partire dall'angolo in alto a sx, coord. x=0 y=0)

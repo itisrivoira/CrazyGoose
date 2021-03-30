@@ -276,7 +276,7 @@ class Giocatore():
 			self.creaCasellaIniziale()
 			
 
-	def avanza(self, spostamento):
+	def avanza(self, spostamento, controllaCodCasella=True):
 		#Di default appena si muove, il giocatore ha finito il turno e quindi setto
 			#subito turnoMio = False, tuttavia potrebbe essere risettato a True se il
 			# giocatore finisce sulla casella TIRA_DI_NUOVO
@@ -286,7 +286,7 @@ class Giocatore():
 		# serve per "bloccare" il click sul dado mentre il giocatore non
 		# ha ancora finito di muoversi)
 		self.isMoving = True
-		self.posiziona(spostamento)
+		self.posiziona(spostamento, controllaCodCasella)
 		self.isMoving = False
 		
 			#Ritorna indietro il flag, in questo modo si saprà a chi toccherà
