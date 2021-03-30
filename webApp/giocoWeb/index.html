@@ -26,10 +26,6 @@
     <label id="eff1_com"></label>
     <label id="eff2_com"></label>
 
-    <!-- giocatori TODO ICONE GIOCATORI
-    <label id="PL1">PL1</label>
-    <label id="COM">COM</label>-->
-
     <!-- CASELLE -->
     <div class="caselle" id="inizPL1"></div>
     <div class="caselle" id="inizCOM"></div>
@@ -75,11 +71,18 @@
     <div class="caselle" id="_39"></div>
     <div class="caselle" id="_40"></div>
 
-    <script src="./percorsoModul.js"></script>
-    <script src="./casellaModul.js "></script>
-    <script src="./GiocatoreModul.js "></script>
-    <script src="./crazyGoose.js "></script>
-    <script src="./index.js "></script>
+    <script src="./js/percorsoModul.js"></script>
+    <script src="./js/casellaModul.js "></script>
+    <script src="./js/GiocatoreModul.js "></script>
+    <script src="./js/crazyGoose.js "></script>
+    <script src="./js/index.js "></script>
+    <script>
+        window.addEventListener("keydown", (event) => {
+            if (event.key == "Escape") {
+                window.location = "../menu/html/index.html"
+            }
+        })
+    </script>
 </body>
 
 </html>

@@ -160,6 +160,7 @@ class Giocatore {
         this.gioc.style.top = y1 + "px"
         this.gioc.style.left = x1 + "px"
 
+
         document.body.appendChild(this.gioc)
 
         //se non mi fermo un attimo non si vedrà lo spostamento, andrà direttamente a fine animazione
