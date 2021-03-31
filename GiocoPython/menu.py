@@ -3,6 +3,7 @@ from globalFunction import *
 
 imgCrazyGoose = pygame.image.load("../Logo/scrittaCrazyGoose_700x230_noBagliore.png")
 
+
 class Menu():
     def __init__(self, game):
         self.game = game
@@ -12,9 +13,11 @@ class Menu():
         self.cursor_rect = pygame.Rect(0, 0, 0, 0)
         self.offset = - 100
 
+
     #disegna il cursore quindi se bisogna modificarlo si fa qua
     def draw_cursor(self):
         draw_text(self.game, "*", 30, self.game.WHITE, self.cursor_rect.x, self.cursor_rect.y)
+
 
     #sovrappone, cioè disegna tutto ciò che c'è da disegnare
     # (a partire dall'angolo in alto a sx, coord. x=0, y=0)
@@ -36,12 +39,11 @@ class MainMenu(Menu):
 
     
     def display_menu(self):
-        clock = pygame.time.Clock()
         #Mostra il menu e richiama il metodo che controlla se ci sono eventi
         self.run_display = True
         while self.run_display:
-            #Per non occupare moolta CPU faccio meno giri al secondo, abbasso gli fps
-            clock.tick(10)
+            #Per non occupare moolta CPU abbasso gli fps (in pratica fa meno giri al sec xke aspetta un attimo ogni volta)
+            pygame.time.wait(100)
             
             self.game.check_events()
             self.check_input()
@@ -121,10 +123,14 @@ class OptionsMenu(Menu):
         self.backx, self.backy = self.mid_w, self.mid_h + 120
         self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
 
+
     # cosa esce quando entri in Options Menu
     def display_menu(self):
         self.run_display = True
         while self.run_display:
+        	#Per non occupare moolta CPU abbasso gli fps (in pratica fa meno giri al sec xke aspetta un attimo ogni volta)
+            pygame.time.wait(100)
+        
             self.game.check_events()
             self.check_input()
             self.game.display.fill((self.game.AZZURRO))
@@ -135,6 +141,7 @@ class OptionsMenu(Menu):
             draw_text(self.game, "Back", 30, self.game.WHITE, self.backx, self.backy)
             self.draw_cursor()
             self.blit_screen()
+
 
     # serve a muovere il cursore per la selezione dentro il menu
     def move_cursor(self):
@@ -172,29 +179,27 @@ class OptionsMenu(Menu):
                 self.state = 'Volume'
                 print("Premuto upkey e vado in VOLUME")
 
+
     # controlla gli input
     def check_input(self):
         self.move_cursor()
         if self.game.START_KEY:
             if self.state == 'Res':
-                pass
                 # self.res_options()
                 print("SONO IN Risoluzioni")
             elif self.state == 'Volume':
                 # TODO: class Volume needed
-                pass
                 print("SONO IN VOLUME")
             elif self.state == 'Controls':
                 # TODO: class Controls needed
-                pass
                 print("SONO IN CONTROLS")
             elif self.state == 'Back':
                 print("TORNO INDIETRO")
                 self.go_back()
-                pass
         elif self.game.BACK_KEY:
             self.game.curr_menu = self.game.main_menu
             self.run_display = False
+
 
     def go_back(self):
         self.game.curr_menu = self.game.main_menu
@@ -205,14 +210,19 @@ class OptionsMenu(Menu):
         self.blit_screen()
     """
 
+
 class CreditsMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
+
 
     #schermata dei Credits
     def display_menu(self):
         self.run_display = True
         while self.run_display:
+        	#Per non occupare moolta CPU abbasso gli fps (in pratica fa meno giri al sec xke aspetta un attimo ogni volta)
+            pygame.time.wait(100)
+        
             self.game.check_events()
             if self.game.START_KEY or self.game.BACK_KEY:
                 self.game.curr_menu = self.game.main_menu

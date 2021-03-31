@@ -15,6 +15,7 @@ INFO_COM = "Computer (COM)"
 INFO_DADO_PL1 = "Dado PL1: "
 INFO_DADO_COM = "Dado COM: "
 
+#carica l'img della scritta
 imgCrazyGoose = pygame.image.load("../Logo/scrittaCrazyGoose_400x130_noBagliore.png")
 
 
@@ -25,13 +26,12 @@ class Dado():
 	def tiraDado(self):
 			#Tira il dado, ossia un numero casuale tra 1 e 6 (estremi INCLUSI)
 		self.dado = random.randint(1,6)
-		#self.dado = 40
 		return self.dado
+
 
 """Non essendoci un widget/view Button in pygame ho dovuto "crearlo".
 	Questo Button non è altro che un rettangolo
-	con il testo centrato all'interno
-"""
+	con il testo centrato all'interno """
 class Button():
 	def __init__(self, crazyGoose, game, x, y, width, height, text):
 		self.crazyGoose = crazyGoose
@@ -46,42 +46,44 @@ class Button():
 	
 	def disegna(self, valDado, mouseOver=False):
 		if(mouseOver):
-			# Crea un oggetto Rect (non lo disegna ancora)
 			self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-			# Crea il rettangolo proprio.
-			#					Surface			colore			 Rect
-			pygame.draw.rect(self.game.display, (170,170,170), self.rect
-							 # se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO, se < 0 NON DISEGNA
-							 , 0
-							 # border-radius (per arrotondare gli angoli)
-							 , 4)
+
+			#COME PER LA SCELTA DELL'OCA, CREA UN RETTANGOLO DENTRO L'ALTRO PER FARE UN BORDO
+			# PIÙ GRANDE E VISIBILE
+			
+			#Questo verrà nascosto, si vedrà solo più una parte che diventerà il bordo del dado
+			pygame.draw.rect(self.game.display, self.game.BLACK, self.rect, 0, 4)
+			pygame.draw.rect(self.game.display, (180,180,180), 
+							 pygame.Rect(self.rect.x+2, self.rect.y+2, self.rect.width-4, self.rect.height-4)
+							 , 0, 4)
 			draw_text(self.game, valDado, 16, self.game.BLACK,
 					  (self.x + self.width / 2), (self.y + self.height / 2))
 			
 			if(self.doBlitScreen):
 				self.crazyGoose.blit_screen()
 		else:
-			# Crea un oggetto Rect (non lo disegna ancora)
 			self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-			# Crea il rettangolo proprio.
-			#					Surface			colore			 Rect
-			pygame.draw.rect(self.game.display, self.game.BLACK, self.rect
-							 # se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO, se < 0 NON DISEGNA
-							 , 1
-							 # border-radius (per arrotondare gli angoli)
-							 , 4)
+			#COME PER LA SCELTA DELL'OCA, CREA UN RETTANGOLO DENTRO L'ALTRO PER FARE UN BORDO
+			# PIÙ GRANDE E VISIBILE
+			
+			#Questo verrà nascosto, si vedrà solo più una parte che diventerà il bordo del dado
+			pygame.draw.rect(self.game.display, self.game.BLACK, self.rect, 0, 4)
+			pygame.draw.rect(self.game.display, self.game.WHITE, 
+				pygame.Rect(self.rect.x+2, self.rect.y+2, self.rect.width-4, self.rect.height-4)
+			, 0 , 4)
 			draw_text(self.game, valDado, 16, self.game.BLACK,
 					  (self.x + self.width / 2), (self.y + self.height / 2))
 		
 		
 	def detectMouseOver(self, mouse):
+		"""Dentro al metodo "Rect.collidepoint(mouse)" non c'è niente di che...
+			Ci sarà qualcosa del genere per controllare che il cursore si trovi
+			all'interno del rettangolo:
+				self.x <= mouse_x <= self.x + self.width
+				and self.y <= mouse_y <= self.y + self.height"""
 		return self.rect.collidepoint(mouse)
 	
-	"""Dentro al metodo "Rect.collidepoint(mouse)" non c'è niente di che...
-		Ci sarà qualcosa del genere per controllare che il cursore si trovi
-		all'interno del rettangolo:
-			self.x <= mouse_x <= self.x + self.width
-			and self.y <= mouse_y <= self.y + self.height"""
+	
 	
 class CrazyGoose():
 	def __init__(self, game):
@@ -102,12 +104,10 @@ class CrazyGoose():
 	
 	
 	def start(self):
-		if(self.giocoPartito == False):
-			if(self.sceltaPedina.sceltaFatta == False):
-				self.sceltaPedina.mostraScelte()
-			else:
-				self.mostraGioco()
-	
+		if(self.sceltaPedina.sceltaFatta == False):
+			self.sceltaPedina.mostraScelte()
+		else:
+			self.mostraGioco()
 	
 	def mostraGioco(self):
 		self.giocoPartito = True
@@ -115,7 +115,7 @@ class CrazyGoose():
 		
 		# Dentro questa lista ci saranno gli oggetti Casella
 		self.caselle = list()
-		# Crea il percorso (casuale)
+		# Crea il percorso casuale
 		self.percorso = Percorso()
 		
 		self.inizializzaAttributi()
@@ -138,25 +138,26 @@ class CrazyGoose():
 	def mousePremuto(self, mousePosition):
 		if(self.sceltaPedina.sceltaFatta == False):
 			self.sceltaPedina.mousePremuto()
+		#else: non sono più nel menu della scelta dell'oca
 			
-			
-		# Controlli per il dado (il button) del PL1
-		#Controllo che sia il turno del PL1 (cioè che sia il suo turno OPPURE l'avversario abbia un fermo)
+		#Controllo che sia il turno del PL1 (cioè che sia il suo turno o che l'avversario abbia un fermo)
 		if (self.aChiTocca and (not self.player.isMoving) and self.buttonDadoPL1 != None):
 			if(self.buttonDadoPL1.detectMouseOver(mousePosition)):
 				self.tiraDado()
 		else:
 			if (self.player != None and self.player.isMoving):
+				#TODO effetto carino per far capire che non può lanciare il dado
 				print("muovendo")
 
+
 	def mouseOver(self, mousePosition):
-		#controlli per la scelta della pedina
 		if(self.sceltaPedina.sceltaFatta == False):
 			self.sceltaPedina.controllaPosMouse(mousePosition)
+		#else: non sono più nel menu della scelta dell'oca
 		
-		
-		#Controlli per il dado (il button) del PL1
-		# Controllo che sia il turno del PL1 (cioè che sia il suo turno OPPURE l'avversario abbia un fermo)
+
+		#Controllo che sia il turno del PL1 (cioè che sia il suo turno o che l'avversario abbia un fermo)
+		# E CHE NON SI STIA MUOVENDO (altrimenti provocherebbe uno sfarfallio incredibile)
 		if (self.aChiTocca and self.buttonDadoPL1 != None and
 				(self.player.isMoving == False and self.com.isMoving == False)):
 			
@@ -164,103 +165,115 @@ class CrazyGoose():
 			self.mouseOverDadoPL1 = self.buttonDadoPL1.detectMouseOver(mousePosition)
 			
 			#Se è cambiato qualcosa da prima ha senso ri-disegnare tutto,
-			# altimenti NO, inoltre se ridisegnassi tutto ci sarebbe un
-			# minuscolo sfarfallio (diventa tutto bianco e poi ridisegna tutto)
+			# altimenti NO (se ridisegnassi tutto ci sarebbe un minuscolo sfarfallio
+			# (diventa tutto bianco e poi ridisegna tutto) inutile per altro)
 			if(valPrima != self.mouseOverDadoPL1):
 				self.buttonDadoPL1.doBlitScreen = True
 				self.disegnaTutto()
 			else:
-				#Per evitare che ci sia uno sfarfallio fastidioso mentre il mouse è sopra al dado
+				#Flag per evitare che ci sia uno sfarfallio fastidioso mentre il mouse è sopra al dado
 				self.buttonDadoPL1.doBlitScreen = False
 		else:
 			self.mouseOverDadoPL1 = False
 			
+			
 	def disegnaTutto(self, giocDaNonDisegnare=None):
-			#Se è il primo giro deve stabilire chi sarà il primo giocatore a giocare
-		flagPrimoGiro = (self.player == None and self.com == None)
-		
-		""" "ripulisce" tutto.
-			  Purtroppo pygame funziona in questo modo, non posso "spostare" un elemento
-			  posso solo ripartire da foglio bianco a disegnare"""
-		self.game.display.fill(self.game.WHITE)
-		
-		self.game.display.blit(imgCrazyGoose, (300,0))
-		
-			#Riempe la lista di caselle, cioè "disegna" gli ellissi.
-		self.posizionaLeCaselle()
-			#Scrive nelle caselle il loro effetto
-		self.riempiCaselle()
+		if(self.partitaTerminata == False):
+				#Se è il primo giro deve stabilire chi sarà il primo giocatore a giocare
+			flagPrimoGiro = (self.player == None and self.com == None)
 			
-		draw_text(self.game, INFO_PL1, 15, self.game.BLACK, 50, 20)
-		draw_text(self.game, INFO_DADO_PL1, 16, self.game.BLACK, 55, 60)
-		self.scriviEffetti(self.player, True)
-
-
-		#Il primo argomento è self xke necessita di questa classe per
-		# richiamarne il metodo "tiraDado"
-		if(self.buttonDadoPL1 == None):
-			self.buttonDadoPL1 = Button(self, self.game, 100, 43, 35, 35, self.valDadoPL1)
-		else:
-			if(self.mouseOverDadoPL1):
-				self.buttonDadoPL1.disegna(self.valDadoPL1, True)
-			else:
-				self.buttonDadoPL1.disegna(self.valDadoPL1)
-		
-		
-		draw_text(self.game, INFO_COM, 14, self.game.BLACK, 930, 20)
-		draw_text(self.game, (INFO_DADO_COM+self.valDadoCOM), 16, self.game.BLACK, 917, 60)
-		self.scriviEffetti(self.com, False)
-
-		if(giocDaNonDisegnare != "PL1"):
-			if(self.player == None):
-				self.player = Giocatore(self, self.game, self.caselle, self.percorso, "PL1", self.sceltaPedina.mouseOver)
-			else:
-				self.player.mostraPedina(self.com.posizione)
-				
-		if (giocDaNonDisegnare != "COM"):
-			if (self.com == None):
-				self.com = Giocatore(self, self.game, self.caselle, self.percorso, "COM")
-			else:
-				self.com.mostraPedina(self.player.posizione)
-		
-		if(flagPrimoGiro):
-			# Decide chi incomincia, tira il dado e vede se il numero tirato è pari o dispari
-			# (tra 1 e 6 ci sono 3 pari e 3 dispari, perciò 50% possbilità a testa)
-			if (Dado().tiraDado() % 2 == 0):
-				self.player.turnoMio = True
-				self.com.turnoMio = False
-				
-				self.aChiTocca = True
-			else:
-				self.player.turnoMio = False
-				self.com.turnoMio = True
-				
-				#Fa giocare il COM. Aspetterà 2 sec e lancierà il dado....
-				# il tutto in un altro thread (altro processo) xkè sennò
-				# si bloccherebbe TUTTO per 2 secondi (a causa della sleep di 2 sec)
-				self.turnoCOM = threading.Thread(target=self.toccaAlCOM)
-				self.turnoCOM.start()
+			""" 
+		! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! 
+				Purtroppo pygame funziona in questo modo, non posso "spostare" un elemento
+				posso solo ripartire da foglio bianco a disegnare
+		! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+			"""
+			#"ripulisce" tutto
+			self.game.display.fill(self.game.WHITE)
 			
-				self.aChiTocca = False
-		
-		self.segnalaChiTocca(False)
-		self.blit_screen()
+			self.game.display.blit(imgCrazyGoose, (300,0))
+			
+				#Riempe la lista di caselle, cioè "disegna" gli ellissi.
+			self.posizionaLeCaselle()
+				#Scrive nelle caselle il loro effetto
+			self.riempiCaselle()
+				
+				
+			draw_text(self.game, INFO_DADO_PL1, 16, self.game.BLACK, 55, 60)
+			self.scriviEffetti(self.player, True)
+
+
+			#Il primo argomento è self xke necessita di questa classe per
+			# richiamarne il metodo "tiraDado"
+			if(self.buttonDadoPL1 == None):
+				self.buttonDadoPL1 = Button(self, self.game, 100, 43, 35, 35, self.valDadoPL1)
+			else:
+				#""self.mouseOverDadoPL1" o è True o False
+				self.buttonDadoPL1.disegna(self.valDadoPL1, self.mouseOverDadoPL1)
+			
+			
+			draw_text(self.game, (INFO_DADO_COM+self.valDadoCOM), 16, self.game.BLACK, 917, 60)
+			self.scriviEffetti(self.com, False)
+
+
+			if(giocDaNonDisegnare != "PL1"):
+				if(self.player == None):
+					self.player = Giocatore(self, self.game, self.caselle, self.percorso, "PL1", self.sceltaPedina.mouseOver)
+				else:
+					self.player.mostraPedina(self.com.posizione)
+					
+			if (giocDaNonDisegnare != "COM"):
+				if (self.com == None):
+					self.com = Giocatore(self, self.game, self.caselle, self.percorso, "COM")
+				else:
+					self.com.mostraPedina(self.player.posizione)
+			
+			
+			if(flagPrimoGiro):
+				# Decide chi incomincia, tira il dado e vede se il numero tirato è pari o dispari
+				# (tra 1 e 6 ci sono 3 pari e 3 dispari, perciò 50% possbilità a testa)
+				if (False):#Dado().tiraDado() % 2 == 0
+					self.player.turnoMio = True
+					self.com.turnoMio = False
+					
+					self.aChiTocca = True
+				else:
+					self.player.turnoMio = False
+					self.com.turnoMio = True
+					
+					#Fa giocare il COM
+					# (tutto in un altro thread (altro processo))
+					self.turnoCOM = threading.Thread(target=self.toccaAlCOM)
+					self.turnoCOM.start()
+				
+					self.aChiTocca = False
+			
+			self.segnalaChiTocca()
+			self.blit_screen()
+	
 	
 	def scriviEffetti(self, player_com, isPL1):
+	#TODO ULTIMO EFFETTO PIÙ GRANDE DEL PENULTIMO (anche BORDO)
 		if(player_com != None):
 			pxTesto = 14
 			font = pygame.font.Font(self.game.font_name, pxTesto)
+				#(distanza dal margine dx, se isPL1 == True)
 			xRect = 20
 
+			#Se effettivamente c'è qualcosa da scrivere entra
 			if(player_com.ultimoMsg != ""):
+				#Prendo la dimensione che avrà il testo
 				dimTesto = font.size(player_com.ultimoMsg)
-				if(not isPL1):
+				if(not isPL1):	#caso effetto preso dal COM, va scritto sulla dx della finestra
 					xRect = self.game.DISPLAY_W - 20 - dimTesto[0]
 
 				yRect = 90
+				
 				#3.5px distanza dal bordo dx e sx del rettangolo
 				xText = xRect+(dimTesto[0])/2 +3.5
-				#(i "/2" xkè scriverò il testo CENTRATO, quindi mi servono le x e y CENTRALI)
+				
+				#("dimTesto[]/2" xkè scriverò il testo CENTRATO, quindi mi servono le x e y CENTRALI del rect)
+				
 				#1px distanza dal bordo sup. e inf. del rettangolo
 				yText = yRect+(dimTesto[1]/2) +1
 
@@ -269,15 +282,21 @@ class CrazyGoose():
 				pygame.draw.rect(self.game.display, self.game.BLACK, pygame.Rect(xRect, yRect, dimTesto[0]+7, dimTesto[1]+2), 1)
 				draw_text(self.game, player_com.ultimoMsg, pxTesto, self.game.BLACK, xText, yText)
 
+				#Se effettivamente c'è qualcosa da scrivere entra
 				if(player_com.penultimoMsg != ""):
 					dimTesto = font.size(player_com.penultimoMsg)
 					if(not isPL1):
 						xRect = self.game.DISPLAY_W - 20 - dimTesto[0]
 
+					#Aumenta la yRect dell'ultimo effetto, quindi scriverà il penultimo effetto distante 1 px
+					# (altezza del testo + 1px di margine sopra e sotto)
 					yRect += (dimTesto[1]+2+1)
+					
 					#3.5px distanza dal bordo dx e sx del rettangolo
 					xText = xRect+(dimTesto[0])/2 +3.5
-					#(i "/2" xkè scriverò il testo CENTRATO, quindi mi servono le x e y CENTRALI)
+					
+					#("dimTesto[]/2" xkè scriverò il testo CENTRATO, quindi mi servono le x e y CENTRALI del rect)
+					
 					#1px distanza dal bordo sup. e inf. del rettangolo
 					yText = yRect+(dimTesto[1]/2) +1
 					
@@ -299,13 +318,14 @@ class CrazyGoose():
 			
 
 	def toccaAlCOM(self, numEstratto=-1):
-		#Se il num del dado non viene passato viene settato a -1 e allora lancia il dado
+		#Se il num del dado non viene passato (è settato a -1) lancia il dado
 		if(numEstratto == -1):
 			numEstratto = Dado().tiraDado()
 		
-		#Non voglio bloccare il PL1 per 2 secondi, quindi se il COM ha un fermo non
+		#Non devo bloccare il PL1 per 2 secondi, quindi se il COM ha un fermo non
 		# faccio la sleep di 2 sec (dopo aver decrementato il fermo lancia il metodo
-		# per far avanzare PL1)
+		# per far avanzare PL1 quindi tecnicamente si muove il PL1 e si deve muovere
+		# subito non dopo 2 sec)
 		if(self.com.turniFermo == 0):
 			time.sleep(2)
 
@@ -314,11 +334,15 @@ class CrazyGoose():
 
 	def avanzaPlayer1(self, numEstratto, controllaCodCasella=True):
 		#numEstratto = 40
+		
 		#se num estratto è < 0 vuol dire che è stata attivata l'abilità
-		# del COM, quindi non importa se il player ha o non ha un fermo
+		# del COM (che richiama questo metodo con numEstratto = -2), quindi
+		# non importa se il player ha o non ha un fermo
+		
 		if(self.player.turniFermo > 0 and numEstratto > 0):
 			# Se il PL1 ha beccato un fermo in precedenza deve "consumarlo"
-			# (sarà come se avesse tirato l'avversario)
+			# (poi richiama il metodo per far avanzare il COM, sarà come
+			# se avesse tirato l'avversario)
 			self.player.turniFermo -= 1
 			
 			self.player.turnoMio = False
@@ -333,8 +357,11 @@ class CrazyGoose():
 			# del dado sarà cambiato)
 			self.valDadoPL1 = str(numEstratto)
 
+			#controllaCodCasella = False se è stata attivata l'abilità del COM
 			toccaAncoraA_Me = self.player.avanza(numEstratto, controllaCodCasella)
 			
+			#Se la posizione è la stessa del COM, e l'abilità del COM
+			# si può attivare, attiva l'abilità del COM
 			if (self.player.posizione == self.com.posizione and
 				self.player.posizione > 2):
 				
@@ -381,8 +408,8 @@ class CrazyGoose():
 
 	def avanzaCOM(self, numEstratto):
 		#numEstratto = 40
-		#(Per i commenti VEDI "avanzaPlayer1")
 		
+		#(Per i commenti, più o meno tutti, VEDI "avanzaPlayer1")
 		if(self.com.turniFermo > 0):
 			self.com.turniFermo -= 1
 
@@ -428,41 +455,34 @@ class CrazyGoose():
 
 
 	def attivaAbilitaCOM(self, turnoPL1, toccaAncoraA_Me):
-		# micro-fermo
+		# micro-fermo del PL1 sulla casella del COM
+		#TODO cambiare IMG
 		pygame.time.wait(400)
-		#sposta di 2 indietro il PL1
+		
+		#sposta di 2 indietro il PL1 (non dovrà controlla l'effetto della casella su cui
+		# finisce quindi passo False)
 		self.turnoPL1 = threading.Thread(target=self.player.avanza, args=(-2, False))
 		self.turnoPL1.start()
 		
-		#Aspetta che il PL1 sia tornato indietro di 2
+		#Aspetta che il PL1 sia tornato indietro di 2 (che sia finito il movimento)
 		while (self.player.isMoving):
 			#si ferma per un attimo così da non occupare girare moltissime volte in un
 			# loop "vuoto" che non fa nulla
 			pygame.time.wait(200)
 		
+		
+		#(Per i commenti, più o meno tutti, VEDI "avanzaPlayer1")
 		if(turnoPL1):
-			# avanza() ritorna self.turnoMio, perciò
-			# se ritorna True non tocca all'avversario (gli setto False)
-			# se ritorna False tocca all'avversario (gli setto True)
-			
-			# se prende un fermo ANNULLA il fermo dell'avversario
-			# (SENNÒ NESSUNO GIOCHEREBBE PIÙ per alcuni turni)
 			if (self.player.turniFermo > 0):
 				self.com.turniFermo = 0
-				# Ora il PL1 ha un fermo, quindi tocca all'avversario sicuro
 				self.aChiTocca = False
 				
-				# Lancerà il dado, entrerà in avanzaPlayer1 che
-				# decrementerà il suo fermo e lancerà avanzaCOM
 				self.tiraDado()
 			else:
 				if (self.com.turniFermo > 0):
-					# Se l'avversario ha un fermo al 100% tocca al PL1...
 					self.aChiTocca = True
 					self.player.turnoMio = True
 				else:
-					# L'avversario non ha un fermo MA non è detto che tocchi a lui
-					# (PL1 potrebbe aver preso un TIRA DI NUOVO) quindi controllo
 					if (not toccaAncoraA_Me):
 						self.aChiTocca = False
 						
@@ -479,10 +499,9 @@ class CrazyGoose():
 			else:
 				if (self.player.turniFermo > 0):
 					self.aChiTocca = False
-					print("PL1 Ha FERMO "+str(self.player.turnoMio))
 					self.tiraDado()
 				else:
-					#(siamo nel turno del COM)
+					#(siamo nel turno del COM, quindi se il flag è True tocca al COM)
 					if (toccaAncoraA_Me):
 						self.aChiTocca = False
 						self.turnoCOM = threading.Thread(target=self.toccaAlCOM)
@@ -492,38 +511,43 @@ class CrazyGoose():
 						self.player.turnoMio = True
 				
 				
-		# finito il turno, segnalerà a chi tocca
+		# finito il turno, segnala a chi tocca
 		self.disegnaTutto()
 		
 			
-	def segnalaChiTocca(self, doBlitScreen=True):
+	def segnalaChiTocca(self):
 		if(self.aChiTocca):
-			valRectPL1 = 1
+			valRectPL1 = 0
 			valRectCOM = -1
 		else:
 			valRectPL1 = -1
-			valRectCOM = 1
-			
-		pygame.draw.rect(self.game.display, self.game.RED, pygame.Rect(15, 10, 70, 20), valRectPL1)
-		#se < 0 NON LO DISEGNA, se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO
-		pygame.draw.rect(self.game.display, self.game.RED, pygame.Rect(867, 10, 125, 20), valRectCOM)
+			valRectCOM = 0
 		
-		#farà un piccolo sfarfallio se lo faccio, quindi se lo richiamo una volta
-		# "di fretta" non si noterà, ma visto che lo uso in disegnaTutto, lo richiamerei
-		# tante volte e sarebbe fastidioso
-		if(doBlitScreen):
-			self.blit_screen()
+		#Per creare un bordo molto più visibile (potrei usare valRectPL1/valRectCOM = 0 ma è piccolo)
+		# creo un rettangolo PIENO rosso e poi ne ricreo uno all'interno bianco dentro cui poi ci scrivo
+		#				( esattamente come ho fatto per il dado e la scelta delle oche )
+		
+		pygame.draw.rect(self.game.display, self.game.RED, pygame.Rect(14, 9, 72, 22), valRectPL1)
+		pygame.draw.rect(self.game.display, self.game.WHITE, pygame.Rect(17, 12, 66, 16), 0)
+		
+	# ! ! ! se < 0 NON LO DISEGNA, se = 0 riempe anche l'interno, se > 0 FA SOLO IL CONTORNO ! ! !
+		
+		pygame.draw.rect(self.game.display, self.game.RED, pygame.Rect(845, 9, 130, 22), valRectCOM)
+		pygame.draw.rect(self.game.display, self.game.WHITE, pygame.Rect(848, 12, 124, 16), 0)
+		
+		#Ri-disegna le info dei player che si saranno "nascoste"
+		draw_text(self.game, INFO_PL1, 15, self.game.BLACK, 50, 20)
+		draw_text(self.game, INFO_COM, 15, self.game.BLACK, 910, 20)
 		
 
 	def segnalaVincitore(self, haVintoPlayer1):
+		#si ferma un attimo sulla casella finale
 		time.sleep(1)
 		if(haVintoPlayer1):
-			# print("HA VINTO e sono in PLAYER  !!!")
 			self.game.gameWin()
-
 		else:
-			# print("HA PERSO E sono in COM  !!!")
 			self.game.gameOver()
+			
 			
 	def riempiCaselle(self):
 		"""Cicla per ogni casella e controlla, se la posizione della casella
@@ -587,4 +611,5 @@ class CrazyGoose():
 		
 		self.caselle.append( Casella(self.game.display, 625, 370) )
 		self.caselle.append( Casella(self.game.display, 525, 335) )
+			#Casella finale non sarà un ellisse di normale dimensioni
 		self.caselle.append( Casella(self.game.display, 370, 340, 105, 95) )

@@ -21,6 +21,7 @@ class Casella():
 		self.width = width
 		self.height = height
 
+		#disegna ellisse nero riempito (ultimo param. è 0)
 		pygame.draw.ellipse(self.display, (0, 0, 0, 1), (self.x, self.y, self.width, self.height), 0)
 		
 	
@@ -57,6 +58,7 @@ class Casella():
 			testo = "HAI\nVINTO !!!"
 			color = (80, 80, 230)
 		
+		#disegna un ellisse leggermente più piccolo sopra quello di prima (così da mantenere solo un contorno nero)
 		pygame.draw.ellipse(self.display, color, (self.x+2, self.y+2, self.width-4, self.height-4), 0)
 		
 		if(len(testo) > 0):
@@ -76,8 +78,9 @@ class Casella():
 				#Divide il testo dove ci sono "\n"
 				text = testo.splitlines()
 				
-				#N.B. SONO SICURO CHE text AVRÀ SOLO 2 RIGHE XKÈ SO COSA PUç CONTENERE "testo"
-				# QUINDI QUESTO NON FUNZIONA CON FRASI CON PIÙ DI 1 "\n"
+				#N.B. SONO SICURO CHE text AVRÀ SOLO 2 RIGHE XKÈ SO COSA PUO'' CONTENERE "testo"
+				# quando il codCasella
+				# (quindi questo codice non funziona con frasi con più di 1 "\n")
 				
 				text_surface = font.render(text[0], True, (0, 0, 0, 1))
 				text_rect = text_surface.get_rect()
@@ -92,6 +95,7 @@ class Casella():
 				text_rect.center = (self.getCenterX(), self.getCenterY()+heightOfText-5)
 				self.display.blit(text_surface, text_rect)
 			else:
+				#Non ci sono "\n" quindi non devo fare nulla di complicato
 				font = pygame.font.Font(font_name, 15)
 				
 				text_surface = font.render(testo, True, (0, 0, 0, 1))
@@ -109,12 +113,13 @@ class Casella():
 		textWidth = font.size(numCasella)[0]
 		textHeight = font.size(numCasella)[1]
 		
-		#uno sfondo al numero della casella
+		#da uno sfondo al numero della casella
 		pygame.draw.rect(self.display, (220,220,220),
 						 pygame.Rect(self.getCenterX()-textWidth/2,
 									 self.getCenterY()-self.height/2-textHeight/2,
 									 textWidth, textHeight))
 		
+		#scrive il numero sopra lo sfondo
 		text_surface = font.render(numCasella, True, (0, 0, 0, 1))
 		text_rect = text_surface.get_rect()
 		text_rect.center = (self.getCenterX()-1, self.getCenterY()-self.height/2)
@@ -122,7 +127,7 @@ class Casella():
 		
 		
 	def getCenterX(self):
-		return ( self.width/2 + self.x )
+		return ( self.x + self.width/2 )
 		
 	def getCenterY(self):
-		return ( self.height/2 + self.y )
+		return ( self.y + self.height/2 )

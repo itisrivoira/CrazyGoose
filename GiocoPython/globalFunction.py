@@ -9,7 +9,7 @@ def draw_text(game, text, size, color, x, y):
 	font = pygame.font.Font(game.font_name, size)
 	text_surface = font.render(text, True, color)
 	text_rect = text_surface.get_rect()
-	#l'allineamento del testo
+	#allinea il testo centralmente a quelle coord.
 	text_rect.center = (x, y)
 
 	# Ora va realmente a disegnare la scritta

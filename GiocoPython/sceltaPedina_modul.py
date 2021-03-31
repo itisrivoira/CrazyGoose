@@ -12,6 +12,8 @@ DESCR_OCA_BLU = "Con la sua abilità si potrà avanzare di 2 caselle per saltare
 
 DESCR_OCA_ROSSA = "Con la sua abilità si potrà annullare l'effetto di una casella!"
 
+
+#carica le immagini delle oche
 pedinaGialla = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_gialla.png")
 pedinaVerde = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_verde.png")
 pedinaBlu = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_blu.png")
@@ -32,6 +34,9 @@ class SceltaPedina():
 
     
     def controllaPosMouse(self, mouse):
+		#collidepoint è un metodo di pygame.Rect che date le coord. di un punto
+		# (x e y) ti ritorna se il punto è all'interno o meno del rettangolo		
+		
         if(self.rectOcaGialla != None and self.rectOcaGialla.collidepoint(mouse)):
             self.mouseOver = "gialla"
         elif(self.rectOcaVerde != None and self.rectOcaVerde.collidepoint(mouse)):
@@ -43,9 +48,13 @@ class SceltaPedina():
         else:
             self.mouseOver = None
 
+
     def mousePremuto(self):
+        #ha premuto il tasto del mouse, se era sopra un'oca (quindi
+        # mouseOver ha un valore) avrà scelto la sua oca.
         if(self.mouseOver != None):
             self.sceltaFatta = True
+
 
     # sovrappone
     def blit_screen(self):
@@ -80,7 +89,11 @@ class SceltaPedina():
         
     
     def mostraRettangoloOca(self, rectOca, color):
+        #questo sarà solo "il contorno" del rettangolo della pedina
         pygame.draw.rect(self.game.display, color, rectOca, 0, 6)
+		
+		#ricopre una parte leggermente più piccola del rettangolo qua sopra
+		#(così da mostrare solo il contorno)
         pygame.draw.rect(self.game.display, self.game.AZZURRO, pygame.Rect(
             rectOca.x + 3, rectOca.y + 3,
             rectOca.width - 6, rectOca.height - 6
@@ -88,6 +101,8 @@ class SceltaPedina():
         
         
     def mostraOca(self):
+        #self.game.display.blit(img, (coord_x, coord_y)) mostra l'immagine a quelle coordinate
+        
         if(self.mouseOver == "gialla"):
             self.mostraDescrOca(DESCR_OCA_GIALLA, self.rectOcaGialla, (255, 255, 0))
         else:
@@ -124,28 +139,31 @@ class SceltaPedina():
                                     self.rectOcaRossa.y + self.rectOcaRossa.height / 2.5))
             
     
-    def mostraNomeOca(self, nomeOca, rectOca, color):
-        draw_text(self.game, nomeOca, 37, color,
-                  rectOca.x + rectOca.width / 2,
-                  rectOca.y + rectOca.height / 5)
-     
-     
     def mostraDescrOca(self, DESCR, rectOca, color):
-        
         DESCR = self.aggiungiACapo(DESCR)
+
+		#divido la stringa dove ci sono "\n" e poi disegno "più aree di testo"
+		# (perchè quando in pygame scriviamo testo non riconosce i "\n")
         righeDescr = DESCR.splitlines()
         
         for i in range(len(righeDescr)):
             draw_text(self.game, righeDescr[i], 20, color,
                       rectOca.x + rectOca.width / 2,
                       rectOca.y + rectOca.height / 4 + 25 * i)
+
+
+    def mostraNomeOca(self, nomeOca, rectOca, color):
+        draw_text(self.game, nomeOca, 37, color, 
+                      rectOca.x + rectOca.width / 2,
+                      rectOca.y + rectOca.height / 5)
             
             
     def aggiungiACapo(self, descr):
         """Metodo che aggiunge un "\n" ogni tot caratteri SE VI È UNO SPAZIO
             (così da non spezzare le parole).
-           N.B. CON IL FONT a 20px ci stanno 26 caratteri in una riga, ma non posso
-            prevedere dopo quanto sarà il prossimo spazio, quindi l'ho abbasso a 20
+           N.B. CON IL FONT a 20px ci stanno 26 caratteri in una riga in realtà, ma non posso
+            prevedere se al 26esimo carattere sarà terminata la parola, per sicurezza quindi
+            abbasso ancora un po' la qta di caratteri per riga
         """
 
         counter = 1

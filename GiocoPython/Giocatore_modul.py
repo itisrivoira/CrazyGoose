@@ -33,6 +33,7 @@ class Giocatore():
 		self.tag = tag
 		self.pedinaScelta = pedinaScelta
 		
+		#Mi è inutile caricare TUTTE le img delle pedine e scegliere quella "giusta" nel momento in cui mi serve
 		if(pedinaScelta == "gialla"):
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/pedina_gialla.png")
 		elif(pedinaScelta == "verde"):
@@ -44,17 +45,17 @@ class Giocatore():
 		else:		#caso None, il Giocatore è il COMPUTER
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/pedina_COM.png")
 
+
 		self.posizione = 0
 		self.newSpostamento = 0
 		self.turnoMio = False
 		self.turniFermo = 0
 		self.vincitore = False
-			# il flag mi serve per spostare la scritta che indentifica il giocatore
+			#TODO il flag mi serve per spostare la scritta che indentifica il giocatore
 			# quando esso si trova su una casella con un effetto (così da non stare
 			# sopra l'effetto (sennò non si capisce più nnt)
 		self.sopraEffetto = False
-			# il flag mi serve per "bloccare" il click sul dado mentre il giocatore non
-			# ha ancora finito di muoversi)
+			# il flag mi serve per "bloccare" alcune azioni finchè la pedina ha smesso di muoversi
 		self.isMoving = False
 		
 		self.ultimoMsg = ""
@@ -70,7 +71,8 @@ class Giocatore():
 			x, y = X_PLAYER2, Y_PLAYER2
 		
 		#crea e posiziona l'ellisse (la casella) prima dell'inizio del percorso
-		# poi inserisce la scritta che identifica il giocatore
+		# poi inserisce l'img della pedina del giocatore
+		
 		self.casellaIniziale = Casella(self.game.display, x, y)
 		pygame.draw.ellipse(self.game.display, (255,255,255),
 							(self.casellaIniziale.x+2, self.casellaIniziale.y+2,
@@ -93,40 +95,43 @@ class Giocatore():
 						#prendo il codice della casella in cui si trova il giocatore
 					codCasella = self.percorso.dictCaselle[self.posizione]
 
-				#La pedina si muoverà (prima di un eventuale nuovo spostamento, prima di richiamare
-				# il metodo per controllare la casella sottostante)
+				#Muove la pedina e POI controlla se è finità su una casella con un effetto
 				self.ridisegnaTutto(spostamento)
 				
 				if (controllaCasella):
 					#Controlla l'effetto contenuto nella
-					# casella (richiamerà di nuovo posiziona se ci fosse da spostare la pedina)
+					# casella (richiamerà di nuovo "posiziona()" se ci fosse da spostare la pedina)
 					self.controllaCodiceCasella(codCasella)
 			except KeyError:
 				#Non ha trovato quella posizione nel dizionario, perciò dev'essere una casella VUOTA
 				self.ridisegnaTutto(spostamento)
 
 		else:
-			# ( se servisse mai la posizione della casella in cui finirà... è newSpostamento+self.posizione
-			# (cioè il calcolo qua sopra senza quel "- self.posizione") )
-			
+			# - - - Ha tirato un numero troppo alto che lo farebbe "andare oltre" la casella di vittoria - - -
+		
 			#sposto fino alla casella finale (Non constrollo il codice
-			# casella xkè sennò mi darebbe la vittoria) E POI risposto INDIETRO di tot caselle
-			# es. sono casella 37 faccio 6 ==> mi sposto di 3 nella casella di vittoria
-			# 		e poi torno indietro di 3
+			# casella xkè sennò mi darebbe la vittoria ma in realtà non ha vinto)
+			# E POI ri-sposto INDIETRO di tot caselle
+			# es. sono casella 37 faccio 7 (dovrei andare a 44 ma è oltre le 40 casella)
+			#  ==> mi sposto di 3 fino alla casella di vittoria	e poi torno indietro di 4
+			
 			if (self.newSpostamento == 0):
 				self.newSpostamento = -((self.posizione + spostamento) - QTA_CASELLE_TOTALI)
 				
+			#quindi ora sposto la pedina sulla casella finale
 			self.posiziona((QTA_CASELLE_TOTALI-self.posizione), False)
 			#ferma un attimo il giocatore sulla casella finale
 			time.sleep(0.2)
 			
-			#Riposiziona il giocatore
+			#Ora ri-sposto indietro il giocatore di TOT
 			self.posiziona(self.newSpostamento)
+			
+			#una sorta di flag
 			self.newSpostamento = 0
 	
 	
 	def ridisegnaTutto(self, spostamento):
-		#mi serve la pos di partenza, e io ho già aumentato la posizione. quindi
+		#mi serve la posizione di PARTENZA, e io ho già aumentato la posizione. quindi
 		# passo la posizione meno lo spostamento
 		self.spostaPedina((self.posizione-spostamento), spostamento)
 	
@@ -140,9 +145,11 @@ class Giocatore():
 			x2 = self.caselle[0].getCenterX()
 			y2 = self.caselle[0].getCenterY()
 			
+			#(il 7 come ultimo parametro è per muovere la pedina più velocemente sulle x,
+			# rispetto a 5px per volta, per dare l'effetto di un movimento proprio diagonale)
 			self.spostaFraDueCaselle(x1, y1, x2, y2, 7)
 		else:
-			#Se parte dalla casella iniziale (prima dell'inizio del percorso) deve muoversi anche da lì
+			#Se parte dalla casella iniziale (prima dell'inizio del percorso) deve muoversi da lì alla prima casella
 			if(partenza == 0):
 				x1 = self.casellaIniziale.getCenterX()
 				y1 = self.casellaIniziale.getCenterY()
@@ -151,6 +158,7 @@ class Giocatore():
 				y2 = self.caselle[0].getCenterY()
 				
 				self.spostaFraDueCaselle(x1, y1, x2, y2)
+				
 				#Ora si muoverà dalla prima casella a quella in cui deve arrivare
 				# (spostamento-1 xkè un spostamento l'ha già fatto)
 				self.spostaPedina(1, spostamento - 1)
@@ -163,7 +171,7 @@ class Giocatore():
 				if(spostamento > 0):
 					
 					#partenza è la posizione della casella da 1 a 40,
-					# ma le caselle sono 0-based per questo "partenza-1
+					# ma la lista di caselle è 0-based per questo "partenza-1"
 					i = 0
 					while(i < spostamento):
 						x1 = self.caselle[partenza - 1 + i].getCenterX()
@@ -181,17 +189,11 @@ class Giocatore():
 					
 					#lo trasformo in positivo, sennò "i" sarebbe maggiore di "spostamento"
 					spostamento = -spostamento
-					# una sorta di flag per il primo giro
-					x1 = None
 					
 					i = 0
 					while (i < spostamento):
-						if (x1 == None):
-							x1 = self.caselle[partenza - 1].getCenterX()
-							y1 = self.caselle[partenza - 1].getCenterY()
-						else:
-							x1 = self.caselle[partenza - 1 - i].getCenterX()
-							y1 = self.caselle[partenza - 1 - i].getCenterY()
+						x1 = self.caselle[partenza - 1 - i].getCenterX()
+						y1 = self.caselle[partenza - 1 - i].getCenterY()
 						
 						x2 = self.caselle[partenza - 1 - i - 1].getCenterX()
 						y2 = self.caselle[partenza - 1 - i - 1].getCenterY()
@@ -207,12 +209,11 @@ class Giocatore():
 		fine_x = x2
 		fine_y = y2
 		
-		#!!! Per tutta la durata del loop comincia ad usare moolta CPU...
 		continua = True
 		while(continua and self.crazyGoose.giocoPartito):
 			# metto un minuscolo fermo, altrimenti sarebbe troppo veloce
 			pygame.time.wait(14)
-			# Non disegnerà il giocatore (lo disegno dopo)
+			# Non disegnerà il giocatore che si sta muovendo (lo disegna in questo metodo fra poco)
 			self.crazyGoose.disegnaTutto(self.tag)
 			
 			if(partenza_x < fine_x):
@@ -233,6 +234,7 @@ class Giocatore():
 			if(partenza_y >= fine_y-5 and partenza_y <= fine_y+5):
 				partenza_y = fine_y
 			
+			
 			# Non mi muovo in modo da arrivare PRECISAMENTE alle coordinate x y,
 			# quindi controllo se sono arrivato intorno alle coord x y
 			if (partenza_x >= fine_x-5 and partenza_x <= fine_x+5
@@ -240,7 +242,6 @@ class Giocatore():
 				
 				# fermo il loop
 				continua = False
-				
 				self.game.display.blit(self.imgPedina,
 									   (fine_x - WIDTH_PEDINA / 2,
 										fine_y - HEIGHT_PEDINA / 2))
@@ -250,7 +251,7 @@ class Giocatore():
 										partenza_y - HEIGHT_PEDINA / 2))
 						
 						
-			#"ricarico" la finestra, cioè disegno veramente tutto
+			#"disegno veramente" tutto
 			self.crazyGoose.blit_screen()
 			
 			
@@ -259,7 +260,7 @@ class Giocatore():
 			x = self.caselle[self.posizione-1].getCenterX()
 			y = self.caselle[self.posizione-1].getCenterY()
 			
-			""" DA VEDÈ COME FARE
+			"""TODO DA VEDÈ COME FARE
 			if(posAvvessario == self.posizione or self.sopraEffetto):
 				if(self.tag == "PL1"):
 					#più in alto
@@ -272,7 +273,7 @@ class Giocatore():
 								   (x - WIDTH_PEDINA / 2,
 									y - HEIGHT_PEDINA / 2))
 		else:
-			#posizione "prima" del percorso
+			#posizione "prima" del percorso quindi mostro la pedina prima del percorso
 			self.creaCasellaIniziale()
 			
 
@@ -282,9 +283,7 @@ class Giocatore():
 			# giocatore finisce sulla casella TIRA_DI_NUOVO
 		self.turnoMio = False
 		
-		#il flag tornerà a False solo quando l'animazione sarà finita (mi
-		# serve per "bloccare" il click sul dado mentre il giocatore non
-		# ha ancora finito di muoversi)
+		#il flag tornerà a False solo quando l'animazione sarà finita
 		self.isMoving = True
 		self.posiziona(spostamento, controllaCodCasella)
 		self.isMoving = False
@@ -355,10 +354,10 @@ class Giocatore():
 			self.penultimoMsg = self.ultimoMsg
 			self.ultimoMsg = msg
 
-			#per mostrare i msg
+			#mostra i msg
 			self.crazyGoose.disegnaTutto()
 
 		if(spostamento != 0):
-			#attende un secondo
+			#attende un attimino sulla casella
 			time.sleep(0.5)
 			self.posiziona(spostamento)
