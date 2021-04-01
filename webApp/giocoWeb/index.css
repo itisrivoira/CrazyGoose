@@ -1,7 +1,12 @@
-.caselle {
+.caselle,
+.caselleIniziali {
     border: 1px solid black;
     border-radius: 50%;
     text-align: center;
+}
+
+.caselle {
+    display: table;
 }
 
 #info_pl1 {

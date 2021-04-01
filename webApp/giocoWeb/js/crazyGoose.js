@@ -52,6 +52,7 @@ class CrazyGoose {
         this.buttonDadoPL1 = document.getElementById("dado_pl1")
         this.buttonDadoPL1.addEventListener("click", () => {
 
+            //Controllo che sia il turno del PL1 (cioè che sia il suo turno o che l'avversario abbia un fermo)
             if (this.player != null && this.player.turniFermo == 0) {
                 if (this.player.turnoMio == true || (this.player.turnoMio == false && this.com.turniFermo > 0)) {
                     this.tiraDado()
@@ -63,11 +64,10 @@ class CrazyGoose {
         this.player = new Giocatore(this, this.caselle, this.percorso, "PL1")
         this.com = new Giocatore(this, this.caselle, this.percorso, "COM")
 
-        //NON DOVREBBE PIÙ SERVIRE: let flagPrimoGiro = (this.player == null && this.com == null)
 
         // Decide chi incomincia, tira il dado e vede se il numero tirato è pari o dispari
         // (tra 1 e 6 ci sono 3 pari e 3 dispari, perciò 50% possbilità a testa)
-        let random = 2 //(new Dado()).tiraDado()
+        let random = (new Dado()).tiraDado()
         if (random % 2 == 0) {
             this.player.turnoMio = true
             this.com.turnoMio = false
@@ -105,6 +105,7 @@ class CrazyGoose {
     stopCOM() {
         if (this.timeoutCOM != null) {
             clearTimeout(this.timeoutCOM)
+            clearTimeout(this.timeoutCOM)
         }
     }
 
@@ -115,8 +116,6 @@ class CrazyGoose {
 
             if (this.player.turnoMio) {
                 this.avanzaPlayer1(numEstratto)
-
-                //Per cambiare il numero uscito nel button nel html
             } else {
                 this.toccaAlCOM()
             }
@@ -124,16 +123,18 @@ class CrazyGoose {
     }
 
     toccaAlCOM(numEstratto = -1) {
-        //Se il num del dado non viene passato viene settato a -1 e allora lancia il dado
+        //Se il num del dado non viene passato (è settato a -1) lancia il dado
         if (numEstratto == -1) {
             numEstratto = (new Dado()).tiraDado()
         }
 
-        //Non voglio bloccare il PL1 per 2 secondi, quindi se il COM ha un fermo non
-        // faccio la sleep di 2 sec (dopo aver decrementato il fermo lancia il metodo
-        // per far avanzare PL1)
+        //Non devo bloccare il PL1 per 1 secondo, quindi se il COM ha un fermo non
+        // faccio la sleep di 1 sec (dopo aver decrementato il fermo lancia il metodo
+        // per far avanzare PL1 quindi tecnicamente si muove il PL1 e si deve muovere
+        // subito non dopo 1 sec)
         if (this.com.turniFermo == 0) {
-            //dopo 1000ms (1sec) entra nella funzione, che a sua volta lancia la funzione avanzaCOM
+            //(* * * setTimeout esegue, in una sorta di altro processo (quindi non blocca il codice),
+            // la funzione passata dopo tot millisecondi * * *)
             this.timeoutCOM = setTimeout(() => { this.avanzaCOM(numEstratto) }, 1000)
         } else {
             this.avanzaCOM(numEstratto)
@@ -141,7 +142,6 @@ class CrazyGoose {
     }
 
     avanzaPlayer1(numEstratto) {
-        numEstratto = 39
         if (this.player.turniFermo > 0) {
             // Se il PL1 ha beccato un fermo in precedenza deve "consumarlo"
             // (sarà come se avesse tirato l'avversario)
@@ -160,14 +160,14 @@ class CrazyGoose {
 
             this.player.avanza(numEstratto)
 
+            //(* * * setinterval esegue, in una sorta di altro processo (quindi non blocca il codice),
+            // la funzione passata OGNI tot millisecondi (finchè non lo si ferma con clearTimeout
+            // continuerà ad eseguire ogni tot ms la funzione data) * * *)
             let idIntervalFineAvanza = setInterval(() => {
                 if (this.player.isMoving == false) {
                     clearInterval(idIntervalFineAvanza)
 
                     if (!this.player.vincitore) {
-                        //avanza() ritorna this.turnoMio, perciò
-                        // se ritorna true non tocca all'avversario (gli setto false)
-                        // se ritorna false tocca all'avversario (gli setto true)
                         this.com.turnoMio = !this.player.turnoMio
 
                         //se prende un fermo ANNULLA il fermo dell'avversario 
@@ -278,6 +278,7 @@ class CrazyGoose {
         chiTocca.style.padding = "1px"
         chiTocca.style.border = "2px solid red"
 
+        //rimuovo il bordo (lo nascondo in pratica)
         chiAspetta.style.padding = "0px"
         chiAspetta.style.border = "2px none red"
     }

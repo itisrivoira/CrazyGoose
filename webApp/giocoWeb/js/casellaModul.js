@@ -5,23 +5,26 @@ class Casella {
         this.width = width
         this.height = height
 
+
         if (indice > 0) {
             this.questaCasella = document.getElementById(("_" + indice))
         } else {
-            //casella iniziale dei giocatori
+            //prendo la casella iniziale dei giocatori
             if (indice == 0) {
                 this.questaCasella = document.getElementById("inizPL1")
             } else if (indice == -1) {
                 this.questaCasella = document.getElementById("inizCOM")
             }
         }
+
         this.questaCasella.style.width = width + "px"
         this.questaCasella.style.height = height + "px"
         this.questaCasella.style.position = "absolute"
         this.questaCasella.style.left = x + "px"
         this.questaCasella.style.top = y + "px"
 
-        if (casellaVittoria) {
+
+        if (casellaVittoria) { //dimensioni diverse se è la casella iniziale
             this.questaCasella.style.width = "120px"
             this.questaCasella.style.height = "100px"
             this.questaCasella.style.left = x + "px"
@@ -34,27 +37,31 @@ class Casella {
         // nella casella, cioè l'effetto
         let testo = ""
         if (codCasella == TIRA_DI_NUOVO[0]) {
-            testo = "Ri-tira il dado"
+            testo = "X2"
         } else if (codCasella == INDIETRO_DI_UNO[0]) {
-            testo = "Indetro di 1"
+            testo = "-1"
         } else if (codCasella == INDIETRO_DI_TRE[0]) {
-            testo = "Indietro di 3"
+            testo = "-3"
         } else if (codCasella == AVANTI_DI_UNO[0]) {
-            testo = "Avanti di 1 !"
+            testo = "+1"
         } else if (codCasella == AVANTI_DI_QUATTRO[0]) {
-            testo = "Avanti di 4 !"
+            testo = "+4"
         } else if (codCasella == FERMO_DA_UNO[0]) {
-            testo = "Fermo un giro"
+            testo = "ALT"
         } else if (codCasella == FERMO_DA_DUE[0]) {
-            testo = "Fermo due giri"
+            testo = "ALT X2"
         } else if (codCasella == TORNA_ALL_INIZIO) {
-            testo = "Torna all'inizio !"
+            testo = "DA CAPO !"
         } else if (codCasella == VITTORIA) {
             testo = "HAI VINTO !!!"
         }
 
         let x = document.createElement("LABEL")
         x.innerHTML = testo
+            //per allineare verticalmente (insieme a "display:table;" nella classe CSS "caselle")
+        x.style.display = "table-cell"
+        x.style.verticalAlign = "middle"
+            //aggiunto al div della casella l'effetto della casella
         this.questaCasella.appendChild(x)
     }
 

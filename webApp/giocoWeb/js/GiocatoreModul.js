@@ -31,6 +31,7 @@ class Giocatore {
 
         this.penultimoEff = ""
         this.ultimoEff = ""
+        this.newSpostamento = 0
 
         this.creaCasellaIniziale()
     }
@@ -63,7 +64,7 @@ class Giocatore {
         document.body.appendChild(this.gioc)
     }
 
-    posiziona(spostamento) {
+    posiziona(spostamento, controllaCodCasella = true) {
         //Controlla che con il numero che ha fatto non "esca" dal percorso
         if (this.posizione + spostamento <= QTA_CASELLE_TOTALI) {
             //aggiorno la posizione
@@ -71,41 +72,64 @@ class Giocatore {
             this.sopraEffetto = false
 
             try {
-                //prendo il codice della casella in cui si trova il giocatore 
-                let codCasella = this.percorso.dictCaselle[this.posizione]
-                    //La pedina si muove nella casella (che in questo caso avrà un effetto)
-                this.ridisegnaTutto(spostamento, false, codCasella)
+                if (controllaCodCasella) {
+                    //prendo il codice della casella in cui si trova il giocatore 
+                    let codCasella = this.percorso.dictCaselle[this.posizione]
+                        //La pedina si muove nella casella (che in questo caso avrà un effetto)
+                    this.ridisegnaTutto(spostamento, false, codCasella)
 
-                /*Qui ci andrebbe un FERMO per POCHISSIMO (cos' da fermare la pedina sulla casella con
-                    l'effetto per un attimo e "far capire all'utente cosa sta succedendo").*/
+                } else {
+                    this.ridisegnaTutto(spostamento, true)
+                }
 
-                /*Riferito a prima: TODO TROVARE UN MODO XKE QUESTI NON FUNZIONANO:
-                
-                            1) setTimeout(() => { this.controllaCodiceCasella(codCasella) }, 500)
-                             funziona ma NON FERMA l'esecuzione del programma ! (i turni si sballano)
-                            2)let prima = new Date().getTime(); while(new Date().getTime() < prima+2000){}
-                             funzionerebbe se non fosse che gira TROPPO VELOCE, TROPPE VOLTE e il browser lo ferma
-                        */
             } catch (err) {
                 //Non ha trovato quella posizione nel dizionario, perciò dev'essere una casella VUOTA
                 this.ridisegnaTutto(spostamento, true)
             }
         } else {
-            //Calcolo lo spostamento che dovrà fare dalla casella attuale
-            let newSpostamento = (QTA_CASELLE_TOTALI - (spostamento - (QTA_CASELLE_TOTALI - this.posizione))) - this.posizione
-                //( se servisse mai la posizione della casella in cui finirà... è newSpostamento+this.posizione
-                // (cioè il calcolo qua sopra senza quel "- this.posizione") )
+            // - - - Ha tirato un numero troppo alto che lo farebbe "andare oltre" la casella di vittoria - - -
 
-            //Riposiziona il giocatore
-            this.posiziona(newSpostamento)
+            //sposto fino alla casella finale (Non constrollo il codice
+            // casella xkè sennò mi darebbe la vittoria ma in realtà non ha vinto)
+            // E POI ri-sposto INDIETRO di tot caselle
+            // es. sono casella 37 faccio 7 (dovrei andare a 44 ma è oltre le 40 casella)
+            //  ==> mi sposto di 3 fino alla casella di vittoria	e poi torno indietro di 4
+
+            if (this.newSpostamento == 0) {
+                this.newSpostamento = -((this.posizione + spostamento) - QTA_CASELLE_TOTALI)
+            }
+
+            //quindi ora sposto la pedina sulla casella finale
+            this.posiziona((QTA_CASELLE_TOTALI - this.posizione), false)
+
+            //Aspetta che finisca l'animazione della pedina e poi la fa ritornare indietro
+            //(* * * setinterval esegue, in una sorta di altro processo (quindi non blocca il codice),
+            // la funzione passata OGNI tot millisecondi (finchè non lo si ferma con clearTimeout
+            // continuerà ad eseguire ogni tot ms la funzione data) * * *)
+            this.idIntervalPedinaFuoriPercorso = setInterval(() => {
+                if (this.isMoving == false) {
+                    this.isMoving = true
+                        //ferma un attimo il giocatore sulla casella finale
+                        //(* * * setTimeout esegue, in una sorta di altro processo (quindi non blocca il codice),
+                        // la funzione passata dopo tot millisecondi * * *)
+                    setTimeout(() => {
+                        //elimino l'interval
+                        clearInterval(this.idIntervalPedinaFuoriPercorso)
+                            //Ora ri-sposto indietro il giocatore di TOT
+                        this.posiziona(this.newSpostamento)
+                            //una sorta di flag
+                        this.newSpostamento = 0
+                    }, 400)
+                }
+            }, 70)
         }
     }
 
 
     ridisegnaTutto(spostamento, settaIsMovingFalse = false, codCasella = -1) {
         //mi serve la pos di partenza, e io ho già aumentato la posizione. quindi
-        // passo la posizione meno lo spostamento
-        //this.crazyGoose.ctx.clearRect(0, 0, this.crazyGoose.canvas.width, this.crazyGoose.canvas.height)
+        // partenza è uguale alla posizione meno lo spostamento
+
         this.isMoving = true
         this.counter = 0
         let partenza = (this.posizione - spostamento)
@@ -114,27 +138,31 @@ class Giocatore {
             this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella)
         } else {
             if (spostamento != -(QTA_CASELLE_TOTALI - 2)) {
-                let casCorrente = partenza - 1
-                let prossimaCas = partenza - 1
+                let casellaCorrente = partenza - 1
+                let prossimaCasella = partenza - 1
                 if (spostamento > 0) {
-                    prossimaCas += 1
+                    prossimaCasella += 1
                 } else {
-                    prossimaCas -= 1
+                    //la prossima casella sarà quella nella posizione appena precedente
+                    prossimaCasella -= 1
                 }
 
                 this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella,
-                    this.caselle[casCorrente].getCenterX(), this.caselle[casCorrente].getCenterY(),
-                    this.caselle[prossimaCas].getCenterX(), this.caselle[prossimaCas].getCenterY())
+                    this.caselle[casellaCorrente].getCenterX(), this.caselle[casellaCorrente].getCenterY(),
+                    this.caselle[prossimaCasella].getCenterX(), this.caselle[prossimaCasella].getCenterY())
+
             } else {
+                //Caso in cui è finito su "DA CAPO !" e deve andare dritto dritto verso la prima casella
                 var x1 = this.caselle[partenza - 1].getCenterX()
                 var y1 = this.caselle[partenza - 1].getCenterY()
                 var x2 = this.caselle[0].getCenterX()
                 var y2 = this.caselle[0].getCenterY()
 
-                //se lo setto a 1 quando incrementerà il contatore (per passare poi alla prossima
-                // casella normalmente) lui finirà il ciclo
+                //devo settarlo a 1 così quando incrementerà il contatore lui finirà il ciclo
+                // (il codice è quello per spostare la pedina fra due caselle, se non lo settassi
+                // lui continuerebbe da 38 a 37, da 37 a 36... fino a da 2 a 1)
                 spostamento = 1
-                    //Può settare a false isMOving xke intanto sulla prima casella non ci
+                    //Può settare a false this.isMoving xke intanto sulla prima casella non ci
                     // può essere alcun effetto, qunidi non deve controllare il codice della casella
                 this.spostaFraDueCaselle(partenza, spostamento, true, codCasella, x1, y1, x2, y2)
             }
@@ -148,9 +176,19 @@ class Giocatore {
         y2 = this.caselle[0].getCenterY()) {
 
 
+        /*
+        
+    ! ! ! Non posso usare la "semplice" proprietà CSS per le animazioni sul giocatore ! ! ! 
+    ! ! !  xkè si "attiverebbe" solo la prima volta. ! ! ! 
+    ! ! ! Cosa faccio quindi ? OGNI VOLTA CREO UNA NUOVA LABEL, le faccio fare l'animazione ! ! ! 
+    ! ! !  e LA DISTRUGGO. AL GIRO DOPO NE VERRÀ CREATA UN ALTRA E CONTINUA COSÌ. ! ! ! 
+        */
+
+
         if (this.gioc != null) {
-            //tra un turno e l'altro la pedina non dev'essere rimossa,
-            // ma ora si xke devo mouverla (e quindi rifare l'animazione CSS)
+            //tra un turno e l'altro la pedina non deve essere rimossa
+            // (deve stare ferma sulla casella) quindi la distruggo ora
+            // (dopo verrà ricreata)
             document.body.removeChild(this.gioc)
         }
         this.gioc = document.createElement("LABEL")
@@ -160,34 +198,39 @@ class Giocatore {
         this.gioc.style.top = y1 + "px"
         this.gioc.style.left = x1 + "px"
 
-
         document.body.appendChild(this.gioc)
 
-        //se non mi fermo un attimo non si vedrà lo spostamento, andrà direttamente a fine animazione
-        setTimeout(() => {
 
+        //se non mi fermo un attimo non si vedrà lo spostamento, andrà direttamente a fine animazione
+        //(* * * setTimeout esegue, in una sorta di altro processo (quindi non blocca il codice),
+        // la funzione passata dopo tot millisecondi * * *)
+        setTimeout(() => {
+            //fa l'animazione
             this.gioc.style.transform = "translateX(" + (x2 - x1) + "px) translateY(" + (y2 - y1) + "px)"
             this.gioc.style.transition = TEMPO_SPOST_FRA_CASELLE + "ms"
 
-            //animazione finita...
+            //aspetta che l'animazione sia finita (decido io quanto dura quindi so quando finisce)
             setTimeout(() => {
-
                 this.counter += 1
+                    //(lo spostamento potrebbe essere <0 quindi lo rendo assoluto)
                 if (this.counter < Math.abs(spostamento)) {
                     document.body.removeChild(this.gioc)
                     this.gioc = null
 
                     this.prossimoSpostamento(partenza, spostamento, settaIsMovingFalse, codCasella)
                 } else {
+                    //Ha fatto tutti gli spostamenti
                     if (settaIsMovingFalse) {
                         //ha finito di muoversi (lo faccio solo quando SONO SICURO che abbia finito di muoversi.
-                        // Normalmente infatti non lo faccio xke controllando l'effetto della casella potrebbe muoversi ancora)
+                        // Normalmente infatti non lo faccio xke controllando l'effetto della casella potrebbe    
+                        // muoversi ancora)
                         this.isMoving = false
                     } else {
-                        //sono nel caso in cui ha trovato un codice nella casella in cui si
-                        // trova la pedina (non è stata lanciata nessuna eccezione)
+                        //sono nel caso in cui ha trovato è finito in una casella con
+                        // effetto
 
-                        //Controlla l'effetto contenuto nella casella (dopo un attimo)
+                        //Controlla l'effetto contenuto nella casella (dopo un attimo così da
+                        // lasciare la pedina un attimino sulla casella con l'effetto)
                         setTimeout(() => {
                             this.controllaCodiceCasella(codCasella)
                         }, 250)
@@ -201,14 +244,13 @@ class Giocatore {
     }
 
     prossimoSpostamento(partenza, spostamento, settaIsMovingFalse, codCasella) {
-        //Se parte dalla casella iniziale (prima dell'inizio del percorso) deve muoversi anche da lì
         //Ora muovo la pedina dello spostamento da fare.
         //   NON muovo la pedina dalla partenza alla fine DIRETTAMENTE,
         //   MA muovo di CASELLA IN CASELLA, per ogni casella che
         //   deve superare
         if (spostamento > 0) {
             //partenza è la posizione della casella da 1 a 40,
-            // ma le caselle sono 0-based per questo "partenza-1
+            // ma la lista di caselle è 0-based per questo "partenza-1"
 
             var x1 = this.caselle[partenza - 1 + this.counter].getCenterX()
             var y1 = this.caselle[partenza - 1 + this.counter].getCenterY()
@@ -240,7 +282,6 @@ class Giocatore {
         this.turnoMio = false
 
         this.posiziona(spostamento)
-            //Ritorna indietro il flag, in questo modo si saprà a chi toccherà
     }
 
     controllaCodiceCasella(codCasella) {
@@ -303,7 +344,7 @@ class Giocatore {
             this.penultimoEff = this.ultimoEff
             this.ultimoEff = eff
 
-            //per mostrare i effetti
+            //per mostrare i effetti (di chi è l'effetto ? true se è del PL1, false se del COM)
             this.crazyGoose.scriviEffetti(this, (this.tag == "PL1"))
         }
 
