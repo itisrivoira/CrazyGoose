@@ -1,0 +1,169 @@
+#areaScelta{
+    border:1px solid black; 
+    background-color: rgb(187, 2, 233);
+    /* width: 1830px;
+    height: 950px; */
+    width:1830px;
+    height: 980px;
+    /* box-shadow: inset 0px 0px 70px 10px rgba(0,0,0,0.6); */
+
+}
+
+
+#titolo {
+    text-align: center;
+    font-family: Helvetica;
+    color: white;
+    /* padding: 10px 140px 10px 140px ; */
+    font-size: 25px;
+    text-shadow: -3px 3px rgba(0, 0, 0, 0.3);
+
+}
+
+#areaOche{
+    /* border:1px solid black; */
+    height: 380px;
+    /* margin: top right bottom left*/
+    margin: 60px 100px 30px 100px;
+    text-align: center;
+    
+}
+
+#areaOche2{
+    /* border:1px solid black; */
+    height: 380px;
+    /* margin: top right bottom left*/
+    margin: 60px 100px 30px 100px;
+    text-align: center;
+
+}
+
+#ocaGialla{
+    float: left;
+    border:5px solid yellow;
+    margin: 0px 0px 80px 410px;
+    width: 350px;
+    height: 350px;
+    border-radius: 10%;
+    cursor: pointer;
+    box-shadow: -5px 5px rgba(0, 0, 0, 0.3);
+    text-shadow: -3px 3px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s linear;
+    /* box-shadow: inset 0px 0px 40px 1px yellow; */
+    
+}
+
+#ocaGialla:hover{
+    box-shadow: inset 0px 0px 40px 1px yellow;
+    width: 400px;
+    height: 400px;
+    margin: -30px 0px 60px 380px;
+    background-color:rgb(187, 187, 0);
+
+}
+
+#ocaVerde{
+    float:right;
+    margin: 0px 410px 80px 0px;
+    border:5px solid rgb(8, 224, 26);
+    width: 350px;
+    height: 350px;
+    border-radius: 10%;
+    cursor: pointer;
+    box-shadow: -5px 5px rgba(0, 0, 0, 0.3);
+    text-shadow: -3px 3px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s linear;
+    /* box-shadow: inset 0px 0px 40px 1px rgb(8, 224, 26); */
+}
+
+#ocaVerde:hover{
+    box-shadow: inset 0px 0px 40px 1px rgb(8, 224, 26);
+    width: 400px;
+    height: 400px;
+    margin: -30px 380px 60px 0px;
+    background-color:rgb(39, 146, 7);
+}
+
+#ocaBlu{
+    float:left;
+    border:5px solid blue;
+    margin: 0px 0px 0px 410px;
+    width: 350px;
+    height: 350px;
+    border-radius: 10%;
+    cursor: pointer;
+    box-shadow: -5px 5px rgba(0, 0, 0, 0.3);
+    text-shadow: -3px 3px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s linear;
+    /* box-shadow: inset 0px 0px 40px 1px blue; */
+}
+
+#ocaBlu:hover{
+    box-shadow: inset 0px 0px 40px 1px blue;
+    width: 400px;
+    height: 400px;
+    margin: -30px 0px 0px 380px;
+    background-color:rgb(3, 0, 175);
+}
+
+#ocaRossa{
+    float:right;
+    margin: 0px 410px 0px 0px;
+    border:5px solid red;
+    width: 350px;
+    height: 350px;
+    border-radius: 10%;
+    cursor: pointer;
+    box-shadow: -5px 5px rgba(0, 0, 0, 0.3);
+    text-shadow: -3px 3px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s linear;
+    /* box-shadow: inset 0px 0px 40px 1px red; */
+}
+
+#ocaRossa:hover{
+    box-shadow: inset 0px 0px 40px 1px red;
+    width: 400px;
+    height: 400px;
+    margin: -30px 380px 0px 0px;
+    background-color:rgb(155, 2, 2);
+}
+
+#verde{
+    /* margin-top:100px; */
+    text-align: center;
+    font-family: Helvetica;
+    color: rgb(8, 224, 26);
+    font-weight: bold;
+    font-size: 50px;
+
+}
+
+#gialla{
+    /* margin-top:100px; */
+    text-align: center;
+    font-size: 50px;
+    font-family: Helvetica;
+    color: yellow;
+    font-weight: bold;
+
+}
+
+#rossa{
+    /* margin-top:100px; */
+    text-align: center;
+    font-family: Helvetica;
+    color: red;
+    font-weight: bold;
+    font-size: 50px;
+
+}
+
+#blu{
+    /* margin-top:100px; */
+    text-align: center;
+    font-family: Helvetica;
+    color: blue;
+    font-weight: bold;
+    font-size: 50px;
+
+}
