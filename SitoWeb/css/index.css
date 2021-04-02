@@ -131,13 +131,14 @@ blu/azzurro (classe sopra e sotto il commento)*/
 }
 
 .cardBackOcaGialla {
-    color: gold;
-    background-color: rgba(255, 217, 0, 0.877);
+
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 217, 0);
     background-image: url(../images/pedina_giallo.png);
 }
 
 .cardBackOcaGialla p {
-    background-color: rgb(126, 116, 105);
+    background-color: rgba(184, 187, 5, 0.466);
 }
 
 .cardFrontOcaBlu {
@@ -148,12 +149,12 @@ blu/azzurro (classe sopra e sotto il commento)*/
 .cardBackOcaBlu {
     align-items: center;
     background-color: rgba(0, 0, 255, 0.692);
-    color: blue;
+    color: rgb(255, 255, 255);
     background-image: url(../images/pedina_blu.png);
 }
 
 .cardBackOcaBlu p {
-    background-color: rgb(126, 116, 105);
+    background-color: rgba(0, 0, 255, 0.24);
 }
 
 .cardFrontOcaVerde {
@@ -176,6 +177,25 @@ blu/azzurro (classe sopra e sotto il commento)*/
     color: red;
     background-color: rgba(255, 0, 0, 0.822);
     background-image: url(../images/pedina_rosso.png);
+}
+
+
+.cardFrontOcaCattiva{
+    background-image: url(../images/pedina_COM_564x530.png);
+}
+
+.cardBackOcaCattiva{
+    background-image: url(../images/pedina_COM_564x530.png);
+    color: rgb(71, 1, 62);
+    background-color: rgba(99, 22, 80, 0.521);
+}
+
+.txtOcaCattiva{
+    justify-content: center; 
+    text-align: center;  
+    background-color: rgba(99, 22, 80, 0.521);"
+    
+
 }
 
 
