@@ -34,13 +34,13 @@ class Giocatore():
 		self.pedinaScelta = pedinaScelta
 		
 		#Mi è inutile caricare TUTTE le img delle pedine e scegliere quella "giusta" nel momento in cui mi serve
-		if(pedinaScelta == "gialla"):
+		if(self.pedinaScelta == "gialla"):
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_gialla.png")
-		elif(pedinaScelta == "verde"):
+		elif(self.pedinaScelta == "verde"):
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_verde.png")
-		elif(pedinaScelta == "blu"):
+		elif(self.pedinaScelta == "blu"):
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_blu.png")
-		elif(pedinaScelta == "rossa"):
+		elif(self.pedinaScelta == "rossa"):
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_rossa.png")
 		else:		#caso None, il Giocatore è il COMPUTER
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_COM.png")
@@ -57,6 +57,9 @@ class Giocatore():
 		self.sopraEffetto = False
 			# il flag mi serve per "bloccare" alcune azioni finchè la pedina ha smesso di muoversi
 		self.isMoving = False
+			
+		self.attendoAbilita = False
+		self.abilitaAttivata = False
 		
 		self.ultimoMsg = ""
 		self.penultimoMsg = ""
@@ -293,6 +296,7 @@ class Giocatore():
 	
 	
 	def controllaCodiceCasella(self, codCasella):
+		codCasella = AVANTI_DI_UNO[0]
 		"""
 		In questo metodo controllo l'effetto della casella su cui è capitato
 		 il giocatore. Setto lo spostamento a 0 xkè l'effetto potrebbe lasciare lì
@@ -358,6 +362,28 @@ class Giocatore():
 			self.crazyGoose.disegnaTutto()
 
 		if(spostamento != 0):
+			
+			if(self.pedinaScelta == "gialla" and spostamento == 1):
+				#TODO i cicli fermarli se il gioco si è fermato
+				
+				#attende 2 sec (nel mentre deve fare controlli quindi non posso
+				# usare semplicemente una wait di 2000, ogni 100ms faccio un giro
+				# e controllo, arrivati a 20 giri avro' aspettato 2000ms)
+				numGiri = 0
+				while(numGiri < 20):
+					self.attendoAbilita = True
+					self.crazyGoose.buttonAbilitaPL1.evidenziaTempoRimanente((2000-numGiri*100), True)
+					
+					if(self.abilitaAttivata):
+						spostamento = 3
+						numGiri = 20
+						self.attendoAbilita = False
+						self.abilitaAttivata = False
+					else:
+						numGiri += 1
+						pygame.time.wait(100)
+				
+			
 			#attende un attimino sulla casella
-			time.sleep(0.5)
+			pygame.time.wait(500)
 			self.posiziona(spostamento)
