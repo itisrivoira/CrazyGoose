@@ -232,7 +232,7 @@ class CrazyGoose():
 			if(flagPrimoGiro):
 				# Decide chi incomincia, tira il dado e vede se il numero tirato è pari o dispari
 				# (tra 1 e 6 ci sono 3 pari e 3 dispari, perciò 50% possbilità a testa)
-				if (False):#Dado().tiraDado() % 2 == 0
+				if (Dado().tiraDado() % 2 == 0):
 					self.player.turnoMio = True
 					self.com.turnoMio = False
 					

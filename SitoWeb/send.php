@@ -1,6 +1,6 @@
 <?php
-    $adminemail= 'alessandrodastru24@gmail.com';
-    $useremail= filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $adminEmail= "bellonegiulio@gmail.com"#'alessandrodastru24@gmail.com';
+    $userEmail= filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $userMessage = '
         <html>
             <head>
@@ -30,7 +30,21 @@
         ";
     $headers[] = 'MIME-Version: 1.0';
     $headers[] = 'Content-type: text/html; charset=utf-8';
-    mail($userEmail, 'Richiesta di contatto effettuata con successo', $userMessage, implode("\r\n", $headers));
-    mail($adminEmail, 'Richiesta di contatto dal sito web', $adminMessage, implode("\r\n", $headers));
-    echo "Messaggio inviato con successo";
+    $returnVal = mail($userEmail, 'Richiesta di contatto effettuata con successo', $userMessage, implode("\r\n", $headers));
+
+    if($returnVal == true){
+        echo "Messaggio inviato all'utente con successo";
+    }else{
+        echo "Messaggio non inviato all'utente";
+    }
+
+    $returnVal = mail($adminEmail, 'Richiesta di contatto dal sito web', $adminMessage, implode("\r\n", $headers));
+    
+    if($returnVal == true){
+        echo "Messaggio inviato all'admin con successo";
+    }else{
+        echo "Messaggio non inviato all'admin";
+    }
+    
+    
 ?>
