@@ -296,7 +296,6 @@ class Giocatore():
 	
 	
 	def controllaCodiceCasella(self, codCasella):
-		codCasella = AVANTI_DI_UNO[0]
 		"""
 		In questo metodo controllo l'effetto della casella su cui è capitato
 		 il giocatore. Setto lo spostamento a 0 xkè l'effetto potrebbe lasciare lì
@@ -363,26 +362,35 @@ class Giocatore():
 
 		if(spostamento != 0):
 			
-			if(self.pedinaScelta == "gialla" and spostamento == 1):
-				#TODO i cicli fermarli se il gioco si è fermato
-				
-				#attende 2 sec (nel mentre deve fare controlli quindi non posso
-				# usare semplicemente una wait di 2000, ogni 100ms faccio un giro
-				# e controllo, arrivati a 20 giri avro' aspettato 2000ms)
-				numGiri = 0
-				while(numGiri < 20):
-					self.attendoAbilita = True
-					self.crazyGoose.buttonAbilitaPL1.evidenziaTempoRimanente((2000-numGiri*100), True)
+			if(self.abilitaAttivata == False):
+				if(self.pedinaScelta == "gialla" and spostamento == 1):
+					#TODO i cicli fermarli se il gioco si è fermato
+					
+					#attende 2 sec (nel mentre deve fare controlli quindi non posso
+					# usare semplicemente una wait di 2000, ogni 100ms faccio un giro
+					# e controllo, arrivati a 20 giri avro' aspettato 2000ms)
+					numGiri = 0
+					#(controllo anche che il gioco non sia stato fermato)
+					while(numGiri < 20 and self.crazyGoose.giocoPartito):
+						self.attendoAbilita = True
+						self.crazyGoose.buttonAbilitaPL1.evidenziaTempoRimanente((2000-numGiri*100), True)
+						
+						if(self.abilitaAttivata):
+							spostamento = 3
+							numGiri = 20
+						else:
+							numGiri += 1
+							pygame.time.wait(100)
+					
+					#(in CrazyGoose.disegna() non disegna il button per l'abilita se
+					# vede attendoAbilita a True, questo xke se è a True vuol dire che
+					# è nel while qui sopra e qui sta fancedo evidenziaTempoRimandente
+					# che andrà a disegnare il button dell'abilita)
+					self.attendoAbilita = False
 					
 					if(self.abilitaAttivata):
-						spostamento = 3
-						numGiri = 20
-						self.attendoAbilita = False
-						self.abilitaAttivata = False
-					else:
-						numGiri += 1
-						pygame.time.wait(100)
-				
+						#Ormai ha attivato l'abilità perciò non la può più usare
+						self.crazyGoose.buttonAbilitaPL1.cancellaButtonAbilita()
 			
 			#attende un attimino sulla casella
 			pygame.time.wait(500)
