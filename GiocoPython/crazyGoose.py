@@ -349,7 +349,7 @@ class CrazyGoose():
 			# usare blit_screen
 			#(NB. controlli che necessitano che self.player NON SIA None)
 			if (self.buttonAbilitaPL1 == None and self.player.abilitaAttivata == False):
-				self.buttonAbilitaPL1 = ButtonAbilitaPL1(self, self.game, self.player.pedinaScelta, 170, 20, 50, 50)
+				self.buttonAbilitaPL1 = ButtonAbilitaPL1(self, self.game, self.player.pedinaScelta, 170, 10, 70, 70)
 			else:
 				if (self.player.attendoAbilita == False):
 					self.buttonAbilitaPL1.disegna()
