@@ -7,6 +7,7 @@ from globalFunction import *
 
 import pygame
 import random
+import math
 import time
 import threading
 
@@ -40,14 +41,17 @@ class Button():
 		self.y = y
 		self.width = width
 		self.height = height
-		self.doBlitScreen = False
+		
+		self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 		
 		self.disegna(text)
 	
-	def disegna(self, valDado, mouseOver=False):
-		if(mouseOver):
-			self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-
+	
+	def disegna(self, valDado, doBlitScreen = False):
+		#"cancella" il dado che c'era prima
+		pygame.draw.rect(self.game.display, self.game.WHITE, self.rect, 0)
+		
+		if(self.crazyGoose.mouseOverDadoPL1):
 			#COME PER LA SCELTA DELL'OCA, CREA UN RETTANGOLO DENTRO L'ALTRO PER FARE UN BORDO
 			# PIÙ GRANDE E VISIBILE
 			
@@ -58,11 +62,7 @@ class Button():
 							 , 0, 4)
 			draw_text(self.game, valDado, 16, self.game.BLACK,
 					  (self.x + self.width / 2), (self.y + self.height / 2))
-			
-			if(self.doBlitScreen):
-				self.crazyGoose.blit_screen()
 		else:
-			self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 			#COME PER LA SCELTA DELL'OCA, CREA UN RETTANGOLO DENTRO L'ALTRO PER FARE UN BORDO
 			# PIÙ GRANDE E VISIBILE
 			
@@ -73,7 +73,10 @@ class Button():
 			, 0 , 4)
 			draw_text(self.game, valDado, 16, self.game.BLACK,
 					  (self.x + self.width / 2), (self.y + self.height / 2))
-		
+			
+		if(doBlitScreen):
+			self.crazyGoose.blit_screen()
+			
 		
 	def detectMouseOver(self, mouse):
 		"""Dentro al metodo "Rect.collidepoint(mouse)" non c'è niente di che...
@@ -83,7 +86,107 @@ class Button():
 				and self.y <= mouse_y <= self.y + self.height"""
 		return self.rect.collidepoint(mouse)
 	
+
+#TODO fare poi classe padre e classe figlio (Button padre, ButtonDado e ButtonAbilitaPL1 figli)
+
+class ButtonAbilitaPL1():
+	def __init__(self,  crazyGoose, game, ocaScelta, x, y, width, height):
+		self.crazyGoose = crazyGoose
+		self.game = game
+		self.x = x
+		self.y = y
+		self.width = width
+		self.height = height
+		
+		self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+		self.rectArc = pygame.Rect(self.x-2, self.y-2, self.width+4, self.height+4)
+		
+		if(ocaScelta == "gialla"):
+			cartella = "/OcaGialla"
+		elif(ocaScelta == "verde"):
+			cartella = "/OcaVerde"
+		elif(ocaScelta == "blu"):
+			cartella = "/OcaBlu"
+		elif(ocaScelta == "rossa"):
+			cartella = "/OcaRossa"
+			
+		
+		self.imgOk = pygame.image.load("./imgAbilita"+cartella+"/OK.png")
+		self.imgQuasi= pygame.image.load("./imgAbilita"+cartella+"/QUASI.png")
+		self.imgNonPiu= pygame.image.load("./imgAbilita"+cartella+"/NON_PIU.png")
+		self.imgNo= pygame.image.load("./imgAbilita"+cartella+"/NO.png")
+		
+		self.evidenziaTempoRimanente(0)
+		
 	
+	
+	def disegna(self, ms = 0, doBlitScreen = False, cancellaPrec = True):
+		if(cancellaPrec):
+			# (Non farà blit_screen, al massimo lo farà dopo ma di certo non
+			# non mi serve farlo due volte)
+			self.cancellaButtonAbilita(False)
+		
+		
+		if(self.crazyGoose.player.abilitaAttivata == False):
+			if(ms == 0):
+				img = self.imgNonPiu
+			elif(ms > 1000):
+				img = self.imgOk
+			else:
+				img = self.imgQuasi
+		else:
+			img = self.imgNo
+		
+		self.game.display.blit(img, (self.rect.x, self.rect.y))
+		
+		""" TODO DA VEDERE COME FARE, MAGARI FARE UN CERCHIO INTORNO
+		(PER FAR CAPIRE CHE SI TROVA SOPRA IL BUTTON)
+		if(self.crazyGoose.mouseOverAbilitaPL1):
+			pygame.draw.circle(self.game.display, (170,50,50), (
+				self.rect.x+self.rect.width/2, self.rect.y+self.rect.height/2), self.rect.width/2)
+		else:
+			pygame.draw.circle(self.game.display, self.game.RED, (
+				self.rect.x + self.rect.width / 2, self.rect.y + self.rect.height / 2), self.rect.width / 2)"""
+	
+		if(doBlitScreen):
+			self.crazyGoose.blit_screen()
+	
+	
+	def evidenziaTempoRimanente(self, ms=2000, doBlitScreen = False):
+		#(Non farà blit_screen, al massimo lo farà dopo ma di certo non
+		# non mi serve farlo due volte)
+		self.cancellaButtonAbilita(False)
+		
+		#sarà l'ultimo giro, non disegno più
+		if(ms > 100):
+			#(non parto da 0° ma da 90°, quindi non 360° ma 360°+90°)
+			gradi = (360*ms / 2000)+90
+			
+			pygame.draw.arc(self.game.display, self.game.BLACK, pygame.Rect(
+				self.rect.x-2, self.rect.y-2, self.rect.width+4, self.rect.height+4
+			), math.radians(90), math.radians(gradi), 3)
+			
+		self.disegna(ms, False, False)
+		
+		if(doBlitScreen):
+			self.crazyGoose.blit_screen()
+	
+	
+	def cancellaButtonAbilita(self, doBlitScreen = True):
+		# "cancella" il button che c'era prima
+		pygame.draw.rect(self.game.display, self.game.WHITE, self.rectArc)
+		if (doBlitScreen):
+			self.crazyGoose.blit_screen()
+	
+	
+	def detectMouseOver(self, mouse):
+		"""Dentro al metodo "Rect.collidepoint(mouse)" non c'è niente di che...
+			Ci sarà qualcosa del genere per controllare che il cursore si trovi
+			all'interno del rettangolo:
+				self.x <= mouse_x <= self.x + self.width
+				and self.y <= mouse_y <= self.y + self.height"""
+		return self.rect.collidepoint(mouse)
+
 	
 class CrazyGoose():
 	def __init__(self, game):
@@ -109,6 +212,7 @@ class CrazyGoose():
 		else:
 			self.mostraGioco()
 	
+	
 	def mostraGioco(self):
 		self.giocoPartito = True
 		self.partitaTerminata = False
@@ -127,6 +231,8 @@ class CrazyGoose():
 		self.valDadoCOM = "0"
 		self.valDadoPL1 = "0"
 		
+		self.buttonAbilitaPL1 = None
+		self.mouseOverAbilitaPL1 = False
 		self.buttonDadoPL1 = None
 		self.mouseOverDadoPL1 = False
 		self.player = None
@@ -141,14 +247,18 @@ class CrazyGoose():
 		#else: non sono più nel menu della scelta dell'oca
 			
 		#Controllo che sia il turno del PL1 (cioè che sia il suo turno o che l'avversario abbia un fermo)
-		if (self.aChiTocca and (not self.player.isMoving) and self.buttonDadoPL1 != None):
+		if (self.buttonDadoPL1 != None):
 			if(self.buttonDadoPL1.detectMouseOver(mousePosition)):
-				self.tiraDado()
-		else:
-			if (self.player != None and self.player.isMoving):
-				#TODO effetto carino per far capire che non può lanciare il dado
-				print("muovendo")
+				if(self.aChiTocca and (not self.player.isMoving)):
+					self.tiraDado()
+				else:
+					if (self.player != None and self.player.isMoving):
+						# TODO effetto carino per far capire che non può lanciare il dado
+						print("muovendo")
 
+		if(self.mouseOverAbilitaPL1 and self.player.attendoAbilita):
+			self.player.abilitaAttivata = True
+		
 
 	def mouseOver(self, mousePosition):
 		if(self.sceltaPedina.sceltaFatta == False):
@@ -161,24 +271,31 @@ class CrazyGoose():
 		if (self.aChiTocca and self.buttonDadoPL1 != None and
 				(self.player.isMoving == False and self.com.isMoving == False)):
 			
-			valPrima = self.mouseOverDadoPL1
-			self.mouseOverDadoPL1 = self.buttonDadoPL1.detectMouseOver(mousePosition)
+			# Se passa da fuori a dentro o da dentro a fuori del button ha senso che venga richiamato
+			# disegnaTutto() per "mostrare" il cambio del button (evidenziare o smettere di evidenziare)
+			if (self.mouseOverDadoPL1 != self.buttonDadoPL1.detectMouseOver(mousePosition)):
+				self.mouseOverDadoPL1 = self.buttonDadoPL1.detectMouseOver(mousePosition)
+				self.buttonDadoPL1.disegna(self.valDadoPL1, True)
 			
-			#Se è cambiato qualcosa da prima ha senso ri-disegnare tutto,
-			# altimenti NO (se ridisegnassi tutto ci sarebbe un minuscolo sfarfallio
-			# (diventa tutto bianco e poi ridisegna tutto) inutile per altro)
-			if(valPrima != self.mouseOverDadoPL1):
-				self.buttonDadoPL1.doBlitScreen = True
-				self.disegnaTutto()
-			else:
-				#Flag per evitare che ci sia uno sfarfallio fastidioso mentre il mouse è sopra al dado
-				self.buttonDadoPL1.doBlitScreen = False
 		else:
 			self.mouseOverDadoPL1 = False
+		
+		
+		#TODO evidenziare solo se il PL1 puo effettivamente utilizzarla
+		if(self.buttonAbilitaPL1 != None):
 			
+			#Se passa da fuori a dentro o da dentro a fuori del button ha senso che venga richiamato
+			# disegnaTutto() per "mostrare" il cambio del button (evidenziare o smettere di evidenziare)
+			if(self.mouseOverAbilitaPL1 != self.buttonAbilitaPL1.detectMouseOver(mousePosition)):
+				self.mouseOverAbilitaPL1 = self.buttonAbilitaPL1.detectMouseOver(mousePosition)
+				#TODO DA VEDE COME FARE, devo passare ms uguale a com'è prima sennò
+				# cambia senza motivo img (magari passo -1 e lo uso come flag per non cancellare ?S
+				#self.buttonAbilitaPL1.disegna(ms, True)
+		
+		
 			
 	def disegnaTutto(self, giocDaNonDisegnare=None):
-		if(self.partitaTerminata == False):
+		if(self.partitaTerminata == False and self.giocoPartito):
 				#Se è il primo giro deve stabilire chi sarà il primo giocatore a giocare
 			flagPrimoGiro = (self.player == None and self.com == None)
 			
@@ -208,9 +325,8 @@ class CrazyGoose():
 			if(self.buttonDadoPL1 == None):
 				self.buttonDadoPL1 = Button(self, self.game, 100, 43, 35, 35, self.valDadoPL1)
 			else:
-				#""self.mouseOverDadoPL1" o è True o False
-				self.buttonDadoPL1.disegna(self.valDadoPL1, self.mouseOverDadoPL1)
-			
+				self.buttonDadoPL1.disegna(self.valDadoPL1)
+				
 			
 			draw_text(self.game, (INFO_DADO_COM+self.valDadoCOM), 16, self.game.BLACK, 917, 60)
 			self.scriviEffetti(self.com, False)
@@ -222,11 +338,22 @@ class CrazyGoose():
 				else:
 					self.player.mostraPedina(self.com.posizione)
 					
+					
 			if (giocDaNonDisegnare != "COM"):
 				if (self.com == None):
 					self.com = Giocatore(self, self.game, self.caselle, self.percorso, "COM")
 				else:
 					self.com.mostraPedina(self.player.posizione)
+					
+			# Il primo argomento è self xke necessita di questa classe per
+			# usare blit_screen
+			#(NB. controlli che necessitano che self.player NON SIA None)
+			if (self.buttonAbilitaPL1 == None and self.player.abilitaAttivata == False):
+				self.buttonAbilitaPL1 = ButtonAbilitaPL1(self, self.game, self.player.pedinaScelta, 170, 10, 70, 70)
+			else:
+				if (self.player.attendoAbilita == False):
+					self.buttonAbilitaPL1.disegna()
+				# else: lo sta già facendo (in Giocatore)
 			
 			
 			if(flagPrimoGiro):

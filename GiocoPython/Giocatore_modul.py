@@ -34,13 +34,13 @@ class Giocatore():
 		self.pedinaScelta = pedinaScelta
 		
 		#Mi è inutile caricare TUTTE le img delle pedine e scegliere quella "giusta" nel momento in cui mi serve
-		if(pedinaScelta == "gialla"):
+		if(self.pedinaScelta == "gialla"):
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_gialla.png")
-		elif(pedinaScelta == "verde"):
+		elif(self.pedinaScelta == "verde"):
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_verde.png")
-		elif(pedinaScelta == "blu"):
+		elif(self.pedinaScelta == "blu"):
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_blu.png")
-		elif(pedinaScelta == "rossa"):
+		elif(self.pedinaScelta == "rossa"):
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_rossa.png")
 		else:		#caso None, il Giocatore è il COMPUTER
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_COM.png")
@@ -57,6 +57,9 @@ class Giocatore():
 		self.sopraEffetto = False
 			# il flag mi serve per "bloccare" alcune azioni finchè la pedina ha smesso di muoversi
 		self.isMoving = False
+			
+		self.attendoAbilita = False
+		self.abilitaAttivata = False
 		
 		self.ultimoMsg = ""
 		self.penultimoMsg = ""
@@ -293,71 +296,134 @@ class Giocatore():
 	
 	
 	def controllaCodiceCasella(self, codCasella):
-		"""
-		In questo metodo controllo l'effetto della casella su cui è capitato
-		 il giocatore. Setto lo spostamento a 0 xkè l'effetto potrebbe lasciare lì
-		 dov'è il giocatore (come il fermo e il tira_di_nuovo), se invece lo
-		 spostamento cambia (!= 0) vorrà dire che è capitato
-		 su una casella che fa muovere il giocatore ==> richiamo di nuovo il "self.posiziona()"
-		"""
-		
-		spostamento = 0
-		msg = ""
-
-		if(codCasella == TIRA_DI_NUOVO[0]):
-			msg = "TIRA ANCORA IL DADO"
-			self.turnoMio = True
-			self.sopraEffetto = True
-
-		elif(codCasella == INDIETRO_DI_UNO[0]):
-			msg = "INDIETRO DI UNA CASELLA"
-			spostamento = -1
-			self.sopraEffetto = True
-
-		elif(codCasella == INDIETRO_DI_TRE[0]):
-			msg = "INDIETRO DI TRE CASELLE"
-			spostamento = -3
-			self.sopraEffetto = True
-
-		elif(codCasella == AVANTI_DI_UNO[0]):
-			msg = "AVANTI DI UNA CASELLA"
-			spostamento = 1
-			self.sopraEffetto = True
-
-		elif(codCasella == AVANTI_DI_QUATTRO[0]):
-			msg = "AVANTI DI QUATTRO CASELLE"
-			spostamento = 4
-			self.sopraEffetto = True
-
-		elif(codCasella == FERMO_DA_UNO[0]):
-			msg = "FERMO PER UN GIRO"
-			self.turniFermo = 1
-			self.sopraEffetto = True
-
-		elif(codCasella == FERMO_DA_DUE[0]):
-			msg = "FERMO PER DUE GIRI"
-			self.turniFermo = 2
-			self.sopraEffetto = True
-
-		elif(codCasella == TORNA_ALL_INIZIO):
-			msg = "RICOMINCIA DA CAPO !!!"
-			#Lo fa ritornare alla 1° casella
-			#Dalla posizione == 39 va alla 1° ==> si muove di 38 posizioni indietro
-			spostamento = -(self.posizione-1)
-			self.sopraEffetto = True
+		attivatoAbilita = False
+		if (self.abilitaAttivata == False and self.pedinaScelta == "rossa"
+			and codCasella != VITTORIA):
+			# attende 2 sec (nel mentre deve fare controlli quindi non posso
+			# usare semplicemente una wait di 2000, ogni 100ms faccio un giro
+			# e controllo, arrivati a 20 giri avro' aspettato 2000ms)
+			numGiri = 0
+			# (controllo anche che il gioco non sia stato fermato)
+			while (numGiri < 20 and self.crazyGoose.giocoPartito):
+				self.attendoAbilita = True
+				self.crazyGoose.buttonAbilitaPL1.evidenziaTempoRimanente((2000 - numGiri * 100), True)
+				
+				if (self.abilitaAttivata):
+					attivatoAbilita = True
+					numGiri = 20
+				else:
+					numGiri += 1
+					pygame.time.wait(100)
 			
+			# (in CrazyGoose.disegna() non disegna il button per l'abilita se
+			# vede attendoAbilita a True, questo xke se è a True vuol dire che
+			# è nel while qui sopra e qui sta fancedo evidenziaTempoRimandente
+			# che andrà a disegnare il button dell'abilita)
+			self.attendoAbilita = False
+			
+			if (self.abilitaAttivata):
+				# Ormai ha attivato l'abilità perciò non la può più usare
+				self.crazyGoose.buttonAbilitaPL1.cancellaButtonAbilita()
+		
 		elif(codCasella == VITTORIA):
-			# print("HAI VINTO "+self.tag+" !!!" )
 			self.vincitore = True
-
-		if(msg != ""):
-			self.penultimoMsg = self.ultimoMsg
-			self.ultimoMsg = msg
-
-			#mostra i msg
-			self.crazyGoose.disegnaTutto()
-
-		if(spostamento != 0):
-			#attende un attimino sulla casella
-			time.sleep(0.5)
-			self.posiziona(spostamento)
+		
+		#Se non ha attivato l'abilita (ocaRossa) allora subirà l'effetto della casella,
+		# altrimenti semplicemente finisce il turno
+		if(attivatoAbilita == False):
+			"""
+			In questo metodo controllo l'effetto della casella su cui è capitato
+			 il giocatore. Setto lo spostamento a 0 xkè l'effetto potrebbe lasciare lì
+			 dov'è il giocatore (come il fermo e il tira_di_nuovo), se invece lo
+			 spostamento cambia (!= 0) vorrà dire che è capitato
+			 su una casella che fa muovere il giocatore ==> richiamo di nuovo il "self.posiziona()"
+			"""
+			
+			spostamento = 0
+			msg = ""
+	
+			if(codCasella == TIRA_DI_NUOVO[0]):
+				msg = "TIRA ANCORA IL DADO"
+				self.turnoMio = True
+				self.sopraEffetto = True
+	
+			elif(codCasella == INDIETRO_DI_UNO[0]):
+				msg = "INDIETRO DI UNA CASELLA"
+				spostamento = -1
+				self.sopraEffetto = True
+	
+			elif(codCasella == INDIETRO_DI_TRE[0]):
+				msg = "INDIETRO DI TRE CASELLE"
+				spostamento = -3
+				self.sopraEffetto = True
+	
+			elif(codCasella == AVANTI_DI_UNO[0]):
+				msg = "AVANTI DI UNA CASELLA"
+				spostamento = 1
+				self.sopraEffetto = True
+	
+			elif(codCasella == AVANTI_DI_QUATTRO[0]):
+				msg = "AVANTI DI QUATTRO CASELLE"
+				spostamento = 4
+				self.sopraEffetto = True
+	
+			elif(codCasella == FERMO_DA_UNO[0]):
+				msg = "FERMO PER UN GIRO"
+				self.turniFermo = 1
+				self.sopraEffetto = True
+	
+			elif(codCasella == FERMO_DA_DUE[0]):
+				msg = "FERMO PER DUE GIRI"
+				self.turniFermo = 2
+				self.sopraEffetto = True
+	
+			elif(codCasella == TORNA_ALL_INIZIO):
+				msg = "RICOMINCIA DA CAPO !!!"
+				#Lo fa ritornare alla 1° casella
+				#Dalla posizione == 39 va alla 1° ==> si muove di 38 posizioni indietro
+				spostamento = -(self.posizione-1)
+				self.sopraEffetto = True
+				
+			elif(codCasella == VITTORIA):
+				self.vincitore = True
+	
+			if(msg != ""):
+				self.penultimoMsg = self.ultimoMsg
+				self.ultimoMsg = msg
+	
+				#mostra i msg
+				self.crazyGoose.disegnaTutto()
+	
+			if(spostamento != 0):
+				
+				if(self.abilitaAttivata == False):
+					if(self.pedinaScelta == "gialla" and spostamento == 1):
+						#attende 2 sec (nel mentre deve fare controlli quindi non posso
+						# usare semplicemente una wait di 2000, ogni 100ms faccio un giro
+						# e controllo, arrivati a 20 giri avro' aspettato 2000ms)
+						numGiri = 0
+						#(controllo anche che il gioco non sia stato fermato)
+						while(numGiri < 20 and self.crazyGoose.giocoPartito):
+							self.attendoAbilita = True
+							self.crazyGoose.buttonAbilitaPL1.evidenziaTempoRimanente((2000-numGiri*100), True)
+							
+							if(self.abilitaAttivata):
+								spostamento = 3
+								numGiri = 20
+							else:
+								numGiri += 1
+								pygame.time.wait(100)
+						
+						#(in CrazyGoose.disegna() non disegna il button per l'abilita se
+						# vede attendoAbilita a True, questo xke se è a True vuol dire che
+						# è nel while qui sopra e qui sta fancedo evidenziaTempoRimandente
+						# che andrà a disegnare il button dell'abilita)
+						self.attendoAbilita = False
+						
+						if(self.abilitaAttivata):
+							#Ormai ha attivato l'abilità perciò non la può più usare
+							self.crazyGoose.buttonAbilitaPL1.cancellaButtonAbilita()
+				
+				#attende un attimino sulla casella
+				pygame.time.wait(500)
+				self.posiziona(spostamento)
