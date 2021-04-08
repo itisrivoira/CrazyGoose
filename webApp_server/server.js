@@ -20,3 +20,7 @@ app.get("/options", (req, resp) => {
 app.get("/credits", (req, resp) => {
     resp.sendFile(__dirname + "/menu/credits.html")
 })
+
+app.get("/gioco", (req, resp) => {
+    resp.sendFile(__dirname + "/giocoWeb/index.html")
+})
