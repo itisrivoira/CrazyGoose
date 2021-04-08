@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Crazy Goose</title>
+
+    <link rel="stylesheet" href="res_static_menu/css/options.css">
+    <link rel="stylesheet" href="res_static_menu/css/menu.css">
+
+    <link rel="icon" type="image/png" href="res_static_menu/images/favicon/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="res_static_menu/images/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="res_static_menu/images/favicon/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="res_static_menu/images/favicon/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="res_static_menu/images/favicon/favicon-128.png" sizes="128x128" />
+</head>
+
+<body style="margin:0px;">
+    <div id="areaMenu">
+        <div id="divTitolo">
+            <p id="titolo">OPTIONS</p>
+        </div>
+        <div id="divVolume">
+            <p id="volume">VOLUME</p>
+        </div>
+        <div id="divResolution">
+            <p id="res">RESOLUTION</p>
+        </div>
+        <div id="divControls">
+            <p id="controls">CONTROLS</p>
+        </div>
+        <div id="divBack">
+            <p id="back" onclick="exit()">BACK</p>
+        </div>
+    </div>
+    <script>
+        //cambia url ma "diciamo non aggiorna", cioè funziona, l'url viene
+        // cambiato ma per andare alla pagina giusta devi refreshare una volta
+        // la pagina non so xke
+        /*window.addEventListener("keydown", (event) => {
+            if (event.key == "Escape") {
+                window.location = "http://127.0.0.1:3000/"
+            }
+        })*/
+
+        function exit() {
+            window.location = "http://127.0.0.1:3000/"
+        }
+    </script>
+</body>
+
+</html>

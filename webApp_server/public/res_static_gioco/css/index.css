@@ -1,0 +1,78 @@
+.caselle,
+.caselleIniziali {
+    border: 1px solid black;
+    border-radius: 50%;
+    text-align: center;
+}
+
+.caselle {
+    display: table;
+}
+
+#info_pl1 {
+    position: absolute;
+    top: 10px;
+    left: 30px;
+}
+
+#info_dado_pl1 {
+    position: absolute;
+    top: 40px;
+    left: 30px;
+}
+
+#dado_pl1 {
+    position: absolute;
+    top: 35px;
+    left: 110px;
+}
+
+#info_com {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+}
+
+#info_dado_com {
+    position: absolute;
+    top: 40px;
+    right: 60px;
+}
+
+#dado_com {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+}
+
+#eff1_pl1 {
+    display: none;
+    position: absolute;
+    top: 65px;
+    left: 30px;
+    border: 2px solid black;
+}
+
+#eff2_pl1 {
+    display: none;
+    position: absolute;
+    top: 90px;
+    left: 30px;
+    border: 1px solid black;
+}
+
+#eff1_com {
+    display: none;
+    position: absolute;
+    top: 65px;
+    right: 30px;
+    border: 2px solid black;
+}
+
+#eff2_com {
+    display: none;
+    position: absolute;
+    top: 90px;
+    right: 30px;
+    border: 1px solid black;
+}
