@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Contatta Crazy Goose</title>
+    <link rel="stylesheet" href="res_static_sitoweb/css/contattaci.css">
+    <link rel="stylesheet" href="res_static_sitoweb/css/navbar.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script>
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row" id="rowNavbar">
+            <div class="col">
+                <img id="logo" src="res_static_sitoweb/images/logo_32x32.png">
+                <a class="linkNavbar" href="http://127.0.0.1:3000/"><b>Home</b></a>
+                <a class="linkNavbar" href="http://127.0.0.1:3000/login"><b>Login</b></a>
+                <a class="linkNavbar" href="http://127.0.0.1:3000/registrati"><b>Registrati</b></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <h2 id="primoTitolo" class="titoli">Contatta direttamente i creatori !!!</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <p class="titoli">Se hai un dubbio scrivilo:</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 column">
+                <img id="logo" src="res_static_sitoweb/images/logo_dim_originale.png" style="width: 500px; height: 500px;">
+            </div>
+            <div class="col-6 column">
+                <form action="http://127.0.0.1:3000/invioEmail" method="post">
+                    <label>Nome:</label>
+                    <input class="caselle" type="text" name="nome" placeholder="Giovanni..">
+                    <br><label>Cognome:</label>-->
+                    <input class="caselle" type="text" name="cognome" placeholder="Rossi..">
+                    <br><label>La tua email:</label>
+                    <input class="caselle" type="text" name="email" placeholder="mariorossi@gmail.com..">
+                    <br><label>A chi:</label>
+                    <select class="caselle" id="" name="adminEmail">
+						<option value="ale24">alessandrodastru24@gmail.com</option>
+						<option value="dastru">dastrualessandro@gmail.com</option>
+					</select>
+                    <label>Oggetto:</label><br>
+                    <textarea class="caselle" id="testo" name="testo"></textarea><br><br>
+                    <center><input type="submit" value="Invia" id="submit" /></center>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js " integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo " crossorigin="anonymous "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js " integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 " crossorigin="anonymous "></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js " integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy " crossorigin="anonymous "></script>
+</body>
+
+</html>
