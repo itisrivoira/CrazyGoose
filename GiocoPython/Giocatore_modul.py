@@ -36,14 +36,19 @@ class Giocatore():
 		#Mi è inutile caricare TUTTE le img delle pedine e scegliere quella "giusta" nel momento in cui mi serve
 		if(self.pedinaScelta == "gialla"):
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_gialla.png")
+			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_gialla.png")
 		elif(self.pedinaScelta == "verde"):
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_verde.png")
+			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_verde.png")
 		elif(self.pedinaScelta == "blu"):
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_blu.png")
+			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_blu.png")
 		elif(self.pedinaScelta == "rossa"):
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_rossa.png")
+			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_rossa.png")
 		else:		#caso None, il Giocatore è il COMPUTER
 			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_COM.png")
+			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_COM.png")
 
 
 		self.posizione = 0
@@ -150,7 +155,7 @@ class Giocatore():
 			
 			#(il 7 come ultimo parametro è per muovere la pedina più velocemente sulle x,
 			# rispetto a 5px per volta, per dare l'effetto di un movimento proprio diagonale)
-			self.spostaFraDueCaselle(x1, y1, x2, y2, 7)
+			self.spostaFraDueCaselle(x1, y1, x2, y2, 0, 7)
 		else:
 			#Se parte dalla casella iniziale (prima dell'inizio del percorso) deve muoversi da lì alla prima casella
 			if(partenza == 0):
@@ -160,7 +165,7 @@ class Giocatore():
 				x2 = self.caselle[0].getCenterX()
 				y2 = self.caselle[0].getCenterY()
 				
-				self.spostaFraDueCaselle(x1, y1, x2, y2)
+				self.spostaFraDueCaselle(x1, y1, x2, y2, 0)
 				
 				#Ora si muoverà dalla prima casella a quella in cui deve arrivare
 				# (spostamento-1 xkè un spostamento l'ha già fatto)
@@ -184,7 +189,7 @@ class Giocatore():
 						x2 = self.caselle[partenza - 1 + i + 1].getCenterX()
 						y2 = self.caselle[partenza - 1 + i + 1].getCenterY()
 						
-						self.spostaFraDueCaselle(x1, y1, x2, y2)
+						self.spostaFraDueCaselle(x1, y1, x2, y2, (partenza - 1 + i + 1))
 						
 						i += 1
 				else:
@@ -201,16 +206,18 @@ class Giocatore():
 						x2 = self.caselle[partenza - 1 - i - 1].getCenterX()
 						y2 = self.caselle[partenza - 1 - i - 1].getCenterY()
 						
-						self.spostaFraDueCaselle(x1, y1, x2, y2)
+						self.spostaFraDueCaselle(x1, y1, x2, y2, (partenza - 1 - i - 1))
 						
 						i += 1
 			
 	
-	def spostaFraDueCaselle(self, x1, y1, x2, y2, mov_x=5, mov_y=5):
+	def spostaFraDueCaselle(self, x1, y1, x2, y2, posCasellaFinale, mov_x=5, mov_y=5):
 		partenza_x = x1
 		partenza_y = y1
 		fine_x = x2
 		fine_y = y2
+		
+		imgPedina = self.cambiaVersoPedina(x1, x2, posCasellaFinale)
 		
 		continua = True
 		while(continua and self.crazyGoose.giocoPartito):
@@ -245,11 +252,11 @@ class Giocatore():
 				
 				# fermo il loop
 				continua = False
-				self.game.display.blit(self.imgPedina,
+				self.game.display.blit(imgPedina,
 									   (fine_x - WIDTH_PEDINA / 2,
 										fine_y - HEIGHT_PEDINA / 2))
 			else:
-				self.game.display.blit(self.imgPedina,
+				self.game.display.blit(imgPedina,
 									   (partenza_x - WIDTH_PEDINA / 2,
 										partenza_y - HEIGHT_PEDINA / 2))
 						
@@ -257,22 +264,37 @@ class Giocatore():
 			#"disegno veramente" tutto
 			self.crazyGoose.blit_screen()
 			
+	
+	def cambiaVersoPedina(self, x_partenza, x_fine, posCasellaFinale):
+		#Sceglie in base alla casella in cui deve andare la pedina, se quest'ultima
+		# sarà girata (avrà la testa) verso dx oppure sx
+		
+		image = self.imgPedina
+		if(x_partenza > x_fine):
+			image = self.imgPedina2
+		else:	#partenza e fine sono sulla stessa x
+			#controlla la posizione della casella finale e decide
 			
-	def mostraPedina(self, posAvvessario):
+		#!!!!!   È SOLAMENTE LEGATO AL LAYOUT DEL PERCORSO   !!!!!
+			
+			if(18 <= posCasellaFinale <= 20):
+				image = self.imgPedina
+			elif(posCasellaFinale == 26 or posCasellaFinale == 27):
+				image = self.imgPedina2
+			
+		return image
+		
+	
+	def mostraPedina(self):
 		if(self.posizione > 0):
 			x = self.caselle[self.posizione-1].getCenterX()
 			y = self.caselle[self.posizione-1].getCenterY()
 			
-			"""TODO DA VEDÈ COME FARE
-			if(posAvvessario == self.posizione or self.sopraEffetto):
-				if(self.tag == "PL1"):
-					#più in alto
-					y -= 17
-				else:
-					# più in basso
-					y += 15"""
+			image = self.cambiaVersoPedina(self.caselle[self.posizione-1].getCenterX(),
+										   self.caselle[self.posizione].getCenterX(), #self.posizione-1 +1
+										   self.posizione-1)
 			
-			self.game.display.blit(self.imgPedina,
+			self.game.display.blit(image,
 								   (x - WIDTH_PEDINA / 2,
 									y - HEIGHT_PEDINA / 2))
 		else:

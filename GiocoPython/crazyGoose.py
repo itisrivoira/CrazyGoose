@@ -336,14 +336,14 @@ class CrazyGoose():
 				if(self.player == None):
 					self.player = Giocatore(self, self.game, self.caselle, self.percorso, "PL1", self.sceltaPedina.mouseOver)
 				else:
-					self.player.mostraPedina(self.com.posizione)
+					self.player.mostraPedina()
 					
 					
 			if (giocDaNonDisegnare != "COM"):
 				if (self.com == None):
 					self.com = Giocatore(self, self.game, self.caselle, self.percorso, "COM")
 				else:
-					self.com.mostraPedina(self.player.posizione)
+					self.com.mostraPedina()
 					
 			# Il primo argomento è self xke necessita di questa classe per
 			# usare blit_screen
