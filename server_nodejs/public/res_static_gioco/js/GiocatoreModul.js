@@ -60,7 +60,7 @@ class Giocatore {
         img.onload = function() {
             this.gioc.appendChild(img);
         };
-        img.src = "/home/denny/Scrivania/GitHub/CrazyGoose/server_nodejs/public/res_static_gioco/images/pedine/pedineNelGioco"
+        img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_gialla.png"
         this.gioc.appendChild(img)
         this.gioc.style.position = "absolute"
         this.gioc.style.top = this.casellaIniziale.getCenterY() - 30 + "px"
@@ -202,7 +202,7 @@ class Giocatore {
         img.onload = function() {
             this.gioc.appendChild(img);
         };
-        img.src = "/home/denny/Scrivania/GitHub/CrazyGoose/server_nodejs/public/res_static_gioco/images/pedine/pedineNelGioco"
+        img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_gialla.png"
         this.gioc.appendChild(img)
         this.gioc.style.position = "absolute"
         this.gioc.style.top = y1 - 30 + "px"
