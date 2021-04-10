@@ -55,11 +55,16 @@ class Giocatore {
         this.casellaIniziale = new Casella(indice, x, y)
 
         this.gioc = document.createElement("LABEL")
-        this.gioc.innerHTML = this.tag
-        this.gioc.style.fontWeight = "bold"
+        var img = new Image();
+
+        img.onload = function() {
+            this.gioc.appendChild(img);
+        };
+        img.src = "/home/denny/Scrivania/GitHub/CrazyGoose/server_nodejs/public/res_static_gioco/images/pedine/pedineNelGioco"
+        this.gioc.appendChild(img)
         this.gioc.style.position = "absolute"
-        this.gioc.style.top = this.casellaIniziale.getCenterY() + "px"
-        this.gioc.style.left = this.casellaIniziale.getCenterX() + "px"
+        this.gioc.style.top = this.casellaIniziale.getCenterY() - 30 + "px"
+        this.gioc.style.left = this.casellaIniziale.getCenterX() - 35 + "px"
 
         document.body.appendChild(this.gioc)
     }
@@ -192,11 +197,16 @@ class Giocatore {
             document.body.removeChild(this.gioc)
         }
         this.gioc = document.createElement("LABEL")
-        this.gioc.innerHTML = this.tag
-        this.gioc.style.fontWeight = "bold"
+        var img = new Image();
+
+        img.onload = function() {
+            this.gioc.appendChild(img);
+        };
+        img.src = "/home/denny/Scrivania/GitHub/CrazyGoose/server_nodejs/public/res_static_gioco/images/pedine/pedineNelGioco"
+        this.gioc.appendChild(img)
         this.gioc.style.position = "absolute"
-        this.gioc.style.top = y1 + "px"
-        this.gioc.style.left = x1 + "px"
+        this.gioc.style.top = y1 - 30 + "px"
+        this.gioc.style.left = x1 - 35 + "px"
 
         document.body.appendChild(this.gioc)
 

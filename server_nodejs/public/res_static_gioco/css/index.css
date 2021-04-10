@@ -9,6 +9,13 @@
     display: table;
 }
 
+.adc {
+    margin-top: -8px;
+    text-align: center;
+    z-index: 1;
+    background-color: rgb(221, 221, 221);
+}
+
 #info_pl1 {
     position: absolute;
     top: 10px;

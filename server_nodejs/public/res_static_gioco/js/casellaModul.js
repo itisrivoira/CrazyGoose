@@ -8,12 +8,15 @@ class Casella {
 
         if (indice > 0) {
             this.questaCasella = document.getElementById(("_" + indice))
+            this.numeroCasella = document.getElementById(("-" + indice))
         } else {
             //prendo la casella iniziale dei giocatori
             if (indice == 0) {
                 this.questaCasella = document.getElementById("inizPL1")
+                this.numeroCasella = document.getElementById(("-" + indice))
             } else if (indice == -1) {
                 this.questaCasella = document.getElementById("inizCOM")
+                this.numeroCasella = document.getElementById(("-" + indice))
             }
         }
 
@@ -22,6 +25,14 @@ class Casella {
         this.questaCasella.style.position = "absolute"
         this.questaCasella.style.left = x + "px"
         this.questaCasella.style.top = y + "px"
+
+        if (this.numeroCasella != null) {
+            this.numeroCasella.style.width = width - 67 + "px"
+            this.numeroCasella.style.height = height - 43 + "px"
+            this.numeroCasella.style.position = "absolute"
+            this.numeroCasella.style.left = x + 30 + "px"
+            this.numeroCasella.style.top = y + "px"
+        }
 
         if (casellaVittoria) { //dimensioni diverse se è la casella iniziale
             this.questaCasella.style.width = "120px"
