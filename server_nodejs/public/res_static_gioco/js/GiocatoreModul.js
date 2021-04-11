@@ -8,25 +8,28 @@ const TEMPO_SPOST_FRA_CASELLE = 600
 const PICCOLA_PAUSA = 50
 
 class Giocatore {
-    constructor(crazyGoose, caselle, percorso, tag, sceltaPedina = null) {
+    constructor(crazyGoose, caselle, percorso, tag, pedinaScelta) {
         //constructor(crazyGoose, caselle, percorso, tag) {
         //Mi serve per lanciare un suo metodo
         this.crazyGoose = crazyGoose
         this.caselle = caselle
         this.percorso = percorso
         this.tag = tag
-        this.pedinaScelta = this.pedinaScelta
-        this.data = null;
-        if (sessionStorage.getItem("ocaScelta") == "gialla") {
-            this.data = "gialla"
-        } else if (sessionStorage.getItem("ocaScelta") == "verde") {
-            this.data = "verde"
-        } else if (sessionStorage.getItem("ocaScelta") == "blu") {
-            this.data = "blu"
-        } else if (sessionStorage.getItem("ocaScelta") == "rossa") {
-            this.data = "rossa"
+        this.pedinaScelta = pedinaScelta
+
+        this.imgPedina = new Image();
+        if (tag == "COM") {
+            this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_COM.png"
         } else {
-            this.data = "com"
+            if (this.pedinaScelta == "gialla") {
+                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_gialla.png"
+            } else if (this.pedinaScelta == "verde") {
+                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_verde.png"
+            } else if (this.pedinaScelta == "blu") {
+                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_blu.png"
+            } else if (this.pedinaScelta == "rossa") {
+                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_rossa.png"
+            }
         }
 
         this.posizione = 0
@@ -49,10 +52,6 @@ class Giocatore {
         this.creaCasellaIniziale()
     }
 
-    getData() {
-        return this.data
-    }
-
     creaCasellaIniziale() {
         let x = 0
         let y = 0
@@ -71,24 +70,7 @@ class Giocatore {
         // poi inserisce la scritta che identifica il giocatore
         this.casellaIniziale = new Casella(indice, x, y)
         this.gioc = document.createElement("LABEL")
-
-        var img = new Image();
-        img.onload = function() {
-            this.gioc.appendChild();
-        };
-        if (this.getData() == 'gialla') {
-            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_gialla.png"
-        } else if (this.getData() == 'verde') {
-            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_verde.png"
-        } else if (this.getData() == 'blu') {
-            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_blu.png"
-        } else if (this.getData() == 'rossa') {
-            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_rossa.png"
-        } else {
-            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_COM.png"
-        }
-        this.gioc.appendChild(img)
-
+        this.gioc.appendChild(this.imgPedina);
         this.gioc.style.position = "absolute"
         this.gioc.style.top = this.casellaIniziale.getCenterY() - 30 + "px"
         this.gioc.style.left = this.casellaIniziale.getCenterX() - 35 + "px"
@@ -224,24 +206,7 @@ class Giocatore {
             document.body.removeChild(this.gioc)
         }
         this.gioc = document.createElement("LABEL")
-
-        var img = new Image();
-        img.onload = function() {
-            this.gioc.appendChild(img);
-        };
-        if (this.getData() == 'gialla') {
-            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_gialla.png"
-        } else if (this.getData() == 'verde') {
-            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_verde.png"
-        } else if (this.getData() == 'blu') {
-            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_blu.png"
-        } else if (this.getData() == 'rossa') {
-            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_rossa.png"
-        } else {
-            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_COM.png"
-        }
-        this.gioc.appendChild(img)
-
+        this.gioc.appendChild(this.imgPedina)
         this.gioc.style.position = "absolute"
         this.gioc.style.top = y1 - 30 + "px"
         this.gioc.style.left = x1 - 35 + "px"

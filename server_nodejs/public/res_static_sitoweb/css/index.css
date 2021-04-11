@@ -17,6 +17,53 @@ body {
     padding: 0px;
 }
 
+
+/* - - - CSS per il dropdown menu  - - - */
+
+#dropdownBtn {
+    background-color: #2980B9;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+}
+
+#dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #529bcc;
+    width: 129px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+#dropdown-menu a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+#dropdown-menu a:hover {
+    background-color: #ddd;
+}
+
+#divDropdown {
+    display: none;
+    float: right;
+}
+
+#divDropdown:hover #dropdown-menu {
+    display: block;
+}
+
+#divDropdown:hover #dropdownBtn {
+    background-color: #1973af;
+}
+
+
+/* - - - - - - - - - - - - - - */
+
 .carousel-item {
     height: 65vh;
     min-height: 350px;
@@ -43,7 +90,6 @@ blu/azzurro (classe sopra e sotto il commento)*/
 #divSchedaCrazyGoose p {
     color: black;
 }
-
 
 #imgSchedaRegolamento {
     width: 100%;

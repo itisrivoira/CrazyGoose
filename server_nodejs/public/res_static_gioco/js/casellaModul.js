@@ -5,6 +5,7 @@ class Casella {
         this.width = width
         this.height = height
 
+        this.numeroCasella = null
 
         if (indice > 0) {
             this.questaCasella = document.getElementById(("_" + indice))
@@ -13,32 +14,27 @@ class Casella {
             //prendo la casella iniziale dei giocatori
             if (indice == 0) {
                 this.questaCasella = document.getElementById("inizPL1")
-                this.numeroCasella = document.getElementById(("-" + indice))
             } else if (indice == -1) {
                 this.questaCasella = document.getElementById("inizCOM")
-                this.numeroCasella = document.getElementById(("-" + indice))
             }
         }
 
-        this.questaCasella.style.width = width + "px"
-        this.questaCasella.style.height = height + "px"
+        if (casellaVittoria) { //dimensioni diverse se è la casella iniziale
+            this.width = 120
+            this.height = 100
+            this.y = this.y - 20
+        }
+        this.questaCasella.style.width = this.width + "px"
+        this.questaCasella.style.height = this.height + "px"
         this.questaCasella.style.position = "absolute"
-        this.questaCasella.style.left = x + "px"
-        this.questaCasella.style.top = y + "px"
+        this.questaCasella.style.left = this.x + "px"
+        this.questaCasella.style.top = this.y + "px"
 
         if (this.numeroCasella != null) {
-            this.numeroCasella.style.width = width - 67 + "px"
-            this.numeroCasella.style.height = height - 43 + "px"
             this.numeroCasella.style.position = "absolute"
-            this.numeroCasella.style.left = x + 30 + "px"
-            this.numeroCasella.style.top = y + "px"
-        }
-
-        if (casellaVittoria) { //dimensioni diverse se è la casella iniziale
-            this.questaCasella.style.width = "120px"
-            this.questaCasella.style.height = "100px"
-            this.questaCasella.style.left = x + "px"
-            this.questaCasella.style.top = y - 20 + "px"
+                //centra il numero di casella nella casella (orizzontalmente)
+            this.numeroCasella.style.left = (this.getCenterX() - (15 / 2)) + "px"
+            this.numeroCasella.style.top = this.y + "px"
         }
     }
 
@@ -80,6 +76,7 @@ class Casella {
             //per allineare verticalmente (insieme a "display:table;" nella classe CSS "caselle")
         x.style.display = "table-cell"
         x.style.verticalAlign = "middle"
+        x.style.fontWeight = "bold"
             //aggiunto al div della casella l'effetto della casella
         this.questaCasella.appendChild(x)
     }

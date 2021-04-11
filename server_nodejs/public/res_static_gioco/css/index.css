@@ -9,7 +9,10 @@
     display: table;
 }
 
-.adc {
+.numCasella {
+    width: 15px;
+    height: 14px;
+    font-size: 14px;
     margin-top: -8px;
     text-align: center;
     z-index: 1;

@@ -7,20 +7,75 @@ COLORI USATI:   rgb(0, 127, 255); azzurro
 
 */
 
-#perimetroGioco {
-    width: 1920px;
-    height: 1080px;
-    border: 1px solid rgb(0, 127, 255);
-    background: rgb(0, 127, 255);
+#areaMenu {
+    /*margin-top: 90px;*/
+    width: 100vw;
+    height: 100vh;
+    /*100%*/
+    /* border: 1px solid rgb(0, 127, 255);
+    background: rgb(0, 127, 255); */
+    background: rgb(187, 2, 233);
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
-#divTitolo {
-    margin-top: 30px;
-    text-align: center;
-    border: 2px solid rgb(0, 127, 255);
+
+/* - - - CSS per il dropdown menu  - - - */
+
+#dropdownBtn {
+    background-color: #6729b9;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+}
+
+#dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #9579bb;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+#dropdown-menu a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+#dropdown-menu a:hover {
+    background-color: #ddd;
+}
+
+#divDropdown {
+    display: none;
+    float: right;
+}
+
+#divDropdown:hover #dropdown-menu {
+    display: block;
+}
+
+#divDropdown:hover #dropdownBtn {
+    background-color: #7536ca;
+}
+
+
+/* - - - - - - - - - - - - - - */
+
+#divImgTitolo {
+    /*130 è la larghezza del divDropdown*/
+    margin-left: 130px;
+    height: 250px;
+}
+
+#scritta {
+    height: 600px;
+    width: 1000px;
 }
 
 #divStart {
@@ -54,15 +109,6 @@ COLORI USATI:   rgb(0, 127, 255); azzurro
 
 .link {
     text-decoration: none;
-}
-
-#titolo {
-    padding: 0px;
-    font-size: 70px;
-    font-weight: bold;
-    color: white;
-    text-align: center;
-    font-family: Helvetica;
 }
 
 #start {

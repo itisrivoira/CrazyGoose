@@ -6,7 +6,6 @@
     <title>Crazy Goose</title>
 
     <link rel="stylesheet" href="res_static_menu/css/index.css">
-    <link rel="stylesheet" href="res_static_menu/css/menu.css">
 
     <link rel="icon" type="image/png" href="res_static_menu/images/favicon/favicon-196x196.png" sizes="196x196" />
     <link rel="icon" type="image/png" href="res_static_menu/images/favicon/favicon-96x96.png" sizes="96x96" />
@@ -17,8 +16,22 @@
 
 <body style="margin:0px;">
     <div id="areaMenu">
-        <div id="imgTitolo">
-            <img id="scritta" src="res_static_menu/images/scrittaCrazyGoose_1920x1080_bagliore.png">
+        <div>
+            <div id="divDropdown">
+                <button id="dropdownBtn"></button>
+                <div id="dropdown-menu">
+                    <a href="http://127.0.0.1:3000/">Home</a>
+                    <a href="http://127.0.0.1:3000/contattaci">Contattaci</a>
+                    <a href="">Esci</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="divImgTitolo">
+            <center>
+
+                <img id="scritta" src="res_static_menu/images/scrittaCrazyGoose_1920x1080_bagliore.png">
+            </center>
         </div>
 
         <div id="divStart">
@@ -34,7 +47,6 @@
         </div>
 
     </div>
-
 </body>
 
 </html>
