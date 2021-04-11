@@ -7,8 +7,11 @@ body {
     background-color: rgb(187, 2, 233);
     /* width: 1830px;
     height: 950px; */
-    width: 1830px;
-    height: 980px;
+    width: 1000px;
+    height: 100vh;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: -5px;
     /* box-shadow: inset 0px 0px 70px 10px rgba(0,0,0,0.6); */
 }
 
@@ -16,39 +19,48 @@ body {
 /* margin: top right bottom left*/
 
 #titolo {
+    padding-top: 10px;
+    margin-top: -15px;
     text-align: center;
     font-family: Helvetica;
     color: white;
     /* padding: 10px 140px 10px 140px ; */
-    font-size: 40px;
+    font-size: 20px;
     text-shadow: -3px 3px rgba(0, 0, 0, 0.3);
 }
 
 #sottoTitolo {
-    margin-top: -55px;
+    margin-top: 0px;
     text-align: center;
     font-family: Helvetica;
     color: rgb(255, 255, 255);
     /* padding: 10px 140px 10px 140px ; */
-    font-size: 30px;
+    font-size: 15px;
     text-shadow: -3px 3px rgba(0, 0, 0, 0.3);
 }
 
 #areaOche {
     /* border:1px solid black; */
-    height: 1000px;
+    height: 250px;
     /* margin: top right bottom left*/
-    margin: 80px 0px 80px 0px;
-    padding: 100px 60px 100px 60px;
+    margin: 50px 10px 10px 10px;
+    text-align: center;
+}
+
+#areaOche2 {
+    /* border: 1px solid black; */
+    height: 250px;
+    /* margin: top right bottom left*/
+    margin: 10px 10px 10px 10px;
     text-align: center;
 }
 
 #ocaGialla {
     float: left;
     border: 5px solid white;
-    margin: 0px 60px 0px 0px;
-    width: 350px;
-    height: 350px;
+    margin: 0px 0px 0px 200px;
+    width: 200px;
+    height: 200px;
     border-radius: 7%;
     cursor: pointer;
     box-shadow: -5px 5px rgba(0, 0, 0, 0.3);
@@ -59,34 +71,34 @@ body {
 
 #ocaGialla:hover {
     box-shadow: inset 0px 0px 50px 7px yellow;
-    width: 400px;
-    height: 400px;
-    margin: -25px 40px 0px -30px;
+    width: 220px;
+    height: 220px;
+    /* margin: 0px 0px 0px 200px; */
     background-color: rgb(187, 187, 0);
     text-shadow: none;
 }
 
 #ocaGialla:hover img {
     transition: transform .8s;
-    transform: scale(1.4);
+    transform: scale(1.2);
     transform-origin: 50% 50%;
 }
 
 #gialla {
     /* margin-top:100px; */
     text-align: center;
-    font-size: 50px;
+    font-size: 20px;
     font-family: Helvetica;
     color: white;
     font-weight: bold;
 }
 
 #ocaVerde {
-    float: left;
-    margin: 0px 30px 0px 30px;
+    float: right;
+    margin: 0px 200px 0px 0px;
     border: 5px solid white;
-    width: 350px;
-    height: 350px;
+    width: 200px;
+    height: 200px;
     border-radius: 7%;
     cursor: pointer;
     box-shadow: -5px 5px rgba(0, 0, 0, 0.3);
@@ -97,16 +109,16 @@ body {
 
 #ocaVerde:hover {
     box-shadow: inset 0px 0px 50px 7px rgb(8, 224, 26);
-    width: 400px;
-    height: 400px;
-    margin: -20px -15px -20px 5px;
+    width: 220px;
+    height: 220px;
+    /* margin: 0px 200px 0px 0px; */
     background-color: rgb(39, 146, 7);
     text-shadow: none;
 }
 
 #ocaVerde:hover img {
     transition: transform .8s;
-    transform: scale(1.4);
+    transform: scale(1.2);
     transform-origin: 50% 50%;
 }
 
@@ -117,15 +129,15 @@ body {
     /* color: rgb(8, 224, 26); */
     color: white;
     font-weight: bold;
-    font-size: 50px;
+    font-size: 20px;
 }
 
 #ocaBlu {
-    float: left;
+    float: right;
     border: 5px solid white;
-    margin: 0px 30px 0px 0px;
-    width: 350px;
-    height: 350px;
+    margin: 0px 200px 0px 0px;
+    width: 200px;
+    height: 200px;
     border-radius: 7%;
     cursor: pointer;
     box-shadow: -5px 5px rgba(0, 0, 0, 0.3);
@@ -136,16 +148,16 @@ body {
 
 #ocaBlu:hover {
     box-shadow: inset 0px 0px 50px 7px blue;
-    width: 400px;
-    height: 400px;
-    margin: -20px 0px -20px 0px;
+    width: 220px;
+    height: 220px;
+    /* margin: 0px 200px 0px 0px; */
     background-color: rgb(3, 0, 175);
     text-shadow: none;
 }
 
 #ocaBlu:hover img {
     transition: transform .8s;
-    transform: scale(1.4);
+    transform: scale(1.2);
     transform-origin: 50% 50%;
 }
 
@@ -155,15 +167,15 @@ body {
     font-family: Helvetica;
     color: white;
     font-weight: bold;
-    font-size: 50px;
+    font-size: 20px;
 }
 
 #ocaRossa {
     float: left;
-    margin: 0px 0px 0px 60px;
+    margin: 0px 0px 0px 200px;
     border: 5px solid white;
-    width: 350px;
-    height: 350px;
+    width: 200px;
+    height: 200px;
     border-radius: 7%;
     cursor: pointer;
     box-shadow: -5px 5px rgba(0, 0, 0, 0.3);
@@ -174,16 +186,16 @@ body {
 
 #ocaRossa:hover {
     box-shadow: inset 0px 0px 50px 7px red;
-    width: 400px;
-    height: 400px;
-    margin: -25px -30px -30px 40px;
+    width: 220px;
+    height: 220px;
+    /* margin: 0px 0px 0px 200px; */
     background-color: rgb(155, 2, 2);
     text-shadow: none;
 }
 
 #ocaRossa:hover img {
     transition: transform .8s;
-    transform: scale(1.4);
+    transform: scale(1.2);
     transform-origin: 50% 50%;
 }
 
@@ -193,5 +205,5 @@ body {
     font-family: Helvetica;
     color: white;
     font-weight: bold;
-    font-size: 50px;
+    font-size: 20px;
 }

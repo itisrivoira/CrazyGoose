@@ -58,8 +58,8 @@ app.post("/registrazioneFatta", (req, resp) => {
 })
 
 
-app.get("/meuGioco", (req, resp) => {
-    resp.sendFile(__dirname + "/webApp / menu / index.html ")
+app.get("/menuGioco", (req, resp) => {
+    resp.sendFile(__dirname + "/webApp/menu/index.html")
         //console.log("Entrato in menu del gioco")
 })
 app.post("/menuGioco", (req, resp) => {
