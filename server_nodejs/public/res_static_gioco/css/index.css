@@ -1,3 +1,33 @@
+body {
+    margin: 0px;
+}
+
+#vittoria,
+#sconfitta {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    background-color: #077cfa;
+}
+
+#msgHaiVinto,
+#msgHaiPerso {
+    width: 100vw;
+    font-size: 50px;
+    color: white;
+    font-family: "Ubuntu", "helvetica";
+    position: relative;
+    top: 25vh;
+}
+
+.premiEsc {
+    font-size: 30px;
+    color: white;
+    font-family: "Ubuntu", "helvetica";
+    position: relative;
+    top: 45vh;
+}
+
 .caselle,
 .caselleIniziali {
     border: 1px solid black;

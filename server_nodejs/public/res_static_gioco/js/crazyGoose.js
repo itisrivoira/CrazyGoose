@@ -256,10 +256,13 @@ class CrazyGoose {
     }
 
     segnalaVincitore(pl1_ha_vinto) {
+        document.getElementById("gioco").style.display = "none"
+
         if (pl1_ha_vinto) {
-            alert("ANCORA DA IMPLEMENTARE !!!!          PL1 HA VINTO.")
+            document.getElementById("vittoria").style.display = "block"
+            document.getElementById("gioco").style.display = "none"
         } else {
-            alert("ANCORA DA IMPLEMENTARE !!!!          COM HA VINTO.")
+            document.getElementById("sconfitta").style.display = "block"
         }
 
     }

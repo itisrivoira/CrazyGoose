@@ -75,7 +75,7 @@ class Giocatore {
         this.gioc.style.top = this.casellaIniziale.getCenterY() - 30 + "px"
         this.gioc.style.left = this.casellaIniziale.getCenterX() - 35 + "px"
 
-        document.body.appendChild(this.gioc)
+        document.getElementById("gioco").appendChild(this.gioc)
     }
 
     posiziona(spostamento, controllaCodCasella = true) {
@@ -203,7 +203,7 @@ class Giocatore {
             //tra un turno e l'altro la pedina non deve essere rimossa
             // (deve stare ferma sulla casella) quindi la distruggo ora
             // (dopo verrà ricreata)
-            document.body.removeChild(this.gioc)
+            document.getElementById("gioco").removeChild(this.gioc)
         }
         this.gioc = document.createElement("LABEL")
         this.gioc.appendChild(this.imgPedina)
@@ -211,7 +211,7 @@ class Giocatore {
         this.gioc.style.top = y1 - 30 + "px"
         this.gioc.style.left = x1 - 35 + "px"
 
-        document.body.appendChild(this.gioc)
+        document.getElementById("gioco").appendChild(this.gioc)
 
 
         //se non mi fermo un attimo non si vedrà lo spostamento, andrà direttamente a fine animazione
@@ -227,7 +227,7 @@ class Giocatore {
                 this.counter += 1
                     //(lo spostamento potrebbe essere <0 quindi lo rendo assoluto)
                 if (this.counter < Math.abs(spostamento)) {
-                    document.body.removeChild(this.gioc)
+                    document.getElementById("gioco").removeChild(this.gioc)
                     this.gioc = null
 
                     this.prossimoSpostamento(partenza, spostamento, settaIsMovingFalse, codCasella)

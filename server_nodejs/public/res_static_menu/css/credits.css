@@ -1,3 +1,30 @@
+#areaMenu {
+    /*margin-top: 90px;*/
+    width: 100vw;
+    height: 100vh;
+    /*100%*/
+    /* border: 1px solid rgb(0, 127, 255);
+    background: rgb(0, 127, 255); */
+    background: rgb(187, 2, 233);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#divTitolo {
+    /*margin-top: 30px;*/
+    text-align: center;
+    border: 1px solid rgb(187, 2, 233);
+    height: 100px;
+}
+
+#imgTitolo {
+    /*margin-top: 30px;*/
+    height: 250px;
+    text-align: center;
+    /* border: 1px solid black; */
+}
+
 #titolo {
     padding: 0px;
     margin-top: 30px;
@@ -39,15 +66,12 @@
     font-family: Helvetica;
 }
 
-.link {
-    text-decoration: none;
-}
-
 #btnBack {
     margin-left: 380px;
     margin-top: -20px;
     margin-right: 380px;
     text-align: center;
+    width: 300px;
 }
 
 #back {

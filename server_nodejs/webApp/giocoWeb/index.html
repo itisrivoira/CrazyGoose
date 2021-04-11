@@ -10,107 +10,119 @@
 <!-- sessionStorage.getItem("ocaScelta") -->
 
 <body>
-    <!-- INFO giocatori -->
-    <label id="info_pl1">Tu (PL1)</label>
+    <div id="gioco">
+        <!-- INFO giocatori -->
+        <label id="info_pl1">Tu (PL1)</label>
 
-    <label id="info_com">Computer (COM)</label>
-    <!-- DADI giocatori -->
-    <label id="info_dado_pl1">Dado PL1:</label>
-    <button id="dado_pl1">0</button>
+        <label id="info_com">Computer (COM)</label>
+        <!-- DADI giocatori -->
+        <label id="info_dado_pl1">Dado PL1:</label>
+        <button id="dado_pl1">0</button>
 
-    <label id="info_dado_com">Dado COM:</label>
-    <label id="dado_com">0</label>
-    <!-- EFFETTI giocatori -->
-    <label id="eff1_pl1"></label>
-    <label id="eff2_pl1"></label>
+        <label id="info_dado_com">Dado COM:</label>
+        <label id="dado_com">0</label>
+        <!-- EFFETTI giocatori -->
+        <label id="eff1_pl1"></label>
+        <label id="eff2_pl1"></label>
 
-    <label id="eff1_com"></label>
-    <label id="eff2_com"></label>
+        <label id="eff1_com"></label>
+        <label id="eff2_com"></label>
 
-    <!-- CASELLE -->
-    <div class="caselleIniziali" id="inizPL1"></div>
-    <div class="caselleIniziali" id="inizCOM"></div>
-    <div class="numCasella" id="-1">1</div>
-    <div class="numCasella" id="-2">2</div>
-    <div class="numCasella" id="-3">3</div>
-    <div class="numCasella" id="-4">4</div>
-    <div class="numCasella" id="-5">5</div>
-    <div class="numCasella" id="-6">6</div>
-    <div class="numCasella" id="-7">7</div>
-    <div class="numCasella" id="-8">8</div>
-    <div class="numCasella" id="-9">9</div>
-    <div class="numCasella" id="-10">10</div>
-    <div class="numCasella" id="-11">11</div>
-    <div class="numCasella" id="-12">12</div>
-    <div class="numCasella" id="-13">13</div>
-    <div class="numCasella" id="-14">14</div>
-    <div class="numCasella" id="-15">15</div>
-    <div class="numCasella" id="-16">16</div>
-    <div class="numCasella" id="-17">17</div>
-    <div class="numCasella" id="-18">18</div>
-    <div class="numCasella" id="-19">19</div>
-    <div class="numCasella" id="-20">20</div>
-    <div class="numCasella" id="-21">21</div>
-    <div class="numCasella" id="-22">22</div>
-    <div class="numCasella" id="-23">23</div>
-    <div class="numCasella" id="-24">24</div>
-    <div class="numCasella" id="-25">25</div>
-    <div class="numCasella" id="-26">26</div>
-    <div class="numCasella" id="-27">27</div>
-    <div class="numCasella" id="-28">28</div>
-    <div class="numCasella" id="-29">29</div>
-    <div class="numCasella" id="-30">30</div>
-    <div class="numCasella" id="-31">31</div>
-    <div class="numCasella" id="-32">32</div>
-    <div class="numCasella" id="-33">33</div>
-    <div class="numCasella" id="-34">34</div>
-    <div class="numCasella" id="-35">35</div>
-    <div class="numCasella" id="-36">36</div>
-    <div class="numCasella" id="-37">37</div>
-    <div class="numCasella" id="-38">38</div>
-    <div class="numCasella" id="-39">39</div>
-    <div class="numCasella" id="-40">40</div>
+        <!-- CASELLE -->
+        <div class="caselleIniziali" id="inizPL1"></div>
+        <div class="caselleIniziali" id="inizCOM"></div>
+        <div class="numCasella" id="-1">1</div>
+        <div class="numCasella" id="-2">2</div>
+        <div class="numCasella" id="-3">3</div>
+        <div class="numCasella" id="-4">4</div>
+        <div class="numCasella" id="-5">5</div>
+        <div class="numCasella" id="-6">6</div>
+        <div class="numCasella" id="-7">7</div>
+        <div class="numCasella" id="-8">8</div>
+        <div class="numCasella" id="-9">9</div>
+        <div class="numCasella" id="-10">10</div>
+        <div class="numCasella" id="-11">11</div>
+        <div class="numCasella" id="-12">12</div>
+        <div class="numCasella" id="-13">13</div>
+        <div class="numCasella" id="-14">14</div>
+        <div class="numCasella" id="-15">15</div>
+        <div class="numCasella" id="-16">16</div>
+        <div class="numCasella" id="-17">17</div>
+        <div class="numCasella" id="-18">18</div>
+        <div class="numCasella" id="-19">19</div>
+        <div class="numCasella" id="-20">20</div>
+        <div class="numCasella" id="-21">21</div>
+        <div class="numCasella" id="-22">22</div>
+        <div class="numCasella" id="-23">23</div>
+        <div class="numCasella" id="-24">24</div>
+        <div class="numCasella" id="-25">25</div>
+        <div class="numCasella" id="-26">26</div>
+        <div class="numCasella" id="-27">27</div>
+        <div class="numCasella" id="-28">28</div>
+        <div class="numCasella" id="-29">29</div>
+        <div class="numCasella" id="-30">30</div>
+        <div class="numCasella" id="-31">31</div>
+        <div class="numCasella" id="-32">32</div>
+        <div class="numCasella" id="-33">33</div>
+        <div class="numCasella" id="-34">34</div>
+        <div class="numCasella" id="-35">35</div>
+        <div class="numCasella" id="-36">36</div>
+        <div class="numCasella" id="-37">37</div>
+        <div class="numCasella" id="-38">38</div>
+        <div class="numCasella" id="-39">39</div>
+        <div class="numCasella" id="-40">40</div>
 
-    <div class="caselle" id="_1"></div>
-    <div class="caselle" id="_2"></div>
-    <div class="caselle" id="_3"></div>
-    <div class="caselle" id="_4"></div>
-    <div class="caselle" id="_5"></div>
-    <div class="caselle" id="_6"></div>
-    <div class="caselle" id="_7"></div>
-    <div class="caselle" id="_8"></div>
-    <div class="caselle" id="_9"></div>
-    <div class="caselle" id="_10"></div>
-    <div class="caselle" id="_11"></div>
-    <div class="caselle" id="_12"></div>
-    <div class="caselle" id="_13"></div>
-    <div class="caselle" id="_14"></div>
-    <div class="caselle" id="_15"></div>
-    <div class="caselle" id="_16"></div>
-    <div class="caselle" id="_17"></div>
-    <div class="caselle" id="_18"></div>
-    <div class="caselle" id="_19"></div>
-    <div class="caselle" id="_20"></div>
-    <div class="caselle" id="_21"></div>
-    <div class="caselle" id="_22"></div>
-    <div class="caselle" id="_23"></div>
-    <div class="caselle" id="_24"></div>
-    <div class="caselle" id="_25"></div>
-    <div class="caselle" id="_26"></div>
-    <div class="caselle" id="_27"></div>
-    <div class="caselle" id="_28"></div>
-    <div class="caselle" id="_29"></div>
-    <div class="caselle" id="_30"></div>
-    <div class="caselle" id="_31"></div>
-    <div class="caselle" id="_32"></div>
-    <div class="caselle" id="_33"></div>
-    <div class="caselle" id="_34"></div>
-    <div class="caselle" id="_35"></div>
-    <div class="caselle" id="_36"></div>
-    <div class="caselle" id="_37"></div>
-    <div class="caselle" id="_38"></div>
-    <div class="caselle" id="_39"></div>
-    <div class="caselle" id="_40"></div>
+        <div class="caselle" id="_1"></div>
+        <div class="caselle" id="_2"></div>
+        <div class="caselle" id="_3"></div>
+        <div class="caselle" id="_4"></div>
+        <div class="caselle" id="_5"></div>
+        <div class="caselle" id="_6"></div>
+        <div class="caselle" id="_7"></div>
+        <div class="caselle" id="_8"></div>
+        <div class="caselle" id="_9"></div>
+        <div class="caselle" id="_10"></div>
+        <div class="caselle" id="_11"></div>
+        <div class="caselle" id="_12"></div>
+        <div class="caselle" id="_13"></div>
+        <div class="caselle" id="_14"></div>
+        <div class="caselle" id="_15"></div>
+        <div class="caselle" id="_16"></div>
+        <div class="caselle" id="_17"></div>
+        <div class="caselle" id="_18"></div>
+        <div class="caselle" id="_19"></div>
+        <div class="caselle" id="_20"></div>
+        <div class="caselle" id="_21"></div>
+        <div class="caselle" id="_22"></div>
+        <div class="caselle" id="_23"></div>
+        <div class="caselle" id="_24"></div>
+        <div class="caselle" id="_25"></div>
+        <div class="caselle" id="_26"></div>
+        <div class="caselle" id="_27"></div>
+        <div class="caselle" id="_28"></div>
+        <div class="caselle" id="_29"></div>
+        <div class="caselle" id="_30"></div>
+        <div class="caselle" id="_31"></div>
+        <div class="caselle" id="_32"></div>
+        <div class="caselle" id="_33"></div>
+        <div class="caselle" id="_34"></div>
+        <div class="caselle" id="_35"></div>
+        <div class="caselle" id="_36"></div>
+        <div class="caselle" id="_37"></div>
+        <div class="caselle" id="_38"></div>
+        <div class="caselle" id="_39"></div>
+        <div class="caselle" id="_40"></div>
+    </div>
+
+    <div id="vittoria">
+        <label id="msgHaiVinto"><center><b>HAI VINTO</b></center></label>
+        <label class="premiEsc"><center><b>Premi ESC per rigiocare</b></center></label>
+    </div>
+
+    <div id="sconfitta">
+        <label id="msgHaiPerso"><center><b>HAI PERSO</b></center></label>
+        <label class="premiEsc"><center><b>Premi ESC per rigiocare</b></center></label>
+    </div>
 
     <!--Se in uno script X ho bisogno di importare un nuovo file js Y basta che importi qui Y PRIMA di X -->
     <script src="res_static_gioco/js/percorsoModul.js"></script>
@@ -121,7 +133,7 @@
     <script>
         window.addEventListener("keydown", (event) => {
             if (event.key == "Escape") {
-                window.location = "http://127.0.0.1:3000/"
+                window.location = "http://127.0.0.1:3000/menuGioco"
             }
         })
     </script>
