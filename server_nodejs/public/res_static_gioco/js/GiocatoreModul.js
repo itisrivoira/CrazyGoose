@@ -8,12 +8,26 @@ const TEMPO_SPOST_FRA_CASELLE = 600
 const PICCOLA_PAUSA = 50
 
 class Giocatore {
-    constructor(crazyGoose, caselle, percorso, tag) {
+    constructor(crazyGoose, caselle, percorso, tag, sceltaPedina = null) {
+        //constructor(crazyGoose, caselle, percorso, tag) {
         //Mi serve per lanciare un suo metodo
         this.crazyGoose = crazyGoose
         this.caselle = caselle
         this.percorso = percorso
         this.tag = tag
+        this.pedinaScelta = this.pedinaScelta
+        this.data = null;
+        if (sessionStorage.getItem("ocaScelta") == "gialla") {
+            this.data = "gialla"
+        } else if (sessionStorage.getItem("ocaScelta") == "verde") {
+            this.data = "verde"
+        } else if (sessionStorage.getItem("ocaScelta") == "blu") {
+            this.data = "blu"
+        } else if (sessionStorage.getItem("ocaScelta") == "rossa") {
+            this.data = "rossa"
+        } else {
+            this.data = "com"
+        }
 
         this.posizione = 0
         this.turnoMio = false
@@ -32,8 +46,11 @@ class Giocatore {
         this.penultimoEff = ""
         this.ultimoEff = ""
         this.newSpostamento = 0
-
         this.creaCasellaIniziale()
+    }
+
+    getData() {
+        return this.data
     }
 
     creaCasellaIniziale() {
@@ -53,15 +70,25 @@ class Giocatore {
         //crea e posiziona l'ellisse (la casella) prima dell'inizio del percorso
         // poi inserisce la scritta che identifica il giocatore
         this.casellaIniziale = new Casella(indice, x, y)
-
         this.gioc = document.createElement("LABEL")
-        var img = new Image();
 
+        var img = new Image();
         img.onload = function() {
-            this.gioc.appendChild(img);
+            this.gioc.appendChild();
         };
-        img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_gialla.png"
+        if (this.getData() == 'gialla') {
+            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_gialla.png"
+        } else if (this.getData() == 'verde') {
+            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_verde.png"
+        } else if (this.getData() == 'blu') {
+            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_blu.png"
+        } else if (this.getData() == 'rossa') {
+            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_rossa.png"
+        } else {
+            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_COM.png"
+        }
         this.gioc.appendChild(img)
+
         this.gioc.style.position = "absolute"
         this.gioc.style.top = this.casellaIniziale.getCenterY() - 30 + "px"
         this.gioc.style.left = this.casellaIniziale.getCenterX() - 35 + "px"
@@ -182,12 +209,12 @@ class Giocatore {
 
 
         /*
-        
-    ! ! ! Non posso usare la "semplice" proprietà CSS per le animazioni sul giocatore ! ! ! 
-    ! ! !  xkè si "attiverebbe" solo la prima volta. ! ! ! 
-    ! ! ! Cosa faccio quindi ? OGNI VOLTA CREO UNA NUOVA LABEL, le faccio fare l'animazione ! ! ! 
-    ! ! !  e LA DISTRUGGO. AL GIRO DOPO NE VERRÀ CREATA UN ALTRA E CONTINUA COSÌ. ! ! ! 
-        */
+            
+        ! ! ! Non posso usare la "semplice" proprietà CSS per le animazioni sul giocatore ! ! ! 
+        ! ! !  xkè si "attiverebbe" solo la prima volta. ! ! ! 
+        ! ! ! Cosa faccio quindi ? OGNI VOLTA CREO UNA NUOVA LABEL, le faccio fare l'animazione ! ! ! 
+        ! ! !  e LA DISTRUGGO. AL GIRO DOPO NE VERRÀ CREATA UN ALTRA E CONTINUA COSÌ. ! ! ! 
+            */
 
 
         if (this.gioc != null) {
@@ -197,13 +224,24 @@ class Giocatore {
             document.body.removeChild(this.gioc)
         }
         this.gioc = document.createElement("LABEL")
-        var img = new Image();
 
+        var img = new Image();
         img.onload = function() {
             this.gioc.appendChild(img);
         };
-        img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_gialla.png"
+        if (this.getData() == 'gialla') {
+            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_gialla.png"
+        } else if (this.getData() == 'verde') {
+            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_verde.png"
+        } else if (this.getData() == 'blu') {
+            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_blu.png"
+        } else if (this.getData() == 'rossa') {
+            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_rossa.png"
+        } else {
+            img.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_COM.png"
+        }
         this.gioc.appendChild(img)
+
         this.gioc.style.position = "absolute"
         this.gioc.style.top = y1 - 30 + "px"
         this.gioc.style.left = x1 - 35 + "px"

@@ -61,8 +61,8 @@ class CrazyGoose {
 
         })
 
-        this.player = new Giocatore(this, this.caselle, this.percorso, "PL1")
-        this.com = new Giocatore(this, this.caselle, this.percorso, "COM")
+        this.player = new Giocatore(this, this.caselle, this.percorso, "PL1", sessionStorage.getItem("ocaScelta"))
+        this.com = new Giocatore(this, this.caselle, this.percorso, "COM", sessionStorage.setItem("ocaScelta", "com"))
 
 
         // Decide chi incomincia, tira il dado e vede se il numero tirato è pari o dispari
