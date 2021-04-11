@@ -68,8 +68,6 @@ COLORI USATI:   rgb(0, 127, 255); azzurro
 /* - - - - - - - - - - - - - - */
 
 #divImgTitolo {
-    /*130 è la larghezza del divDropdown*/
-    margin-left: 130px;
     height: 250px;
 }
 

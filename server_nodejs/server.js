@@ -4,6 +4,8 @@ const jsdom = require("jsdom")
     //destrutturazione (prendo solo quello che mi serve)
 const { JSDOM } = jsdom
 
+//https://codeshack.io/basic-login-system-nodejs-express-mysql/
+const session = require("express-session")
 const express = require("express")
 const app = express()
 
@@ -11,17 +13,43 @@ const app = express()
 app.listen("3000", () => {
     //console.log("SERVER IN FUNZIONE")
 })
+app.use(session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: false
+}));
 app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 
 app.use(express.static("public"))
 
+//----------------- sito web ----------------------------------
+
 app.get("/", (req, resp) => {
-    resp.sendFile(__dirname + "/sitoWeb/index.html")
-        //console.log("Entrato in sito web")
+    if (req.session.loggato) {
+        let sito = fs.readFileSync("./sitoWeb/index.html", "utf-8")
+
+        let jsDom = new JSDOM(sito)
+
+        msgBenvenuto = "Benvenuto<br><i>" + req.session.nome + " " + req.session.cognome + "</i>"
+        jsDom.window.document.getElementById("dropdownBtn").innerHTML = msgBenvenuto
+        jsDom.window.document.getElementById("divDropdown").style.display = "inline-block"
+
+        jsDom.window.document.getElementById("testataSito").setAttribute("class", "col-10 d-flex justify-content-center")
+        jsDom.window.document.getElementById("menuUtente").setAttribute("class", "col-2")
+
+        resp.send(jsDom.window.document.documentElement.outerHTML)
+    } else {
+        let sito = fs.readFileSync("./sitoWeb/index.html", "utf-8")
+
+        let jsDom = new JSDOM(sito)
+
+        jsDom.window.document.getElementById("testataSito").setAttribute("class", "col-12 d-flex justify-content-center")
+
+        resp.send(jsDom.window.document.documentElement.outerHTML)
+    }
+    //console.log("Entrato in sito web")
 })
-
-
 
 app.get("/regole", (req, resp) => {
     resp.sendFile(__dirname + "/sitoWeb/regole.html")
@@ -33,7 +61,15 @@ app.get("/contattaci", (req, resp) => {
         //console.log("Entrato in Contattaci")
 })
 app.post("/invioEmail", (req, resp) => {
+    //TODO script invia email
     resp.sendFile(__dirname + "/sitoWeb/send.php")
+})
+
+app.get("/profilo", (req, resp) => {
+    //TODO fare una pagina per il profilo, con statistiche ecc.
+    // DA "RIEMPIRE" QUI (o lì con ejs) ==> SERVE DB
+    //resp.sendFile(__dirname + "/sitoWeb/profilo.html")
+    resp.send("WORK IN PROGRESS")
 })
 
 app.get("/login", (req, resp) => {
@@ -41,9 +77,15 @@ app.get("/login", (req, resp) => {
         //console.log("Entrato in LOGIN")
 })
 app.post("/loginFatta", (req, resp) => {
-    //se dati sono giusti (user e passw) ==> TODO SERVE DATABASE
+    //TODO controlla se dati sono giusti (user e passw) ==> SERVE DATABASE
     //resp.sendFile(__dirname + "/sitoWeb/loginFatta.html")
     resp.send("WORK IN PROGRESS")
+})
+app.get("/logout", (req, resp) => {
+    req.session.loggato = false
+    req.session.nome = null
+    req.session.cognome = null
+    resp.redirect("/")
 })
 
 app.get("/registrati", (req, resp) => {
@@ -51,31 +93,34 @@ app.get("/registrati", (req, resp) => {
 })
 
 app.post("/registrazioneFatta", (req, resp) => {
-
-    //salvare tutti i dati ==> TODO SERVE DATABASE
-    //resp.sendFile(__dirname + "/sitoWeb/registrazioneFatta.html")
-    resp.send("WORK IN PROGRESS")
+    //TODO ci sarebbe da aggiungere nel database l'utente
+    req.session.loggato = true
+    req.session.nome = req.body.nome
+    req.session.cognome = req.body.cognome
+    resp.redirect("/menuGioco")
 })
 
+
+//----------------- gioco web ----------------------------------
 
 app.get("/menuGioco", (req, resp) => {
-    resp.sendFile(__dirname + "/webApp/menu/index.html")
-        //console.log("Entrato in menu del gioco")
-})
-app.post("/menuGioco", (req, resp) => {
-    let sito = fs.readFileSync("./webApp/menu/index.html", "utf-8")
+    if (req.session.loggato) {
+        let sito = fs.readFileSync("./webApp/menu/index.html", "utf-8")
 
-    let jsDom = new JSDOM(sito)
+        let jsDom = new JSDOM(sito)
 
-    let nome = req.body.nome
-    let cognome = req.body.cognome
+        msgBenvenuto = "Benvenuto<br><i>" + req.session.nome + " " + req.session.cognome + "</i>"
+        jsDom.window.document.getElementById("dropdownBtn").innerHTML = msgBenvenuto
+        jsDom.window.document.getElementById("divDropdown").style.display = "inline-block"
+            /*130px è la larghezza del divDropdown. (devo usarlo per centrare l'img alla pagina)*/
+        jsDom.window.document.getElementById("divImgTitolo").style.marginLeft = "130px"
 
-    msgBenvenuto = "Benvenuto<br><i>" + nome + " " + cognome + "</i>"
-    jsDom.window.document.getElementById("dropdownBtn").innerHTML = msgBenvenuto
-    jsDom.window.document.getElementById("divDropdown").style.display = "inline-block"
-
-    resp.send(jsDom.window.document.documentElement.outerHTML)
-        //console.log("Entrato in menu del gioco")
+        resp.send(jsDom.window.document.documentElement.outerHTML)
+            //console.log("Entrato in menu del gioco")
+    } else {
+        resp.sendFile(__dirname + "/webApp/menu/index.html")
+    }
+    //console.log("Entrato in menu del gioco")
 })
 
 app.get("/start", (req, resp) => {
