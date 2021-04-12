@@ -118,7 +118,7 @@ app.get("/menuGioco", (req, resp) => {
         resp.send(jsDom.window.document.documentElement.outerHTML)
             //console.log("Entrato in menu del gioco")
     } else {
-        resp.sendFile(__dirname + "/webApp/menu/index.html")
+        resp.redirect(302, "/")
     }
     //console.log("Entrato in menu del gioco")
 })
@@ -139,4 +139,10 @@ app.get("/credits", (req, resp) => {
 app.get("/gioco", (req, resp) => {
     resp.sendFile(__dirname + "/webApp/giocoWeb/index.html")
         //console.log("Scelto pedina")
+})
+
+app.get("/riavviaGioco", (req, resp) => {
+    //arriva per forza dal gioco (ha premuto ESC) quindi è loggato
+    req.session.loggato = true
+    resp.redirect(302, "/menuGioco")
 })
