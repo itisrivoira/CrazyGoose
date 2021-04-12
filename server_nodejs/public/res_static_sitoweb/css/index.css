@@ -79,6 +79,27 @@ body {
     font-size: 55px;
 }
 
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    height: 50px;
+    width: 50px;
+    background-color: rgba(0, 0, 0, 0.3);
+    background-size: 65%, 65%;
+}
+
+
+/*  Frecce del carousel da provare a sostituire con immagini. DA PROBLEMI
+.carousel-control-prev-icon {
+    height: 100px;
+    width: 100px;
+    background-image: url("/public/res_static_sitoweb/images/LeftArrow.png")
+}
+
+.carousel-control-next-icon {
+    background-image: url("/public/res_static_sitoweb/images/RightArrow.png")
+}
+*/
+
 
 /*In questi due devo ribadire il colore xke ci sono dei tag <a>, link, che sono impostati per essere di colore 
 blu/azzurro (classe sopra e sotto il commento)*/
@@ -248,8 +269,6 @@ blu/azzurro (classe sopra e sotto il commento)*/
     justify-content: center;
     text-align: center;
     background-color: rgba(99, 22, 80, 0.521);
-    "
-
 }
 
 
