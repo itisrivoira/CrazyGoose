@@ -313,6 +313,37 @@ class Giocatore():
 		self.posiziona(spostamento, controllaCodCasella)
 		self.isMoving = False
 		
+		#Quand'è che controllaCodCasella è False ? Quando il COM attiva la sua abilita.
+		# Quindi quando il COM attiva la sua abilita il PL1 non potra attivare la sua abilita
+		if(controllaCodCasella):
+			if(self.abilitaAttivata == False and self.pedinaScelta == "verde"
+					#Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giro"
+					and self.turnoMio == False and self.turniFermo == 0):
+				
+				numGiri = 0
+				# (controllo anche che il gioco non sia stato fermato)
+				while (numGiri < 20 and self.crazyGoose.giocoPartito):
+					self.attendoAbilita = True
+					self.crazyGoose.buttonAbilitaPL1.evidenziaTempoRimanente((2000 - numGiri * 100), True)
+					
+					if (self.abilitaAttivata):
+						numGiri = 20
+					else:
+						numGiri += 1
+						pygame.time.wait(100)
+				
+				# (in CrazyGoose.disegna() non disegna il button per l'abilita se
+				# vede attendoAbilita a True, questo xke se è a True vuol dire che
+				# è nel while qui sopra e qui sta fancedo evidenziaTempoRimandente
+				# che andrà a disegnare il button dell'abilita)
+				self.attendoAbilita = False
+				
+				if (self.abilitaAttivata):
+					# Ormai ha attivato l'abilità perciò non la può più usare
+					self.crazyGoose.buttonAbilitaPL1.cancellaButtonAbilita()
+					self.turnoMio = True
+			
+		
 			#Ritorna indietro il flag, in questo modo si saprà a chi toccherà
 		return self.turnoMio
 	
