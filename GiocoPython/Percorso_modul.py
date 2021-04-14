@@ -181,13 +181,21 @@ class Percorso():
 				self.dictCaselle[pos + 4] = AVANTI_DI_QUATTRO[0]
 				loop = True
 			
-			elif(self.controllaSeCasellaNonEVuota((pos+1, pos+2, pos+3)) and
+			elif(self.controllaSeCasellaNonEVuota((pos+1, pos+2, pos+3, pos+4)) and
 					self.dictCaselle[pos+1] == INDIETRO_DI_UNO[0] and self.dictCaselle[pos+2] ==
-				 INDIETRO_DI_UNO[0] and self.dictCaselle[pos+3] == INDIETRO_DI_UNO[0]):
+				 INDIETRO_DI_UNO[0] and self.dictCaselle[pos+3] == INDIETRO_DI_UNO[0]
+				 and self.dictCaselle[pos+4] == INDIETRO_DI_UNO[0]):
 				
-				# inverto casella +4 con l'ultimo -1
-				self.dictCaselle[pos] = INDIETRO_DI_UNO[0]
-				self.dictCaselle[pos + 4] = AVANTI_DI_QUATTRO[0]
+				self.dictCaselle.pop(pos+1)
+				self.dictCaselle.pop(pos+2)
+				self.dictCaselle.pop(pos+3)
+				self.dictCaselle.pop(pos+4)
+
+				#Metto in una nuova posizione gli effetti delle caselle
+				self.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
+				self.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
+				self.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
+				self.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
 				loop = True
 				
 			

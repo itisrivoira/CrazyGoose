@@ -138,13 +138,13 @@ class Percorso {
             loopTrovato = false
 
             for (let pos in this.dictCaselle) {
-                loopTrovato = this.possibileLoop(pos, this.dictCaselle[pos])
+                loopTrovato = this.possibileLoop(parseInt(pos), parseInt(this.dictCaselle[pos]))
                 if (loopTrovato) {
                     //ferma xke deve ricominciare da capo (per corregere un loop magari ne
                     // ho creato un altro)
                     break
                 } else {
-                    loopTrovato = this.controllaLoopSfigato(pos)
+                    loopTrovato = this.controllaLoopSfigato(parseInt(pos))
                     if (loopTrovato) {
                         // ferma xke deve ricominciare da capo (per corregere un loop magari ne
                         // ho creato un altro)
@@ -192,7 +192,7 @@ class Percorso {
 
     trovaNuovaPosPerCasella(codCasella) {
         let newPos = QTA_CASELLE_TOTALI - 1 // (di certo questa casella ha un effetto, "DA CAPO")
-        while (newPos in this.dictCaselle.keys()) {
+        while (newPos in Object.keys(this.dictCaselle)) {
             newPos = Math.floor(Math.random() * (QTA_CASELLE_TOTALI - 1)) + 2
         }
         this.dictCaselle[newPos] = codCasella
@@ -221,13 +221,21 @@ class Percorso {
                 this.dictCaselle[pos + 4] = AVANTI_DI_QUATTRO[0]
                 loop = true
 
-            } else if (this.controllaSeCasellaNonEVuota([pos + 1, pos + 2, pos + 3]) &&
+            } else if (this.controllaSeCasellaNonEVuota([pos + 1, pos + 2, pos + 3, pos + 4]) &&
                 this.dictCaselle[pos + 1] == INDIETRO_DI_UNO[0] && this.dictCaselle[pos + 2] ==
-                INDIETRO_DI_UNO[0] && this.dictCaselle[pos + 3] == INDIETRO_DI_UNO[0]) {
+                INDIETRO_DI_UNO[0] && this.dictCaselle[pos + 3] == INDIETRO_DI_UNO[0]
+                && this.dictCaselle[pos + 4] == INDIETRO_DI_UNO[0]) {
 
-                // inverto casella +4 con l'ultimo -1
-                this.dictCaselle[pos] = INDIETRO_DI_UNO[0]
-                this.dictCaselle[pos + 4] = AVANTI_DI_QUATTRO[0]
+                delete this.dictCaselle[pos + 1]
+                delete this.dictCaselle[pos + 2]
+                delete this.dictCaselle[pos + 3]
+                delete this.dictCaselle[pos + 4]
+
+				//Metto in una nuova posizione gli effetti delle caselle
+                this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
+                this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
+                this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
+                this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
                 loop = true
             }
 
@@ -255,7 +263,7 @@ class Percorso {
                     //se invertissi finirebbe un -3 nelle prime caselle,
                     // e se ci si finisse sopra si dovrebbe "andare fuori dal percorso"
                     // quindi metto il -3 in una posizione casuale (in cui non ce nulla)
-                    this.dictCaselle.pop(pos + 3)
+                    delete this.dictCaselle[pos + 3]
 
                     this.trovaNuovaPosPerCasella(INDIETRO_DI_TRE[0])
 
