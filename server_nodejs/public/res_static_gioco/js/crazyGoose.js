@@ -10,6 +10,71 @@ class Dado {
     }
 }
 
+class ButtonAbilitaPL1 {
+    constructor(crazyGoose, pedinaScelta) {
+        this.crazyGoose = crazyGoose
+
+        let cartella = ""
+        if (pedinaScelta == "gialla") {
+            cartella = "/OcaGialla"
+        } else if (pedinaScelta == "verde") {
+            cartella = "/OcaVerde"
+        } else if (pedinaScelta == "blu") {
+            cartella = "/OcaBlu"
+        } else if (pedinaScelta == "rossa") {
+            cartella = "/OcaRossa"
+        }
+
+        this.imgOk = "res_static_gioco/images/imgAbilita" + cartella + "/OK.png"
+        this.imgQuasi = "res_static_gioco/images/imgAbilita" + cartella + "/QUASI.png"
+        this.imgNonPiu = "res_static_gioco/images/imgAbilita" + cartella + "/NON_PIU.png"
+        this.imgNo = "res_static_gioco/images/imgAbilita" + cartella + "/NO.png"
+
+        this.imgAbilita = document.getElementById("imgAbilita")
+            //ad inizio partita di certo non potrà attivare l'abilita quindi questa è l'img di default
+        this.evidenziaTempoRimanente(0)
+
+        this.imgAbilita.addEventListener("click", () => {
+            if (this.crazyGoose.player.abilitaAttivata == false &&
+                this.crazyGoose.player.attendoAbilita) {
+
+                this.CrazyGoose.player.abilitaAttivata = true
+            }
+
+        })
+    }
+
+    evidenziaTempoRimanente(ms) {
+        //sarà l'ultimo giro, non disegno più
+        if (ms > 100) {
+            //(non parto da 0° ma da 90°, quindi non 360° ma 360°+90°)
+            let gradi = (360 * ms / 2000) + 90
+
+            //TODO codice per disegnare arco (magari css) intorno imgAbilita
+            /*pygame.draw.arc(self.game.display, self.game.BLACK, pygame.Rect(
+            	self.rect.x-2, self.rect.y-2, self.rect.width+4, self.rect.height+4
+            ), math.radians(90), math.radians(gradi), 3)*/
+        }
+
+        let img = null
+        if (this.crazyGoose.player.abilitaAttivata == false) {
+            if (ms == 0) {
+                img = this.imgNonPiu
+            } else if (ms > 1000) {
+                img = this.imgOk
+            } else {
+                img = this.imgQuasi
+            }
+        } else {
+            img = this.imgNo
+        }
+
+        this.imgAbilita.src = img
+    }
+
+}
+
+
 class CrazyGoose {
     constructor() {
         this.giocoPartito = false
@@ -30,6 +95,7 @@ class CrazyGoose {
             this.percorso = new Percorso()
 
             this.buttonDadoPL1 = null
+            this.buttonAbilitaPL1 = null
             this.player = null
             this.com = null
             this.turnoCOM = null
@@ -47,8 +113,6 @@ class CrazyGoose {
 
         //this.scriviEffetti(this.player, true)
 
-        //Il primo argomento è this xke necessita di questa classe per
-        // richiamarne il metodo "tiraDado"
         this.buttonDadoPL1 = document.getElementById("dado_pl1")
         this.buttonDadoPL1.addEventListener("click", () => {
 
@@ -58,12 +122,13 @@ class CrazyGoose {
                     this.tiraDado()
                 }
             }
-
         })
 
         this.player = new Giocatore(this, this.caselle, this.percorso, "PL1", sessionStorage.getItem("ocaScelta"))
         this.com = new Giocatore(this, this.caselle, this.percorso, "COM", null)
 
+        //(dev'essere creato dopo this.player)
+        this.buttonAbilita = new ButtonAbilitaPL1(this, sessionStorage.getItem("ocaScelta"))
 
         // Decide chi incomincia, tira il dado e vede se il numero tirato è pari o dispari
         // (tra 1 e 6 ci sono 3 pari e 3 dispari, perciò 50% possbilità a testa)
@@ -167,39 +232,46 @@ class CrazyGoose {
                 if (this.player.isMoving == false) {
                     clearInterval(idIntervalFineAvanza)
 
-                    if (!this.player.vincitore) {
-                        this.com.turnoMio = !this.player.turnoMio
+                    //TODO attivaAbilitaCOM ==> una volta fatto togliere "false" da qui
+                    if (false && this.player.posizione == this.com.posizione &&
+                        this.player.posizione > 2) {
 
-                        //se prende un fermo ANNULLA il fermo dell'avversario 
-                        //(SENNÒ NESSUNO GIOCHEREBBE PIÙ per alcuni turni)
-                        if (this.player.turniFermo > 0) {
-                            this.com.turniFermo = 0
-                                //Ora il PL1 ha un fermo, quindi tocca all'avversario sicuro
-                            this.segnalaChiTocca(false)
+                        this.attivaAbilitaCOM(true, this.player.turnoMio)
+                    } else {
+                        if (!this.player.vincitore) {
+                            this.com.turnoMio = !this.player.turnoMio
 
-                            //Lancerà il dado, entrerà in avanzaPlayer1 che
-                            // decrementerà il suo fermo e lancerà avanzaCOM
-                            this.tiraDado()
-                        } else {
-                            if (this.com.turniFermo > 0) {
-                                //Se l'avversario ha un fermo al 100% tocca al PL1...
-                                this.segnalaChiTocca(true)
+                            //se prende un fermo ANNULLA il fermo dell'avversario 
+                            //(SENNÒ NESSUNO GIOCHEREBBE PIÙ per alcuni turni)
+                            if (this.player.turniFermo > 0) {
+                                this.com.turniFermo = 0
+                                    //Ora il PL1 ha un fermo, quindi tocca all'avversario sicuro
+                                this.segnalaChiTocca(false)
+
+                                //Lancerà il dado, entrerà in avanzaPlayer1 che
+                                // decrementerà il suo fermo e lancerà avanzaCOM
+                                this.tiraDado()
                             } else {
-                                //L'avversario non ha un fermo MA non è detto che tocchi a lui 
-                                // (PL1 potrebbe aver preso un TIRA DI NUOVO) quindi controllo
-                                if (this.com.turnoMio) {
-                                    this.segnalaChiTocca(false)
-
-                                    this.toccaAlCOM()
-                                } else {
+                                if (this.com.turniFermo > 0) {
+                                    //Se l'avversario ha un fermo al 100% tocca al PL1...
                                     this.segnalaChiTocca(true)
+                                } else {
+                                    //L'avversario non ha un fermo MA non è detto che tocchi a lui 
+                                    // (PL1 potrebbe aver preso un TIRA DI NUOVO) quindi controllo
+                                    if (this.com.turnoMio) {
+                                        this.segnalaChiTocca(false)
+
+                                        this.toccaAlCOM()
+                                    } else {
+                                        this.segnalaChiTocca(true)
+                                    }
                                 }
                             }
+                        } else {
+                            //Segnala PL1 come vincitore e fa TERMINARE la partita
+                            this.segnalaVincitore(true)
+                            this.partitaTerminata = true
                         }
-                    } else {
-                        //Segnala PL1 come vincitore e fa TERMINARE la partita
-                        this.segnalaVincitore(true)
-                        this.partitaTerminata = true
                     }
 
                 }
@@ -228,27 +300,34 @@ class CrazyGoose {
                 if (this.com.isMoving == false) {
                     clearInterval(idIntervalFineAvanza)
 
-                    if (!this.com.vincitore) {
-                        this.player.turnoMio = !this.com.turnoMio
-                        if (this.com.turniFermo > 0) {
-                            this.player.turniFermo = 0
-                            this.segnalaChiTocca(true)
-                        } else {
-                            if (this.player.turniFermo > 0) {
-                                this.segnalaChiTocca(false)
-                                this.tiraDado()
+                    //TODO attivaAbilitaCOM ==> una volta fatto togliere "false" da qui
+                    if (false && this.player.posizione == this.com.posizione &&
+                        this.player.posizione > 2) {
+
+                        this.attivaAbilitaCOM(true, this.com.turnoMio)
+                    } else {
+                        if (!this.com.vincitore) {
+                            this.player.turnoMio = !this.com.turnoMio
+                            if (this.com.turniFermo > 0) {
+                                this.player.turniFermo = 0
+                                this.segnalaChiTocca(true)
                             } else {
-                                if (this.player.turnoMio) {
-                                    this.segnalaChiTocca(true)
-                                } else {
+                                if (this.player.turniFermo > 0) {
                                     this.segnalaChiTocca(false)
-                                    this.toccaAlCOM()
+                                    this.tiraDado()
+                                } else {
+                                    if (this.player.turnoMio) {
+                                        this.segnalaChiTocca(true)
+                                    } else {
+                                        this.segnalaChiTocca(false)
+                                        this.toccaAlCOM()
+                                    }
                                 }
                             }
+                        } else {
+                            this.segnalaVincitore(false)
+                            this.partitaTerminata = true
                         }
-                    } else {
-                        this.segnalaVincitore(false)
-                        this.partitaTerminata = true
                     }
                 }
             }, 100)

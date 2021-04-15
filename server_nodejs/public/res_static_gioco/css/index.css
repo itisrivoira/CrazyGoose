@@ -28,6 +28,13 @@ body {
     top: 45vh;
 }
 
+#imgAbilita {
+    padding: 0px;
+    position: relative;
+    top: 0px;
+    left: 150px;
+}
+
 .caselle,
 .caselleIniziali {
     border: 1px solid black;

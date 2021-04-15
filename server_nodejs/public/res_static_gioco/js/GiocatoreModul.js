@@ -46,6 +46,9 @@ class Giocatore {
             //sarà la label con "PL1" o "COM"
         this.gioc = null
 
+        this.attendoAbilita = false
+        this.abilitaAttivata = false
+
         this.penultimoEff = ""
         this.ultimoEff = ""
         this.newSpostamento = 0
@@ -295,9 +298,13 @@ class Giocatore {
         this.turnoMio = false
 
         this.posiziona(spostamento)
+
+        //codice abilita oca verde e blu
     }
 
     controllaCodiceCasella(codCasella) {
+        //codice abilita oca rossa
+
         /*
         In questo metodo controllo l'effetto della casella su cui è capitato
          il giocatore. Setto lo spostamento a 0 xkè l'effetto potrebbe lasciare lì
@@ -362,6 +369,9 @@ class Giocatore {
         }
 
         if (spostamento != 0) {
+
+            //codice oca gialla
+
             this.posiziona(spostamento)
         } else {
             this.isMoving = false
