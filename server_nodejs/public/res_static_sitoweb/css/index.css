@@ -75,8 +75,19 @@ body {
 }
 
 .titoloSchedaCarousel {
-    color: aliceblue;
+    color: black;
     font-size: 55px;
+    font-weight: 500;
+}
+
+.testoCarousel {
+    color: black;
+    font-size: 25px;
+    font-weight: 300;
+}
+
+.sfondoTestoCarousel {
+    background-color: lightgray;
 }
 
 .carousel-control-prev-icon,
@@ -85,6 +96,7 @@ body {
     width: 50px;
     background-color: rgba(0, 0, 0, 0.3);
     background-size: 65%, 65%;
+    position: relative;
 }
 
 
@@ -109,7 +121,12 @@ blu/azzurro (classe sopra e sotto il commento)*/
 }
 
 #divSchedaCrazyGoose p {
-    color: black;
+    background-color: rgb(124, 154, 184);
+    opacity: 0.7;
+    width: 100%;
+    height: auto;
+    position: relative;
+    margin-bottom: 0px;
 }
 
 #imgSchedaRegolamento {
