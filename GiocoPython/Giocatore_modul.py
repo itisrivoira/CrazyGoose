@@ -342,10 +342,35 @@ class Giocatore():
 					# Ormai ha attivato l'abilità perciò non la può più usare
 					self.crazyGoose.buttonAbilitaPL1.cancellaButtonAbilita()
 					self.turnoMio = True
-			
-		
-			#Ritorna indietro il flag, in questo modo si saprà a chi toccherà
+
+	
+		if(controllaCodCasella):
+			if(self.abilitaAttivata == False and self.pedinaScelta == "blu"
+					#Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giro"
+					and self.turnoMio == False and self.turniFermo == 0):
+				
+				numGiri = 0
+				# (controllo anche che il gioco non sia stato fermato)
+				while (numGiri < 20 and self.crazyGoose.giocoPartito):
+					self.attendoAbilita = True
+					self.crazyGoose.buttonAbilitaPL1.evidenziaTempoRimanente((2000 - numGiri * 100), True)
+					
+					if (self.abilitaAttivata):
+						numGiri = 20
+					else:
+						numGiri += 1
+						pygame.time.wait(100)
+				
+				self.attendoAbilita = False
+
+				if (self.abilitaAttivata):
+					# Ormai ha attivato l'abilità perciò non la può più usare
+					self.crazyGoose.buttonAbilitaPL1.cancellaButtonAbilita()
+					self.avanza(2)
+
+		#Ritorna indietro il flag, in questo modo si saprà a chi toccherà
 		return self.turnoMio
+
 	
 	
 	def controllaCodiceCasella(self, codCasella):
@@ -381,6 +406,8 @@ class Giocatore():
 		elif(codCasella == VITTORIA):
 			self.vincitore = True
 		
+
+
 		#Se non ha attivato l'abilita (ocaRossa) allora subirà l'effetto della casella,
 		# altrimenti semplicemente finisce il turno
 		if(attivatoAbilita == False):
