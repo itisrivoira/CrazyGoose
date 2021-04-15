@@ -28,13 +28,6 @@ body {
     top: 45vh;
 }
 
-#imgAbilita {
-    padding: 0px;
-    position: relative;
-    top: 0px;
-    left: 150px;
-}
-
 .caselle,
 .caselleIniziali {
     border: 1px solid black;
@@ -69,9 +62,11 @@ body {
 }
 
 #dado_pl1 {
+    border:1px solid black;
+    width: 70px;
+    height: 70px;
     position: absolute;
-    top: 35px;
-    left: 110px;
+    margin: 15px 0px 0px 200px;
 }
 
 #info_com {

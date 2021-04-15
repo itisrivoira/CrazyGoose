@@ -94,8 +94,8 @@ class CrazyGoose {
                 //Crea il percorso (casuale)
             this.percorso = new Percorso()
 
+            this.dado1= new Image()
             this.buttonDadoPL1 = null
-            this.buttonAbilitaPL1 = null
             this.player = null
             this.com = null
             this.turnoCOM = null
@@ -113,7 +113,15 @@ class CrazyGoose {
 
         //this.scriviEffetti(this.player, true)
 
+        //Il primo argomento è this xke necessita di questa classe per
+        // richiamarne il metodo "tiraDado"
+
+        //do al div l' immagine di default (per ora dado 1)
+        this.dado1.src="/res_static_gioco/images/img_dado/dado_1.png"
+        this.dado1.style.width="70px";
+        this.dado1.style.height="70px";
         this.buttonDadoPL1 = document.getElementById("dado_pl1")
+        this.buttonDadoPL1.appendChild(this.dado1);
         this.buttonDadoPL1.addEventListener("click", () => {
 
             //Controllo che sia il turno del PL1 (cioè che sia il suo turno o che l'avversario abbia un fermo)
@@ -122,13 +130,12 @@ class CrazyGoose {
                     this.tiraDado()
                 }
             }
+
         })
 
         this.player = new Giocatore(this, this.caselle, this.percorso, "PL1", sessionStorage.getItem("ocaScelta"))
         this.com = new Giocatore(this, this.caselle, this.percorso, "COM", null)
 
-        //(dev'essere creato dopo this.player)
-        this.buttonAbilita = new ButtonAbilitaPL1(this, sessionStorage.getItem("ocaScelta"))
 
         // Decide chi incomincia, tira il dado e vede se il numero tirato è pari o dispari
         // (tra 1 e 6 ci sono 3 pari e 3 dispari, perciò 50% possbilità a testa)
@@ -221,7 +228,7 @@ class CrazyGoose {
         } else {
             /*(La prossima volta che verrà richiamato "disegnaTutto" il numero
                 del dado sarà cambiato) */
-            this.buttonDadoPL1.innerHTML = numEstratto
+            this.imgDado(numEstratto)
 
             this.player.avanza(numEstratto)
 
@@ -232,46 +239,39 @@ class CrazyGoose {
                 if (this.player.isMoving == false) {
                     clearInterval(idIntervalFineAvanza)
 
-                    //TODO attivaAbilitaCOM ==> una volta fatto togliere "false" da qui
-                    if (false && this.player.posizione == this.com.posizione &&
-                        this.player.posizione > 2) {
+                    if (!this.player.vincitore) {
+                        this.com.turnoMio = !this.player.turnoMio
 
-                        this.attivaAbilitaCOM(true, this.player.turnoMio)
-                    } else {
-                        if (!this.player.vincitore) {
-                            this.com.turnoMio = !this.player.turnoMio
+                        //se prende un fermo ANNULLA il fermo dell'avversario 
+                        //(SENNÒ NESSUNO GIOCHEREBBE PIÙ per alcuni turni)
+                        if (this.player.turniFermo > 0) {
+                            this.com.turniFermo = 0
+                                //Ora il PL1 ha un fermo, quindi tocca all'avversario sicuro
+                            this.segnalaChiTocca(false)
 
-                            //se prende un fermo ANNULLA il fermo dell'avversario 
-                            //(SENNÒ NESSUNO GIOCHEREBBE PIÙ per alcuni turni)
-                            if (this.player.turniFermo > 0) {
-                                this.com.turniFermo = 0
-                                    //Ora il PL1 ha un fermo, quindi tocca all'avversario sicuro
-                                this.segnalaChiTocca(false)
-
-                                //Lancerà il dado, entrerà in avanzaPlayer1 che
-                                // decrementerà il suo fermo e lancerà avanzaCOM
-                                this.tiraDado()
+                            //Lancerà il dado, entrerà in avanzaPlayer1 che
+                            // decrementerà il suo fermo e lancerà avanzaCOM
+                            this.tiraDado()
+                        } else {
+                            if (this.com.turniFermo > 0) {
+                                //Se l'avversario ha un fermo al 100% tocca al PL1...
+                                this.segnalaChiTocca(true)
                             } else {
-                                if (this.com.turniFermo > 0) {
-                                    //Se l'avversario ha un fermo al 100% tocca al PL1...
-                                    this.segnalaChiTocca(true)
-                                } else {
-                                    //L'avversario non ha un fermo MA non è detto che tocchi a lui 
-                                    // (PL1 potrebbe aver preso un TIRA DI NUOVO) quindi controllo
-                                    if (this.com.turnoMio) {
-                                        this.segnalaChiTocca(false)
+                                //L'avversario non ha un fermo MA non è detto che tocchi a lui 
+                                // (PL1 potrebbe aver preso un TIRA DI NUOVO) quindi controllo
+                                if (this.com.turnoMio) {
+                                    this.segnalaChiTocca(false)
 
-                                        this.toccaAlCOM()
-                                    } else {
-                                        this.segnalaChiTocca(true)
-                                    }
+                                    this.toccaAlCOM()
+                                } else {
+                                    this.segnalaChiTocca(true)
                                 }
                             }
-                        } else {
-                            //Segnala PL1 come vincitore e fa TERMINARE la partita
-                            this.segnalaVincitore(true)
-                            this.partitaTerminata = true
                         }
+                    } else {
+                        //Segnala PL1 come vincitore e fa TERMINARE la partita
+                        this.segnalaVincitore(true)
+                        this.partitaTerminata = true
                     }
 
                 }
@@ -300,34 +300,27 @@ class CrazyGoose {
                 if (this.com.isMoving == false) {
                     clearInterval(idIntervalFineAvanza)
 
-                    //TODO attivaAbilitaCOM ==> una volta fatto togliere "false" da qui
-                    if (false && this.player.posizione == this.com.posizione &&
-                        this.player.posizione > 2) {
-
-                        this.attivaAbilitaCOM(true, this.com.turnoMio)
-                    } else {
-                        if (!this.com.vincitore) {
-                            this.player.turnoMio = !this.com.turnoMio
-                            if (this.com.turniFermo > 0) {
-                                this.player.turniFermo = 0
-                                this.segnalaChiTocca(true)
+                    if (!this.com.vincitore) {
+                        this.player.turnoMio = !this.com.turnoMio
+                        if (this.com.turniFermo > 0) {
+                            this.player.turniFermo = 0
+                            this.segnalaChiTocca(true)
+                        } else {
+                            if (this.player.turniFermo > 0) {
+                                this.segnalaChiTocca(false)
+                                this.tiraDado()
                             } else {
-                                if (this.player.turniFermo > 0) {
-                                    this.segnalaChiTocca(false)
-                                    this.tiraDado()
+                                if (this.player.turnoMio) {
+                                    this.segnalaChiTocca(true)
                                 } else {
-                                    if (this.player.turnoMio) {
-                                        this.segnalaChiTocca(true)
-                                    } else {
-                                        this.segnalaChiTocca(false)
-                                        this.toccaAlCOM()
-                                    }
+                                    this.segnalaChiTocca(false)
+                                    this.toccaAlCOM()
                                 }
                             }
-                        } else {
-                            this.segnalaVincitore(false)
-                            this.partitaTerminata = true
                         }
+                    } else {
+                        this.segnalaVincitore(false)
+                        this.partitaTerminata = true
                     }
                 }
             }, 100)
@@ -432,5 +425,45 @@ class CrazyGoose {
         this.caselle.push(new Casella(38, 625, 295))
         this.caselle.push(new Casella(39, 525, 260))
         this.caselle.push(new Casella(40, 375, 280, true))
+    }
+
+    imgDado(numEstratto){
+        if(numEstratto==1){
+            this.dado1.src="/res_static_gioco/images/img_dado/dado_1.png"
+            this.dado1.style.width="70px";
+            this.dado1.style.height="70px";
+            this.buttonDadoPL1 = document.getElementById("dado_pl1")
+            this.buttonDadoPL1.appendChild(this.dado1);
+        }else if(numEstratto==2){
+            this.dado1.src="/res_static_gioco/images/img_dado/dado_2.png"
+            this.dado1.style.width="70px";
+            this.dado1.style.height="70px";
+            this.buttonDadoPL1 = document.getElementById("dado_pl1")
+            this.buttonDadoPL1.appendChild(this.dado1);
+        }else if(numEstratto==3){
+            this.dado1.src="/res_static_gioco/images/img_dado/dado_3.png"
+            this.dado1.style.width="70px";
+            this.dado1.style.height="70px";
+            this.buttonDadoPL1 = document.getElementById("dado_pl1")
+            this.buttonDadoPL1.appendChild(this.dado1);
+        }else if(numEstratto==4){
+            this.dado1.src="/res_static_gioco/images/img_dado/dado_4.png"
+            this.dado1.style.width="70px";
+            this.dado1.style.height="70px";
+            this.buttonDadoPL1 = document.getElementById("dado_pl1")
+            this.buttonDadoPL1.appendChild(this.dado1);
+        }else if(numEstratto==5){
+            this.dado1.src="/res_static_gioco/images/img_dado/dado_5.png"
+            this.dado1.style.width="70px";
+            this.dado1.style.height="70px";
+            this.buttonDadoPL1 = document.getElementById("dado_pl1")
+            this.buttonDadoPL1.appendChild(this.dado1);
+        }else{
+            this.dado1.src="/res_static_gioco/images/img_dado/dado_6.png"
+            this.dado1.style.width="70px";
+            this.dado1.style.height="70px";
+            this.buttonDadoPL1 = document.getElementById("dado_pl1")
+            this.buttonDadoPL1.appendChild(this.dado1);
+        }
     }
 }
