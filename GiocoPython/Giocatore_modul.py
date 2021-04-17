@@ -343,9 +343,7 @@ class Giocatore():
 					self.crazyGoose.buttonAbilitaPL1.cancellaButtonAbilita()
 					self.turnoMio = True
 
-	
-		if(controllaCodCasella):
-			if(self.abilitaAttivata == False and self.pedinaScelta == "blu"
+			elif(self.abilitaAttivata == False and self.pedinaScelta == "blu"
 					#Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giro"
 					and self.turnoMio == False and self.turniFermo == 0):
 				

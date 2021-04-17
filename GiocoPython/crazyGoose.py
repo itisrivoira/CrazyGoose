@@ -42,6 +42,13 @@ class Button():
 		self.width = width
 		self.height = height
 		
+		self.dado1 = pygame.image.load("./imgDado/dado_1.png")
+		self.dado2 = pygame.image.load("./imgDado/dado_2.png")
+		self.dado3 = pygame.image.load("./imgDado/dado_3.png")
+		self.dado4 = pygame.image.load("./imgDado/dado_4.png")
+		self.dado5 = pygame.image.load("./imgDado/dado_5.png")
+		self.dado6 = pygame.image.load("./imgDado/dado_6.png")
+		
 		self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 		
 		self.disegna(text)
@@ -51,7 +58,29 @@ class Button():
 		#"cancella" il dado che c'era prima
 		pygame.draw.rect(self.game.display, self.game.WHITE, self.rect, 0)
 		
-		if(self.crazyGoose.mouseOverDadoPL1):
+		if(1 <= valDado <= 6):
+		
+			if(valDado == 1):
+				imgDado = self.dado1
+			elif(valDado == 2):
+				imgDado = self.dado2
+			elif(valDado == 3):
+				imgDado = self.dado3
+			elif(valDado == 4):
+				imgDado = self.dado4
+			elif(valDado == 5):
+				imgDado = self.dado5
+			else:
+				imgDado = self.dado6
+		
+		else:
+			#img default
+			imgDado = self.dado1
+		
+		self.game.display.blit(imgDado, (self.rect.x, self.rect.y))
+		
+		
+		"""if(self.crazyGoose.mouseOverDadoPL1):
 			#COME PER LA SCELTA DELL'OCA, CREA UN RETTANGOLO DENTRO L'ALTRO PER FARE UN BORDO
 			# PIÙ GRANDE E VISIBILE
 			
@@ -75,8 +104,48 @@ class Button():
 					  (self.x + self.width / 2), (self.y + self.height / 2))
 			
 		if(doBlitScreen):
+			self.crazyGoose.blit_screen()"""
+	
+	def faiGirare(self):
+		# in 1 sec "gira" il dado, facendo vedere tutte le facce
+		numGiri = 0
+		dadiFattiVedere = list()
+		while (numGiri < 4 and self.crazyGoose.giocoPartito):
+			pygame.draw.rect(self.game.display, self.game.WHITE, self.rect)
+			
+			# ogni volta un dado diverso
+			x = Dado().tiraDado()
+			while (x in dadiFattiVedere):
+				x = Dado().tiraDado()
+			dadiFattiVedere.append(x)
+			
+			if (x == 1):
+				imgDado = self.dado1
+			elif (x == 2):
+				imgDado = self.dado2
+			elif (x == 3):
+				imgDado = self.dado3
+			elif (x == 4):
+				imgDado = self.dado4
+			elif (x == 5):
+				imgDado = self.dado5
+			else:
+				imgDado = self.dado6
+			
+			self.game.display.blit(imgDado, (self.rect.x, self.rect.y))
+			
+			numGiri += 1
+			if (numGiri == 5):
+				# avrebbe già mostrato vedere ogni possibile dado, devo
+				# resettare la lista dei dadi che ha mostrato
+				dadiFattiVedere = list()
+			
 			self.crazyGoose.blit_screen()
 			
+			pygame.time.wait(250)
+		
+		pygame.draw.rect(self.game.display, self.game.WHITE, self.rect)
+		
 		
 	def detectMouseOver(self, mouse):
 		"""Dentro al metodo "Rect.collidepoint(mouse)" non c'è niente di che...
@@ -107,7 +176,7 @@ class ButtonAbilitaPL1():
 			cartella = "/OcaVerde"
 		elif(ocaScelta == "blu"):
 			cartella = "/OcaBlu"
-		elif(ocaScelta == "rossa"):
+		else:
 			cartella = "/OcaRossa"
 			
 		
@@ -228,12 +297,15 @@ class CrazyGoose():
 	
 	
 	def inizializzaAttributi(self):
-		self.valDadoCOM = "0"
-		self.valDadoPL1 = "0"
+		self.valDadoCOM = 0
+		self.valDadoPL1 = 0
 		
 		self.buttonAbilitaPL1 = None
 		self.mouseOverAbilitaPL1 = False
+		
 		self.buttonDadoPL1 = None
+		self.buttonDadoCOM = None
+		
 		self.mouseOverDadoPL1 = False
 		self.player = None
 		self.com = None
@@ -250,6 +322,7 @@ class CrazyGoose():
 		if (self.buttonDadoPL1 != None):
 			if(self.buttonDadoPL1.detectMouseOver(mousePosition)):
 				if(self.aChiTocca and (not self.player.isMoving)):
+					self.buttonDadoPL1.faiGirare()
 					self.tiraDado()
 				else:
 					if (self.player != None and self.player.isMoving):
@@ -316,21 +389,21 @@ class CrazyGoose():
 			self.riempiCaselle()
 				
 				
-			draw_text(self.game, INFO_DADO_PL1, 16, self.game.BLACK, 55, 60)
 			self.scriviEffetti(self.player, True)
-
+			self.scriviEffetti(self.com, False)
 
 			#Il primo argomento è self xke necessita di questa classe per
 			# richiamarne il metodo "tiraDado"
 			if(self.buttonDadoPL1 == None):
-				self.buttonDadoPL1 = Button(self, self.game, 100, 43, 35, 35, self.valDadoPL1)
+				self.buttonDadoPL1 = Button(self, self.game, 15, 35, 70, 70, self.valDadoPL1)
 			else:
 				self.buttonDadoPL1.disegna(self.valDadoPL1)
 				
+			if (self.buttonDadoCOM == None):
+				self.buttonDadoCOM = Button(self, self.game, 880, 35, 70, 70, self.valDadoCOM)
+			else:
+				self.buttonDadoCOM.disegna(self.valDadoCOM)
 			
-			draw_text(self.game, (INFO_DADO_COM+self.valDadoCOM), 16, self.game.BLACK, 917, 60)
-			self.scriviEffetti(self.com, False)
-
 
 			if(giocDaNonDisegnare != "PL1"):
 				if(self.player == None):
@@ -394,7 +467,7 @@ class CrazyGoose():
 				if(not isPL1):	#caso effetto preso dal COM, va scritto sulla dx della finestra
 					xRect = self.game.DISPLAY_W - 20 - dimTesto[0]
 
-				yRect = 90
+				yRect = 120
 				
 				#3.5px distanza dal bordo dx e sx del rettangolo
 				xText = xRect+(dimTesto[0])/2 +3.5
@@ -454,7 +527,8 @@ class CrazyGoose():
 		# per far avanzare PL1 quindi tecnicamente si muove il PL1 e si deve muovere
 		# subito non dopo 2 sec)
 		if(self.com.turniFermo == 0):
-			time.sleep(2)
+			pygame.time.wait(2000)
+			self.buttonDadoCOM.faiGirare()
 
 		self.avanzaCOM(numEstratto)
 
@@ -482,7 +556,7 @@ class CrazyGoose():
 		else:
 			#(La prossima volta che verrà richiamato "disegnaTutto" il numero
 			# del dado sarà cambiato)
-			self.valDadoPL1 = str(numEstratto)
+			self.valDadoPL1 = numEstratto
 
 			#controllaCodCasella = False se è stata attivata l'abilità del COM
 			toccaAncoraA_Me = self.player.avanza(numEstratto, controllaCodCasella)
@@ -548,7 +622,7 @@ class CrazyGoose():
 			self.turnoPL1 = threading.Thread(target=self.avanzaPlayer1, args=(numEstratto,))
 			self.turnoPL1.start()
 		else:
-			self.valDadoCOM = str(numEstratto)
+			self.valDadoCOM = numEstratto
 
 			toccaAncoraA_Me = self.com.avanza(numEstratto)
 			
