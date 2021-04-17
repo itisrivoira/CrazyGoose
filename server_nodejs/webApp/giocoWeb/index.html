@@ -7,26 +7,30 @@
 
     <link rel="stylesheet" href="res_static_gioco/css/index.css">
 </head>
-<!-- sessionStorage.getItem("ocaScelta") -->
 
 <body>
     <div id="gioco">
+        <center>
+            <img id="imgTitolo" src="/res_static_gioco/images/scrittaCrazyGoose_400x130_bagliore.png">
+        </center>
+
         <!-- INFO giocatori -->
         <label id="info_pl1">Tu (PL1)</label>
 
         <label id="info_com">Computer (COM)</label>
         <!-- DADI giocatori -->
-        <label id="info_dado_pl1">Dado PL1:</label>
         <div id="dado_pl1"></div>
+        <div id="dado_com"></div>
 
-        <label id="info_dado_com">Dado COM:</label>
-        <label id="dado_com">0</label>
+        <!-- TODO imgAbilita TROPPO GRANDE e va a finire sopra l'ultimo effetto -->
+        <img id="imgAbilita">
+
         <!-- EFFETTI giocatori -->
-        <label id="eff1_pl1"></label>
-        <label id="eff2_pl1"></label>
+        <label id="eff1_pl1">AVANTI DI QUATTRO CASELLE</label>
+        <label id="eff2_pl1">AVANTI DI QUATTRO CASELL2</label>
 
-        <label id="eff1_com"></label>
-        <label id="eff2_com"></label>
+        <label id="eff1_com">AVANTI DI QUATTRO CASELLE</label>
+        <label id="eff2_com">AVANTI DI QUATTRO CASELL2</label>
 
         <!-- CASELLE -->
         <div class="caselleIniziali" id="inizPL1"></div>

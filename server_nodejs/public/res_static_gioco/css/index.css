@@ -2,6 +2,11 @@ body {
     margin: 0px;
 }
 
+#gioco {
+    width: 100vw;
+    height: 100vh;
+}
+
 #vittoria,
 #sconfitta {
     display: none;
@@ -49,36 +54,35 @@ body {
     background-color: rgb(221, 221, 221);
 }
 
+#imgTitolo {
+    height: 17vh;
+}
+
 #info_pl1 {
     position: absolute;
     top: 10px;
     left: 30px;
 }
 
-#info_dado_pl1 {
+#imgAbilita {
+    padding: 0px;
     position: absolute;
-    top: 40px;
-    left: 30px;
+    top: 15px;
+    left: 120px;
 }
 
 #dado_pl1 {
-    border:1px solid black;
     width: 70px;
     height: 70px;
     position: absolute;
-    margin: 15px 0px 0px 200px;
+    top: 40px;
+    left: 27px;
 }
 
 #info_com {
     position: absolute;
     top: 10px;
     right: 30px;
-}
-
-#info_dado_com {
-    position: absolute;
-    top: 40px;
-    right: 60px;
 }
 
 #dado_com {
@@ -88,33 +92,33 @@ body {
 }
 
 #eff1_pl1 {
-    display: none;
+    display: block;
     position: absolute;
-    top: 65px;
-    left: 30px;
+    top: 10px;
+    left: 210px;
     border: 2px solid black;
 }
 
 #eff2_pl1 {
-    display: none;
+    display: noblockne;
     position: absolute;
-    top: 90px;
-    left: 30px;
+    top: 40px;
+    left: 210px;
     border: 1px solid black;
 }
 
 #eff1_com {
-    display: none;
+    display: block;
     position: absolute;
-    top: 65px;
-    right: 30px;
+    top: 10px;
+    right: 210px;
     border: 2px solid black;
 }
 
 #eff2_com {
-    display: none;
+    display: block;
     position: absolute;
-    top: 90px;
-    right: 30px;
+    top: 40px;
+    right: 210px;
     border: 1px solid black;
 }
