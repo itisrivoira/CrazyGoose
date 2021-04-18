@@ -18,7 +18,7 @@ body {
 #msgHaiVinto,
 #msgHaiPerso {
     width: 100vw;
-    font-size: 50px;
+    font-size: 55px;
     color: white;
     font-family: "Ubuntu", "helvetica";
     position: relative;
@@ -92,7 +92,7 @@ body {
 }
 
 #eff1_pl1 {
-    display: block;
+    display: none;
     position: absolute;
     top: 10px;
     left: 210px;
@@ -100,7 +100,7 @@ body {
 }
 
 #eff2_pl1 {
-    display: noblockne;
+    display: none;
     position: absolute;
     top: 40px;
     left: 210px;
@@ -108,7 +108,7 @@ body {
 }
 
 #eff1_com {
-    display: block;
+    display: none;
     position: absolute;
     top: 10px;
     right: 210px;
@@ -116,7 +116,7 @@ body {
 }
 
 #eff2_com {
-    display: block;
+    display: none;
     position: absolute;
     top: 40px;
     right: 210px;

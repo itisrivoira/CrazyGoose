@@ -38,26 +38,26 @@ class ButtonAbilitaPL1 {
             if (this.crazyGoose.player.abilitaAttivata == false &&
                 this.crazyGoose.player.attendoAbilita) {
 
-                this.CrazyGoose.player.abilitaAttivata = true
+                this.crazyGoose.player.abilitaAttivata = true
             }
 
         })
     }
 
     evidenziaTempoRimanente(ms) {
-        //sarà l'ultimo giro, non disegno più
-        if (ms > 100) {
-            //(non parto da 0° ma da 90°, quindi non 360° ma 360°+90°)
-            let gradi = (360 * ms / 2000) + 90
-
-            //TODO codice per disegnare arco (magari css) intorno imgAbilita
-            /*pygame.draw.arc(self.game.display, self.game.BLACK, pygame.Rect(
-            	self.rect.x-2, self.rect.y-2, self.rect.width+4, self.rect.height+4
-            ), math.radians(90), math.radians(gradi), 3)*/
-        }
-
         let img = null
         if (this.crazyGoose.player.abilitaAttivata == false) {
+            //sarà l'ultimo giro, non disegno più
+            if (ms > 100) {
+                //(non parto da 0° ma da 90°, quindi non 360° ma 360°+90°)
+                let gradi = (360 * ms / 2000) + 90
+
+                //TODO codice per disegnare arco (magari css) intorno imgAbilita
+                /*pygame.draw.arc(self.game.display, self.game.BLACK, pygame.Rect(
+                	self.rect.x-2, self.rect.y-2, self.rect.width+4, self.rect.height+4
+                ), math.radians(90), math.radians(gradi), 3)*/
+            }
+
             if (ms == 0) {
                 img = this.imgNonPiu
             } else if (ms > 1000) {
@@ -322,6 +322,7 @@ class CrazyGoose {
 
                         this.attivaAbilitaCOM(true, this.com.turnoMio)
                     } else {
+
                         if (!this.com.vincitore) {
                             this.player.turnoMio = !this.com.turnoMio
                             if (this.com.turniFermo > 0) {

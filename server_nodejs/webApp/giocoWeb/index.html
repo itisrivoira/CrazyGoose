@@ -11,7 +11,7 @@
 <body>
     <div id="gioco">
         <center>
-            <img id="imgTitolo" src="/res_static_gioco/images/scrittaCrazyGoose_400x130_bagliore.png">
+            <a href="http://127.0.0.1:3000/menuGioco"><img id="imgTitolo" src="/res_static_gioco/images/scrittaCrazyGoose_400x130_bagliore.png"></a>
         </center>
 
         <!-- INFO giocatori -->
@@ -26,11 +26,11 @@
         <img id="imgAbilita">
 
         <!-- EFFETTI giocatori -->
-        <label id="eff1_pl1">AVANTI DI QUATTRO CASELLE</label>
-        <label id="eff2_pl1">AVANTI DI QUATTRO CASELL2</label>
+        <label id="eff1_pl1"></label>
+        <label id="eff2_pl1"></label>
 
-        <label id="eff1_com">AVANTI DI QUATTRO CASELLE</label>
-        <label id="eff2_com">AVANTI DI QUATTRO CASELL2</label>
+        <label id="eff1_com"></label>
+        <label id="eff2_com"></label>
 
         <!-- CASELLE -->
         <div class="caselleIniziali" id="inizPL1"></div>
@@ -120,12 +120,12 @@
 
     <div id="vittoria">
         <label id="msgHaiVinto"><center><b>HAI VINTO</b></center></label>
-        <label class="premiEsc"><center><b>Premi ESC per rigiocare</b></center></label>
+        <center><a class="premiEsc" href="http://127.0.0.1:3000/menuGioco"><b>Premi per rigiocare</b></a></center>
     </div>
 
     <div id="sconfitta">
         <label id="msgHaiPerso"><center><b>HAI PERSO</b></center></label>
-        <label class="premiEsc"><center><b>Premi ESC per rigiocare</b></center></label>
+        <center><a class="premiEsc" href="http://127.0.0.1:3000/menuGioco"><b>Premi per rigiocare</b></a></center>
     </div>
 
     <!--Se in uno script X ho bisogno di importare un nuovo file js Y basta che importi qui Y PRIMA di X -->
@@ -135,11 +135,40 @@
     <script src="res_static_gioco/js/crazyGoose.js "></script>
     <script src="res_static_gioco/js/index.js "></script>
     <script>
-        window.addEventListener("keydown", (event) => {
-            if (event.key == "Escape") {
-                window.location.href = "http://127.0.0.1:3000/riavviaGioco"
-            }
-        })
+        /*window.addEventListener("keydown", (event) => {
+                            if (event.key == "Escape") {
+
+                                PROVATO DIVERSI MODI... alcuni BLOCCANO TUTTO, alcuni CAMBIANO URL
+                                    ma poi bisogna andare fisicamente a premere "Invio" nel url (per "confermare")
+                                    altri NON FANNO PROPRIO NULLA)
+
+                                -window.location.replace("http://127.0.0.1:3000/menuGioco")
+                                location.reload()
+
+                                -window.location.replace("http://127.0.0.1:3000/menuGioco")
+                                location.reload(true)
+                                
+                                -window.location.assign("http://127.0.0.1:3000/menuGioco")
+
+                                -window.location.replace("http://127.0.0.1:3000/menuGioco")
+                                return false
+
+                                -window.location.replace("http://127.0.0.1:3000/menuGioco")
+
+                                -window.location.assign("http://127.0.0.1:3000/menuGioco")
+
+                                -window.location.href = "http://127.0.0.1:3000/menuGioco"
+
+                                -window.location = "http://127.0.0.1:3000/menuGioco"
+
+                                Avevo anche provato a fare un endpoint apposta ma non cambia nulla:
+                                app.get("/riavviaGioco", (req, resp) => {
+                                        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
+                                    resp.redirect(301, "/menuGioco")
+                                })
+                                
+                            }
+                        })*/
     </script>
 </body>
 

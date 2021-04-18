@@ -85,7 +85,8 @@ app.get("/logout", (req, resp) => {
     req.session.loggato = false
     req.session.nome = null
     req.session.cognome = null
-    resp.redirect("/")
+        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
+    resp.redirect(301, "/")
 })
 
 app.get("/registrati", (req, resp) => {
@@ -97,7 +98,8 @@ app.post("/registrazioneFatta", (req, resp) => {
     req.session.loggato = true
     req.session.nome = req.body.nome
     req.session.cognome = req.body.cognome
-    resp.redirect("/menuGioco")
+        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
+    resp.redirect(301, "/menuGioco")
 })
 
 
@@ -118,7 +120,8 @@ app.get("/menuGioco", (req, resp) => {
         resp.send(jsDom.window.document.documentElement.outerHTML)
             //console.log("Entrato in menu del gioco")
     } else {
-        resp.redirect(302, "/")
+        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
+        resp.redirect(301, "/")
     }
     //console.log("Entrato in menu del gioco")
 })
@@ -139,10 +142,4 @@ app.get("/credits", (req, resp) => {
 app.get("/gioco", (req, resp) => {
     resp.sendFile(__dirname + "/webApp/giocoWeb/index.html")
         //console.log("Scelto pedina")
-})
-
-app.get("/riavviaGioco", (req, resp) => {
-    //arriva per forza dal gioco (ha premuto ESC) quindi è loggato
-    req.session.loggato = true
-    resp.redirect(302, "/menuGioco")
 })
