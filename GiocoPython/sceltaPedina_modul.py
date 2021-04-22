@@ -85,7 +85,7 @@ class SceltaPedina():
         self.mostraRettangoloOca(self.rectOcaGialla, (255,255,0))
         self.mostraRettangoloOca(self.rectOcaVerde, (0,255,0))
         self.mostraRettangoloOca(self.rectOcaBlu, (0,0,230))
-        self.mostraRettangoloOca(self.rectOcaRossa, (255,0,0))
+        self.mostraRettangoloOca(self.rectOcaRossa, (220,100,70))
         
     
     def mostraRettangoloOca(self, rectOca, color):
@@ -131,9 +131,9 @@ class SceltaPedina():
 
         
         if (self.mouseOver == "rossa"):
-            self.mostraDescrOca(DESCR_OCA_ROSSA, self.rectOcaRossa, (255, 0, 0))
+            self.mostraDescrOca(DESCR_OCA_ROSSA, self.rectOcaRossa, (220,100,70))
         else:
-            self.mostraNomeOca("OCA ROSSA", self.rectOcaRossa, (255, 0, 0))
+            self.mostraNomeOca("OCA ROSSA", self.rectOcaRossa, (220,100,70))
             self.game.display.blit(pedinaRossa,
                                    (self.rectOcaRossa.x + 60,
                                     self.rectOcaRossa.y + self.rectOcaRossa.height / 2.5))

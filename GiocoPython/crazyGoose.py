@@ -453,9 +453,8 @@ class CrazyGoose():
 	
 	
 	def scriviEffetti(self, player_com, isPL1):
-	#TODO ULTIMO EFFETTO PIÙ GRANDE DEL PENULTIMO (anche BORDO)
 		if(player_com != None):
-			pxTesto = 14
+			pxTesto = 16
 			font = pygame.font.Font(self.game.font_name, pxTesto)
 				#(distanza dal margine dx, se isPL1 == True)
 			xRect = 20
@@ -465,7 +464,7 @@ class CrazyGoose():
 				#Prendo la dimensione che avrà il testo
 				dimTesto = font.size(player_com.ultimoMsg)
 				if(not isPL1):	#caso effetto preso dal COM, va scritto sulla dx della finestra
-					xRect = self.game.DISPLAY_W - 20 - dimTesto[0]
+					xRect = self.game.DISPLAY_W - 23 - dimTesto[0]
 
 				yRect = 120
 				
@@ -477,20 +476,28 @@ class CrazyGoose():
 				#1px distanza dal bordo sup. e inf. del rettangolo
 				yText = yRect+(dimTesto[1]/2) +1
 
-				#dimTesto[0]+7  = larghezza del testo più distanza dal bordo a dx + sx
-				#dimTesto[0]+2  = larghezza del testo più distanza dal bordo in alto + in basso
-				pygame.draw.rect(self.game.display, self.game.BLACK, pygame.Rect(xRect, yRect, dimTesto[0]+7, dimTesto[1]+2), 1)
-				draw_text(self.game, player_com.ultimoMsg, pxTesto, self.game.BLACK, xText, yText)
+				#(sarà il bordo)
+				pygame.draw.rect(self.game.display, self.game.BLACK,
+								 pygame.Rect(xRect, yRect, dimTesto[0]+7, dimTesto[1]+2+2), 0)
+				# dimTesto[0]+7  = larghezza del testo più distanza dal bordo a dx + sx
+				# dimTesto[0]+2  = larghezza del testo più distanza dal bordo in alto + in basso
+				#(sarà l'area col testo)
+				pygame.draw.rect(self.game.display, self.game.WHITE,
+								 pygame.Rect(xRect+2, yRect+2, dimTesto[0] + 7-4, dimTesto[1] + 2-2), 0)
+				draw_text(self.game, player_com.ultimoMsg, pxTesto, self.game.BLACK, xText, yText+2)
 
 				#Se effettivamente c'è qualcosa da scrivere entra
 				if(player_com.penultimoMsg != ""):
+					pxTesto = 14
+					font = pygame.font.Font(self.game.font_name, pxTesto)
+					
 					dimTesto = font.size(player_com.penultimoMsg)
 					if(not isPL1):
-						xRect = self.game.DISPLAY_W - 20 - dimTesto[0]
+						xRect = self.game.DISPLAY_W - 23 - dimTesto[0]
 
 					#Aumenta la yRect dell'ultimo effetto, quindi scriverà il penultimo effetto distante 1 px
 					# (altezza del testo + 1px di margine sopra e sotto)
-					yRect += (dimTesto[1]+2+1)
+					yRect += (dimTesto[1]+4+1)
 					
 					#3.5px distanza dal bordo dx e sx del rettangolo
 					xText = xRect+(dimTesto[0])/2 +3.5

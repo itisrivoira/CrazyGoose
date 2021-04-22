@@ -104,11 +104,11 @@ class Casella():
 				self.display.blit(text_surface, text_rect)
 			
 			
-		self.settaNumCasella(font_name, str(numCasella))
+		self.settaNumCasella(str(numCasella))
 	
 	
-	def settaNumCasella(self, font_name, numCasella):
-		font = pygame.font.Font(font_name, 13)
+	def settaNumCasella(self, numCasella):
+		font = pygame.font.Font("./fontNumCaselle.ttf", 16)
 		
 		textWidth = font.size(numCasella)[0]
 		textHeight = font.size(numCasella)[1]
