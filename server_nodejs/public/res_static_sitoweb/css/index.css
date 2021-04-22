@@ -221,13 +221,13 @@ blu/azzurro (classe sopra e sotto il commento)*/
 
 .cardFrontOcaGialla {
     color: gold;
-    background-image: url(../images/pedina_giallo.png);
+    background-image: url(../images/pedina_gialla_250x250.png);
 }
 
 .cardBackOcaGialla {
     color: rgb(0, 0, 0);
     background-color: rgb(255, 217, 0);
-    background-image: url(../images/pedina_giallo.png);
+    background-image: url(../images/pedina_gialla_250x250.png);
 }
 
 .cardBackOcaGialla p {
@@ -236,14 +236,14 @@ blu/azzurro (classe sopra e sotto il commento)*/
 
 .cardFrontOcaBlu {
     color: blue;
-    background-image: url(../images/pedina_blu.png);
+    background-image: url(../images/pedina_blu_250x250.png);
 }
 
 .cardBackOcaBlu {
     align-items: center;
     background-color: rgba(0, 0, 255, 0.692);
     color: rgb(255, 255, 255);
-    background-image: url(../images/pedina_blu.png);
+    background-image: url(../images/pedina_blu_250x250.png);
 }
 
 .cardBackOcaBlu p {
@@ -252,32 +252,32 @@ blu/azzurro (classe sopra e sotto il commento)*/
 
 .cardFrontOcaVerde {
     color: green;
-    background-image: url(../images/pedina_verde.png);
+    background-image: url(../images/pedina_verde_250x250.png);
 }
 
 .cardBackOcaVerde {
     color: green;
     background-color: rgba(23, 156, 23, 0.952);
-    background-image: url(../images/pedina_verde.png);
+    background-image: url(../images/pedina_verde_250x250.png);
 }
 
 .cardFrontOcaRossa {
-    background-image: url(../images/pedina_rosso.png);
+    background-image: url(../images/pedina_rosso_250x250.png);
     color: rgb(172, 5, 5);
 }
 
 .cardBackOcaRossa {
     color: red;
     background-color: rgba(255, 0, 0, 0.822);
-    background-image: url(../images/pedina_rosso.png);
+    background-image: url(../images/pedina_rosso_250x250.png);
 }
 
 .cardFrontOcaCattiva {
-    background-image: url(../images/pedina_COM.png);
+    background-image: url(../images/pedina_cattiva_250x250.png);
 }
 
 .cardBackOcaCattiva {
-    background-image: url(../images/pedina_COM.png);
+    background-image: url(../images/pedina_cattiva_250x250.png);
     color: rgb(71, 1, 62);
     background-color: rgba(99, 22, 80, 0.521);
 }

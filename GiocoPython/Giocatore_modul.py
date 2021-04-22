@@ -35,19 +35,19 @@ class Giocatore():
 		
 		#Mi è inutile caricare TUTTE le img delle pedine e scegliere quella "giusta" nel momento in cui mi serve
 		if(self.pedinaScelta == "gialla"):
-			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_gialla.png")
+			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_gialla_65x60.png")
 			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_gialla.png")
 		elif(self.pedinaScelta == "verde"):
-			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_verde.png")
+			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_verde_65x60.png")
 			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_verde.png")
 		elif(self.pedinaScelta == "blu"):
-			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_blu.png")
+			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_blu_65x60.png")
 			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_blu.png")
 		elif(self.pedinaScelta == "rossa"):
-			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_rossa.png")
+			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_rosso_65x60.png")
 			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_rossa.png")
 		else:		#caso None, il Giocatore è il COMPUTER
-			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_COM.png")
+			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_cattiva_65x60.png")
 			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_COM.png")
 
 

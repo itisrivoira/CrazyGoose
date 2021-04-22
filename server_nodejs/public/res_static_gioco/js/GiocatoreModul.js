@@ -19,16 +19,16 @@ class Giocatore {
 
         this.imgPedina = new Image();
         if (tag == "COM") {
-            this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_COM.png"
+            this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_cattiva_65x60.png"
         } else {
             if (this.pedinaScelta == "gialla") {
-                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_gialla.png"
+                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_gialla_65x60.png"
             } else if (this.pedinaScelta == "verde") {
-                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_verde.png"
+                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_verde_65x60.png"
             } else if (this.pedinaScelta == "blu") {
-                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_blu.png"
+                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_blu_65x60.png"
             } else if (this.pedinaScelta == "rossa") {
-                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_rossa.png"
+                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_rosso_65x60.png"
             }
         }
 

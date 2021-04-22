@@ -14,10 +14,10 @@ DESCR_OCA_ROSSA = "Con la sua abilità si potrà annullare l'effetto di una case
 
 
 #carica le immagini delle oche
-pedinaGialla = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_gialla.png")
-pedinaVerde = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_verde.png")
-pedinaBlu = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_blu.png")
-pedinaRossa = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_rossa.png")
+pedinaGialla = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_gialla_150x141.png")
+pedinaVerde = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_verde_150x141.png")
+pedinaBlu = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_blu_150x141.png")
+pedinaRossa = pygame.image.load("./pedine/pedineMenuSceltaPedina/pedina_rosso_150x141.png")
 
 
 class SceltaPedina():
