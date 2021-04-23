@@ -19,7 +19,7 @@ class Casella {
             }
         }
 
-        if (casellaVittoria) { //dimensioni diverse se è la casella iniziale
+        if (casellaVittoria) { //dimensioni diverse se è la casella vittoria
             this.width = 120
             this.height = 100
             this.y = this.y - 20

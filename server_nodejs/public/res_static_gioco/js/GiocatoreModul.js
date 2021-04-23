@@ -261,7 +261,7 @@ class Giocatore {
 
                     }
                 }
-            }, (TEMPO_SPOST_FRA_CASELLE-50))
+            }, (TEMPO_SPOST_FRA_CASELLE - 50))
 
         }, PICCOLA_PAUSA)
 

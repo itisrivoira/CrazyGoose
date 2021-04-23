@@ -38,26 +38,26 @@ class ButtonAbilitaPL1 {
             if (this.crazyGoose.player.abilitaAttivata == false &&
                 this.crazyGoose.player.attendoAbilita) {
 
-                this.crazyGoose.player.abilitaAttivata = true
+                this.CrazyGoose.player.abilitaAttivata = true
             }
 
         })
     }
 
     evidenziaTempoRimanente(ms) {
+        //sarà l'ultimo giro, non disegno più
+        if (ms > 100) {
+            //(non parto da 0° ma da 90°, quindi non 360° ma 360°+90°)
+            let gradi = (360 * ms / 2000) + 90
+
+            //TODO codice per disegnare arco (magari css) intorno imgAbilita
+            /*pygame.draw.arc(self.game.display, self.game.BLACK, pygame.Rect(
+            	self.rect.x-2, self.rect.y-2, self.rect.width+4, self.rect.height+4
+            ), math.radians(90), math.radians(gradi), 3)*/
+        }
+
         let img = null
         if (this.crazyGoose.player.abilitaAttivata == false) {
-            //sarà l'ultimo giro, non disegno più
-            if (ms > 100) {
-                //(non parto da 0° ma da 90°, quindi non 360° ma 360°+90°)
-                let gradi = (360 * ms / 2000) + 90
-
-                //TODO codice per disegnare arco (magari css) intorno imgAbilita
-                /*pygame.draw.arc(self.game.display, self.game.BLACK, pygame.Rect(
-                	self.rect.x-2, self.rect.y-2, self.rect.width+4, self.rect.height+4
-                ), math.radians(90), math.radians(gradi), 3)*/
-            }
-
             if (ms == 0) {
                 img = this.imgNonPiu
             } else if (ms > 1000) {
@@ -234,7 +234,7 @@ class CrazyGoose {
         } else {
             /*(La prossima volta che verrà richiamato "disegnaTutto" il numero
                 del dado sarà cambiato) */
-            this.cambiaImgDado(numEstratto, this.imgDadoPL1, this.buttonDadoPL1)
+            this.cambiaImgDado(numEstratto, this.imgDadoPL1, this.buttonDadoPL1, this.player)
 
             this.player.avanza(numEstratto)
 
@@ -307,7 +307,7 @@ class CrazyGoose {
 
             this.avanzaPlayer1(numEstratto)
         } else {
-            this.cambiaImgDado(numEstratto, this.imgDadoCOM, this.buttonDadoCOM)
+            this.cambiaImgDado(numEstratto, this.imgDadoCOM, this.buttonDadoCOM, this.com)
 
             this.com.avanza(numEstratto)
 
@@ -322,7 +322,6 @@ class CrazyGoose {
 
                         this.attivaAbilitaCOM(true, this.com.turnoMio)
                     } else {
-
                         if (!this.com.vincitore) {
                             this.player.turnoMio = !this.com.turnoMio
                             if (this.com.turniFermo > 0) {
@@ -351,31 +350,69 @@ class CrazyGoose {
         }
     }
 
-    cambiaImgDado(numEstratto, imgDado, buttonDado) {
+
+    cambiaImgDado(numEstratto, imgDado, buttonDado, giocatore) {
+
+
+        let cube = null;
+        //QuerySelector vengono usati per ricollegarsi ai css
+        if (giocatore.tag == "PL1") {
+            cube = document.querySelector('.cube');
+            console.log("TORNO PLAYER")
+        } else {
+            cube = document.querySelector('.cubeCOM');
+            console.log("TURNO COMPUTER")
+        }
+
+        //our main roll dice function on click
+        function rollDice() {
+            var showClass = 'show-' + numEstratto;
+
+            if (giocatore.currClassValue != null) {
+                cube.classList.remove(giocatore.currClassValue);
+                //console.log("ENTRO PER RIMUOVERE")
+            }
+
+            //console.log("ESCO DALL'IF BOI")
+
+            //add the new showclass with the generated number
+            cube.classList.add(showClass);
+
+            //set the current class to the randomly generated number
+            giocatore.currClassValue = showClass;
+
+        }
+
         switch (numEstratto) {
             case 1:
                 imgDado.src = "/res_static_gioco/images/img_dado/dado_1.png"
                 buttonDado.appendChild(imgDado)
+                rollDice()
                 break
             case 2:
                 imgDado.src = "/res_static_gioco/images/img_dado/dado_2.png"
                 buttonDado.appendChild(imgDado)
+                rollDice()
                 break
             case 3:
                 imgDado.src = "/res_static_gioco/images/img_dado/dado_3.png"
                 buttonDado.appendChild(imgDado)
+                rollDice()
                 break
             case 4:
                 imgDado.src = "/res_static_gioco/images/img_dado/dado_4.png"
-                buttonDado.appendChild(imgDado);
+                buttonDado.appendChild(imgDado)
+                rollDice()
                 break
             case 5:
                 imgDado.src = "/res_static_gioco/images/img_dado/dado_5.png"
                 buttonDado.appendChild(imgDado);
+                rollDice()
                 break
             case 6:
                 imgDado.src = "/res_static_gioco/images/img_dado/dado_6.png"
                 buttonDado.appendChild(imgDado);
+                rollDice()
                 break
             default:
                 break
@@ -441,54 +478,54 @@ class CrazyGoose {
     }
 
     posizionaLeCaselle() {
-        this.caselle.push(new Casella(1, 130, 525))
-        this.caselle.push(new Casella(2, 240, 525))
-        this.caselle.push(new Casella(3, 350, 525))
-        this.caselle.push(new Casella(4, 460, 525))
-        this.caselle.push(new Casella(5, 570, 525))
-        this.caselle.push(new Casella(6, 680, 525))
+        this.caselle.push(new Casella(1, 450, 625))
+        this.caselle.push(new Casella(2, 560, 625))
+        this.caselle.push(new Casella(3, 670, 625))
+        this.caselle.push(new Casella(4, 780, 625))
+        this.caselle.push(new Casella(5, 900, 625))
+        this.caselle.push(new Casella(6, 1015, 625))
 
-        this.caselle.push(new Casella(7, 785, 470))
-        this.caselle.push(new Casella(8, 835, 400))
-        this.caselle.push(new Casella(9, 845, 330))
-        this.caselle.push(new Casella(10, 835, 260))
-        this.caselle.push(new Casella(11, 785, 190))
+        this.caselle.push(new Casella(7, 1105, 570))
+        this.caselle.push(new Casella(8, 1155, 500))
+        this.caselle.push(new Casella(9, 1165, 430))
+        this.caselle.push(new Casella(10, 1155, 360))
+        this.caselle.push(new Casella(11, 1105, 290))
 
-        this.caselle.push(new Casella(12, 710, 135))
-        this.caselle.push(new Casella(13, 600, 105))
-        this.caselle.push(new Casella(14, 490, 105))
-        this.caselle.push(new Casella(15, 380, 105))
-        this.caselle.push(new Casella(16, 270, 105))
-        this.caselle.push(new Casella(17, 170, 145))
+        this.caselle.push(new Casella(12, 1030, 235))
+        this.caselle.push(new Casella(13, 920, 205))
+        this.caselle.push(new Casella(14, 820, 205))
+        this.caselle.push(new Casella(15, 700, 205))
+        this.caselle.push(new Casella(16, 590, 205))
+        this.caselle.push(new Casella(17, 490, 245))
 
-        this.caselle.push(new Casella(18, 125, 225))
-        this.caselle.push(new Casella(19, 125, 310))
-        this.caselle.push(new Casella(20, 125, 395))
+        this.caselle.push(new Casella(18, 445, 325))
+        this.caselle.push(new Casella(19, 445, 410))
+        this.caselle.push(new Casella(20, 455, 495))
 
-        this.caselle.push(new Casella(21, 215, 455))
-        this.caselle.push(new Casella(22, 325, 455))
-        this.caselle.push(new Casella(23, 435, 455))
-        this.caselle.push(new Casella(24, 545, 455))
-        this.caselle.push(new Casella(25, 653, 445))
+        this.caselle.push(new Casella(21, 535, 555))
+        this.caselle.push(new Casella(22, 645, 555))
+        this.caselle.push(new Casella(23, 755, 555))
+        this.caselle.push(new Casella(24, 865, 555))
+        this.caselle.push(new Casella(25, 975, 545))
 
-        this.caselle.push(new Casella(26, 735, 390))
-        this.caselle.push(new Casella(27, 735, 305))
-        this.caselle.push(new Casella(28, 680, 230))
+        this.caselle.push(new Casella(26, 1055, 490))
+        this.caselle.push(new Casella(27, 1055, 405))
+        this.caselle.push(new Casella(28, 1000, 330))
 
-        this.caselle.push(new Casella(29, 585, 185))
-        this.caselle.push(new Casella(30, 475, 185))
-        this.caselle.push(new Casella(31, 365, 185))
+        this.caselle.push(new Casella(29, 905, 285))
+        this.caselle.push(new Casella(30, 795, 285))
+        this.caselle.push(new Casella(31, 685, 285))
 
-        this.caselle.push(new Casella(32, 265, 220))
-        this.caselle.push(new Casella(33, 230, 295))
-        this.caselle.push(new Casella(34, 270, 370))
+        this.caselle.push(new Casella(32, 585, 320))
+        this.caselle.push(new Casella(33, 550, 395))
+        this.caselle.push(new Casella(34, 590, 470))
 
-        this.caselle.push(new Casella(35, 380, 385))
-        this.caselle.push(new Casella(36, 490, 385))
-        this.caselle.push(new Casella(37, 590, 365))
+        this.caselle.push(new Casella(35, 700, 485))
+        this.caselle.push(new Casella(36, 810, 485))
+        this.caselle.push(new Casella(37, 910, 465))
 
-        this.caselle.push(new Casella(38, 625, 295))
-        this.caselle.push(new Casella(39, 525, 260))
-        this.caselle.push(new Casella(40, 375, 280, true))
+        this.caselle.push(new Casella(38, 945, 395))
+        this.caselle.push(new Casella(39, 845, 360))
+        this.caselle.push(new Casella(40, 695, 380, true))
     }
 }
