@@ -56,7 +56,17 @@ class Button():
 	
 	def disegna(self, valDado, doBlitScreen = False):
 		#"cancella" il dado che c'era prima
-		pygame.draw.rect(self.game.display, self.game.WHITE, self.rect, 0)
+		pygame.draw.rect(self.game.display, self.game.WHITE,
+			pygame.Rect(self.rect.x-2, self.rect.y-2, self.rect.width + 4, self.rect.height + 4), 0)
+		
+		if (self.crazyGoose.mouseOverDadoPL1):
+			# COME PER LA SCELTA DELL'OCA, CREA UN RETTANGOLO DENTRO L'ALTRO PER FARE UN BORDO
+			# PIÙ GRANDE E VISIBILE
+			
+			# Questo verrà nascosto, si vedrà solo più una parte che diventerà il bordo del dado
+			pygame.draw.rect(self.game.display, (70, 220, 25),
+							 pygame.Rect(self.rect.x-2, self.rect.y-2, self.rect.width + 4, self.rect.height + 4)
+							 , 0, 15)
 		
 		if(1 <= valDado <= 6):
 		
@@ -80,31 +90,8 @@ class Button():
 		self.game.display.blit(imgDado, (self.rect.x, self.rect.y))
 		
 		
-		"""if(self.crazyGoose.mouseOverDadoPL1):
-			#COME PER LA SCELTA DELL'OCA, CREA UN RETTANGOLO DENTRO L'ALTRO PER FARE UN BORDO
-			# PIÙ GRANDE E VISIBILE
-			
-			#Questo verrà nascosto, si vedrà solo più una parte che diventerà il bordo del dado
-			pygame.draw.rect(self.game.display, self.game.BLACK, self.rect, 0, 4)
-			pygame.draw.rect(self.game.display, (180,180,180), 
-							 pygame.Rect(self.rect.x+2, self.rect.y+2, self.rect.width-4, self.rect.height-4)
-							 , 0, 4)
-			draw_text(self.game, valDado, 16, self.game.BLACK,
-					  (self.x + self.width / 2), (self.y + self.height / 2))
-		else:
-			#COME PER LA SCELTA DELL'OCA, CREA UN RETTANGOLO DENTRO L'ALTRO PER FARE UN BORDO
-			# PIÙ GRANDE E VISIBILE
-			
-			#Questo verrà nascosto, si vedrà solo più una parte che diventerà il bordo del dado
-			pygame.draw.rect(self.game.display, self.game.BLACK, self.rect, 0, 4)
-			pygame.draw.rect(self.game.display, self.game.WHITE, 
-				pygame.Rect(self.rect.x+2, self.rect.y+2, self.rect.width-4, self.rect.height-4)
-			, 0 , 4)
-			draw_text(self.game, valDado, 16, self.game.BLACK,
-					  (self.x + self.width / 2), (self.y + self.height / 2))
-			
 		if(doBlitScreen):
-			self.crazyGoose.blit_screen()"""
+			self.crazyGoose.blit_screen()
 	
 	def faiGirare(self):
 		# in 1 sec "gira" il dado, facendo vedere tutte le facce
