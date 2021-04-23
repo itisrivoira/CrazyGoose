@@ -35,20 +35,20 @@ class Giocatore():
 		
 		#Mi è inutile caricare TUTTE le img delle pedine e scegliere quella "giusta" nel momento in cui mi serve
 		if(self.pedinaScelta == "gialla"):
-			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_gialla.png")
-			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_gialla.png")
+			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_gialla.png")
+			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_gialla.png")
 		elif(self.pedinaScelta == "verde"):
-			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_verde.png")
-			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_verde.png")
+			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_verde.png")
+			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_verde.png")
 		elif(self.pedinaScelta == "blu"):
-			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_blu.png")
-			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_blu.png")
+			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_blu.png")
+			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_blu.png")
 		elif(self.pedinaScelta == "rossa"):
-			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_rossa.png")
-			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_rossa.png")
+			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_rossa.png")
+			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_rossa.png")
 		else:		#caso None, il Giocatore è il COMPUTER
-			self.imgPedina = pygame.image.load("./pedine/pedineNelGioco/sxVersoDx/pedina_COM.png")
-			self.imgPedina2 = pygame.image.load("./pedine/pedineNelGioco/dxVersoSx/pedina_COM.png")
+			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_COM.png")
+			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_COM.png")
 
 
 		self.posizione = 0
@@ -86,7 +86,7 @@ class Giocatore():
 							(self.casellaIniziale.x+2, self.casellaIniziale.y+2,
 							 self.casellaIniziale.width-4, self.casellaIniziale.height-4), 0)
 		
-		self.game.display.blit(self.imgPedina,
+		self.game.display.blit(self.imgPedinaSxDx,
 							   (self.casellaIniziale.getCenterX() - WIDTH_PEDINA/2,
 								self.casellaIniziale.getCenterY() - HEIGHT_PEDINA/2) )
 		
@@ -269,18 +269,18 @@ class Giocatore():
 		#Sceglie in base alla casella in cui deve andare la pedina, se quest'ultima
 		# sarà girata (avrà la testa) verso dx oppure sx
 		
-		image = self.imgPedina
+		image = self.imgPedinaSxDx
 		if(x_partenza > x_fine):
-			image = self.imgPedina2
+			image = self.imgPedinaDxSx
 		else:	#partenza e fine sono sulla stessa x
 			#controlla la posizione della casella finale e decide
 			
 		#!!!!!   È SOLAMENTE LEGATO AL LAYOUT DEL PERCORSO   !!!!!
 			
 			if(18 <= posCasellaFinale <= 20):
-				image = self.imgPedina
+				image = self.imgPedinaSxDx
 			elif(posCasellaFinale == 26 or posCasellaFinale == 27):
-				image = self.imgPedina2
+				image = self.imgPedinaDxSx
 			
 		return image
 		

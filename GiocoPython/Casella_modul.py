@@ -56,7 +56,7 @@ class Casella():
 			color = (255, 0, 0)
 		elif(codCasella == VITTORIA):
 			testo = "HAI\nVINTO !!!"
-			color = (80, 80, 230)
+			color = (50, 140, 230)
 		
 		#disegna un ellisse leggermente più piccolo sopra quello di prima (così da mantenere solo un contorno nero)
 		pygame.draw.ellipse(self.display, color, (self.x+2, self.y+2, self.width-4, self.height-4), 0)

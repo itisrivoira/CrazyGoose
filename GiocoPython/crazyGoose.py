@@ -42,22 +42,25 @@ class Button():
 		self.width = width
 		self.height = height
 		
-		self.dado1 = pygame.image.load("./imgDado/dado_1.png")
-		self.dado2 = pygame.image.load("./imgDado/dado_2.png")
-		self.dado3 = pygame.image.load("./imgDado/dado_3.png")
-		self.dado4 = pygame.image.load("./imgDado/dado_4.png")
-		self.dado5 = pygame.image.load("./imgDado/dado_5.png")
-		self.dado6 = pygame.image.load("./imgDado/dado_6.png")
+		self.dado1 = pygame.image.load("./images/imgDado/dado_1.png")
+		self.dado2 = pygame.image.load("./images/imgDado/dado_2.png")
+		self.dado3 = pygame.image.load("./images/imgDado/dado_3.png")
+		self.dado4 = pygame.image.load("./images/imgDado/dado_4.png")
+		self.dado5 = pygame.image.load("./images/imgDado/dado_5.png")
+		self.dado6 = pygame.image.load("./images/imgDado/dado_6.png")
+		#è una croce rossa, se prova a tirare il dado quando non tocca a lui
+		self.nonETuoTurno = pygame.image.load("./images/cross.png")
 		
 		self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+		
+		self.flagAvvisaNonESuoTurno = False
 		
 		self.disegna(text)
 	
 	
 	def disegna(self, valDado, doBlitScreen = False):
 		#"cancella" il dado che c'era prima
-		pygame.draw.rect(self.game.display, self.game.WHITE,
-			pygame.Rect(self.rect.x-2, self.rect.y-2, self.rect.width + 4, self.rect.height + 4), 0)
+		self.cancellaQuelloDiPrima()
 		
 		if (self.crazyGoose.mouseOverDadoPL1):
 			# COME PER LA SCELTA DELL'OCA, CREA UN RETTANGOLO DENTRO L'ALTRO PER FARE UN BORDO
@@ -65,7 +68,8 @@ class Button():
 			
 			# Questo verrà nascosto, si vedrà solo più una parte che diventerà il bordo del dado
 			pygame.draw.rect(self.game.display, (70, 220, 25),
-							 pygame.Rect(self.rect.x-2, self.rect.y-2, self.rect.width + 4, self.rect.height + 4)
+							 pygame.Rect(self.rect.x-3, self.rect.y-3,
+										 self.rect.width + 6, self.rect.height + 6)
 							 , 0, 15)
 		
 		if(1 <= valDado <= 6):
@@ -89,16 +93,19 @@ class Button():
 		
 		self.game.display.blit(imgDado, (self.rect.x, self.rect.y))
 		
-		
+		if(self.flagAvvisaNonESuoTurno):
+			self.avvisaNonSuoTurno(False)
+			
 		if(doBlitScreen):
 			self.crazyGoose.blit_screen()
+	
 	
 	def faiGirare(self):
 		# in 1 sec "gira" il dado, facendo vedere tutte le facce
 		numGiri = 0
 		dadiFattiVedere = list()
 		while (numGiri < 4 and self.crazyGoose.giocoPartito):
-			pygame.draw.rect(self.game.display, self.game.WHITE, self.rect)
+			self.cancellaQuelloDiPrima()
 			
 			# ogni volta un dado diverso
 			x = Dado().tiraDado()
@@ -132,6 +139,18 @@ class Button():
 			pygame.time.wait(250)
 		
 		pygame.draw.rect(self.game.display, self.game.WHITE, self.rect)
+	
+	
+	def cancellaQuelloDiPrima(self):
+		pygame.draw.rect(self.game.display, self.game.WHITE,
+						 pygame.Rect(self.rect.x - 4, self.rect.y - 4, self.rect.width + 8,
+									 self.rect.height + 8), 0)
+	
+	
+	def avvisaNonSuoTurno(self, blitScreen):
+		self.game.display.blit(self.nonETuoTurno, (self.rect.x, self.rect.y))
+		if(blitScreen):
+			self.crazyGoose.blit_screen()
 		
 		
 	def detectMouseOver(self, mouse):
@@ -167,10 +186,10 @@ class ButtonAbilitaPL1():
 			cartella = "/OcaRossa"
 			
 		
-		self.imgOk = pygame.image.load("./imgAbilita"+cartella+"/OK.png")
-		self.imgQuasi= pygame.image.load("./imgAbilita"+cartella+"/QUASI.png")
-		self.imgNonPiu= pygame.image.load("./imgAbilita"+cartella+"/NON_PIU.png")
-		self.imgNo= pygame.image.load("./imgAbilita"+cartella+"/NO.png")
+		self.imgOk = pygame.image.load("./images/imgAbilita"+cartella+"/OK.png")
+		self.imgQuasi= pygame.image.load("./images/imgAbilita"+cartella+"/QUASI.png")
+		self.imgNonPiu= pygame.image.load("./images/imgAbilita"+cartella+"/NON_PIU.png")
+		self.imgNo= pygame.image.load("./images/imgAbilita"+cartella+"/NO.png")
 		
 		self.evidenziaTempoRimanente(0)
 		
@@ -308,13 +327,9 @@ class CrazyGoose():
 		#Controllo che sia il turno del PL1 (cioè che sia il suo turno o che l'avversario abbia un fermo)
 		if (self.buttonDadoPL1 != None):
 			if(self.buttonDadoPL1.detectMouseOver(mousePosition)):
-				if(self.aChiTocca and (not self.player.isMoving)):
+				if(self.aChiTocca and (not self.player.isMoving) and self.player.attendoAbilita == False):
 					self.buttonDadoPL1.faiGirare()
 					self.tiraDado()
-				else:
-					if (self.player != None and self.player.isMoving):
-						# TODO effetto carino per far capire che non può lanciare il dado
-						print("muovendo")
 
 		if(self.mouseOverAbilitaPL1 and self.player.attendoAbilita):
 			self.player.abilitaAttivata = True
@@ -328,30 +343,34 @@ class CrazyGoose():
 
 		#Controllo che sia il turno del PL1 (cioè che sia il suo turno o che l'avversario abbia un fermo)
 		# E CHE NON SI STIA MUOVENDO (altrimenti provocherebbe uno sfarfallio incredibile)
-		if (self.aChiTocca and self.buttonDadoPL1 != None and
-				(self.player.isMoving == False and self.com.isMoving == False)):
+		if (self.aChiTocca and self.buttonDadoPL1 != None
+				and (self.player.isMoving == False and self.com.isMoving == False)
+				and self.player.attendoAbilita == False):
 			
 			# Se passa da fuori a dentro o da dentro a fuori del button ha senso che venga richiamato
 			# disegnaTutto() per "mostrare" il cambio del button (evidenziare o smettere di evidenziare)
 			if (self.mouseOverDadoPL1 != self.buttonDadoPL1.detectMouseOver(mousePosition)):
+				self.buttonDadoPL1.flagAvvisaNonESuoTurno = False
 				self.mouseOverDadoPL1 = self.buttonDadoPL1.detectMouseOver(mousePosition)
 				self.buttonDadoPL1.disegna(self.valDadoPL1, True)
-			
 		else:
 			self.mouseOverDadoPL1 = False
-		
-		
-		#TODO evidenziare solo se il PL1 puo effettivamente utilizzarla
-		if(self.buttonAbilitaPL1 != None):
-			
-			#Se passa da fuori a dentro o da dentro a fuori del button ha senso che venga richiamato
-			# disegnaTutto() per "mostrare" il cambio del button (evidenziare o smettere di evidenziare)
-			if(self.mouseOverAbilitaPL1 != self.buttonAbilitaPL1.detectMouseOver(mousePosition)):
-				self.mouseOverAbilitaPL1 = self.buttonAbilitaPL1.detectMouseOver(mousePosition)
-				#TODO DA VEDE COME FARE, devo passare ms uguale a com'è prima sennò
-				# cambia senza motivo img (magari passo -1 e lo uso come flag per non cancellare ?S
-				#self.buttonAbilitaPL1.disegna(ms, True)
-		
+			if(self.buttonDadoPL1 != None):
+				if (self.buttonDadoPL1.detectMouseOver(mousePosition)):
+					self.buttonDadoPL1.flagAvvisaNonESuoTurno = True
+					
+					#quello che gli passo è un flag: True (condizione vera) allora dovrà fare
+					# blit_screen() (per "applicare" le modifiche), False (condizione falsa) allora
+					# uno dei due Giocatori (si muove) richiama disegna(), e questo metodo alla fine
+					# richiama blit_screen() e quindi non serve farlo
+					self.buttonDadoPL1.avvisaNonSuoTurno(
+						(self.player.isMoving == False and self.com.isMoving == False)
+					)
+				else:
+					self.buttonDadoPL1.flagAvvisaNonESuoTurno = False
+					self.buttonDadoPL1.disegna(self.valDadoPL1,
+						(self.player.isMoving == False and self.com.isMoving == False)
+					)
 		
 			
 	def disegnaTutto(self, giocDaNonDisegnare=None):
