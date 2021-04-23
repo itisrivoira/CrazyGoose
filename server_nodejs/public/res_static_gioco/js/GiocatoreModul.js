@@ -18,19 +18,27 @@ class Giocatore {
         this.pedinaScelta = pedinaScelta
 
         this.imgPedina = new Image();
+        this.percorsoImgSxDx = null
+        this.percorsoImgDxSx = null
         if (tag == "COM") {
-            this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_cattiva_65x60.png"
+            this.percorsoImgSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_COM.png"
+            this.percorsoImgDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_COM.png"
         } else {
             if (this.pedinaScelta == "gialla") {
-                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_gialla_65x60.png"
+                this.percorsoImgSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_gialla.png"
+                this.percorsoImgDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_gialla.png"
             } else if (this.pedinaScelta == "verde") {
-                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_verde_65x60.png"
+                this.percorsoImgSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_verde.png"
+                this.percorsoImgDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_verde.png"
             } else if (this.pedinaScelta == "blu") {
-                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_blu_65x60.png"
+                this.percorsoImgSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_blu.png"
+                this.percorsoImgDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_blu.png"
             } else if (this.pedinaScelta == "rossa") {
-                this.imgPedina.src = "/res_static_gioco/images/pedine/pedineNelGioco/pedina_rosso_65x60.png"
+                this.percorsoImgSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_rossa.png"
+                this.percorsoImgDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_rossa.png"
             }
         }
+        this.imgPedina.src = this.percorsoImgSxDx
 
         this.posizione = 0
         this.turnoMio = false
@@ -249,11 +257,11 @@ class Giocatore {
                         // lasciare la pedina un attimino sulla casella con l'effetto)
                         setTimeout(() => {
                             this.controllaCodiceCasella(codCasella)
-                        }, 400)
+                        }, 600)
 
                     }
                 }
-            }, TEMPO_SPOST_FRA_CASELLE)
+            }, (TEMPO_SPOST_FRA_CASELLE-50))
 
         }, PICCOLA_PAUSA)
 

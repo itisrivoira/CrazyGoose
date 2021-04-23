@@ -27,7 +27,7 @@ app.use(express.static("public"))
 
 app.get("/", (req, resp) => {
     if (req.session.loggato) {
-        let sito = fs.readFileSync("./sitoWeb/index.html", "utf-8")
+        let sito = fs.readFileSync("./sitoWeb/home.html", "utf-8")
 
         let jsDom = new JSDOM(sito)
 
@@ -40,7 +40,7 @@ app.get("/", (req, resp) => {
 
         resp.send(jsDom.window.document.documentElement.outerHTML)
     } else {
-        let sito = fs.readFileSync("./sitoWeb/index.html", "utf-8")
+        let sito = fs.readFileSync("./sitoWeb/home.html", "utf-8")
 
         let jsDom = new JSDOM(sito)
 
@@ -59,10 +59,6 @@ app.get("/regole", (req, resp) => {
 app.get("/contattaci", (req, resp) => {
     resp.sendFile(__dirname + "/sitoWeb/contactus.html")
         //console.log("Entrato in Contattaci")
-})
-app.post("/invioEmail", (req, resp) => {
-    //TODO script invia email
-    resp.sendFile(__dirname + "/sitoWeb/send.php")
 })
 
 app.get("/profilo", (req, resp) => {
