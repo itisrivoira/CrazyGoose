@@ -36,22 +36,22 @@ class Giocatore():
 		if(self.tag == "PL1"):
 			#self.pedinaScelta sarà uguale a "gialla", "verde", "rossa" o "blu"
 			
-			self.imgPedinaSxDx = "./images/pedine/pedineNelGioco/sxVersoDx/pedina_"+self.pedinaScelta+".png"
-			self.imgPedinaDxSx = "./images/pedine/pedineNelGioco/dxVersoSx/pedina_"+self.pedinaScelta+".png"
-			self.imgScontroNoEffDxSx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/dxVersoSx/COM_vs_"+self.pedinaScelta+".png"
-			self.imgScontroNoEffSxDx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/sxVersoDx/"+self.pedinaScelta+"_vs_COM.png"
-			self.imgScontroEffDxSx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/dxVersoSx/COM_vs_" + self.pedinaScelta + ".png"
-			self.imgScontroEffSxDx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/sxVersoDx/"+self.pedinaScelta+"_vs_COM.png"
+			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_"+self.pedinaScelta+".png")
+			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_"+self.pedinaScelta+".png")
+			self.imgScontroNoEffDxSx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/dxVersoSx/COM_vs_"+self.pedinaScelta+".png")
+			self.imgScontroNoEffSxDx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/sxVersoDx/"+self.pedinaScelta+"_vs_COM.png")
+			self.imgScontroEffDxSx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/dxVersoSx/COM_vs_" + self.pedinaScelta + ".png")
+			self.imgScontroEffSxDx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/sxVersoDx/"+self.pedinaScelta+"_vs_COM.png")
 		
 		else:
 			# self.pedinaScelta sarà uguale a "gialla", "verde", "rossa" o "blu" (l'oca scelta dal player)
 			
-			self.imgPedinaSxDx = "./images/pedine/pedineNelGioco/sxVersoDx/pedina_" + self.pedinaScelta + ".png"
-			self.imgPedinaDxSx = "./images/pedine/pedineNelGioco/dxVersoSx/pedina_" + self.pedinaScelta + ".png"
-			self.imgScontroNoEffDxSx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/dxVersoSx/COM_vs_" + self.pedinaScelta + ".png"
-			self.imgScontroNoEffSxDx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/sxVersoDx/" + self.pedinaScelta + "_vs_COM.png"
-			self.imgScontroEffDxSx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/dxVersoSx/COM_vs_" + self.pedinaScelta + ".png"
-			self.imgScontroEffSxDx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/sxVersoDx/" + self.pedinaScelta + "_vs_COM.png"
+			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_COM.png")
+			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_COM.png")
+			self.imgScontroNoEffDxSx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/dxVersoSx/COM_vs_" + self.pedinaScelta + ".png")
+			self.imgScontroNoEffSxDx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/sxVersoDx/" + self.pedinaScelta + "_vs_COM.png")
+			self.imgScontroEffDxSx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/dxVersoSx/COM_vs_" + self.pedinaScelta + ".png")
+			self.imgScontroEffSxDx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/sxVersoDx/" + self.pedinaScelta + "_vs_COM.png")
 			
 			# non mi serve più a nnt
 			self.pedinaScelta = None
@@ -293,10 +293,34 @@ class Giocatore():
 		if(self.posizione > 0):
 			x = self.caselle[self.posizione-1].getCenterX()
 			y = self.caselle[self.posizione-1].getCenterY()
-			
-			image = self.cambiaVersoPedina(self.caselle[self.posizione-1].getCenterX(),
-										   self.caselle[self.posizione].getCenterX(), #self.posizione-1 +1
-										   self.posizione-1)
+
+			image = self.cambiaVersoPedina(self.caselle[self.posizione - 1].getCenterX(),
+										   self.caselle[self.posizione].getCenterX(),  # self.posizione-1 +1
+										   self.posizione - 1)
+
+			if(self.tag == "PL1"):
+				posAvversario = self.crazyGoose.com.posizione
+				flagMovimentoAvversario = self.crazyGoose.com.isMoving
+			else:
+				posAvversario = self.crazyGoose.player.posizione
+				flagMovimentoAvversario = self.crazyGoose.player.isMoving
+
+			if (self.posizione == posAvversario and flagMovimentoAvversario == False):
+				if(self.posizione > 2):
+					#si attiverà l'abilita del COM. Con questo if capisco se il giocatore
+					# è arrivato da dx o da sx
+					if(image == self.imgPedinaSxDx):
+						image = self.imgScontroEffSxDx
+					else:
+						image = self.imgScontroEffDxSx
+				else:
+					# NON si attiverà l'abilita del COM, ma devo cmq far vedere che sono sulla stessa casella.
+					# Con questo if capisco se il giocatore è arrivato da dx o da sx
+					if (image == self.imgPedinaSxDx):
+						image = self.imgScontroNoEffDxSx
+					else:
+						image = self.imgScontroNoEffDxSx
+
 			
 			self.game.display.blit(image,
 								   (x - WIDTH_PEDINA / 2,

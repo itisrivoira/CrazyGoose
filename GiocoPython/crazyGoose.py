@@ -371,7 +371,14 @@ class CrazyGoose():
 					self.buttonDadoPL1.disegna(self.valDadoPL1,
 						(self.player.isMoving == False and self.com.isMoving == False)
 					)
-		
+
+		if (self.buttonAbilitaPL1 != None):
+			# Se passa da fuori a dentro o da dentro a fuori del button ha senso che venga richiamato
+			# disegnaTutto() per "mostrare" il cambio del button (provocherebbe sfarfallio fastidioso)
+			if (self.mouseOverAbilitaPL1 != self.buttonAbilitaPL1.detectMouseOver(mousePosition)):
+				self.mouseOverAbilitaPL1 = self.buttonAbilitaPL1.detectMouseOver(mousePosition)
+
+
 			
 	def disegnaTutto(self, giocDaNonDisegnare=None):
 		if(self.partitaTerminata == False and self.giocoPartito):
@@ -671,8 +678,9 @@ class CrazyGoose():
 
 	def attivaAbilitaCOM(self, turnoPL1, toccaAncoraA_Me):
 		# micro-fermo del PL1 sulla casella del COM
-		#TODO cambiare IMG
-		pygame.time.wait(400)
+		#in disegnaTutto() farà self.player/self.com  .mostraPedina() e lì cambia l'img
+		self.disegnaTutto()
+		pygame.time.wait(700)
 		
 		#sposta di 2 indietro il PL1 (non dovrà controlla l'effetto della casella su cui
 		# finisce quindi passo False)
