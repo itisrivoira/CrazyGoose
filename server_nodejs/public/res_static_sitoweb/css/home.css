@@ -32,7 +32,6 @@ body {
     display: none;
     position: absolute;
     background-color: #529bcc;
-    width: 129px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
@@ -130,8 +129,8 @@ blu/azzurro (classe sopra e sotto il commento)*/
 }
 
 #imgSchedaCrazyGoose {
-	width: 100%;
-	height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 #imgSchedaRegolamento {
@@ -279,8 +278,10 @@ blu/azzurro (classe sopra e sotto il commento)*/
     background-color: rgba(99, 22, 80, 0.521);
 }
 
-.cardBackOcaGialla p, .cardBackOcaBlu p,
-.cardBackOcaVerde p, .cardBackOcaRossa p,
+.cardBackOcaGialla p,
+.cardBackOcaBlu p,
+.cardBackOcaVerde p,
+.cardBackOcaRossa p,
 .cardBackOcaCattiva p {
     background-color: rgba(255, 255, 255, 0.822);
 }

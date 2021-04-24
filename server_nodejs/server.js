@@ -77,7 +77,7 @@ app.post("/loginFatta", (req, resp) => {
     //resp.sendFile(__dirname + "/sitoWeb/loginFatta.html")
     resp.send("WORK IN PROGRESS")
 })
-app.get("/logout", (req, resp) => {
+app.get("/esci", (req, resp) => {
     req.session.loggato = false
     req.session.nome = null
     req.session.cognome = null
@@ -138,4 +138,8 @@ app.get("/credits", (req, resp) => {
 app.get("/gioco", (req, resp) => {
     resp.sendFile(__dirname + "/webApp/giocoWeb/index.html")
         //console.log("Scelto pedina")
+})
+
+app.use("*", (req, resp) => {
+    resp.send("ERROR 404")
 })
