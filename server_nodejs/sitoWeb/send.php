@@ -1,50 +1,32 @@
 <?php
-    $adminEmail= "bellonegiulio@gmail.com"#'alessandrodastru24@gmail.com';
-    $userEmail= filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    $userMessage = '
-        <html>
-            <head>
-            <title>Grazie per averci contattato</title>
-            </head>
-            <body>
-            <h1>Grazie per averci contattato</h1>
-            <p>La tua richiesta è stata inoltrata. Ti risponderemo al più presto.</p>
-            <p>Lo Staff</p>
-            </body>
-        </html>
-        ';
-    $adminMessage = "
-        <html>
-            <head>
-            <title>Contatto dal sito web</title>
-            </head>
-            <body>
-            <h1>Contatto dal sito web</h1>
-            <ul>
-                <li>Nome: {$_POST['nome']}</li>
-                <li>Cognome: {$_POST['cognome']}</li>
-                <li>Messaggio: {$_POST['testo']}</li>
-            </ul>
-            </body>
-        </html>
-        ";
-    $headers[] = 'MIME-Version: 1.0';
-    $headers[] = 'Content-type: text/html; charset=utf-8';
-    $returnVal = mail($userEmail, 'Richiesta di contatto effettuata con successo', $userMessage, implode("\r\n", $headers));
+   $to = "crazygoose.help@gmail.com";
 
-    if($returnVal == true){
-        echo "Messaggio inviato all'utente con successo";
-    }else{
-        echo "Messaggio non inviato all'utente";
-    }
+   // Oggetto della mail
+   $subject = 'INFO';
+   $nome = $_POST['nome']; 
+   $cognome = $_POST['cognome'];
+   $domanda = $_POST['testo'];
+   // Messaggio
+   $message = '
+    <html>
+    <head>
+        <title>Domanda da: <?php $nome , $cognome?></title>
+    </head>
+    <body>
+        <p><?php $domanda?></p>
+    </body>
+    </html>
+';;
+   
+   // Per inviare una mail HTML, deve essere opportunamente settato il Content-type dell'header
+   $headers[] = 'MIME-Version: 1.0';
+   $headers[] = 'Content-type: text/html; charset=iso-8859-1';
 
-    $returnVal = mail($adminEmail, 'Richiesta di contatto dal sito web', $adminMessage, implode("\r\n", $headers));
+   $emailUser = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+   $headers[] = 'From: '.$emailUser;
+   $headers[] = $emailUser;
     
-    if($returnVal == true){
-        echo "Messaggio inviato all'admin con successo";
-    }else{
-        echo "Messaggio non inviato all'admin";
-    }
-    
-    
+   // Inviamo la mail!
+   mail($to, $subject, $message, implode("\r\n", $headers));
+   echo "<br>"."Ok fatto!"."<br>"; 
 ?>
