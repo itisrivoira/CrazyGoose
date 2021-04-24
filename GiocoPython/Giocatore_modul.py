@@ -33,22 +33,28 @@ class Giocatore():
 		self.tag = tag
 		self.pedinaScelta = pedinaScelta
 		
-		#Mi è inutile caricare TUTTE le img delle pedine e scegliere quella "giusta" nel momento in cui mi serve
-		if(self.pedinaScelta == "gialla"):
-			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_gialla.png")
-			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_gialla.png")
-		elif(self.pedinaScelta == "verde"):
-			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_verde.png")
-			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_verde.png")
-		elif(self.pedinaScelta == "blu"):
-			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_blu.png")
-			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_blu.png")
-		elif(self.pedinaScelta == "rossa"):
-			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_rossa.png")
-			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_rossa.png")
-		else:		#caso None, il Giocatore è il COMPUTER
-			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_COM.png")
-			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_COM.png")
+		if(self.tag == "PL1"):
+			#self.pedinaScelta sarà uguale a "gialla", "verde", "rossa" o "blu"
+			
+			self.imgPedinaSxDx = "./images/pedine/pedineNelGioco/sxVersoDx/pedina_"+self.pedinaScelta+".png"
+			self.imgPedinaDxSx = "./images/pedine/pedineNelGioco/dxVersoSx/pedina_"+self.pedinaScelta+".png"
+			self.imgScontroNoEffDxSx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/dxVersoSx/COM_vs_"+self.pedinaScelta+".png"
+			self.imgScontroNoEffSxDx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/sxVersoDx/"+self.pedinaScelta+"_vs_COM.png"
+			self.imgScontroEffDxSx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/dxVersoSx/COM_vs_" + self.pedinaScelta + ".png"
+			self.imgScontroEffSxDx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/sxVersoDx/"+self.pedinaScelta+"_vs_COM.png"
+		
+		else:
+			# self.pedinaScelta sarà uguale a "gialla", "verde", "rossa" o "blu" (l'oca scelta dal player)
+			
+			self.imgPedinaSxDx = "./images/pedine/pedineNelGioco/sxVersoDx/pedina_" + self.pedinaScelta + ".png"
+			self.imgPedinaDxSx = "./images/pedine/pedineNelGioco/dxVersoSx/pedina_" + self.pedinaScelta + ".png"
+			self.imgScontroNoEffDxSx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/dxVersoSx/COM_vs_" + self.pedinaScelta + ".png"
+			self.imgScontroNoEffSxDx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/sxVersoDx/" + self.pedinaScelta + "_vs_COM.png"
+			self.imgScontroEffDxSx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/dxVersoSx/COM_vs_" + self.pedinaScelta + ".png"
+			self.imgScontroEffSxDx = "./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/sxVersoDx/" + self.pedinaScelta + "_vs_COM.png"
+			
+			# non mi serve più a nnt
+			self.pedinaScelta = None
 
 
 		self.posizione = 0
@@ -56,9 +62,7 @@ class Giocatore():
 		self.turnoMio = False
 		self.turniFermo = 0
 		self.vincitore = False
-			#TODO il flag mi serve per spostare la scritta che indentifica il giocatore
-			# quando esso si trova su una casella con un effetto (così da non stare
-			# sopra l'effetto (sennò non si capisce più nnt)
+		
 		self.sopraEffetto = False
 			# il flag mi serve per "bloccare" alcune azioni finchè la pedina ha smesso di muoversi
 		self.isMoving = False

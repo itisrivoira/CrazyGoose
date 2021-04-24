@@ -420,7 +420,8 @@ class CrazyGoose():
 					
 			if (giocDaNonDisegnare != "COM"):
 				if (self.com == None):
-					self.com = Giocatore(self, self.game, self.caselle, self.percorso, "COM")
+								#ha bisogno di sapere quale oca ha scelto l'avversario (il player)
+					self.com = Giocatore(self, self.game, self.caselle, self.percorso, "COM", self.sceltaPedina.mouseOver)
 				else:
 					self.com.mostraPedina()
 					
