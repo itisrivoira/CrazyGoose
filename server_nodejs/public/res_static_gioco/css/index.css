@@ -90,8 +90,8 @@ body {
     width: 70px;
     height: 70px;
     position: absolute;
-    top: 40px;
-    left: 27px;
+    top: 100px;
+    left: 35px;
 }
 
 #info_com {
@@ -102,8 +102,8 @@ body {
 
 #dado_com {
     position: absolute;
-    top: 40px;
-    right: 40px;
+    top: 100px;
+    right: 35px;
 }
 
 #eff1_pl1 {
