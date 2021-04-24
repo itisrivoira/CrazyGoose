@@ -118,10 +118,10 @@ class CrazyGoose {
         //this.scriviEffetti(this.player, true)
 
         //do al div l' immagine di default (per ora dado 1)
-        this.imgDadoPL1.src = "/res_static_gioco/images/img_dado/dado_1.png"
+        //this.imgDadoPL1.src = "/res_static_gioco/images/img_dado/dado_1.png"
         this.buttonDadoPL1 = document.getElementById("dado_pl1")
-        this.buttonDadoPL1.appendChild(this.imgDadoPL1);
 
+        this.buttonDadoPL1.appendChild(this.imgDadoPL1);
         this.buttonDadoPL1.addEventListener("click", () => {
 
             //Controllo che sia il turno del PL1 (cioè che sia il suo turno o che l'avversario abbia un fermo)
@@ -132,7 +132,8 @@ class CrazyGoose {
             }
 
         })
-        this.imgDadoCOM.src = "/res_static_gioco/images/img_dado/dado_1.png"
+
+        //this.imgDadoCOM.src = "/res_static_gioco/images/img_dado/dado_1.png"
         this.buttonDadoCOM = document.getElementById("dado_com")
         this.buttonDadoCOM.appendChild(this.imgDadoCOM);
 
@@ -234,6 +235,7 @@ class CrazyGoose {
         } else {
             /*(La prossima volta che verrà richiamato "disegnaTutto" il numero
                 del dado sarà cambiato) */
+
             this.cambiaImgDado(numEstratto, this.imgDadoPL1, this.buttonDadoPL1, this.player)
 
             this.player.avanza(numEstratto)
@@ -353,7 +355,6 @@ class CrazyGoose {
 
     cambiaImgDado(numEstratto, imgDado, buttonDado, giocatore) {
 
-
         let cube = null;
         //QuerySelector vengono usati per ricollegarsi ai css
         if (giocatore.tag == "PL1") {
@@ -383,39 +384,9 @@ class CrazyGoose {
 
         }
 
-        switch (numEstratto) {
-            case 1:
-                imgDado.src = "/res_static_gioco/images/img_dado/dado_1.png"
-                buttonDado.appendChild(imgDado)
-                rollDice()
-                break
-            case 2:
-                imgDado.src = "/res_static_gioco/images/img_dado/dado_2.png"
-                buttonDado.appendChild(imgDado)
-                rollDice()
-                break
-            case 3:
-                imgDado.src = "/res_static_gioco/images/img_dado/dado_3.png"
-                buttonDado.appendChild(imgDado)
-                rollDice()
-                break
-            case 4:
-                imgDado.src = "/res_static_gioco/images/img_dado/dado_4.png"
-                buttonDado.appendChild(imgDado)
-                rollDice()
-                break
-            case 5:
-                imgDado.src = "/res_static_gioco/images/img_dado/dado_5.png"
-                buttonDado.appendChild(imgDado);
-                rollDice()
-                break
-            case 6:
-                imgDado.src = "/res_static_gioco/images/img_dado/dado_6.png"
-                buttonDado.appendChild(imgDado);
-                rollDice()
-                break
-            default:
-                break
+        //if controlla solo se il numEstratto è diverso da null, allora il dado ruota
+        if (numEstratto != null) {
+            rollDice()
         }
 
         /*
