@@ -1,0 +1,25 @@
+#footer {
+    background-color: rgb(63, 1, 92);
+    min-height: 250px;
+    padding: 10px 0px 25px 0px;
+    text-align: center;
+}
+
+#footer p {
+    font-size: 13px;
+    color: #CCC;
+    padding-bottom: 0px;
+    margin-bottom: 8px;
+}
+
+#margine {
+    border-bottom: 1px solid #ffffff;
+    padding-bottom: 20px;
+}
+
+.minititoli {
+    padding-top: 40px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: white;
+}

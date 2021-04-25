@@ -10,7 +10,7 @@ const express = require("express")
 const app = express()
 
 
-app.listen("3000", () => {
+app.listen(3000, () => {
     //console.log("SERVER IN FUNZIONE")
 })
 app.use(session({
@@ -25,11 +25,23 @@ app.use(express.static("public"))
 
 //----------------- sito web ----------------------------------
 
+function aggiungiFooterAllaPagina(pagina) {
+    let jsDom = new JSDOM(pagina)
+
+    let footer = fs.readFileSync("./sitoWeb/soloFooter.html", "utf-8")
+
+    jsDom.window.document.getElementById("footer").innerHTML = footer
+
+    return (jsDom.window.document.documentElement.outerHTML)
+}
+
 app.get("/", (req, resp) => {
     if (req.session.loggato) {
         let sito = fs.readFileSync("./sitoWeb/home.html", "utf-8")
 
-        let jsDom = new JSDOM(sito)
+        let paginaConFooter = aggiungiFooterAllaPagina(sito)
+
+        let jsDom = new JSDOM(paginaConFooter)
 
         msgBenvenuto = "Benvenuto<br><i>" + req.session.nome + " " + req.session.cognome + "</i>"
         jsDom.window.document.getElementById("dropdownBtn").innerHTML = msgBenvenuto
@@ -42,7 +54,9 @@ app.get("/", (req, resp) => {
     } else {
         let sito = fs.readFileSync("./sitoWeb/home.html", "utf-8")
 
-        let jsDom = new JSDOM(sito)
+        let paginaConFooter = aggiungiFooterAllaPagina(sito)
+
+        let jsDom = new JSDOM(paginaConFooter)
 
         jsDom.window.document.getElementById("testataSito").setAttribute("class", "col-12 d-flex justify-content-center")
 
@@ -52,12 +66,20 @@ app.get("/", (req, resp) => {
 })
 
 app.get("/regole", (req, resp) => {
-    resp.sendFile(__dirname + "/sitoWeb/regole.html")
+    let paginaRegoleSenzaFooter = fs.readFileSync("./sitoWeb/regole.html", "utf-8")
+
+    let paginaConFooter = aggiungiFooterAllaPagina(paginaRegoleSenzaFooter)
+
+    resp.send(paginaConFooter)
         //console.log("Entrato in sezione regole")
 })
 
 app.get("/contattaci", (req, resp) => {
-    resp.sendFile(__dirname + "/sitoWeb/contactus.html")
+    let paginaRegoleSenzaFooter = fs.readFileSync("./sitoWeb/contactus.html", "utf-8")
+
+    let paginaConFooter = aggiungiFooterAllaPagina(paginaRegoleSenzaFooter)
+
+    resp.send(paginaConFooter)
         //console.log("Entrato in Contattaci")
 })
 
@@ -95,7 +117,11 @@ app.post("/registrazioneFatta", (req, resp) => {
     req.session.nome = req.body.nome
     req.session.cognome = req.body.cognome
         //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
-    resp.redirect(301, "/menuGioco")
+    resp.redirect(301, "/")
+})
+
+app.get("/download", (req, resp) => {
+    resp.sendFile(__dirname + "/GiocoPython.zip")
 })
 
 
@@ -103,6 +129,7 @@ app.post("/registrazioneFatta", (req, resp) => {
 
 app.get("/menuGioco", (req, resp) => {
     if (req.session.loggato) {
+
         let sito = fs.readFileSync("./webApp/menu/index.html", "utf-8")
 
         let jsDom = new JSDOM(sito)
@@ -141,5 +168,5 @@ app.get("/gioco", (req, resp) => {
 })
 
 app.use("*", (req, resp) => {
-    resp.send("ERROR 404")
+    resp.send("<center>ERROR 404</center>")
 })

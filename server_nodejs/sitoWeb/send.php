@@ -28,5 +28,5 @@
     
    // Inviamo la mail!
    mail($to, $subject, $message, implode("\r\n", $headers));
-   echo "<br>"."Ok fatto!"."<br>"; 
+   echo "<br>Ok fatto!"; 
 ?>

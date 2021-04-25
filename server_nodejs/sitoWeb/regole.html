@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="res_static_sitoweb/css/regole.css">
     <link rel="stylesheet" href="res_static_sitoweb/css/navbar.css">
+    <link rel="stylesheet" href="res_static_sitoweb/css/soloFooter.css">
 </head>
 
 <body>
@@ -41,7 +42,7 @@
                     <br>&bullet; Il giocatore subisce l’effetto della casella su cui capita, anche nel caso ci finisse a causa di un altro effetto
                     <br>&bullet; Il tabellone di gioco viene generato in modo casuale ad inizio di ogni partita, rendendo quindi le partite un minimo più dinamiche
                     <br>&bullet; Le 4 abilità delle pedine sono utilizzabili una sola volta per partita
-                    <br><br><b>40 caselle totali di cui:</b>
+                    <br><br><b style="font-size: 18px;">40 caselle totali di cui:</b>
                     <br>&bullet; 4 caselle " Tira di nuovo il dado "
                     <br>&bullet; 4 caselle " Torna indietro di una casella "
                     <br>&bullet; 2 caselle " Torna indietro di tre caselle "
@@ -59,10 +60,10 @@
                 <br>
                 <p class="testo">
                     I giocatori prima dell’inizio della partita avranno la possibilità di scegliere la propria pedina tra 4 oche di 4 colori diversi che avranno 4 differenti abilità, utilizzabili una sola volta per partita, queste sono le scelte possibili:<br>
-                    <br>1-)Oca gialla: Con la sua abilità si potrà avanzare di 3 caselle al posto di 1 quando si capita su una casella "avanti di 1". In modo da poter evitare delle insidie!
-                    <br>2-)Oca verde: Con la sua abilità si potrà tirare nuovamente il dado. In modo da spiazzare l'avversario ed andare in vantaggio!
-                    <br>3-)Oca blu: Con la sua abilità si potrà avanzare di 2 caselle per saltare una casella negativa, o addirittura raggiungere il traguardo!
-                    <br>4-)Oca rossa: Con la sua abilità si potrà annullare l'effetto di una casella!
+                    <br>1-) Oca gialla: Con la sua abilità si potrà avanzare di 3 caselle al posto di 1 quando si capita su una casella "avanti di 1". In modo da poter evitare delle insidie!
+                    <br>2-) Oca verde: Con la sua abilità si potrà tirare nuovamente il dado. In modo da spiazzare l'avversario ed andare in vantaggio!
+                    <br>3-) Oca blu: Con la sua abilità si potrà avanzare di 2 caselle per saltare una casella negativa, o addirittura raggiungere il traguardo!
+                    <br>4-) Oca rossa: Con la sua abilità si potrà annullare l'effetto di una casella!
                     <br><br>Per avanzare sul tabellone i giocatori dovranno tirare il dado una volta a testa, a meno che un effetto abbia permesso un secondo lancio di dadi oppure fermato l’avversario. Il progresso dei giocatori nella partita corrente
                     sarà sempre visibile grazie ad una barra che si colora progressivamente a seconda del colore delle pedine selezionate.
                 </p>
@@ -70,13 +71,12 @@
         </div>
         <div class="row rowParteDellaDoc">
             <div class="col">
-                <p class="titoli"><b>Dettaglio Partita:</b></p>
+                <p class="titoli"><b>DETTAGLIO PARTITA:</b></p>
                 <br>
                 <p class="testo">
                     Una volta aperto il gioco per avviare la partita basterà premere "Start game" e successivamente scegliere la propria pedina tra le 4 scelte possibili. La partita si svolge a turni ed i giocatori tirano il dado una volta a testa utilizzando l’icona del
-                    dado, a meno di non esser finiti su una casella con un effetto. Per vincere la partita il giocatore deve arrivare alla casella finale con un tiro perfetto, quindi che lo porti dalla casella su cui si trova alla fine spostandosi precisamente
-                    di tot caselle a seconda del numero uscito dal dado, in caso contrario finirà tot caselle prima della casella finale. La partita è unica e termina quando uno dei due giocatori vince, dopodiché si potrà scegliere se smettere di giocare
-                    o cominciare una nuova partita.
+                    dado, a meno di non esser finiti su una casella con un effetto.<br>Per vincere la partita il giocatore deve arrivare alla casella finale con un tiro perfetto, quindi che lo porti dalla casella su cui si trova alla
+                    fine spostandosi precisamente di tot caselle a seconda del numero uscito dal dado, in caso contrario finirà tot caselle prima della casella finale. La partita termina quando uno dei due giocatori vince.
                 </p>
             </div>
         </div>
@@ -89,19 +89,24 @@
                 </p>
             </div>
         </div>
-        <div class="row" id="FAQ">
+        <div class="row" id="FAQ" style="margin-bottom: 25px;">
             <div class="col">
                 <p class="titoli"><b>DOMANDE UTILI:</b></p>
                 <div class="containerDomande">
                     <button class="collapsible">Quante volte posso attivare l'abilità della mia oca ?</button>
                     <div class="content">
-                        <p>L'abilità è attivabile una sola volta durante la partita in un momento a nostra scelta. Una volta utilizzata non sarà più disponibile per tutto l'arco della partita.Certe abilità tuttavia per essere utilizzate, la pedina deve trovarsi
-                            su una casella con un certo effetto.
+                        <p>L'abilità è attivabile una sola volta durante la partita in un momento a nostra scelta, una volta utilizzata infatti non sarà più disponibile per tutto l'arco della partita. <br>Certe abilità tuttavia per essere utilizzate, la
+                            pedina deve trovarsi su una casella con un certo effetto.
                         </p>
                     </div>
                     <button class="collapsible">Come posso giocare a CrazyGoose sul mio PC ?</button>
                     <div class="content">
-                        <p>Molto semplice:<br> 1)Basta scaricare lo zip del gioco che trovi sempre sul nostro sito;<br> 2)Estrarre lo zip ed entrare nella cartella 'GiocoPython';<br> 3)Aprire il terminale in questa cartella;<br> 4)Installare Python3;<br>                            5)Installare PyGame con il comando: 'python3 -m pip install -u pygame --user';<br> 6)Lanciare il gioco con: 'python3 main.py';<br>
+                        <p>Molto semplice:
+                            <br> 1) Basta scaricare lo zip del gioco che trovi sempre sul nostro sito (prima devi loggarti);
+                            <br> 2) Estrarre lo zip ed entrare nella cartella 'GiocoPython';
+                            <br> 3) Aprire il terminale in questa cartella;
+                            <br> 4) Installare Python3 con 'sudo apt-get install python3.7';
+                            <br> 5) Installare PyGame con il comando: 'python3 -m pip install -U pygame --user';<br> 6) Lanciare il gioco con: 'python3 main.py';
                         </p>
                     </div>
                     <button class="collapsible">Come faccio a registrarmi a Cazy Goose ?</button>
@@ -117,6 +122,7 @@
                 </div>
             </div>
         </div>
+        <div class="row" id="footer"></div>
     </div>
 
     <script>
@@ -135,32 +141,6 @@
             });
         }
     </script>
-            <div class="row" id="footer">
-                <div class="col-sm-4 col-md col-sm-4 col-12 col">
-                    <h5 class="minititoli">Creatori: </h5>
-                    <p>Giulio Bellone<br>Alessandro Dastru<br>Mattia Calzia<br>Kledi Hila<br>Andrea Durante<br>Hu Quyan</p>
-                </div>
-    
-                <div class="col-sm-4 col-md col-6 col">
-                    <h5 class="minititoli">Ecco chi siamo: </h5>
-                    <p>Salve a tutti, ora tocca a noi presentarci, siamo un gruppo di giovani frequentate la 5 presso l'ITIS Rivoira di Verzuolo, questo è il nostro progetto che dovremo presentare all'esame di maturità di quest'anno. Il compito era di realizzare
-                        il classico gioco dell'oca rimordenizzandolo e noi crediamo di esserci riusciti.</p>
-                </div>
-    
-                <div class="col-sm-4 col-md col-12 col">
-                    <h5 class="minititoli">Seguici su Instagram: </h5>
-                    <p>bellone.giulio<br>_dastru<br>mattia.calzia<br>kledi_hila<br>andry.durante<br>hu</p>
-                </div>
-                <div class="col-12">
-                    <div id="margine"></div>
-                </div>
-                <div class="col-12 d-flex justify-content-center">
-                    <p>Crazy Goose</p>
-                    <p>Copyright @2021 | Designed With by <a href="">Crazy Goose</a>
-                    </p>
-                </div>
-            </div>
-        </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js " integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo " crossorigin="anonymous "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js " integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49 " crossorigin="anonymous "></script>
