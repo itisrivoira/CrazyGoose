@@ -38,7 +38,7 @@ class ButtonAbilitaPL1 {
             if (this.crazyGoose.player.abilitaAttivata == false &&
                 this.crazyGoose.player.attendoAbilita) {
 
-                this.CrazyGoose.player.abilitaAttivata = true
+                this.crazyGoose.player.abilitaAttivata = true
             }
 
         })
