@@ -309,18 +309,7 @@ class Giocatore {
 
         //codice abilita oca verde e blu
     }
-
-    controllaCodiceCasella(codCasella) {
-        //codice abilita oca rossa
-
-        /*
-        In questo metodo controllo l'effetto della casella su cui è capitato
-         il giocatore. Setto lo spostamento a 0 xkè l'effetto potrebbe lasciare lì
-         dov'è il giocatore (come il fermo e il tira_di_nuovo), se invece lo
-         spostamento cambia (!= 0) vorrà dire che è capitato
-         su una casella che fa muovere il giocatore ==> richiamo di nuovo il "this.posiziona()"
-        */
-
+    controlloEffettoCasella(codCasella) {
         let spostamento = 0
         let eff = ""
 
@@ -428,6 +417,56 @@ class Giocatore {
 
         } else {
             this.isMoving = false
+        }
+    }
+
+    controllaCodiceCasella(codCasella) {
+        //codice abilita oca rossa
+        if (this.abilitaAttivata == false) {
+            if (this.pedinaScelta == "rossa" && this.codCasella != VITTORIA) {
+                //attende 2 sec (nel mentre deve fare controlli quindi non posso
+                // usare semplicemente una wait di 2000, ogni 100ms faccio un giro
+                // e controllo, arrivati a 20 giri avro' aspettato 2000ms)
+                let numGiri = 0
+
+                //(* * * setinterval esegue, in una sorta di altro processo (quindi non blocca il codice),
+                // la funzione passata OGNI tot millisecondi (finchè non lo si ferma con clearTimeout
+                // continuerà ad eseguire ogni tot ms la funzione data) * * *)
+
+                let idIntervalAbilita = setInterval(() => {
+                    //(controllo anche che il gioco non sia stato fermato)
+                    if (this.crazyGoose.giocoPartito && numGiri < 20) {
+                        this.attendoAbilita = true
+                        this.crazyGoose.buttonAbilita.evidenziaTempoRimanente((2000 - numGiri * 100), true)
+                        if (this.abilitaAttivata) {
+                            numGiri = 20
+                            attivatoAbilita = true
+                        } else {
+                            numGiri += 1
+                        }
+                    } else {
+                        clearInterval(idIntervalAbilita)
+                            //In crazyGoose l'evento click sul button dell'abilita non fa nulla
+                            // se attendoAbilita = false. Quindi io devo settarlo a false xke
+                            // dev'essere true SOLO se può attivare l'abilita (cioè sta girando nel
+                            // interval idIntervalAbilita)
+
+                        this.attendoAbilita = false
+
+                        //Se ha attivato l'abilita:
+                        //  this.abilitaAttivata sarà = true ! ==> cambia img in NO.png
+                        //Se non ha attivato l'abilita:
+                        //  this.abilitaAttivata sarà = false, i millisecondi che gli passo sono = 0
+                        //   ==> cambia img in NON_PIU.png
+                        this.crazyGoose.buttonAbilita.evidenziaTempoRimanente(0)
+                        this.isMoving = false
+                    }
+                }, 100)
+            } else {
+                this.controlloEffettoCasella(codCasella)
+            }
+        } else {
+            this.controlloEffettoCasella(codCasella)
         }
     }
 
