@@ -39,6 +39,8 @@ class ButtonAbilitaPL1 {
                 this.crazyGoose.player.attendoAbilita) {
 
                 this.crazyGoose.player.abilitaAttivata = true
+            } else {
+                console.log("finito nel else")
             }
 
         })
@@ -117,11 +119,8 @@ class CrazyGoose {
 
         //this.scriviEffetti(this.player, true)
 
-        //do al div l' immagine di default (per ora dado 1)
-        //this.imgDadoPL1.src = "/res_static_gioco/images/img_dado/dado_1.png"
         this.buttonDadoPL1 = document.getElementById("dado_pl1")
 
-        this.buttonDadoPL1.appendChild(this.imgDadoPL1);
         this.buttonDadoPL1.addEventListener("click", () => {
 
             //Controllo che sia il turno del PL1 (cioè che sia il suo turno o che l'avversario abbia un fermo)
@@ -247,52 +246,121 @@ class CrazyGoose {
                 if (this.player.isMoving == false) {
                     clearInterval(idIntervalFineAvanza)
 
-                    //Ce da fare il metodo attivaAbilitaCOM, quindi quando sarà fatto DOVETE togliere
-                    // ↓ questo ↓ "false &&". L'ho messo così l'if è già fatto, basta fare il metodo e togliere quello
-                    if (false && this.player.posizione == this.com.posizione &&
-                        this.player.posizione > 2) {
+                    if (this.player.abilitaAttivata == false) {
+                        //Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giri" (e ovviamente che abbia scelto l'oca verde)
+                        if (this.player.pedinaScelta == "verde" && this.player.turnoMio == false && this.player.turniFermo == 0) {
 
-                        this.attivaAbilitaCOM(true, this.com.turnoMio)
-                    } else {
+                            let numGiri = 0
+                            let idIntervalAbilita = setInterval(() => {
+                                //(controllo anche che il gioco non sia stato fermato)
+                                if (this.giocoPartito && numGiri < 20) {
 
-                        if (!this.player.vincitore) {
-                            this.com.turnoMio = !this.player.turnoMio
+                                    this.player.attendoAbilita = true
+                                    this.buttonAbilita.evidenziaTempoRimanente((2000 - numGiri * 100), true)
 
-                            //se prende un fermo ANNULLA il fermo dell'avversario 
-                            //(SENNÒ NESSUNO GIOCHEREBBE PIÙ per alcuni turni)
-                            if (this.player.turniFermo > 0) {
-                                this.com.turniFermo = 0
-                                    //Ora il PL1 ha un fermo, quindi tocca all'avversario sicuro
-                                this.segnalaChiTocca(false)
-
-                                //Lancerà il dado, entrerà in avanzaPlayer1 che
-                                // decrementerà il suo fermo e lancerà avanzaCOM
-                                this.tiraDado()
-                            } else {
-                                if (this.com.turniFermo > 0) {
-                                    //Se l'avversario ha un fermo al 100% tocca al PL1...
-                                    this.segnalaChiTocca(true)
-                                } else {
-                                    //L'avversario non ha un fermo MA non è detto che tocchi a lui 
-                                    // (PL1 potrebbe aver preso un TIRA DI NUOVO) quindi controllo
-                                    if (this.com.turnoMio) {
-                                        this.segnalaChiTocca(false)
-
-                                        this.toccaAlCOM()
+                                    if (this.player.abilitaAttivata) {
+                                        numGiri = 20
+                                        this.player.turnoMio = true
                                     } else {
-                                        this.segnalaChiTocca(true)
+                                        numGiri += 1
+                                    }
+
+                                } else {
+                                    clearInterval(idIntervalAbilita)
+
+                                    this.player.attendoAbilita = false
+                                    this.buttonAbilita.evidenziaTempoRimanente(0)
+                                    this.player.isMoving = false
+
+                                    //se ha attivato l'abilità turnoMio sarà a true e quindi lascerà tirare di nuovo il dado
+                                    this.controllaAChiTocca()
+                                }
+                            }, 100)
+                        } else if (this.player.pedinaScelta == "blu" &&
+                            //Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giri"    
+                            this.player.turnoMio == false && this.player.turniFermo == 0) {
+
+                            let numGiri = 0
+
+                            let idIntervalAbilita = setInterval(() => {
+                                //(controllo anche che il gioco non sia stato fermato)    
+                                if (this.giocoPartito && numGiri < 20) {
+                                    this.player.attendoAbilita = true
+                                    this.buttonAbilita.evidenziaTempoRimanente((2000 - numGiri * 100), true)
+
+                                    if (this.player.abilitaAttivata) {
+                                        numGiri = 20
+                                    } else {
+                                        numGiri += 1
+                                    }
+                                } else {
+                                    clearInterval(idIntervalAbilita)
+                                    this.player.attendoAbilita = false
+                                    this.buttonAbilita.evidenziaTempoRimanente(0)
+                                    this.player.isMoving = false
+
+                                    if (this.player.abilitaAttivata) {
+                                        this.avanzaPlayer1(2)
+                                    } else {
+                                        this.controllaAChiTocca()
                                     }
                                 }
-                            }
+                            }, 100)
                         } else {
-                            //Segnala PL1 come vincitore e fa TERMINARE la partita
-                            this.segnalaVincitore(true)
-                            this.partitaTerminata = true
+                            //ne oca "blu" ne "verde"
+                            this.controllaAChiTocca()
                         }
+                    } else {
+                        this.controllaAChiTocca()
                     }
-
                 }
             }, 100)
+        }
+    }
+
+    controllaAChiTocca() {
+        //Ce da fare il metodo attivaAbilitaCOM, quindi quando sarà fatto DOVETE togliere
+        // ↓ questo ↓ "false &&". L'ho messo così l'if è già fatto, basta fare il metodo e togliere quello
+        if (false && this.player.posizione == this.com.posizione &&
+            this.player.posizione > 2) {
+
+            this.attivaAbilitaCOM(true, this.com.turnoMio)
+        } else {
+
+            if (!this.player.vincitore) {
+                this.com.turnoMio = !this.player.turnoMio
+
+                //se prende un fermo ANNULLA il fermo dell'avversario 
+                //(SENNÒ NESSUNO GIOCHEREBBE PIÙ per alcuni turni)
+                if (this.player.turniFermo > 0) {
+                    this.com.turniFermo = 0
+                        //Ora il PL1 ha un fermo, quindi tocca all'avversario sicuro
+                    this.segnalaChiTocca(false)
+
+                    //Lancerà il dado, entrerà in avanzaPlayer1 che
+                    // decrementerà il suo fermo e lancerà avanzaCOM
+                    this.tiraDado()
+                } else {
+                    if (this.com.turniFermo > 0) {
+                        //Se l'avversario ha un fermo al 100% tocca al PL1...
+                        this.segnalaChiTocca(true)
+                    } else {
+                        //L'avversario non ha un fermo MA non è detto che tocchi a lui 
+                        // (PL1 potrebbe aver preso un TIRA DI NUOVO) quindi controllo
+                        if (this.com.turnoMio) {
+                            this.segnalaChiTocca(false)
+
+                            this.toccaAlCOM()
+                        } else {
+                            this.segnalaChiTocca(true)
+                        }
+                    }
+                }
+            } else {
+                //Segnala PL1 come vincitore e fa TERMINARE la partita
+                this.segnalaVincitore(true)
+                this.partitaTerminata = true
+            }
         }
     }
 
