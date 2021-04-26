@@ -190,12 +190,14 @@ class CrazyGoose {
             eff2 = document.getElementById("eff2_com")
         }
         eff1.style.display = "block"
-        if (player_com.penultimoEff != "") {
+        if (player_com.penultimoEff[0] != "") {
             eff2.style.display = "block"
         }
 
-        eff1.innerHTML = player_com.ultimoEff
-        eff2.innerHTML = player_com.penultimoEff
+        eff1.innerHTML = player_com.ultimoEff[0]
+        eff1.style.backgroundColor = player_com.ultimoEff[1]
+        eff2.innerHTML = player_com.penultimoEff[0]
+        eff2.style.backgroundColor = player_com.penultimoEff[1]
     }
 
     stopCOM() {
@@ -269,90 +271,101 @@ class CrazyGoose {
 
                     //anche se fosse sulla casella del COM gli da la "possibilita di scappare" (oca verde ritira il dado,
                     // quindi si muove, oca blu avanza di 2)
-                    if (this.player.abilitaAttivata == false) {
-                        //Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giri" (e ovviamente che abbia scelto l'oca verde)
-                        if (this.player.pedinaScelta == "verde" &&
-                            //Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giri"    
-                            this.player.turnoMio == false && this.player.turniFermo == 0) {
 
-                            let numGiri = 0
-                            let idIntervalAbilita = setInterval(() => {
-                                //(controllo anche che il gioco non sia stato fermato)
-                                if (this.giocoPartito && numGiri < 20) {
+                    //controllo anche che controllaCodCasella sia true xke ? Perchè quando si attiva l'abilità del COM
+                    // NON DEVO POTER USARE LA MIA ABILITA(a fine dello spostamento), e quando si attiva l'abilità del COM
+                    // richiama questo metodo con controllaCodCasella = false
+                    if (controllaCodCasella) {
 
-                                    this.player.attendoAbilita = true
-                                    this.buttonAbilita.evidenziaTempoRimanente((2000 - numGiri * 100), true)
+                        if (this.player.abilitaAttivata == false) {
+                            //Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giri" (e ovviamente che abbia scelto l'oca verde)
+                            if (this.player.pedinaScelta == "verde" &&
+                                //Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giri"    
+                                this.player.turnoMio == false && this.player.turniFermo == 0) {
 
-                                    if (this.player.abilitaAttivata) {
-                                        numGiri = 20
-                                        this.player.turnoMio = true
+                                let numGiri = 0
+                                let idIntervalAbilita = setInterval(() => {
+                                    //(controllo anche che il gioco non sia stato fermato)
+                                    if (this.giocoPartito && numGiri < 20) {
+
+                                        this.player.attendoAbilita = true
+                                        this.buttonAbilita.evidenziaTempoRimanente((2000 - numGiri * 100), true)
+
+                                        if (this.player.abilitaAttivata) {
+                                            numGiri = 20
+                                            this.player.turnoMio = true
+                                        } else {
+                                            numGiri += 1
+                                        }
                                     } else {
-                                        numGiri += 1
+                                        clearInterval(idIntervalAbilita)
+
+                                        this.player.attendoAbilita = false
+
+                                        //se ha attivato l'abilità cambierà img in NO.png altrimenti "ms" è passato a 0
+                                        // quindi metterà NON_PIU.png
+                                        this.buttonAbilita.evidenziaTempoRimanente(0)
+                                            //this.player.isMoving = false
+
+                                        //se ha attivato l'abilità turnoMio sarà a true e quindi lascerà tirare di nuovo il dado
+                                        this.controllaAChiTocca(false)
                                     }
-                                } else {
-                                    clearInterval(idIntervalAbilita)
+                                }, 100)
+                            } else if (this.player.pedinaScelta == "blu" &&
+                                //Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giri"    
+                                this.player.turnoMio == false && this.player.turniFermo == 0) {
 
-                                    this.player.attendoAbilita = false
+                                let numGiri = 0
 
-                                    //se ha attivato l'abilità cambierà img in NO.png altrimenti "ms" è passato a 0
-                                    // quindi metterà NON_PIU.png
-                                    this.buttonAbilita.evidenziaTempoRimanente(0)
-                                        //this.player.isMoving = false
+                                let idIntervalAbilita = setInterval(() => {
+                                    //(controllo anche che il gioco non sia stato fermato)    
+                                    if (this.giocoPartito && numGiri < 20) {
+                                        this.player.attendoAbilita = true
+                                        this.buttonAbilita.evidenziaTempoRimanente((2000 - numGiri * 100), true)
 
-                                    //se ha attivato l'abilità turnoMio sarà a true e quindi lascerà tirare di nuovo il dado
-                                    this.controllaAChiTocca()
-                                }
-                            }, 100)
-                        } else if (this.player.pedinaScelta == "blu" &&
-                            //Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giri"    
-                            this.player.turnoMio == false && this.player.turniFermo == 0) {
-
-                            let numGiri = 0
-
-                            let idIntervalAbilita = setInterval(() => {
-                                //(controllo anche che il gioco non sia stato fermato)    
-                                if (this.giocoPartito && numGiri < 20) {
-                                    this.player.attendoAbilita = true
-                                    this.buttonAbilita.evidenziaTempoRimanente((2000 - numGiri * 100), true)
-
-                                    if (this.player.abilitaAttivata) {
-                                        //fermerà il ciclo
-                                        numGiri = 20
+                                        if (this.player.abilitaAttivata) {
+                                            //fermerà il ciclo
+                                            numGiri = 20
+                                        } else {
+                                            numGiri += 1
+                                        }
                                     } else {
-                                        numGiri += 1
+                                        clearInterval(idIntervalAbilita)
+
+                                        this.player.attendoAbilita = false
+
+                                        //se ha attivato l'abilità cambierà img in NO.png altrimenti "ms" è passato a 0
+                                        // quindi metterà NON_PIU.png
+                                        this.buttonAbilita.evidenziaTempoRimanente(0)
+                                            //this.player.isMoving = false
+
+                                        if (this.player.abilitaAttivata) {
+                                            this.avanzaPlayer1(2)
+                                        } else {
+                                            this.controllaAChiTocca()
+                                        }
                                     }
-                                } else {
-                                    clearInterval(idIntervalAbilita)
-
-                                    this.player.attendoAbilita = false
-
-                                    //se ha attivato l'abilità cambierà img in NO.png altrimenti "ms" è passato a 0
-                                    // quindi metterà NON_PIU.png
-                                    this.buttonAbilita.evidenziaTempoRimanente(0)
-                                        //this.player.isMoving = false
-
-                                    if (this.player.abilitaAttivata) {
-                                        this.avanzaPlayer1(2)
-                                    } else {
-                                        this.controllaAChiTocca()
-                                    }
-                                }
-                            }, 100)
+                                }, 100)
+                            } else {
+                                //ne oca "blu" ne "verde"
+                                this.controllaAChiTocca()
+                            }
                         } else {
-                            //ne oca "blu" ne "verde"
+                            //già attivato l'abilita
                             this.controllaAChiTocca()
                         }
-                    } else {
-                        //già attivato l'abilita
-                        this.controllaAChiTocca()
-                    }
+                    } //else i controlli di chi tocca gli farà in attivaAbilitaCOM()
                 }
             }, 100)
         }
     }
 
-    controllaAChiTocca() {
-        if (false && this.player.posizione == this.com.posizione &&
+    controllaAChiTocca(controllaAbilitaCOM = true) {
+        //controllaAbilitaCOM è false QUANDO ATTIVA L'ABILITA VERDE (
+        // diciamo che gli lasciamo la possibiltà di scappare ed evitare l'abilità
+        // del COM)
+
+        if (controllaAbilitaCOM && this.player.posizione == this.com.posizione &&
             this.player.posizione > 2) {
 
             //controllaAChiTocca() lo richiamo solo in avanzaPlayer1()
@@ -376,6 +389,8 @@ class CrazyGoose {
                     if (this.com.turniFermo > 0) {
                         //Se l'avversario ha un fermo al 100% tocca al PL1...
                         this.segnalaChiTocca(true)
+                            //(devo settarlo a false così in tiraDado() mi andrà nel false, e in avanzaCOM() decrementerà il contatore dei turni fermo edl PL1)
+                        this.player.turnoMio = false
                     } else {
                         //L'avversario non ha un fermo MA non è detto che tocchi a lui 
                         // (PL1 potrebbe aver preso un TIRA DI NUOVO) quindi controllo
@@ -385,6 +400,7 @@ class CrazyGoose {
                             this.toccaAlCOM()
                         } else {
                             this.segnalaChiTocca(true)
+                            this.player.turnoMio = true
                         }
                     }
                 }
@@ -418,7 +434,7 @@ class CrazyGoose {
                     clearInterval(idIntervalFineAvanza)
 
                     this.player.turnoMio = !this.com.turnoMio
-                    if (false && this.player.posizione == this.com.posizione &&
+                    if (this.player.posizione == this.com.posizione &&
                         this.player.posizione > 2) {
 
                         this.attivaAbilitaCOM(false, this.com.turnoMio)
@@ -472,14 +488,14 @@ class CrazyGoose {
                     } else {
                         if (this.com.turniFermo > 0) {
                             this.segnalaChiTocca(true)
-                            this.player.turnoMio(true)
+                            this.player.turnoMio = true
                         } else {
                             if (!toccaAncoraA_Me) {
                                 this.segnalaChiTocca(false)
                                 this.toccaAlCOM()
                             } else {
                                 this.segnalaChiTocca(true)
-                                this.player.turnoMio(true)
+                                this.player.turnoMio = true
                             }
                         }
                     }
@@ -498,7 +514,7 @@ class CrazyGoose {
                                 this.toccaAlCOM()
                             } else {
                                 this.segnalaChiTocca(true)
-                                this.player.turnoMio(true)
+                                this.player.turnoMio = true
                             }
                         }
                     }
@@ -581,11 +597,11 @@ class CrazyGoose {
             chiAspetta = document.getElementById("info_pl1")
         }
         chiTocca.style.padding = "1px"
-        chiTocca.style.border = "2px solid red"
+        chiTocca.style.border = "4px solid red"
 
         //rimuovo il bordo (lo nascondo in pratica)
         chiAspetta.style.padding = "0px"
-        chiAspetta.style.border = "2px none red"
+        chiAspetta.style.border = "4px none red"
     }
 
     riempiCaselle() {

@@ -58,13 +58,13 @@ body {
 }
 
 .numCasella {
-    width: 15px;
-    height: 14px;
+    border-radius: 3px;
+    width: 20px;
     font-size: 14px;
     margin-top: -8px;
     text-align: center;
     z-index: 1;
-    background-color: rgb(221, 221, 221);
+    background-color: rgb(201, 196, 196);
 }
 
 #imgTitolo {
@@ -75,6 +75,7 @@ body {
     position: absolute;
     top: 10px;
     left: 30px;
+    background-color: white;
 }
 
 #imgAbilita {
@@ -88,6 +89,7 @@ body {
     position: absolute;
     top: 10px;
     right: 30px;
+    background-color: white;
 }
 
 #eff1_pl1 {
@@ -95,7 +97,8 @@ body {
     position: absolute;
     top: 10px;
     left: 250px;
-    border: 2px solid black;
+    border: 3px solid black;
+    font-weight: bold;
 }
 
 #eff2_pl1 {
@@ -103,7 +106,7 @@ body {
     position: absolute;
     top: 40px;
     left: 250px;
-    border: 1px solid black;
+    border: 2px solid black;
 }
 
 #eff1_com {
@@ -111,7 +114,8 @@ body {
     position: absolute;
     top: 10px;
     right: 210px;
-    border: 2px solid black;
+    border: 3px solid black;
+    font-weight: bold;
 }
 
 #eff2_com {
@@ -119,7 +123,7 @@ body {
     position: absolute;
     top: 40px;
     right: 210px;
-    border: 1px solid black;
+    border: 2px solid black;
 }
 
 

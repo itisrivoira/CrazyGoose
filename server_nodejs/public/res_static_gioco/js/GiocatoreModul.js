@@ -57,8 +57,10 @@ class Giocatore {
         this.attendoAbilita = false
         this.abilitaAttivata = false
 
-        this.penultimoEff = ""
-        this.ultimoEff = ""
+        //qui ci sarà l'effetto e il bg_color
+        this.penultimoEff = ["", ""]
+        this.ultimoEff = ["", ""]
+
         this.newSpostamento = 0
         this.creaCasellaIniziale()
     }
@@ -315,44 +317,53 @@ class Giocatore {
     controlloEffettoCasella(codCasella) {
         let spostamento = 0
         let eff = ""
+        let color = ""
 
         if (codCasella == TIRA_DI_NUOVO[0]) {
             eff = "TIRA ANCORA IL DADO"
+            color = BG_COLOR_X2
             this.turnoMio = true
             this.sopraEffetto = true
 
         } else if (codCasella == INDIETRO_DI_UNO[0]) {
             eff = "INDIETRO DI UNA CASELLA"
+            color = BG_COLOR_MENO1
             spostamento = -1
             this.sopraEffetto = true
 
         } else if (codCasella == INDIETRO_DI_TRE[0]) {
             eff = "INDIETRO DI TRE CASELLE"
+            color = BG_COLOR_MENO3
             spostamento = -3
             this.sopraEffetto = true
 
         } else if (codCasella == AVANTI_DI_UNO[0]) {
             eff = "AVANTI DI UNA CASELLA"
+            color = BG_COLOR_PIU1
             spostamento = 1
             this.sopraEffetto = true
 
         } else if (codCasella == AVANTI_DI_QUATTRO[0]) {
             eff = "AVANTI DI QUATTRO CASELLE"
+            color = BG_COLOR_PIU4
             spostamento = 4
             this.sopraEffetto = true
 
         } else if (codCasella == FERMO_DA_UNO[0]) {
             eff = "FERMO PER UN GIRO"
+            color = BG_COLOR_FERMO1
             this.turniFermo = 1
             this.sopraEffetto = true
 
         } else if (codCasella == FERMO_DA_DUE[0]) {
             eff = "FERMO PER DUE GIRI"
+            color = BG_COLOR_FERMO2
             this.turniFermo = 2
             this.sopraEffetto = true
 
         } else if (codCasella == TORNA_ALL_INIZIO) {
             eff = "RICOMINCIA DA CAPO !!!"
+            color = BG_COLOR_DACAPO
             this.sopraEffetto = true
                 // Lo fa ritornare alla 1° casella. Dalla posizione 39 va alla 1° ==> si muove di 38 posizioni indietro
             spostamento = -(this.posizione - 1)
@@ -361,8 +372,10 @@ class Giocatore {
         }
 
         if (eff != "") {
-            this.penultimoEff = this.ultimoEff
-            this.ultimoEff = eff
+            this.penultimoEff[0] = this.ultimoEff[0]
+            this.penultimoEff[1] = this.ultimoEff[1]
+            this.ultimoEff[0] = eff
+            this.ultimoEff[1] = color
 
             //per mostrare i effetti (di chi è l'effetto ? true se è del PL1, false se del COM)
             this.crazyGoose.scriviEffetti(this, (this.tag == "PL1"))

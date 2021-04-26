@@ -1,3 +1,14 @@
+const BG_COLOR_MENO1 = "#faa046"
+const BG_COLOR_MENO3 = "#c8501e"
+const BG_COLOR_PIU1 = "#1ebe1e"
+const BG_COLOR_PIU4 = "#148714"
+const BG_COLOR_FERMO1 = "#DC3C3C"
+const BG_COLOR_FERMO2 = "#DC0000"
+const BG_COLOR_X2 = "#aaff00"
+const BG_COLOR_DACAPO = "#FF0000"
+const BG_COLOR_VITTORIA = "#328CE6"
+
+
 class Casella {
     constructor(indice, x, y, casellaVittoria, width = 90, height = 60) {
         this.x = x
@@ -44,31 +55,33 @@ class Casella {
         let testo = ""
         if (codCasella == TIRA_DI_NUOVO[0]) {
             testo = "X2"
-            this.questaCasella.style.background = "#aaff00"
+            this.questaCasella.style.background = BG_COLOR_X2
         } else if (codCasella == INDIETRO_DI_UNO[0]) {
             testo = "-1"
-            this.questaCasella.style.background = "#faa046"
+            this.questaCasella.style.background = BG_COLOR_MENO1
         } else if (codCasella == INDIETRO_DI_TRE[0]) {
             testo = "-3"
-            this.questaCasella.style.background = "#c8501e"
+            this.questaCasella.style.background = BG_COLOR_MENO3
         } else if (codCasella == AVANTI_DI_UNO[0]) {
             testo = "+1"
-            this.questaCasella.style.background = "#1ebe1e"
+            this.questaCasella.style.background = BG_COLOR_PIU1
         } else if (codCasella == AVANTI_DI_QUATTRO[0]) {
             testo = "+4"
-            this.questaCasella.style.background = "#148714"
+            this.questaCasella.style.background = BG_COLOR_PIU4
         } else if (codCasella == FERMO_DA_UNO[0]) {
             testo = "ALT"
-            this.questaCasella.style.background = "#DC3C3C"
+            this.questaCasella.style.background = BG_COLOR_FERMO1
         } else if (codCasella == FERMO_DA_DUE[0]) {
             testo = "ALT X2"
-            this.questaCasella.style.background = "#DC0000"
+            this.questaCasella.style.background = BG_COLOR_FERMO2
         } else if (codCasella == TORNA_ALL_INIZIO) {
             testo = "DA CAPO !"
-            this.questaCasella.style.background = "#FF0000"
+            this.questaCasella.style.background = BG_COLOR_DACAPO
+            this.questaCasella.style.fontSize = "15px"
         } else if (codCasella == VITTORIA) {
             testo = "HAI VINTO !!!"
-            this.questaCasella.style.background = "#5050E6"
+            this.questaCasella.style.background = BG_COLOR_VITTORIA
+            this.questaCasella.style.fontSize = "15px"
         }
 
         let x = document.createElement("LABEL")
