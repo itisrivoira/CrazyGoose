@@ -12,6 +12,16 @@ from Percorso_modul import VITTORIA
 
 import pygame
 
+BG_COLOR_X2 = (170,255,0)
+BG_COLOR_MENO1 = (250, 160, 70)
+BG_COLOR_MENO3 = (200, 80, 30)
+BG_COLOR_PIU1 = (30, 190, 30)
+BG_COLOR_PIU4 = (20, 135, 20)
+BG_COLOR_FERMO1 = (220,60,60)
+BG_COLOR_FERMO2 = (220, 0, 0)
+BG_COLOR_DACAPO = (255, 0, 0)
+BG_COLOR_VITTORIA = (50, 140, 230)
+
 class Casella():
 	def __init__(self, display, posx, posy, width=90, height=60):
 		self.display = display
@@ -32,31 +42,31 @@ class Casella():
 		color = (255,255,255)
 		if(codCasella == TIRA_DI_NUOVO[0]):
 			testo = "X2"
-			color = (170,255,0)
+			color = BG_COLOR_X2
 		elif(codCasella == INDIETRO_DI_UNO[0]):
 			testo = "-1"
-			color = (250, 160, 70)
+			color = BG_COLOR_MENO1
 		elif(codCasella == INDIETRO_DI_TRE[0]):
 			testo = "-3"
-			color = (200, 80, 30)
+			color = BG_COLOR_MENO3
 		elif(codCasella == AVANTI_DI_UNO[0]):
 			testo = "+1"
-			color = (30, 190, 30)
+			color = BG_COLOR_PIU1
 		elif(codCasella == AVANTI_DI_QUATTRO[0]):
 			testo = "+4"
-			color = (20, 135, 20)
+			color = BG_COLOR_PIU4
 		elif(codCasella == FERMO_DA_UNO[0]):
 			testo = "ALT"
-			color = (220,60,60)
+			color = BG_COLOR_FERMO1
 		elif(codCasella == FERMO_DA_DUE[0]):
 			testo = "ALT X2"
-			color = (220, 0, 0)
+			color = BG_COLOR_FERMO2
 		elif(codCasella == TORNA_ALL_INIZIO):
 			testo = "DA CAPO !"
-			color = (255, 0, 0)
+			color = BG_COLOR_DACAPO
 		elif(codCasella == VITTORIA):
 			testo = "HAI\nVINTO !!!"
-			color = (50, 140, 230)
+			color = BG_COLOR_VITTORIA
 		
 		#disegna un ellisse leggermente più piccolo sopra quello di prima (così da mantenere solo un contorno nero)
 		pygame.draw.ellipse(self.display, color, (self.x+2, self.y+2, self.width-4, self.height-4), 0)

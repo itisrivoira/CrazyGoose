@@ -70,8 +70,8 @@ class Giocatore():
 		self.attendoAbilita = False
 		self.abilitaAttivata = False
 		
-		self.ultimoMsg = ""
-		self.penultimoMsg = ""
+		self.ultimoMsg = ["", ""]
+		self.penultimoMsg = ["", ""]
 		self.colorePedina = (255,0,0)
 		self.creaCasellaIniziale()
 
@@ -447,44 +447,53 @@ class Giocatore():
 			
 			spostamento = 0
 			msg = ""
+			color = ""
 	
 			if(codCasella == TIRA_DI_NUOVO[0]):
 				msg = "TIRA ANCORA IL DADO"
+				color = BG_COLOR_X2
 				self.turnoMio = True
 				self.sopraEffetto = True
 	
 			elif(codCasella == INDIETRO_DI_UNO[0]):
 				msg = "INDIETRO DI UNA CASELLA"
+				color = BG_COLOR_MENO1
 				spostamento = -1
 				self.sopraEffetto = True
 	
 			elif(codCasella == INDIETRO_DI_TRE[0]):
 				msg = "INDIETRO DI TRE CASELLE"
+				color = BG_COLOR_MENO3
 				spostamento = -3
 				self.sopraEffetto = True
 	
 			elif(codCasella == AVANTI_DI_UNO[0]):
 				msg = "AVANTI DI UNA CASELLA"
+				color = BG_COLOR_PIU1
 				spostamento = 1
 				self.sopraEffetto = True
 	
 			elif(codCasella == AVANTI_DI_QUATTRO[0]):
 				msg = "AVANTI DI QUATTRO CASELLE"
+				color = BG_COLOR_PIU4
 				spostamento = 4
 				self.sopraEffetto = True
 	
 			elif(codCasella == FERMO_DA_UNO[0]):
 				msg = "FERMO PER UN GIRO"
+				color = BG_COLOR_FERMO1
 				self.turniFermo = 1
 				self.sopraEffetto = True
 	
 			elif(codCasella == FERMO_DA_DUE[0]):
 				msg = "FERMO PER DUE GIRI"
+				color = BG_COLOR_FERMO2
 				self.turniFermo = 2
 				self.sopraEffetto = True
 	
 			elif(codCasella == TORNA_ALL_INIZIO):
 				msg = "RICOMINCIA DA CAPO !!!"
+				color = BG_COLOR_DACAPO
 				#Lo fa ritornare alla 1° casella
 				#Dalla posizione == 39 va alla 1° ==> si muove di 38 posizioni indietro
 				spostamento = -(self.posizione-1)
@@ -494,9 +503,11 @@ class Giocatore():
 				self.vincitore = True
 	
 			if(msg != ""):
-				self.penultimoMsg = self.ultimoMsg
-				self.ultimoMsg = msg
-	
+				self.penultimoMsg[0] = self.ultimoMsg[0]
+				self.penultimoMsg[1] = self.ultimoMsg[1]
+				self.ultimoMsg[0] = msg
+				self.ultimoMsg[1] = color
+				
 				#mostra i msg
 				self.crazyGoose.disegnaTutto()
 	

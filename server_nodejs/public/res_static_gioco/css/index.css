@@ -85,6 +85,12 @@ body {
     left: 160px;
 }
 
+#tmpRimanenteAbilita {
+    position: absolute;
+    top: 90px;
+    left: 175px;
+}
+
 #info_com {
     position: absolute;
     top: 10px;

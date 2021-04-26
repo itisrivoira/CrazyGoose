@@ -30,6 +30,7 @@ class ButtonAbilitaPL1 {
         this.imgNonPiu = "res_static_gioco/images/imgAbilita" + cartella + "/NON_PIU.png"
         this.imgNo = "res_static_gioco/images/imgAbilita" + cartella + "/NO.png"
 
+        this.tmpRimanenteAbilita = document.getElementById("tmpRimanenteAbilita")
         this.imgAbilita = document.getElementById("imgAbilita")
             //ad inizio partita di certo non potrà attivare l'abilita quindi questa è l'img di default
         this.evidenziaTempoRimanente(0)
@@ -39,10 +40,7 @@ class ButtonAbilitaPL1 {
                 this.crazyGoose.player.attendoAbilita) {
 
                 this.crazyGoose.player.abilitaAttivata = true
-            } else {
-                console.log("finito nel else")
             }
-
         })
     }
 
@@ -56,6 +54,9 @@ class ButtonAbilitaPL1 {
             /*pygame.draw.arc(self.game.display, self.game.BLACK, pygame.Rect(
             	self.rect.x-2, self.rect.y-2, self.rect.width+4, self.rect.height+4
             ), math.radians(90), math.radians(gradi), 3)*/
+            this.tmpRimanenteAbilita.innerHTML = ((ms / 1000) + " s")
+        } else {
+            this.tmpRimanenteAbilita.innerHTML = ("0.0 s")
         }
 
         let img = null
@@ -532,10 +533,8 @@ class CrazyGoose {
         //QuerySelector vengono usati per ricollegarsi ai css
         if (giocatore.tag == "PL1") {
             cube = document.querySelector('.cube');
-            console.log("TORNO PLAYER")
         } else {
             cube = document.querySelector('.cubeCOM');
-            console.log("TURNO COMPUTER")
         }
 
         //our main roll dice function on click

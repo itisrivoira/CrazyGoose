@@ -18,6 +18,7 @@ INFO_DADO_COM = "Dado COM: "
 
 #carica l'img della scritta
 imgCrazyGoose = pygame.image.load("../Logo/scrittaCrazyGoose_400x130_noBagliore.png")
+sfondo = pygame.image.load("./images/sfondo.png")
 
 
 class Dado():
@@ -59,9 +60,6 @@ class Button():
 	
 	
 	def disegna(self, valDado, doBlitScreen = False):
-		#"cancella" il dado che c'era prima
-		self.cancellaQuelloDiPrima()
-		
 		if (self.crazyGoose.mouseOverDadoPL1):
 			# COME PER LA SCELTA DELL'OCA, CREA UN RETTANGOLO DENTRO L'ALTRO PER FARE UN BORDO
 			# PIÙ GRANDE E VISIBILE
@@ -105,8 +103,6 @@ class Button():
 		numGiri = 0
 		dadiFattiVedere = list()
 		while (numGiri < 4 and self.crazyGoose.giocoPartito):
-			self.cancellaQuelloDiPrima()
-			
 			# ogni volta un dado diverso
 			x = Dado().tiraDado()
 			while (x in dadiFattiVedere):
@@ -139,12 +135,6 @@ class Button():
 			pygame.time.wait(250)
 		
 		pygame.draw.rect(self.game.display, self.game.WHITE, self.rect)
-	
-	
-	def cancellaQuelloDiPrima(self):
-		pygame.draw.rect(self.game.display, self.game.WHITE,
-						 pygame.Rect(self.rect.x - 4, self.rect.y - 4, self.rect.width + 8,
-									 self.rect.height + 8), 0)
 	
 	
 	def avvisaNonSuoTurno(self, blitScreen):
@@ -196,11 +186,10 @@ class ButtonAbilitaPL1():
 	
 	
 	def disegna(self, ms = 0, doBlitScreen = False, cancellaPrec = True):
-		if(cancellaPrec):
+		if (cancellaPrec):
 			# (Non farà blit_screen, al massimo lo farà dopo ma di certo non
 			# non mi serve farlo due volte)
 			self.cancellaButtonAbilita(False)
-		
 		
 		if(self.crazyGoose.player.abilitaAttivata == False):
 			if(ms == 0):
@@ -228,7 +217,8 @@ class ButtonAbilitaPL1():
 	
 	
 	def evidenziaTempoRimanente(self, ms=2000, doBlitScreen = False):
-		#(Non farà blit_screen, al massimo lo farà dopo ma di certo non
+		# TODO rimane quadrato bianco... da risolvere
+		# (Non farà blit_screen, al massimo lo farà dopo ma di certo non
 		# non mi serve farlo due volte)
 		self.cancellaButtonAbilita(False)
 		
@@ -247,7 +237,7 @@ class ButtonAbilitaPL1():
 			self.crazyGoose.blit_screen()
 	
 	
-	def cancellaButtonAbilita(self, doBlitScreen = True):
+	def cancellaButtonAbilita(self, doBlitScreen=True):
 		# "cancella" il button che c'era prima
 		pygame.draw.rect(self.game.display, self.game.WHITE, self.rectArc)
 		if (doBlitScreen):
@@ -392,7 +382,7 @@ class CrazyGoose():
 		! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
 			"""
 			#"ripulisce" tutto
-			self.game.display.fill(self.game.WHITE)
+			self.game.display.blit(sfondo, (0,0))
 			
 			self.game.display.blit(imgCrazyGoose, (300,0))
 			
@@ -474,9 +464,9 @@ class CrazyGoose():
 			xRect = 20
 
 			#Se effettivamente c'è qualcosa da scrivere entra
-			if(player_com.ultimoMsg != ""):
+			if(player_com.ultimoMsg[0] != ""):
 				#Prendo la dimensione che avrà il testo
-				dimTesto = font.size(player_com.ultimoMsg)
+				dimTesto = font.size(player_com.ultimoMsg[0])
 				if(not isPL1):	#caso effetto preso dal COM, va scritto sulla dx della finestra
 					xRect = self.game.DISPLAY_W - 23 - dimTesto[0]
 
@@ -496,16 +486,16 @@ class CrazyGoose():
 				# dimTesto[0]+7  = larghezza del testo più distanza dal bordo a dx + sx
 				# dimTesto[0]+2  = larghezza del testo più distanza dal bordo in alto + in basso
 				#(sarà l'area col testo)
-				pygame.draw.rect(self.game.display, self.game.WHITE,
+				pygame.draw.rect(self.game.display, player_com.ultimoMsg[1],
 								 pygame.Rect(xRect+2, yRect+2, dimTesto[0] + 7-4, dimTesto[1] + 2-2), 0)
-				draw_text(self.game, player_com.ultimoMsg, pxTesto, self.game.BLACK, xText, yText+2)
+				draw_text(self.game, player_com.ultimoMsg[0], pxTesto, self.game.BLACK, xText, yText+2)
 
 				#Se effettivamente c'è qualcosa da scrivere entra
-				if(player_com.penultimoMsg != ""):
+				if(player_com.penultimoMsg[0] != ""):
 					pxTesto = 14
 					font = pygame.font.Font(self.game.font_name, pxTesto)
 					
-					dimTesto = font.size(player_com.penultimoMsg)
+					dimTesto = font.size(player_com.penultimoMsg[0])
 					if(not isPL1):
 						xRect = self.game.DISPLAY_W - 23 - dimTesto[0]
 
@@ -522,8 +512,12 @@ class CrazyGoose():
 					yText = yRect+(dimTesto[1]/2) +1
 					
 					pygame.draw.rect(self.game.display, self.game.BLACK, pygame.Rect(xRect, yRect, dimTesto[0]+7, dimTesto[1]+2), 1)
-				
-					draw_text(self.game, player_com.penultimoMsg, pxTesto, self.game.BLACK, xText, yText)
+					
+					# (sarà l'area col testo)
+					pygame.draw.rect(self.game.display, player_com.penultimoMsg[1],
+									 pygame.Rect(xRect + 2, yRect + 2, dimTesto[0] + 7 - 4, dimTesto[1] + 2 - 2), 0)
+					
+					draw_text(self.game, player_com.penultimoMsg[0], pxTesto, self.game.BLACK, xText, yText + 2)
 	
 	
 	def tiraDado(self):
