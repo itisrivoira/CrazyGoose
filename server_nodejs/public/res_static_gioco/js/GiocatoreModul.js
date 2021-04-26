@@ -147,9 +147,9 @@ class Giocatore {
                         this.posiziona(this.newSpostamento)
                             //una sorta di flag
                         this.newSpostamento = 0
-                    }, 400)
+                    }, TEMPO_SPOST_FRA_CASELLE - 100)
                 }
-            }, 70)
+            }, PICCOLA_PAUSA)
         }
     }
 
@@ -222,8 +222,8 @@ class Giocatore {
         this.gioc = document.createElement("LABEL")
         this.gioc.appendChild(this.imgPedina)
         this.gioc.style.position = "absolute"
-        this.gioc.style.top = y1 - 30 + "px"
-        this.gioc.style.left = x1 - 35 + "px"
+        this.gioc.style.top = y1 - 26 + "px"
+        this.gioc.style.left = x1 - 30 + "px"
 
         document.getElementById("gioco").appendChild(this.gioc)
 
@@ -260,7 +260,7 @@ class Giocatore {
                         // lasciare la pedina un attimino sulla casella con l'effetto)
                         setTimeout(() => {
                             this.controllaCodiceCasella(codCasella)
-                        }, 600)
+                        }, 550)
 
                     }
                 }
@@ -407,11 +407,11 @@ class Giocatore {
                         this.crazyGoose.buttonAbilita.evidenziaTempoRimanente(0)
 
                         //se ha attivato l'abilita "spostamento" sarà diventato 3, altrimenti sarà rimasto 1
-                        this.posiziona(spostamento)
+                        this.posiziona(spostamento, true)
                     }
                 }, 100)
             } else {
-                this.posiziona(spostamento)
+                this.posiziona(spostamento, true)
             }
         } else {
             this.isMoving = false

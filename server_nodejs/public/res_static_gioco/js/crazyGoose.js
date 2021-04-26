@@ -136,14 +136,12 @@ class CrazyGoose {
         })
 
         this.buttonDadoPL1.addEventListener("mouseover", () => {
-            //TODO rivedere bene questo if
-            if (this.player == null || this.player.turniFermo > 0 || this.player.turnoMio == false) {
-                this.imgCroce.style.display = "block"
-                this.containerDado.style.backgroundColor = "transparent"
-            } else {
+            if (this.player.turnoMio && this.player.isMoving == false && this.player.attendoAbilita == false) {
                 this.imgCroce.style.display = "none"
                 this.containerDado.style.backgroundColor = "green"
-
+            } else {
+                this.imgCroce.style.display = "block"
+                this.containerDado.style.backgroundColor = "transparent"
             }
         })
 
@@ -269,9 +267,13 @@ class CrazyGoose {
                 if (this.player.isMoving == false) {
                     clearInterval(idIntervalFineAvanza)
 
+                    //anche se fosse sulla casella del COM gli da la "possibilita di scappare" (oca verde ritira il dado,
+                    // quindi si muove, oca blu avanza di 2)
                     if (this.player.abilitaAttivata == false) {
                         //Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giri" (e ovviamente che abbia scelto l'oca verde)
-                        if (this.player.pedinaScelta == "verde" && this.player.turnoMio == false && this.player.turniFermo == 0) {
+                        if (this.player.pedinaScelta == "verde" &&
+                            //Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giri"    
+                            this.player.turnoMio == false && this.player.turniFermo == 0) {
 
                             let numGiri = 0
                             let idIntervalAbilita = setInterval(() => {
@@ -287,13 +289,15 @@ class CrazyGoose {
                                     } else {
                                         numGiri += 1
                                     }
-
                                 } else {
                                     clearInterval(idIntervalAbilita)
 
                                     this.player.attendoAbilita = false
+
+                                    //se ha attivato l'abilità cambierà img in NO.png altrimenti "ms" è passato a 0
+                                    // quindi metterà NON_PIU.png
                                     this.buttonAbilita.evidenziaTempoRimanente(0)
-                                    this.player.isMoving = false
+                                        //this.player.isMoving = false
 
                                     //se ha attivato l'abilità turnoMio sarà a true e quindi lascerà tirare di nuovo il dado
                                     this.controllaAChiTocca()
@@ -312,15 +316,20 @@ class CrazyGoose {
                                     this.buttonAbilita.evidenziaTempoRimanente((2000 - numGiri * 100), true)
 
                                     if (this.player.abilitaAttivata) {
+                                        //fermerà il ciclo
                                         numGiri = 20
                                     } else {
                                         numGiri += 1
                                     }
                                 } else {
                                     clearInterval(idIntervalAbilita)
+
                                     this.player.attendoAbilita = false
+
+                                    //se ha attivato l'abilità cambierà img in NO.png altrimenti "ms" è passato a 0
+                                    // quindi metterà NON_PIU.png
                                     this.buttonAbilita.evidenziaTempoRimanente(0)
-                                    this.player.isMoving = false
+                                        //this.player.isMoving = false
 
                                     if (this.player.abilitaAttivata) {
                                         this.avanzaPlayer1(2)
@@ -334,6 +343,7 @@ class CrazyGoose {
                             this.controllaAChiTocca()
                         }
                     } else {
+                        //già attivato l'abilita
                         this.controllaAChiTocca()
                     }
                 }
@@ -342,12 +352,13 @@ class CrazyGoose {
     }
 
     controllaAChiTocca() {
-        this.com.turnoMio = !this.player.turnoMio
         if (false && this.player.posizione == this.com.posizione &&
             this.player.posizione > 2) {
 
-            this.attivaAbilitaCOM(false, this.com.turnoMio)
+            //controllaAChiTocca() lo richiamo solo in avanzaPlayer1()
+            this.attivaAbilitaCOM(true, this.player.turnoMio)
         } else {
+            this.com.turnoMio = !this.player.turnoMio
             if (!this.player.vincitore) {
                 //this.com.turnoMio = !this.player.turnoMio
 
@@ -444,7 +455,8 @@ class CrazyGoose {
 
         //sposta indietro di 2 il player
         this.player.isMoving = true
-        this.avanzaPlayer1(-2, false);
+            //false xke non dovrà controllare l'effetto della casella
+        this.avanzaPlayer1(-2, false)
 
         let idIntervalFineAvanza = setInterval(() => {
             if (this.player.isMoving == false) {
