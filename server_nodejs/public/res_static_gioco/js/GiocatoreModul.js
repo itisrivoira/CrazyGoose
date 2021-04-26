@@ -1,8 +1,8 @@
 //x/y delle CASELLE INIZIALI dei due giocatori
-const X_PLAYER1 = 30
-const X_PLAYER2 = 30
-const Y_PLAYER1 = 485
-const Y_PLAYER2 = 560
+const X_PLAYER1 = 320
+const X_PLAYER2 = 320
+const Y_PLAYER1 = 570
+const Y_PLAYER2 = 670
 
 const TEMPO_SPOST_FRA_CASELLE = 600
 const PICCOLA_PAUSA = 50
@@ -83,13 +83,16 @@ class Giocatore {
         this.gioc = document.createElement("LABEL")
         this.gioc.appendChild(this.imgPedina);
         this.gioc.style.position = "absolute"
-        this.gioc.style.top = this.casellaIniziale.getCenterY() - 30 + "px"
-        this.gioc.style.left = this.casellaIniziale.getCenterX() - 35 + "px"
+        this.gioc.style.top = this.casellaIniziale.getCenterY() - 26 + "px"
+        this.gioc.style.left = this.casellaIniziale.getCenterX() - 30 + "px"
 
         document.getElementById("gioco").appendChild(this.gioc)
     }
 
-    posiziona(spostamento, controllaCodCasella = true) {
+    posiziona(spostamento, controllaCodCasella) {
+
+        this.casellaIniziale.nascondi()
+
         //Controlla che con il numero che ha fatto non "esca" dal percorso
         if (this.posizione + spostamento <= QTA_CASELLE_TOTALI) {
             //aggiorno la posizione
@@ -299,13 +302,13 @@ class Giocatore {
         }
     }
 
-    avanza(spostamento) {
+    avanza(spostamento, controllaCodCasella = true) {
         /*Di default appena si muove, il giocatore ha finito il turno e quindi setto
         	subito turnoMio = False, tuttavia potrebbe essere risettato a True se il
         	giocatore finisce sulla casella TIRA_DI_NUOVO*/
         this.turnoMio = false
 
-        this.posiziona(spostamento)
+        this.posiziona(spostamento, controllaCodCasella)
 
         //codice abilita oca verde e blu
     }

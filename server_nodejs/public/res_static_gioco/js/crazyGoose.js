@@ -128,7 +128,7 @@ class CrazyGoose {
         this.buttonDadoPL1.addEventListener("click", () => {
 
             //Controllo che sia il turno del PL1 (cioè che sia il suo turno o che l'avversario abbia un fermo)
-            if (this.player != null && this.player.turniFermo == 0) {
+            if (this.player != null && this.player.turniFermo == 0 && this.player.attendoAbilita == false) {
                 if (this.player.turnoMio == true || (this.player.turnoMio == false && this.com.turniFermo > 0)) {
                     this.tiraDado()
                 }
@@ -136,6 +136,7 @@ class CrazyGoose {
         })
 
         this.buttonDadoPL1.addEventListener("mouseover", () => {
+            //TODO rivedere bene questo if
             if (this.player == null || this.player.turniFermo > 0 || this.player.turnoMio == false) {
                 this.imgCroce.style.display = "block"
                 this.containerDado.style.backgroundColor = "transparent"
@@ -238,8 +239,11 @@ class CrazyGoose {
         }
     }
 
-    avanzaPlayer1(numEstratto) {
-        if (this.player.turniFermo > 0) {
+    avanzaPlayer1(numEstratto, controllaCodCasella = true) {
+        //se controllaCodCasella è false vuol dire che questo metodo è stato lanciato
+        // da attivaAbilitaCOM(), quindi deve muovere il player di due posizioni indietro
+        // anche se ha un fermo (e poi passa il flag ad avanza() per non far controllare il codCasella)
+        if (controllaCodCasella && this.player.turniFermo > 0) {
             // Se il PL1 ha beccato un fermo in precedenza deve "consumarlo"
             // (sarà come se avesse tirato l'avversario)
             this.player.turniFermo -= 1
@@ -256,7 +260,7 @@ class CrazyGoose {
 
             this.cambiaImgDado(numEstratto, this.imgDadoPL1, this.buttonDadoPL1, this.player)
 
-            this.player.avanza(numEstratto)
+            this.player.avanza(numEstratto, controllaCodCasella)
 
             //(* * * setinterval esegue, in una sorta di altro processo (quindi non blocca il codice),
             // la funzione passata OGNI tot millisecondi (finchè non lo si ferma con clearTimeout
@@ -338,10 +342,8 @@ class CrazyGoose {
     }
 
     controllaAChiTocca() {
-        //Ce da fare il metodo attivaAbilitaCOM, quindi quando sarà fatto DOVETE togliere
-        // ↓ questo ↓ "false &&". L'ho messo così l'if è già fatto, basta fare il metodo e togliere quello
         this.com.turnoMio = !this.player.turnoMio
-        if (this.player.posizione == this.com.posizione &&
+        if (false && this.player.posizione == this.com.posizione &&
             this.player.posizione > 2) {
 
             this.attivaAbilitaCOM(false, this.com.turnoMio)
@@ -404,15 +406,13 @@ class CrazyGoose {
                 if (this.com.isMoving == false) {
                     clearInterval(idIntervalFineAvanza)
 
-                    //Ce da fare il metodo attivaAbilitaCOM, quindi quando sarà fatto DOVETE togliere
-                    // ↓ questo ↓ "false &&". L'ho messo così l'if è già fatto, basta fare il metodo e togliere quello
-                    if (this.player.posizione == this.com.posizione &&
+                    this.player.turnoMio = !this.com.turnoMio
+                    if (false && this.player.posizione == this.com.posizione &&
                         this.player.posizione > 2) {
 
                         this.attivaAbilitaCOM(false, this.com.turnoMio)
                     } else {
                         if (!this.com.vincitore) {
-                            this.player.turnoMio = !this.com.turnoMio
                             if (this.com.turniFermo > 0) {
                                 this.player.turniFermo = 0
                                 this.segnalaChiTocca(true)
@@ -443,51 +443,58 @@ class CrazyGoose {
         //cambia un disegno e un wait
 
         //sposta indietro di 2 il player
-        this.avanzaPlayer1(-2);
+        this.player.isMoving = true
+        this.avanzaPlayer1(-2, false);
 
-        //ci dovrebbe essere un while che controlla che il player sta muovendo
+        let idIntervalFineAvanza = setInterval(() => {
+            if (this.player.isMoving == false) {
+                clearInterval(idIntervalFineAvanza)
 
-        //per i commenti vedi avanzaPlayer1
-        if (turnoPL1) {
-            if (this.player.turniFermo > 0) {
-                this.com.turniFermo = 0
-                this.segnalaChiTocca(false)
-
-                this.tiraDado()
-            } else {
-                if (this.com.turniFermo > 0) {
-                    this.segnalaChiTocca(true)
-                    this.player.turnoMio(true)
-                } else {
-                    if (!toccaAncoraA_Me) {
+                //per i commenti vedi avanzaPlayer1
+                if (turnoPL1) {
+                    if (this.player.turniFermo > 0) {
+                        this.com.turniFermo = 0
                         this.segnalaChiTocca(false)
-                        this.toccaAlCOM()
+
+                        this.tiraDado()
                     } else {
+                        if (this.com.turniFermo > 0) {
+                            this.segnalaChiTocca(true)
+                            this.player.turnoMio(true)
+                        } else {
+                            if (!toccaAncoraA_Me) {
+                                this.segnalaChiTocca(false)
+                                this.toccaAlCOM()
+                            } else {
+                                this.segnalaChiTocca(true)
+                                this.player.turnoMio(true)
+                            }
+                        }
+                    }
+                } else {
+                    if (this.com.turniFermo > 0) {
+                        this.player.turniFermo = 0
                         this.segnalaChiTocca(true)
-                        this.player.turnoMio(true)
+                    } else {
+                        if (this.player.turniFermo > 0) {
+                            this.segnalaChiTocca(false)
+                            this.tiraDado()
+                        } else {
+                            //siamo nel turno del COM, quindi se il flag è true tocca al COM
+                            if (toccaAncoraA_Me) {
+                                this.segnalaChiTocca(false)
+                                this.toccaAlCOM()
+                            } else {
+                                this.segnalaChiTocca(true)
+                                this.player.turnoMio(true)
+                            }
+                        }
                     }
                 }
             }
-        } else {
-            if (this.com.turniFermo > 0) {
-                this.player.turniFermo = 0
-                this.segnalaChiTocca(true)
-            } else {
-                if (this.player.turniFermo > 0) {
-                    this.segnalaChiTocca(false)
-                    this.tiraDado()
-                } else {
-                    //siamo nel turno del COM, quindi se il flag è true tocca al COM
-                    if (toccaAncoraA_Me) {
-                        this.segnalaChiTocca(false)
-                        this.toccaAlCOM()
-                    } else {
-                        this.segnalaChiTocca(true)
-                        this.player.turnoMio(true)
-                    }
-                }
-            }
-        }
+        }, 100)
+
+
         //finito il turno, segnala chi tocca
     }
 
@@ -523,7 +530,7 @@ class CrazyGoose {
         }
 
         //if controlla solo se il numEstratto è diverso da null, allora il dado ruota
-        if (numEstratto != null) {
+        if (numEstratto > 0) {
             rollDice()
         }
 
