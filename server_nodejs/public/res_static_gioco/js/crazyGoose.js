@@ -119,6 +119,10 @@ class CrazyGoose {
 
         //this.scriviEffetti(this.player, true)
 
+        this.imgCroce = document.getElementById("imgCroce")
+        this.imgCroce.style.display = "none"
+        this.containerDado = document.getElementsByClassName("scene")[0]
+
         this.buttonDadoPL1 = document.getElementById("dado_pl1")
 
         this.buttonDadoPL1.addEventListener("click", () => {
@@ -129,7 +133,22 @@ class CrazyGoose {
                     this.tiraDado()
                 }
             }
+        })
 
+        this.buttonDadoPL1.addEventListener("mouseover", () => {
+            if (this.player == null || this.player.turniFermo > 0 || this.player.turnoMio == false) {
+                this.imgCroce.style.display = "block"
+                this.containerDado.style.backgroundColor = "transparent"
+            } else {
+                this.imgCroce.style.display = "none"
+                this.containerDado.style.backgroundColor = "green"
+
+            }
+        })
+
+        this.buttonDadoPL1.addEventListener("mouseout", () => {
+            this.imgCroce.style.display = "none"
+            this.containerDado.style.backgroundColor = "transparent"
         })
 
         //this.imgDadoCOM.src = "/res_static_gioco/images/img_dado/dado_1.png"
