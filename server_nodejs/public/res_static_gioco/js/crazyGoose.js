@@ -321,14 +321,14 @@ class CrazyGoose {
     controllaAChiTocca() {
         //Ce da fare il metodo attivaAbilitaCOM, quindi quando sarà fatto DOVETE togliere
         // ↓ questo ↓ "false &&". L'ho messo così l'if è già fatto, basta fare il metodo e togliere quello
-        if (false && this.player.posizione == this.com.posizione &&
+        this.com.turnoMio = !this.player.turnoMio
+        if (this.player.posizione == this.com.posizione &&
             this.player.posizione > 2) {
 
-            this.attivaAbilitaCOM(true, this.com.turnoMio)
+            this.attivaAbilitaCOM(false, this.com.turnoMio)
         } else {
-
             if (!this.player.vincitore) {
-                this.com.turnoMio = !this.player.turnoMio
+                //this.com.turnoMio = !this.player.turnoMio
 
                 //se prende un fermo ANNULLA il fermo dell'avversario 
                 //(SENNÒ NESSUNO GIOCHEREBBE PIÙ per alcuni turni)
@@ -387,10 +387,10 @@ class CrazyGoose {
 
                     //Ce da fare il metodo attivaAbilitaCOM, quindi quando sarà fatto DOVETE togliere
                     // ↓ questo ↓ "false &&". L'ho messo così l'if è già fatto, basta fare il metodo e togliere quello
-                    if (false && this.player.posizione == this.com.posizione &&
+                    if (this.player.posizione == this.com.posizione &&
                         this.player.posizione > 2) {
 
-                        this.attivaAbilitaCOM(true, this.com.turnoMio)
+                        this.attivaAbilitaCOM(false, this.com.turnoMio)
                     } else {
                         if (!this.com.vincitore) {
                             this.player.turnoMio = !this.com.turnoMio
@@ -420,6 +420,57 @@ class CrazyGoose {
         }
     }
 
+    attivaAbilitaCOM(turnoPL1, toccaAncoraA_Me) {
+        //cambia un disegno e un wait
+
+        //sposta indietro di 2 il player
+        this.avanzaPlayer1(-2);
+
+        //ci dovrebbe essere un while che controlla che il player sta muovendo
+
+        //per i commenti vedi avanzaPlayer1
+        if (turnoPL1) {
+            if (this.player.turniFermo > 0) {
+                this.com.turniFermo = 0
+                this.segnalaChiTocca(false)
+
+                this.tiraDado()
+            } else {
+                if (this.com.turniFermo > 0) {
+                    this.segnalaChiTocca(true)
+                    this.player.turnoMio(true)
+                } else {
+                    if (!toccaAncoraA_Me) {
+                        this.segnalaChiTocca(false)
+                        this.toccaAlCOM()
+                    } else {
+                        this.segnalaChiTocca(true)
+                        this.player.turnoMio(true)
+                    }
+                }
+            }
+        } else {
+            if (this.com.turniFermo > 0) {
+                this.player.turniFermo = 0
+                this.segnalaChiTocca(true)
+            } else {
+                if (this.player.turniFermo > 0) {
+                    this.segnalaChiTocca(false)
+                    this.tiraDado()
+                } else {
+                    //siamo nel turno del COM, quindi se il flag è true tocca al COM
+                    if (toccaAncoraA_Me) {
+                        this.segnalaChiTocca(false)
+                        this.toccaAlCOM()
+                    } else {
+                        this.segnalaChiTocca(true)
+                        this.player.turnoMio(true)
+                    }
+                }
+            }
+        }
+        //finito il turno, segnala chi tocca
+    }
 
     cambiaImgDado(numEstratto, imgDado, buttonDado, giocatore) {
 
