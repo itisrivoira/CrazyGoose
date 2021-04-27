@@ -137,7 +137,8 @@ class CrazyGoose {
         })
 
         this.buttonDadoPL1.addEventListener("mouseover", () => {
-            if (this.player.turnoMio && this.player.isMoving == false && this.player.attendoAbilita == false) {
+            if ((this.player.turnoMio && this.player.isMoving == false && this.player.attendoAbilita == false) ||
+                this.com.turniFermo > 0) {
                 this.imgCroce.style.display = "none"
                 this.containerDado.style.backgroundColor = "green"
             } else {
@@ -267,7 +268,10 @@ class CrazyGoose {
             // la funzione passata OGNI tot millisecondi (finchè non lo si ferma con clearTimeout
             // continuerà ad eseguire ogni tot ms la funzione data) * * *)
             let idIntervalFineAvanza = setInterval(() => {
-                if (this.player.isMoving == false) {
+                /* Se this.player.posizione è 40:
+                    HA TIRATO UN NUMERO TROPPO GRANDE E ANDREBBE FUORI DAL PERCORSO QUINDI...
+                    MUOVE LA PEDINA FINO ALLA CASELLA VITTORIA E POI LA MUOVE DI TOT INDIETRO */
+                if (this.player.isMoving == false && this.player.posizione != 40 && this.player.vincitore == false) {
                     clearInterval(idIntervalFineAvanza)
 
                     //anche se fosse sulla casella del COM gli da la "possibilita di scappare" (oca verde ritira il dado,
@@ -431,7 +435,10 @@ class CrazyGoose {
             this.com.avanza(numEstratto)
 
             let idIntervalFineAvanza = setInterval(() => {
-                if (this.com.isMoving == false) {
+                /* Se this.com.posizione è 40 e this.com.vincitore è false:
+                    HA TIRATO UN NUMERO TROPPO GRANDE E ANDREBBE FUORI DAL PERCORSO QUINDI...
+                    MUOVE LA PEDINA FINO ALLA CASELLA VITTORIA E POI LA MUOVE DI TOT INDIETRO */
+                if (this.com.isMoving == false && this.com.posizione != 40 && this.com.vincitore == false) {
                     clearInterval(idIntervalFineAvanza)
 
                     this.player.turnoMio = !this.com.turnoMio

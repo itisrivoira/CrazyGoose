@@ -129,7 +129,8 @@ class Giocatore {
                 this.newSpostamento = -((this.posizione + spostamento) - QTA_CASELLE_TOTALI)
             }
 
-            //quindi ora sposto la pedina sulla casella finale
+            this.flagEAndatoOltre = true
+                //quindi ora sposto la pedina sulla casella finale
             this.posiziona((QTA_CASELLE_TOTALI - this.posizione), false)
 
             //Aspetta che finisca l'animazione della pedina e poi la fa ritornare indietro
@@ -146,9 +147,10 @@ class Giocatore {
                         //elimino l'interval
                         clearInterval(this.idIntervalPedinaFuoriPercorso)
                             //Ora ri-sposto indietro il giocatore di TOT
-                        this.posiziona(this.newSpostamento)
+                        this.posiziona(this.newSpostamento, true)
                             //una sorta di flag
                         this.newSpostamento = 0
+                            //this.controllaCodiceCasella(codCasella)
                     }, TEMPO_SPOST_FRA_CASELLE - 100)
                 }
             }, PICCOLA_PAUSA)
@@ -254,6 +256,7 @@ class Giocatore {
                         // Normalmente infatti non lo faccio xke controllando l'effetto della casella potrebbe    
                         // muoversi ancora)
                         this.isMoving = false
+
                     } else {
                         //sono nel caso in cui ha trovato è finito in una casella con
                         // effetto
@@ -432,7 +435,8 @@ class Giocatore {
     }
 
     controllaCodiceCasella(codCasella) {
-        //codCasella è -1 se nella casella non c'è alcun effetto. Se non c'è nessun effetto non ha da annullare nulla
+        console.log("controlla cod casella")
+            //codCasella è -1 se nella casella non c'è alcun effetto. Se non c'è nessun effetto non ha da annullare nulla
         if (codCasella != -1 && this.abilitaAttivata == false && this.pedinaScelta == "rossa" && this.codCasella != VITTORIA) {
             //attende 2 sec (nel mentre deve fare controlli quindi non posso
             // usare semplicemente una wait di 2000, ogni 100ms faccio un giro
