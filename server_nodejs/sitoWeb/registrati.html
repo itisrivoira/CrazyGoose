@@ -13,37 +13,47 @@
         <div>
             <center>
                 <p id="registrParagInfo">Crea il tuo account Crazy Goose</p>
-                <a href="http://127.0.0.1:3000/"><img src="res_static_sitoweb/images/logo_32x32.png"></a>
+                <a href="http://localhost:3000/"><img src="res_static_sitoweb/images/logo_32x32.png"></a>
             </center>
         </div>
-        <form action="http://127.0.0.1:3000/registrazioneFatta" method="post">
+        <form action="http://localhost:3000/registrazioneFatta" name="formReg" method="post" onsubmit="return(controllaDati());">
             <input id="nome" name="nome" type="text" placeholder="Nome">
             <input id="cognome" name="cognome" type="text" placeholder="Cognome">
             <input id="email" name="email" type="text" placeholder="Email">
             <input id="passw" name="password" type="password" placeholder="Password">
-            <button id="submit" onclick="controllaDati()">Sign up</button>
+            <input type="submit" value="Sign up" id="submit">
         </form>
         <div id="divAccedi">
             <center>
-                <p id="passaALogin">Hai gi&agrave; un account ? <a href="http://127.0.0.1:3000/login" id="btnAccedi"><b>Sign in</b></a></p>
+                <p id="passaALogin">Hai gi&agrave; un account ? <a href="http://localhost:3000/login" id="btnAccedi"><b>Sign in</b></a></p>
             </center>
         </div>
     </div>
 
     <script>
         function controllaDati() {
-            let form = document.getElementsByTagName("form")[0]
-            let nome = document.getElementById("nome").value;
-            let cognome = document.getElementById("cognome").value;
-            let email = document.getElementById("email").value;
-            let passw = document.getElementById("passw").value;
-
-            if (nome.length > 0 && cognome.length > 0 &&
-                email.length > 0 && passw.length > 0) {
-                form.submit()
-            } else {
-                alert("INSERISCI TUTTI I DATI !")
+            if (document.formReg.nome.value == "") {
+                document.formReg.nome.focus()
+                alert("Inserisci il tuo nome !")
+                return false
             }
+            if (document.formReg.cognome.value == "") {
+                document.formReg.nome.focus()
+                alert("Inserisci il tuo cognome !")
+                return false
+            }
+            if (document.formReg.email.value == "") {
+                document.formReg.nome.focus()
+                alert("Inserisci l'email per registrarsi.")
+                return false
+            }
+            if (document.formReg.password.value == "") {
+                document.formReg.nome.focus()
+                alert("Inserisci la password che avrà il tuo account.")
+                return false
+            }
+
+            return true
         }
     </script>
 </body>

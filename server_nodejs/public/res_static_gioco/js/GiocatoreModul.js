@@ -15,29 +15,28 @@ class Giocatore {
         this.caselle = caselle
         this.percorso = percorso
         this.tag = tag
-        this.pedinaScelta = pedinaScelta
+        if (this.tag == "PL1") {
+            this.pedinaScelta = pedinaScelta
+        } else {
+            // pedina scelta mi serve per scegliere le img ma il COM non sceglie un oca
+            this.pedinaScelta = null
+        }
 
         this.imgPedina = new Image();
-        this.percorsoImgSxDx = null
-        this.percorsoImgDxSx = null
+
         if (tag == "COM") {
             this.percorsoImgSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_COM.png"
             this.percorsoImgDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_COM.png"
         } else {
-            if (this.pedinaScelta == "gialla") {
-                this.percorsoImgSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_gialla.png"
-                this.percorsoImgDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_gialla.png"
-            } else if (this.pedinaScelta == "verde") {
-                this.percorsoImgSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_verde.png"
-                this.percorsoImgDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_verde.png"
-            } else if (this.pedinaScelta == "blu") {
-                this.percorsoImgSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_blu.png"
-                this.percorsoImgDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_blu.png"
-            } else if (this.pedinaScelta == "rossa") {
-                this.percorsoImgSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_rossa.png"
-                this.percorsoImgDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_rossa.png"
-            }
+            this.percorsoImgSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_" + this.pedinaScelta + ".png"
+            this.percorsoImgDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_" + this.pedinaScelta + ".png"
         }
+        this.percorsoImgScontroNoEffDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/dxVersoSx/COM_vs_" + pedinaScelta + ".png"
+        this.percorsoImgScontroNoEffSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/sxVersoDx/" + pedinaScelta + "_vs_COM.png"
+        this.percorsoImgScontroEffDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/dxVersoSx/COM_vs_" + pedinaScelta + ".png"
+        this.percorsoImgScontroEffSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/sxVersoDx/" + pedinaScelta + "_vs_COM.png"
+
+
         this.imgPedina.src = this.percorsoImgSxDx
 
         this.posizione = 0
@@ -61,6 +60,9 @@ class Giocatore {
         this.penultimoEff = ["", ""]
         this.ultimoEff = ["", ""]
 
+        //mi serve per bloccare l'avversario mentre questo torna indietro se ha fatto
+        // un tiro troppo lungo
+        this.flagTiroLungo = false
         this.newSpostamento = 0
         this.creaCasellaIniziale()
     }
@@ -117,7 +119,8 @@ class Giocatore {
                 this.ridisegnaTutto(spostamento, true)
             }
         } else {
-            // - - - Ha tirato un numero troppo alto che lo farebbe "andare oltre" la casella di vittoria - - -
+            this.flagTiroLungo = true
+                // - - - Ha tirato un numero troppo alto che lo farebbe "andare oltre" la casella di vittoria - - -
 
             //sposto fino alla casella finale (Non constrollo il codice
             // casella xkè sennò mi darebbe la vittoria ma in realtà non ha vinto)
@@ -179,16 +182,16 @@ class Giocatore {
                     prossimaCasella -= 1
                 }
 
-                this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella,
+                this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella, prossimaCasella,
                     this.caselle[casellaCorrente].getCenterX(), this.caselle[casellaCorrente].getCenterY(),
                     this.caselle[prossimaCasella].getCenterX(), this.caselle[prossimaCasella].getCenterY())
 
             } else {
                 //Caso in cui è finito su "DA CAPO !" e deve andare dritto dritto verso la prima casella
-                var x1 = this.caselle[partenza - 1].getCenterX()
-                var y1 = this.caselle[partenza - 1].getCenterY()
-                var x2 = this.caselle[0].getCenterX()
-                var y2 = this.caselle[0].getCenterY()
+                let x1 = this.caselle[partenza - 1].getCenterX()
+                let y1 = this.caselle[partenza - 1].getCenterY()
+                let x2 = this.caselle[0].getCenterX()
+                let y2 = this.caselle[0].getCenterY()
 
                 //devo settarlo a 1 così quando incrementerà il contatore lui finirà il ciclo
                 // (il codice è quello per spostare la pedina fra due caselle, se non lo settassi
@@ -196,17 +199,19 @@ class Giocatore {
                 spostamento = 1
                     //Può settare a false this.isMoving xke intanto sulla prima casella non ci
                     // può essere alcun effetto, qunidi non deve controllare il codice della casella
-                this.spostaFraDueCaselle(partenza, spostamento, true, codCasella, x1, y1, x2, y2)
+                this.spostaFraDueCaselle(partenza, spostamento, true, codCasella, 0, x1, y1, x2, y2)
             }
         }
     }
 
-    spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella,
+    spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella, posCasellaFinale = 0,
         x1 = this.casellaIniziale.getCenterX(),
         y1 = this.casellaIniziale.getCenterY(),
         x2 = this.caselle[0].getCenterX(),
         y2 = this.caselle[0].getCenterY()) {
 
+
+        this.imgPedina.src = this.cambiaVersoPedina(x1, x2, posCasellaFinale)
 
         /*
             
@@ -215,8 +220,6 @@ class Giocatore {
         ! ! ! Cosa faccio quindi ? OGNI VOLTA CREO UNA NUOVA LABEL, le faccio fare l'animazione ! ! ! 
         ! ! !  e LA DISTRUGGO. AL GIRO DOPO NE VERRÀ CREATA UN ALTRA E CONTINUA COSÌ. ! ! ! 
             */
-
-
         if (this.gioc != null) {
             //tra un turno e l'altro la pedina non deve essere rimossa
             // (deve stare ferma sulla casella) quindi la distruggo ora
@@ -256,7 +259,8 @@ class Giocatore {
                         // Normalmente infatti non lo faccio xke controllando l'effetto della casella potrebbe    
                         // muoversi ancora)
                         this.isMoving = false
-
+                        this.imgPedina.src = this.cambiaVersoPedina()
+                        this.flagTiroLungo = false
                     } else {
                         //sono nel caso in cui ha trovato è finito in una casella con
                         // effetto
@@ -275,6 +279,73 @@ class Giocatore {
 
     }
 
+    avanza(spostamento, controllaCodCasella = true) {
+        /*Di default appena si muove, il giocatore ha finito il turno e quindi setto
+        	subito turnoMio = False, tuttavia potrebbe essere risettato a True se il
+        	giocatore finisce sulla casella TIRA_DI_NUOVO*/
+        this.turnoMio = false
+
+        this.posiziona(spostamento, controllaCodCasella)
+    }
+
+    cambiaVersoPedina(x_partenza = 0, x_fine = 0, posCasellaFinale = 0) {
+        if (x_partenza == 0) {
+            x_partenza = this.caselle[this.posizione - 1].getCenterX()
+            x_fine = this.caselle[this.posizione].getCenterX()
+            posCasellaFinale = this.posizione + 1
+        }
+
+
+        //Sceglie in base alla casella in cui deve andare la pedina, se quest'ultima
+        // sarà girata (avrà la testa) verso dx oppure sx
+        // SE NECCESSARIO (prima si è attivata l'abilità del COM) CAMBIA ANCHE QUELLA DEL COM
+
+        let avversario = null
+        if (this.tag == "PL1") {
+            avversario = this.crazyGoose.com
+        } else {
+            avversario = this.crazyGoose.player
+        }
+
+        let percorsoImg = this.percorsoImgSxDx
+
+        if (x_partenza > x_fine) {
+            percorsoImg = this.percorsoImgDxSx
+        } else if (x_partenza == x_fine) { //partenza e fine sono sulla stessa x
+            //controlla la posizione della casella finale e decide
+
+            //!!!!!   È SOLAMENTE LEGATO AL LAYOUT DEL PERCORSO   !!!!!
+
+            if (posCasellaFinale >= 18 && posCasellaFinale <= 20) {
+                percorsoImg = this.percorsoImgSxDx
+            } else if (posCasellaFinale == 26 || posCasellaFinale == 27) {
+                percorsoImg = this.percorsoImgDxSx
+            }
+        } //else prende img da sx a dx
+
+
+        if (this.isMoving == false && this.posizione == avversario.posizione) {
+            if (this.posizione > 2) {
+                //attiva l'abilita
+                if (percorsoImg == this.percorsoImgSxDx) {
+                    percorsoImg = this.percorsoImgScontroEffSxDx
+                } else {
+                    percorsoImg = this.percorsoImgScontroEffDxSx
+                }
+            } else {
+                //NON attiva l'abilita
+                if (percorsoImg == this.percorsoImgSxDx) {
+                    percorsoImg = this.percorsoImgScontroNoEffSxDx
+                } else {
+                    percorsoImg = this.percorsoImgScontroNoEffDxSx
+                }
+            }
+        }
+
+        return percorsoImg
+    }
+
+
     prossimoSpostamento(partenza, spostamento, settaIsMovingFalse, codCasella) {
         //Ora muovo la pedina dello spostamento da fare.
         //   NON muovo la pedina dalla partenza alla fine DIRETTAMENTE,
@@ -284,39 +355,31 @@ class Giocatore {
             //partenza è la posizione della casella da 1 a 40,
             // ma la lista di caselle è 0-based per questo "partenza-1"
 
-            var x1 = this.caselle[partenza - 1 + this.counter].getCenterX()
-            var y1 = this.caselle[partenza - 1 + this.counter].getCenterY()
+            let x1 = this.caselle[partenza - 1 + this.counter].getCenterX()
+            let y1 = this.caselle[partenza - 1 + this.counter].getCenterY()
 
             //prendo la casella successiva
-            var x2 = this.caselle[partenza - 1 + this.counter + 1].getCenterX()
-            var y2 = this.caselle[partenza - 1 + this.counter + 1].getCenterY()
+            let casellaSuccessiva = partenza - 1 + this.counter + 1
+            let x2 = this.caselle[casellaSuccessiva].getCenterX()
+            let y2 = this.caselle[casellaSuccessiva].getCenterY()
 
-            this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella, x1, y1, x2, y2)
+            this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella, casellaSuccessiva, x1, y1, x2, y2)
         } else {
             //partenza è la posizione della casella da 1 a 40,
             // ma le caselle sono 0-based per questo "partenza-1
 
-            var x1 = this.caselle[partenza - 1 - this.counter].getCenterX()
-            var y1 = this.caselle[partenza - 1 - this.counter].getCenterY()
+            let x1 = this.caselle[partenza - 1 - this.counter].getCenterX()
+            let y1 = this.caselle[partenza - 1 - this.counter].getCenterY()
 
             //prendo la casella successiva
-            var x2 = this.caselle[partenza - 1 - this.counter - 1].getCenterX()
-            var y2 = this.caselle[partenza - 1 - this.counter - 1].getCenterY()
+            let casellaSuccessiva = partenza - 1 - this.counter - 1
+            let x2 = this.caselle[casellaSuccessiva].getCenterX()
+            let y2 = this.caselle[casellaSuccessiva].getCenterY()
 
-            this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella, x1, y1, x2, y2)
+            this.spostaFraDueCaselle(partenza, spostamento, settaIsMovingFalse, codCasella, casellaSuccessiva, x1, y1, x2, y2)
         }
     }
 
-    avanza(spostamento, controllaCodCasella = true) {
-        /*Di default appena si muove, il giocatore ha finito il turno e quindi setto
-        	subito turnoMio = False, tuttavia potrebbe essere risettato a True se il
-        	giocatore finisce sulla casella TIRA_DI_NUOVO*/
-        this.turnoMio = false
-
-        this.posiziona(spostamento, controllaCodCasella)
-
-        //codice abilita oca verde e blu
-    }
     controlloEffettoCasella(codCasella) {
         let spostamento = 0
         let eff = ""
@@ -431,12 +494,13 @@ class Giocatore {
             }
         } else {
             this.isMoving = false
+            this.imgPedina.src = this.cambiaVersoPedina()
+            this.flagTiroLungo = false
         }
     }
 
     controllaCodiceCasella(codCasella) {
-        console.log("controlla cod casella")
-            //codCasella è -1 se nella casella non c'è alcun effetto. Se non c'è nessun effetto non ha da annullare nulla
+        //codCasella è -1 se nella casella non c'è alcun effetto. Se non c'è nessun effetto non ha da annullare nulla
         if (codCasella != -1 && this.abilitaAttivata == false && this.pedinaScelta == "rossa" && this.codCasella != VITTORIA) {
             //attende 2 sec (nel mentre deve fare controlli quindi non posso
             // usare semplicemente una wait di 2000, ogni 100ms faccio un giro
@@ -477,6 +541,8 @@ class Giocatore {
                         this.controlloEffettoCasella(codCasella)
                     } else {
                         this.isMoving = false
+                        this.imgPedina.src = this.cambiaVersoPedina()
+                        this.flagTiroLungo = false
                     }
                 }
             }, 100)

@@ -36,6 +36,7 @@ function aggiungiFooterAllaPagina(pagina) {
 }
 
 app.get("/", (req, resp) => {
+    console.log("endpoint /")
     if (req.session.loggato) {
         let sito = fs.readFileSync("./sitoWeb/home.html", "utf-8")
 
@@ -112,11 +113,13 @@ app.get("/registrati", (req, resp) => {
 })
 
 app.post("/registrazioneFatta", (req, resp) => {
-    //TODO ci sarebbe da aggiungere nel database l'utente
+    console.log("endpoint /registrazioneFatta")
+        //TODO ci sarebbe da aggiungere nel database l'utente
     req.session.loggato = true
     req.session.nome = req.body.nome
     req.session.cognome = req.body.cognome
         //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
+    console.log("redirect verso /")
     resp.redirect(301, "/")
 })
 
@@ -128,6 +131,7 @@ app.get("/download", (req, resp) => {
 //----------------- gioco web ----------------------------------
 
 app.get("/menuGioco", (req, resp) => {
+    console.log("endpoint /menuGioco")
     if (req.session.loggato) {
 
         let sito = fs.readFileSync("./webApp/menu/index.html", "utf-8")

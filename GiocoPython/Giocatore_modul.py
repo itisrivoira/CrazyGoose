@@ -276,7 +276,7 @@ class Giocatore():
 		image = self.imgPedinaSxDx
 		if(x_partenza > x_fine):
 			image = self.imgPedinaDxSx
-		else:	#partenza e fine sono sulla stessa x
+		elif(x_partenza == x_fine):	#partenza e fine sono sulla stessa x
 			#controlla la posizione della casella finale e decide
 			
 		#!!!!!   È SOLAMENTE LEGATO AL LAYOUT DEL PERCORSO   !!!!!

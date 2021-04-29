@@ -98,6 +98,7 @@ class CrazyGoose {
             this.percorso = new Percorso()
 
             this.imgDadoPL1 = new Image()
+            this.mouseOverDadoPL1 = false
             this.imgDadoCOM = new Image()
 
             this.buttonDadoCOM = null
@@ -137,8 +138,8 @@ class CrazyGoose {
         })
 
         this.buttonDadoPL1.addEventListener("mouseover", () => {
-            if ((this.player.turnoMio && this.player.isMoving == false && this.player.attendoAbilita == false) ||
-                this.com.turniFermo > 0) {
+            this.mouseOverDadoPL1 = true
+            if ((this.player.turnoMio || this.com.turniFermo > 0) && this.player.isMoving == false && this.player.attendoAbilita == false) {
                 this.imgCroce.style.display = "none"
                 this.containerDado.style.backgroundColor = "green"
             } else {
@@ -148,6 +149,7 @@ class CrazyGoose {
         })
 
         this.buttonDadoPL1.addEventListener("mouseout", () => {
+            this.mouseOverDadoPL1 = false
             this.imgCroce.style.display = "none"
             this.containerDado.style.backgroundColor = "transparent"
         })
@@ -157,7 +159,7 @@ class CrazyGoose {
         this.buttonDadoCOM.appendChild(this.imgDadoCOM);
 
         this.player = new Giocatore(this, this.caselle, this.percorso, "PL1", sessionStorage.getItem("ocaScelta"))
-        this.com = new Giocatore(this, this.caselle, this.percorso, "COM", null)
+        this.com = new Giocatore(this, this.caselle, this.percorso, "COM", sessionStorage.getItem("ocaScelta"))
 
         //(dev'essere creato dopo this.player)
         //COMMENTATO xke bisogna ancora posizionarlo bene, MA FUNZIONA lasciatelo
@@ -242,6 +244,18 @@ class CrazyGoose {
     }
 
     avanzaPlayer1(numEstratto, controllaCodCasella = true) {
+        /*per testare abilità grimilde
+        if (this.player.posizione < this.com.posizione) {
+            numEstratto = this.com.posizione - this.player.posizione
+        }*/
+
+        //se fossero sulla stessa casella (1 o 2) in cui non si attiva l'effetto ora devo
+        // cambiargli l'img
+        if (this.com.posizione == this.player.posizione) {
+            this.com.imgPedina.src = this.com.percorsoImgSxDx
+            this.player.imgPedina.src = this.player.percorsoImgSxDx
+        }
+
         //se controllaCodCasella è false vuol dire che questo metodo è stato lanciato
         // da attivaAbilitaCOM(), quindi deve muovere il player di due posizioni indietro
         // anche se ha un fermo (e poi passa il flag ad avanza() per non far controllare il codCasella)
@@ -271,7 +285,7 @@ class CrazyGoose {
                 /* Se this.player.posizione è 40:
                     HA TIRATO UN NUMERO TROPPO GRANDE E ANDREBBE FUORI DAL PERCORSO QUINDI...
                     MUOVE LA PEDINA FINO ALLA CASELLA VITTORIA E POI LA MUOVE DI TOT INDIETRO */
-                if (this.player.isMoving == false && this.player.posizione != 40 && this.player.vincitore == false) {
+                if (this.player.isMoving == false && this.player.flagTiroLungo == false) {
                     clearInterval(idIntervalFineAvanza)
 
                     //anche se fosse sulla casella del COM gli da la "possibilita di scappare" (oca verde ritira il dado,
@@ -282,7 +296,7 @@ class CrazyGoose {
                     // richiama questo metodo con controllaCodCasella = false
                     if (controllaCodCasella) {
 
-                        if (this.player.abilitaAttivata == false) {
+                        if (this.player.abilitaAttivata == false && this.player.vincitore == false) {
                             //Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giri" (e ovviamente che abbia scelto l'oca verde)
                             if (this.player.pedinaScelta == "verde" &&
                                 //Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giri"    
@@ -356,7 +370,7 @@ class CrazyGoose {
                                 this.controllaAChiTocca()
                             }
                         } else {
-                            //già attivato l'abilita
+                            //già attivato l'abilita oppure ha vinto
                             this.controllaAChiTocca()
                         }
                     } //else i controlli di chi tocca gli farà in attivaAbilitaCOM()
@@ -370,8 +384,7 @@ class CrazyGoose {
         // diciamo che gli lasciamo la possibiltà di scappare ed evitare l'abilità
         // del COM)
 
-        if (controllaAbilitaCOM && this.player.posizione == this.com.posizione &&
-            this.player.posizione > 2) {
+        if (controllaAbilitaCOM && this.player.posizione == this.com.posizione) {
 
             //controllaAChiTocca() lo richiamo solo in avanzaPlayer1()
             this.attivaAbilitaCOM(true, this.player.turnoMio)
@@ -387,8 +400,10 @@ class CrazyGoose {
                         //Ora il PL1 ha un fermo, quindi tocca all'avversario sicuro
                     this.segnalaChiTocca(false)
 
-                    //Lancerà il dado, entrerà in avanzaPlayer1 che
-                    // decrementerà il suo fermo e lancerà avanzaCOM
+                    //questo mi serve xke così in tiraDado() avvierà
+                    // avanzaPLayer1() che decrementerà il contatore di
+                    // turni fermi del player (e farà muovere il com)
+                    this.player.turnMio = true
                     this.tiraDado()
                 } else {
                     if (this.com.turniFermo > 0) {
@@ -420,6 +435,17 @@ class CrazyGoose {
     avanzaCOM(numEstratto) {
         //* * *  Per i commenti VEDI "avanzaPlayer1" * * *
 
+        /*per testare abilità grimilde
+        if (this.player.posizione > this.com.posizione) {
+            numEstratto = this.player.posizione - this.com.posizione
+        }*/
+
+        if (this.com.posizione == this.player.posizione) {
+            this.com.imgPedina.src = this.com.percorsoImgSxDx
+            this.player.imgPedina.src = this.player.percorsoImgSxDx
+        }
+
+
         if (this.com.turniFermo > 0) {
             this.com.turniFermo -= 1
 
@@ -438,12 +464,11 @@ class CrazyGoose {
                 /* Se this.com.posizione è 40 e this.com.vincitore è false:
                     HA TIRATO UN NUMERO TROPPO GRANDE E ANDREBBE FUORI DAL PERCORSO QUINDI...
                     MUOVE LA PEDINA FINO ALLA CASELLA VITTORIA E POI LA MUOVE DI TOT INDIETRO */
-                if (this.com.isMoving == false && this.com.posizione != 40 && this.com.vincitore == false) {
+                if (this.com.isMoving == false && this.com.flagTiroLungo == false) {
                     clearInterval(idIntervalFineAvanza)
 
                     this.player.turnoMio = !this.com.turnoMio
-                    if (this.player.posizione == this.com.posizione &&
-                        this.player.posizione > 2) {
+                    if (this.player.posizione == this.com.posizione) {
 
                         this.attivaAbilitaCOM(false, this.com.turnoMio)
                     } else {
@@ -454,6 +479,10 @@ class CrazyGoose {
                             } else {
                                 if (this.player.turniFermo > 0) {
                                     this.segnalaChiTocca(false)
+                                        //questo mi serve xke così in tiraDado() avvierà
+                                        // avanzaPLayer1() che decrementerà il contatore di
+                                        // turni fermi del player (e farà muovere il com)
+                                    this.player.turnMio = true
                                     this.tiraDado()
                                 } else {
                                     if (this.player.turnoMio) {
@@ -475,63 +504,78 @@ class CrazyGoose {
     }
 
     attivaAbilitaCOM(turnoPL1, toccaAncoraA_Me) {
-        //cambia un disegno e un wait
+        //cambia le img, aspetta un attimo e poi inizia a spostare il player
+        let prevImg = [this.com.imgPedina.src, this.player.imgPedina.src]
+        this.com.imgPedina.src = this.com.cambiaVersoPedina()
+        this.player.imgPedina.src = this.player.cambiaVersoPedina()
 
-        //sposta indietro di 2 il player
-        this.player.isMoving = true
-            //false xke non dovrà controllare l'effetto della casella
-        this.avanzaPlayer1(-2, false)
+        //(* * * setTimeout esegue, in una sorta di altro processo (quindi non blocca il codice),
+        // la funzione passata dopo tot millisecondi * * *)
+        let idTimeoutImgScontro = setTimeout(() => {
+            if (this.player.posizione > 2) {
+                this.com.imgPedina.src = prevImg[0]
+                this.player.imgPedina.src = prevImg[1]
+                    //false xke non dovrà controllare l'effetto della casella
+                this.avanzaPlayer1(-2, false)
+            } else {
+                this.player.isMoving = false
+            }
 
-        let idIntervalFineAvanza = setInterval(() => {
-            if (this.player.isMoving == false) {
-                clearInterval(idIntervalFineAvanza)
+            let idIntervalFineAvanza = setInterval(() => {
+                if (this.player.isMoving == false) {
+                    clearInterval(idIntervalFineAvanza)
 
-                //per i commenti vedi avanzaPlayer1
-                if (turnoPL1) {
-                    if (this.player.turniFermo > 0) {
-                        this.com.turniFermo = 0
-                        this.segnalaChiTocca(false)
-
-                        this.tiraDado()
-                    } else {
-                        if (this.com.turniFermo > 0) {
-                            this.segnalaChiTocca(true)
-                            this.player.turnoMio = true
-                        } else {
-                            if (!toccaAncoraA_Me) {
-                                this.segnalaChiTocca(false)
-                                this.toccaAlCOM()
-                            } else {
-                                this.segnalaChiTocca(true)
-                                this.player.turnoMio = true
-                            }
-                        }
-                    }
-                } else {
-                    if (this.com.turniFermo > 0) {
-                        this.player.turniFermo = 0
-                        this.segnalaChiTocca(true)
-                    } else {
+                    //per i commenti vedi avanzaPlayer1
+                    if (turnoPL1) {
                         if (this.player.turniFermo > 0) {
+                            this.com.turniFermo = 0
                             this.segnalaChiTocca(false)
+                                //questo mi serve xke così in tiraDado() avvierà
+                                // avanzaPLayer1() che decrementerà il contatore di
+                                // turni fermi del player (e farà muovere il com)
+                            this.player.turnMio = true
                             this.tiraDado()
                         } else {
-                            //siamo nel turno del COM, quindi se il flag è true tocca al COM
-                            if (toccaAncoraA_Me) {
-                                this.segnalaChiTocca(false)
-                                this.toccaAlCOM()
-                            } else {
+                            if (this.com.turniFermo > 0) {
                                 this.segnalaChiTocca(true)
                                 this.player.turnoMio = true
+                            } else {
+                                if (!toccaAncoraA_Me) {
+                                    this.segnalaChiTocca(false)
+                                    this.toccaAlCOM()
+                                } else {
+                                    this.segnalaChiTocca(true)
+                                    this.player.turnoMio = true
+                                }
+                            }
+                        }
+                    } else {
+                        if (this.com.turniFermo > 0) {
+                            this.player.turniFermo = 0
+                            this.segnalaChiTocca(true)
+                        } else {
+                            if (this.player.turniFermo > 0) {
+                                this.segnalaChiTocca(false)
+                                    //questo mi serve xke così in tiraDado() avvierà
+                                    // avanzaPLayer1() che decrementerà il contatore di
+                                    // turni fermi del player (e farà muovere il com)
+                                this.player.turnMio = true
+                                this.tiraDado()
+                            } else {
+                                //siamo nel turno del COM, quindi se il flag è true tocca al COM
+                                if (toccaAncoraA_Me) {
+                                    this.segnalaChiTocca(false)
+                                    this.toccaAlCOM()
+                                } else {
+                                    this.segnalaChiTocca(true)
+                                    this.player.turnoMio = true
+                                }
                             }
                         }
                     }
                 }
-            }
-        }, 100)
-
-
-        //finito il turno, segnala chi tocca
+            }, 100)
+        }, 700)
     }
 
     cambiaImgDado(numEstratto, imgDado, buttonDado, giocatore) {
@@ -567,17 +611,6 @@ class CrazyGoose {
         if (numEstratto > 0) {
             rollDice()
         }
-
-        /*
-            - cambiato il nome in cambiaImgDado xke imgDado sembra più un attributo, così si capisce meglio che è un metodo
-            - visto che abbiamo a disposizione lo switch (su python no :( )...
-            - width height non ce bisogno di settarli xke l'img ora è 70x70px
-            - this.buttonDadoPL1 ce l'hai già, non ti serve rifare la document.getElementById
-            
-           this.imgDadoPL1.style.width="70px";
-           this.imgDadoPL1.style.height="70px";
-           this.buttonDadoPL1 = document.getElementById("dado_pl1")
-            */
     }
 
     segnalaVincitore(pl1_ha_vinto) {
@@ -598,6 +631,15 @@ class CrazyGoose {
         if (tocca_al_pl1) {
             chiTocca = document.getElementById("info_pl1")
             chiAspetta = document.getElementById("info_com")
+
+            //all'inizio (appena si avvia il gioco) non deve mostrare il contorno verde
+            // Una volta iniziato se si clicca sul dado per muoversi va subito a mostrare
+            // la croce xke tocca al COM, ma poi, finito il turno del com, bisognerebbe
+            // uscire e rientrare dal dado se non ci fosse questa parte
+            if (this.mouseOverDadoPL1 && this.player.posizione > 0 || this.com.posizione > 0) {
+                this.imgCroce.style.display = "none"
+                this.containerDado.style.backgroundColor = "green"
+            }
         } else {
             chiTocca = document.getElementById("info_com")
             chiAspetta = document.getElementById("info_pl1")
