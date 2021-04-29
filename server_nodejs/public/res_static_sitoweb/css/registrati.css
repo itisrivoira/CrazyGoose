@@ -24,7 +24,7 @@ form {
     padding-top: 40px;
 }
 
-input {
+.caselleDiTesto {
     width: 76%;
     color: rgb(38, 50, 56);
     font-weight: 700;
@@ -44,7 +44,7 @@ input {
     font-family: 'Ubuntu', sans-serif;
 }
 
-input:focus {
+.caselleDiTesto:focus {
     border: 2px solid rgba(0, 0, 0, 0.18) !important;
 }
 
@@ -62,9 +62,6 @@ input:focus {
     margin-left: 35%;
     font-size: 13px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
-}
-
-button {
     text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
     color: #E1BEE7;
     text-decoration: none

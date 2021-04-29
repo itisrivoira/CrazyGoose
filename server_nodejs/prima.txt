@@ -1,0 +1,219 @@
+<html><head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!--css aggiuntivo contente le varie icone-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="res_static_sitoweb/css/home.css">
+    <link rel="stylesheet" href="res_static_sitoweb/css/navbar.css">
+    <link rel="stylesheet" href="res_static_sitoweb/css/soloFooter.css">
+    <meta charset="UTF-8">
+
+    <title>Crazy Goose</title>
+
+</head>
+
+<body style="background-color:rgba(92, 58, 142, 0.87);">
+    <div class="container-fluid">
+        <div class="row">
+            <div id="testataSito">
+                <img src="res_static_sitoweb/images/logo_130x130.png">
+                <img src="res_static_sitoweb/images/scrittaCrazyGoose_400x130_noBagliore.png">
+            </div>
+            <div id="menuUtente" style="padding:0px;">
+                <div id="divDropdown">
+                    <button id="dropdownBtn"></button>
+                    <div id="dropdown-menu">
+                        <a href="http://localhost:3000/profilo">Profilo</a>
+                        <a href="http://localhost:3000/menuGioco">Vai al gioco</a>
+                        <a href="http://localhost:3000/download">Download gioco python</a>
+                        <a href="http://localhost:3000/esci">Esci</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div id="carouselIndicators" class="carousel slide" data-ride="carousel">
+                    <!--<ol class="carousel-indicators">
+                        <li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselIndicators" data-slide-to="2"></li>
+                    </ol>-->
+                    <div class="carousel-inner" role="listbox">
+                        <div class="carousel-item active">
+                            <img src="res_static_sitoweb/images/gioco.png" class="img-fluid" id="imgSchedaCrazyGoose">
+                            <div class="carousel-caption" id="divSchedaCarosello">
+                                <p class="titoloSchedaCarousel">CRAZY GOOSE</p>
+                                <p class="testoCarousel">Il gioco dell'oca che non c'era!</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="res_static_sitoweb/images/regolamento.jpg" class="img-fluid" id="imgSchedaRegolamento">
+                            <div class="carousel-caption" id="divSchedaCarosello">
+                                <a href="http://localhost:3000/regole" class="titoloSchedaCarousel">
+                                    <p><u>REGOLAMENTO</u></p>
+                                </a>
+                                <p class="testoCarousel">Queste sono le regole del nostro gioco, qui potrai scoprire quanti 'passi' dovrai fare per vincere, quali e quante sono le caselle speciali, quante volte un'abilità potrà essere attivata e....se hai delle domande passa</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="res_static_sitoweb/images/email.png" class="img-fluid" id="imgSchedaContattaci">
+                            <div class="carousel-caption" id="divSchedaCarosello">
+                                <a href="http://localhost:3000/contattaci" class="titoloSchedaCarousel">
+                                    <p><u>CONTATTACI</u></p>
+                                </a>
+                                <p class="testoCarousel">Se hai ancora domande oppure vuoi semplicemente metterti in contatto con i diretti creatori Contattaci!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <p class="introduz_giocoERegole"><i>Benvenuto su Crazy Goose il sito che ti permetterà di giocare al gioco dell'oca in modo mai visto fino ad ora!!<br>Crazy Goose si basa dalla voglia di innovare un gioco tradizionale quanto mai eterno come quello del gioco dell'oca infatti ci sarà una piccola novità che scopriremo succesivamente :</i>
+                </p>
+            </div>
+        </div>
+        <div class="row" id="rowAccediRegistrati">
+            <div class="col">
+                <div>
+                    <h4><b class="classTestoNero">Hai già un account? Accedi, se no... Registrati</b></h4>
+                </div>
+                <p class="classTestoNero">
+                    Se non hai ancora un account Crazy Goose <br>clicca sul tasto Registrati basteranno pochi secondi per iniziar far parte del nostro branco e divertirti giocando al gioco dell'oca !
+                </p>
+                <div>
+                    <a href="http://localhost:3000/login" class="btnIn"><b>ACCEDI</b></a>
+                    <br><br>
+                    <a href="http://localhost:3000/registrati" class="btnIn"><b>REGISTRATI</b></a>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <p class="introduz_giocoERegole"><i>Ti sei Registrato ??? Bene. Ora è il tempo di presentare la nostra grande novità: Le Abilità.<br>Le abilità sarà il grande punto di forza che avrai durante la partita, ebbene si infatti infatti in un dato momento, uno e uno solo, della partita potrai usare a seconda della pedina scelta all'inizio un potere speciale: </i>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <h2><b>LE ABILITÀ: </b></h2>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="colContainerFlipCard col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="cardFrontOcaVerde flip-card-front d-flex align-items-center justify-content-center"></div>
+                        <div class="cardBackOcaVerde flip-card-back">
+                            <p>Con l'abilità dell'<b>oca verde</b> si potrà <b>tirare di nuovo</b> il dado. In modo da spiazzare l'avversario e andare in vantaggio !</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="colContainerFlipCard col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="cardFrontOcaGialla flip-card-front d-flex align-items-center justify-content-center">
+
+                        </div>
+                        <div class="cardBackOcaGialla flip-card-back">
+                            <p>Con l'abilità dell'<b>oca gialla</b> si potrà <b>avanzare di 3</b> invece che 1 quando si capita su una casella <b>"avanti di 1 casella"</b>. In modo da evitare delle possibili insidie !</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="colContainerFlipCard col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="cardFrontOcaBlu flip-card-front d-flex align-items-center justify-content-center">
+
+                        </div>
+                        <div class="cardBackOcaBlu flip-card-back">
+                            <p>Con l'abilità dell'<b>oca blu</b> si potrà <b>avanzare di 2</b> così da saltare una casella negativa o addirittura raggiungere il traguardo !</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="colContainerFlipCard col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="cardFrontOcaRossa flip-card-front d-flex align-items-center justify-content-center">
+
+                        </div>
+                        <div class="cardBackOcaRossa flip-card-back">
+                            <p>Con l'abilità dell'<b>oca rossa</b> si potrà <b>annullare</b> l'effetto di una casella !</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <h2><b>VS: </b></h2>
+            </div>
+        </div>
+        <div class="col d-flex justify-content-center">
+            <p class="introduz_giocoERegole"><i>Le buone notizie purtroppo sono già finite infatti le nostre amiche oche non avranno strada spianata fino alla raggiunto del tesoro , in aggiunta a tutte le caselle che possono contenere sia malus che bonus saremo contro la temuta oca Grimilde la quale cercherà in tutti i modi di arrivare alla fine prima di noi anche utilizzato la sua magia nera...</i>
+            </p>
+        </div>
+        <div class="row" style="margin-bottom: 100px;">
+            <div class="colContainerFlipCard col-lg-12 col-md-12 col-sm-12 d-flex justify-content-center">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="cardFrontOcaCattiva flip-card-front d-flex align-items-center justify-content-center">
+
+                        </div>
+                        <div class="cardBackOcaCattiva flip-card-back">
+                            <p id="nomeOcaCattiva">GRIMILDE</p>
+                            <p>Con la sua magia riuscirà, se malauguratamente capiteremo sulla sua stessa casella, a mandarci indietro di due caselle facendoci perdere il vantaggio nei suoi confronti</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="footer"><div class="col-sm-4 col-md col-sm-4 col-12 col">
+    <h5 class="minititoli">Creatori: </h5>
+    <p>Giulio Bellone<br>Alessandro Dastru<br>Mattia Calzia<br>Kledi Hila<br>Andrea Durante<br>Hu Quyan</p>
+</div>
+
+<div class="col-sm-4 col-md col-6 col">
+    <h5 class="minititoli">Ecco chi siamo: </h5>
+    <p>Salve a tutti, ora tocca a noi presentarci, siamo un gruppo di giovani ragazzi che frequentano la classe 5 presso l'indirizzo informatico ITIS Rivoira di Verzuolo, questo è il nostro progetto che presenteremo all'esame di maturità di quest'anno. Il compito era di realizzare il classico
+        gioco dell'oca rimordenizzandolo a modo nostro per renderlo più divertente e noi crediamo di esserci riusciti.</p>
+</div>
+
+<div class="col-sm-4 col-md col-12 col">
+    <h5 class="minititoli">Seguici su Instagram: </h5>
+    <p>bellone.giulio<br>_dastru<br>mattia.calzia<br>kledi_hila<br>andry.durante<br>hu</p>
+</div>
+<div class="col-12">
+    <div id="margine"></div>
+</div>
+<div class="col-12 d-flex justify-content-center">
+    <p>Crazy Goose</p>
+    <p>Copyright @2021 | Designed With by <a href="http://localhost:3000/">Crazy Goose</a>
+    </p>
+</div>
+</div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+</body></html>

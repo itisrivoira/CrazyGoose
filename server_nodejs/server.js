@@ -1,3 +1,5 @@
+var IP = null
+
 const fs = require("fs")
 const bodyParser = require("body-parser")
 const jsdom = require("jsdom")
@@ -11,13 +13,18 @@ const app = express()
 
 
 app.listen(3000, () => {
-    //console.log("SERVER IN FUNZIONE")
+    require('dns').lookup(require('os').hostname(), function(err, address, fam) {
+        IP = address
+        console.log("SERVER IN ASCOLTO su: " + IP + ":3000")
+    })
 })
+
 app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: false
 }));
+
 app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 
@@ -35,53 +42,55 @@ function aggiungiFooterAllaPagina(pagina) {
     return (jsDom.window.document.documentElement.outerHTML)
 }
 
+function rimpiazzaLocalhostConIP(pagina) {
+    //leggo il file come semplice testo (stringa) e rimpiazzo ogni
+    //  "localhost" con l'IP
+
+    //uso la "replace()", molto semplice ma sostituisce solo la prima occorenza
+    // di quello specificato come primo argomento. Quindi ciclo finchè non li
+    // ha sostituiti
+    let paginaModif = pagina
+    while (paginaModif.includes("localhost")) {
+        paginaModif = paginaModif.replace("localhost", IP)
+    }
+
+    return paginaModif
+}
+
 app.get("/", (req, resp) => {
-    console.log("endpoint /")
+    let paginaRegoleSenzaFooter = fs.readFileSync("./sitoWeb/home.html", "utf-8")
+    let paginaConFooter = aggiungiFooterAllaPagina(paginaRegoleSenzaFooter)
+    let pagina = rimpiazzaLocalhostConIP(paginaConFooter)
+
+    let jsDom = new JSDOM(pagina)
+
     if (req.session.loggato) {
-        let sito = fs.readFileSync("./sitoWeb/home.html", "utf-8")
-
-        let paginaConFooter = aggiungiFooterAllaPagina(sito)
-
-        let jsDom = new JSDOM(paginaConFooter)
-
         msgBenvenuto = "Benvenuto<br><i>" + req.session.nome + " " + req.session.cognome + "</i>"
         jsDom.window.document.getElementById("dropdownBtn").innerHTML = msgBenvenuto
         jsDom.window.document.getElementById("divDropdown").style.display = "inline-block"
 
         jsDom.window.document.getElementById("testataSito").setAttribute("class", "col-10 d-flex justify-content-center")
         jsDom.window.document.getElementById("menuUtente").setAttribute("class", "col-2")
-
-        resp.send(jsDom.window.document.documentElement.outerHTML)
     } else {
-        let sito = fs.readFileSync("./sitoWeb/home.html", "utf-8")
-
-        let paginaConFooter = aggiungiFooterAllaPagina(sito)
-
-        let jsDom = new JSDOM(paginaConFooter)
-
         jsDom.window.document.getElementById("testataSito").setAttribute("class", "col-12 d-flex justify-content-center")
-
-        resp.send(jsDom.window.document.documentElement.outerHTML)
     }
-    //console.log("Entrato in sito web")
+    resp.send(jsDom.window.document.documentElement.outerHTML)
 })
 
 app.get("/regole", (req, resp) => {
     let paginaRegoleSenzaFooter = fs.readFileSync("./sitoWeb/regole.html", "utf-8")
-
     let paginaConFooter = aggiungiFooterAllaPagina(paginaRegoleSenzaFooter)
+    let pagina = rimpiazzaLocalhostConIP(paginaConFooter)
 
-    resp.send(paginaConFooter)
-        //console.log("Entrato in sezione regole")
+    resp.send(pagina)
 })
 
 app.get("/contattaci", (req, resp) => {
     let paginaRegoleSenzaFooter = fs.readFileSync("./sitoWeb/contactus.html", "utf-8")
-
     let paginaConFooter = aggiungiFooterAllaPagina(paginaRegoleSenzaFooter)
+    let pagina = rimpiazzaLocalhostConIP(paginaConFooter)
 
-    resp.send(paginaConFooter)
-        //console.log("Entrato in Contattaci")
+    resp.send(pagina)
 })
 
 app.get("/profilo", (req, resp) => {
@@ -92,8 +101,10 @@ app.get("/profilo", (req, resp) => {
 })
 
 app.get("/login", (req, resp) => {
-    resp.sendFile(__dirname + "/sitoWeb/login.html")
-        //console.log("Entrato in LOGIN")
+    let pagina = fs.readFileSync("./sitoWeb/login.html", "utf-8")
+    let paginaConIP = rimpiazzaLocalhostConIP(pagina)
+
+    resp.send(paginaConIP)
 })
 app.post("/loginFatta", (req, resp) => {
     //TODO controlla se dati sono giusti (user e passw) ==> SERVE DATABASE
@@ -101,25 +112,24 @@ app.post("/loginFatta", (req, resp) => {
     resp.send("WORK IN PROGRESS")
 })
 app.get("/esci", (req, resp) => {
-    req.session.loggato = false
-    req.session.nome = null
-    req.session.cognome = null
+    req.session.destroy()
         //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
     resp.redirect(301, "/")
 })
 
 app.get("/registrati", (req, resp) => {
-    resp.sendFile(__dirname + "/sitoWeb/registrati.html")
+    let pagina = fs.readFileSync("./sitoWeb/registrati.html", "utf-8")
+    let paginaConIP = rimpiazzaLocalhostConIP(pagina)
+
+    resp.send(paginaConIP)
 })
 
 app.post("/registrazioneFatta", (req, resp) => {
-    console.log("endpoint /registrazioneFatta")
-        //TODO ci sarebbe da aggiungere nel database l'utente
+    //TODO ci sarebbe da aggiungere nel database l'utente
     req.session.loggato = true
     req.session.nome = req.body.nome
     req.session.cognome = req.body.cognome
         //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
-    console.log("redirect verso /")
     resp.redirect(301, "/")
 })
 
@@ -131,12 +141,12 @@ app.get("/download", (req, resp) => {
 //----------------- gioco web ----------------------------------
 
 app.get("/menuGioco", (req, resp) => {
-    console.log("endpoint /menuGioco")
     if (req.session.loggato) {
 
         let sito = fs.readFileSync("./webApp/menu/index.html", "utf-8")
+        let sitoConIP = rimpiazzaLocalhostConIP(sito)
 
-        let jsDom = new JSDOM(sito)
+        let jsDom = new JSDOM(sitoConIP)
 
         msgBenvenuto = "Benvenuto<br><i>" + req.session.nome + " " + req.session.cognome + "</i>"
         jsDom.window.document.getElementById("dropdownBtn").innerHTML = msgBenvenuto
@@ -145,32 +155,61 @@ app.get("/menuGioco", (req, resp) => {
         jsDom.window.document.getElementById("divImgTitolo").style.marginLeft = "130px"
 
         resp.send(jsDom.window.document.documentElement.outerHTML)
-            //console.log("Entrato in menu del gioco")
     } else {
         //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
         resp.redirect(301, "/")
     }
-    //console.log("Entrato in menu del gioco")
 })
 
 app.get("/start", (req, resp) => {
-    resp.sendFile(__dirname + "/webApp/giocoWeb/scelta_oca.html")
-        //console.log("Entrato nella scelta della pedina")
+    if (req.session.loggato) {
+        let sito = fs.readFileSync("./webApp/giocoWeb/scelta_oca.html", "utf-8")
+        let sitoConIP = rimpiazzaLocalhostConIP(sito)
+
+        resp.send(sitoConIP)
+    } else {
+        console.log(" non sei loggato NO OCHE")
+            //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
+            //resp.redirect(301, "/")
+    }
 })
 
 app.get("/options", (req, resp) => {
-    resp.sendFile(__dirname + "/webApp/menu/options.html")
+    if (req.session.loggato) {
+        let sito = fs.readFileSync("./webApp/menu/options.html", "utf-8")
+        let sitoConIP = rimpiazzaLocalhostConIP(sito)
+
+        resp.send(sitoConIP)
+    } else {
+        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
+        resp.redirect(301, "/")
+    }
 })
 
 app.get("/credits", (req, resp) => {
-    resp.sendFile(__dirname + "/webApp/menu/credits.html")
+    if (req.session.loggato) {
+        let sito = fs.readFileSync("./webApp/menu/credits.html", "utf-8")
+        let sitoConIP = rimpiazzaLocalhostConIP(sito)
+
+        resp.send(sitoConIP)
+    } else {
+        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
+        resp.redirect(301, "/")
+    }
 })
 
 app.get("/gioco", (req, resp) => {
-    resp.sendFile(__dirname + "/webApp/giocoWeb/index.html")
-        //console.log("Scelto pedina")
+    if (req.session.loggato) {
+        let sito = fs.readFileSync("./webApp/giocoWeb/index.html", "utf-8")
+        let sitoConIP = rimpiazzaLocalhostConIP(sito)
+
+        resp.send(sitoConIP)
+    } else {
+        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
+        resp.redirect(301, "/")
+    }
 })
 
 app.use("*", (req, resp) => {
-    resp.send("<center>ERROR 404</center>")
+    resp.send("<center><h1>ERROR 404</h1></center>")
 })

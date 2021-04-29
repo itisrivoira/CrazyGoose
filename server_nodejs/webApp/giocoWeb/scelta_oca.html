@@ -21,10 +21,10 @@
 
         <div id="areaOche">
             <div id="ocaGialla" onclick="ocaGialla()">
-                <div id="gialla" >
+                <div id="gialla">
                     <p>OCA GIALLA</p>
                     <!-- <style data-text="Con la sua abilità si potrà avanzare di 3 caselle al posto di1 quando si capita su una casella 'avanti di 1'"></style> -->
-                    <img src="res_static_gioco/images/pedine/pedineMenuSceltaPedina/pedina_gialla_150x141.png" >
+                    <img src="res_static_gioco/images/pedine/pedineMenuSceltaPedina/pedina_gialla_150x141.png">
                     <p class="si">Con la sua abilità si potrà avanzare di 3 caselle quando si finisce su una casella 'avanti di 1'</p>
                 </div>
             </div>
@@ -58,22 +58,22 @@
     <script>
         function ocaGialla() {
             sessionStorage.setItem("ocaScelta", "gialla")
-            window.location.href = "http://127.0.0.1:3000/gioco"
+            window.location.href = "http://localhost:3000/gioco"
         }
 
         function ocaVerde() {
             sessionStorage.setItem("ocaScelta", "verde")
-            window.location.href = "http://127.0.0.1:3000/gioco"
+            window.location.href = "http://localhost:3000/gioco"
         }
 
         function ocaRossa() {
             sessionStorage.setItem("ocaScelta", "rossa")
-            window.location.href = "http://127.0.0.1:3000/gioco"
+            window.location.href = "http://localhost:3000/gioco"
         }
 
         function ocaBlu() {
             sessionStorage.setItem("ocaScelta", "blu")
-            window.location.href = "http://127.0.0.1:3000/gioco"
+            window.location.href = "http://localhost:3000/gioco"
         }
     </script>
 

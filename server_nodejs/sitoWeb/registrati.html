@@ -17,10 +17,10 @@
             </center>
         </div>
         <form action="http://localhost:3000/registrazioneFatta" name="formReg" method="post" onsubmit="return(controllaDati());">
-            <input id="nome" name="nome" type="text" placeholder="Nome">
-            <input id="cognome" name="cognome" type="text" placeholder="Cognome">
-            <input id="email" name="email" type="text" placeholder="Email">
-            <input id="passw" name="password" type="password" placeholder="Password">
+            <input class="caselleDiTesto" name="nome" type="text" placeholder="Nome">
+            <input class="caselleDiTesto" name="cognome" type="text" placeholder="Cognome">
+            <input class="caselleDiTesto" name="email" type="text" placeholder="Email">
+            <input class="caselleDiTesto" name="password" type="password" placeholder="Password">
             <input type="submit" value="Sign up" id="submit">
         </form>
         <div id="divAccedi">
@@ -32,23 +32,31 @@
 
     <script>
         function controllaDati() {
+            /* AL TENTATIVO DI INVIO DEI DATI ("onSubmit" nel tag "form")
+            Prendo il form che nella pagina ha quel "name" "formReg", all'itnerno del
+             quale ci sono delle componenti con un certo "name" ("nome", "cognome", "email", "password").
+             Ne controllo il valore, cioè quello che contengono. Se non contengono nulla sposto
+             il focus su una di loro (scriverà con la tastiera all'interno della componente vuota senza doverci 
+             cliccare lui)
+            */
+
             if (document.formReg.nome.value == "") {
                 document.formReg.nome.focus()
                 alert("Inserisci il tuo nome !")
                 return false
             }
             if (document.formReg.cognome.value == "") {
-                document.formReg.nome.focus()
+                document.formReg.cognome.focus()
                 alert("Inserisci il tuo cognome !")
                 return false
             }
             if (document.formReg.email.value == "") {
-                document.formReg.nome.focus()
+                document.formReg.email.focus()
                 alert("Inserisci l'email per registrarsi.")
                 return false
             }
             if (document.formReg.password.value == "") {
-                document.formReg.nome.focus()
+                document.formReg.password.focus()
                 alert("Inserisci la password che avrà il tuo account.")
                 return false
             }
