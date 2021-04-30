@@ -8,7 +8,6 @@ const BG_COLOR_X2 = "#aaff00"
 const BG_COLOR_DACAPO = "#FF0000"
 const BG_COLOR_VITTORIA = "#328CE6"
 
-
 class Casella {
     constructor(indice, x, y, casellaVittoria, width = 90, height = 60) {
         this.x = x
@@ -30,7 +29,7 @@ class Casella {
             }
         }
 
-        if (casellaVittoria) { //dimensioni diverse se è la casella vittoria
+        if (casellaVittoria) { //dimensioni e posizione diverse se è la casella vittoria
             this.width = 120
             this.height = 100
             this.y = this.y - 20
@@ -46,7 +45,7 @@ class Casella {
                 //centra il numero di casella nella casella (orizzontalmente)
             this.numeroCasella.style.left = (this.getCenterX() - (15 / 2)) + "px"
             this.numeroCasella.style.top = this.y + "px"
-        }
+        } //else questo oggetto Casella è la casella iniziale dei giocatori
     }
 
     settaEffetto(codCasella) {
@@ -54,32 +53,40 @@ class Casella {
         // nella casella, cioè l'effetto
         let testo = ""
         if (codCasella == TIRA_DI_NUOVO[0]) {
-            testo = "X2"
+            testo = TIRA_DI_NUOVO[2]
             this.questaCasella.style.background = BG_COLOR_X2
+
         } else if (codCasella == INDIETRO_DI_UNO[0]) {
-            testo = "-1"
+            testo = INDIETRO_DI_UNO[2]
             this.questaCasella.style.background = BG_COLOR_MENO1
+
         } else if (codCasella == INDIETRO_DI_TRE[0]) {
-            testo = "-3"
+            testo = INDIETRO_DI_TRE[2]
             this.questaCasella.style.background = BG_COLOR_MENO3
+
         } else if (codCasella == AVANTI_DI_UNO[0]) {
-            testo = "+1"
+            testo = AVANTI_DI_UNO[2]
             this.questaCasella.style.background = BG_COLOR_PIU1
+
         } else if (codCasella == AVANTI_DI_QUATTRO[0]) {
-            testo = "+4"
+            testo = AVANTI_DI_QUATTRO[2]
             this.questaCasella.style.background = BG_COLOR_PIU4
+
         } else if (codCasella == FERMO_DA_UNO[0]) {
-            testo = "ALT"
+            testo = FERMO_DA_UNO[2]
             this.questaCasella.style.background = BG_COLOR_FERMO1
+
         } else if (codCasella == FERMO_DA_DUE[0]) {
-            testo = "ALT X2"
+            testo = FERMO_DA_DUE[2]
             this.questaCasella.style.background = BG_COLOR_FERMO2
-        } else if (codCasella == TORNA_ALL_INIZIO) {
-            testo = "DA CAPO !"
+
+        } else if (codCasella == TORNA_ALL_INIZIO[0]) {
+            testo = TORNA_ALL_INIZIO[1]
             this.questaCasella.style.background = BG_COLOR_DACAPO
             this.questaCasella.style.fontSize = "15px"
-        } else if (codCasella == VITTORIA) {
-            testo = "HAI VINTO !!!"
+
+        } else if (codCasella == VITTORIA[0]) {
+            testo = VITTORIA[1]
             this.questaCasella.style.background = BG_COLOR_VITTORIA
             this.questaCasella.style.fontSize = "15px"
         }
@@ -101,7 +108,7 @@ class Casella {
         return this.y + this.height / 2
     }
 
-    nascondi() {
+    nascondi() { //mi serve per le casella iniziali
         this.questaCasella.style.display = "none"
     }
 

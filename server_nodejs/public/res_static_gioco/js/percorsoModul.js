@@ -2,18 +2,19 @@ const QTA_CASELLE_TOTALI = 40
     //caselle con effetto randomico (NON include l'ultima e la penultima casella che sono SEMPRE UGUALI)
 const QTA_CASELLE_DINAMICHE = 22
 
-//Per ogni effetto c'è un array con due elementi: il codice identificativo 
-//	e il totale di volte in cui deve apparire
-const TIRA_DI_NUOVO = [0, 4]
-const INDIETRO_DI_UNO = [1, 4]
-const INDIETRO_DI_TRE = [2, 2]
-const AVANTI_DI_UNO = [3, 4]
-const AVANTI_DI_QUATTRO = [4, 2]
-const FERMO_DA_UNO = [5, 4]
-const FERMO_DA_DUE = [6, 2]
-    //Caselle con degli "effetti" che compaiono solo una volta, quindi non serve array
-const TORNA_ALL_INIZIO = 7
-const VITTORIA = 8
+//Per ogni effetto c'è un array con tre elementi: il codice identificativo,
+// il totale di volte in cui deve apparire e il nome che compare nella casella
+const TIRA_DI_NUOVO = [0, 4, "X2"]
+const INDIETRO_DI_UNO = [1, 4, "-1"]
+const INDIETRO_DI_TRE = [2, 2, "-3"]
+const AVANTI_DI_UNO = [3, 4, "+1"]
+const AVANTI_DI_QUATTRO = [4, 2, "+4"]
+const FERMO_DA_UNO = [5, 4, "ALT"]
+const FERMO_DA_DUE = [6, 2, "ALT X2"]
+
+//compaiono una sola volta, non serve il secondo elemento
+const TORNA_ALL_INIZIO = [7, "DA CAPO !"]
+const VITTORIA = [8, "VITTORIA !!!"]
 
 class Percorso {
     constructor() {
@@ -97,8 +98,8 @@ class Percorso {
 
             this.controllaPossibiliLoop()
 
-            this.dictCaselle[QTA_CASELLE_TOTALI - 1] = 7
-            this.dictCaselle[QTA_CASELLE_TOTALI] = 8
+            this.dictCaselle[QTA_CASELLE_TOTALI - 1] = TORNA_ALL_INIZIO[0]
+            this.dictCaselle[QTA_CASELLE_TOTALI] = VITTORIA[0]
         }
     }
 
@@ -223,15 +224,15 @@ class Percorso {
 
             } else if (this.controllaSeCasellaNonEVuota([pos + 1, pos + 2, pos + 3, pos + 4]) &&
                 this.dictCaselle[pos + 1] == INDIETRO_DI_UNO[0] && this.dictCaselle[pos + 2] ==
-                INDIETRO_DI_UNO[0] && this.dictCaselle[pos + 3] == INDIETRO_DI_UNO[0]
-                && this.dictCaselle[pos + 4] == INDIETRO_DI_UNO[0]) {
+                INDIETRO_DI_UNO[0] && this.dictCaselle[pos + 3] == INDIETRO_DI_UNO[0] &&
+                this.dictCaselle[pos + 4] == INDIETRO_DI_UNO[0]) {
 
                 delete this.dictCaselle[pos + 1]
                 delete this.dictCaselle[pos + 2]
                 delete this.dictCaselle[pos + 3]
                 delete this.dictCaselle[pos + 4]
 
-				//Metto in una nuova posizione gli effetti delle caselle
+                //Metto in una nuova posizione gli effetti delle caselle
                 this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
                 this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
                 this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])

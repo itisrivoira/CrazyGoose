@@ -168,9 +168,8 @@ app.get("/start", (req, resp) => {
 
         resp.send(sitoConIP)
     } else {
-        console.log(" non sei loggato NO OCHE")
-            //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
-            //resp.redirect(301, "/")
+        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
+        resp.redirect(301, "/")
     }
 })
 
