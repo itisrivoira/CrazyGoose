@@ -204,8 +204,6 @@ class Giocatore {
             if (this.newSpostamento == 0) {
                 this.newSpostamento = -((this.posizione + spostamento) - QTA_CASELLE_TOTALI)
             }
-
-            this.flagEAndatoOltre = true
                 //(sposto la pedina sulla casella finale)
             this.posiziona((QTA_CASELLE_TOTALI - this.posizione), false)
 
