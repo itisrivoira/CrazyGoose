@@ -16,6 +16,9 @@ app.listen(3000, () => {
     require('dns').lookup(require('os').hostname(), function(err, address, fam) {
         IP = address
         console.log("SERVER IN ASCOLTO su: " + IP + ":3000")
+            //mi serve scriverlo su un file xke il php ha bisogno del IP
+            // e non so come altro fare per "darglielo"
+        fs.writeFileSync("./indirizzo_server.txt", IP)
     })
 })
 
@@ -106,11 +109,7 @@ app.get("/login", (req, resp) => {
 
     resp.send(paginaConIP)
 })
-app.post("/loginFatta", (req, resp) => {
-    //TODO controlla se dati sono giusti (user e passw) ==> SERVE DATABASE
-    //resp.sendFile(__dirname + "/sitoWeb/loginFatta.html")
-    resp.send("WORK IN PROGRESS")
-})
+
 app.get("/esci", (req, resp) => {
     req.session.destroy()
         //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)

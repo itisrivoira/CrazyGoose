@@ -16,7 +16,7 @@
                 <a href="http://localhost:3000/"><img src="res_static_sitoweb/images/logo_32x32.png"></a>
             </center>
         </div>
-        <form action="http://localhost:3000/registrazioneFatta" name="formReg" method="post" onsubmit="return(controllaDati());">
+        <form action="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/registrazione.php" name="formReg" method="post" onsubmit="return(controllaDati());">
             <input class="caselleDiTesto" name="nome" type="text" placeholder="Nome">
             <input class="caselleDiTesto" name="cognome" type="text" placeholder="Cognome">
             <input class="caselleDiTesto" name="email" type="text" placeholder="Email">
@@ -25,7 +25,7 @@
         </form>
         <div id="divAccedi">
             <center>
-                <p id="passaALogin">Hai gi&agrave; un account ? <a href="http://localhost:3000/login" id="btnAccedi"><b>Sign in</b></a></p>
+                <p id="passaALogin">Hai gi&agrave; un account ? <a href="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=login" id="btnAccedi"><b>Sign in</b></a></p>
             </center>
         </div>
     </div>

@@ -16,29 +16,39 @@
                 <a href="http://localhost:3000/"><img src="res_static_sitoweb/images/logo_32x32.png"></a>
             </center>
         </div>
-        <form action="http://localhost:3000/loginFatta" method="post">
-            <input id="email" type="text" placeholder="Email">
-            <input id="passw" type="password" placeholder="Password">
-            <button id="submit" onclick="controllaDati()">Sign in</button>
+        <form action="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/login.php" method="post" name="formReg" onsubmit="return(controllaDati())">
+            <input name="email" type="text" placeholder="Email">
+            <input name="password" type="password" placeholder="Password">
+            <button name="submit" id="submit" onclick="controllaDati()">Sign in</button>
         </form>
         <div id="divRegistrati">
             <center>
-                <p id="passaARegistr">Non hai ancora un account ? <a href="http://localhost:3000/registrati" id="btnRegistrati"><b>Sign up</b></a></p>
+                <p id="passaARegistr">Non hai ancora un account ? <a href="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=registrati" id="btnRegistrati"><b>Sign up</b></a></p>
             </center>
         </div>
     </div>
 
     <script>
         function controllaDati() {
-            let form = document.getElementsByTagName("form")[0]
-            let email = document.getElementById("email").value;
-            let passw = document.getElementById("passw").value;
+            /* AL TENTATIVO DI INVIO DEI DATI ("onSubmit" nel tag "form")
+            Prendo il form che nella pagina ha quel "name" "formReg", all'itnerno del
+             quale ci sono delle componenti con un certo "name" ("nome", "cognome", "email", "password").
+             Ne controllo il valore, cioè quello che contengono. Se non contengono nulla sposto
+             il focus su una di loro (scriverà con la tastiera all'interno della componente vuota senza doverci 
+             cliccare lui)
+            */
 
-            if (email.length > 0 && passw.length > 0) {
-                form.submit()
-            } else {
-                alert("INSERISCI TUTTI I DATI !")
+            if (document.formReg.email.value == "") {
+                document.formReg.email.focus()
+                alert("Inserisci l'email con cui ti sei registrato !")
+                return false
             }
+            if (document.formReg.password.value == "") {
+                document.formReg.password.focus()
+                alert("Inserisci la password del tuo account.")
+                return false
+            }
+            return true
         }
     </script>
 </body>
