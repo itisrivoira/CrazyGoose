@@ -31,7 +31,7 @@ class Casella():
 		self.width = width
 		self.height = height
 
-		#disegna ellisse nero riempito (ultimo param. è 0)
+		#disegna ellisse nero riempito (ultimo param. è 0) (mi serve per fare un bordo decente, che ci veda un po)
 		pygame.draw.ellipse(self.display, (0, 0, 0, 1), (self.x, self.y, self.width, self.height), 0)
 		
 	
@@ -40,32 +40,41 @@ class Casella():
 		# nella casella, cioè l'effetto
 		testo = ""
 		color = (255,255,255)
+		#(lo switch non esiste in python)
 		if(codCasella == TIRA_DI_NUOVO[0]):
-			testo = "X2"
+			testo = TIRA_DI_NUOVO[2]
 			color = BG_COLOR_X2
+		
 		elif(codCasella == INDIETRO_DI_UNO[0]):
-			testo = "-1"
+			testo = INDIETRO_DI_UNO[2]
 			color = BG_COLOR_MENO1
+		
 		elif(codCasella == INDIETRO_DI_TRE[0]):
-			testo = "-3"
+			testo = INDIETRO_DI_TRE[2]
 			color = BG_COLOR_MENO3
+		
 		elif(codCasella == AVANTI_DI_UNO[0]):
-			testo = "+1"
+			testo = AVANTI_DI_UNO[2]
 			color = BG_COLOR_PIU1
+		
 		elif(codCasella == AVANTI_DI_QUATTRO[0]):
-			testo = "+4"
+			testo = AVANTI_DI_QUATTRO[2]
 			color = BG_COLOR_PIU4
+		
 		elif(codCasella == FERMO_DA_UNO[0]):
-			testo = "ALT"
+			testo = FERMO_DA_UNO[2]
 			color = BG_COLOR_FERMO1
+		
 		elif(codCasella == FERMO_DA_DUE[0]):
-			testo = "ALT X2"
+			testo = FERMO_DA_DUE[2]
 			color = BG_COLOR_FERMO2
-		elif(codCasella == TORNA_ALL_INIZIO):
-			testo = "DA CAPO !"
+		
+		elif(codCasella == TORNA_ALL_INIZIO[0]):
+			testo = TORNA_ALL_INIZIO[1]
 			color = BG_COLOR_DACAPO
-		elif(codCasella == VITTORIA):
-			testo = "HAI\nVINTO !!!"
+		
+		elif(codCasella == VITTORIA[0]):
+			testo = VITTORIA[1]
 			color = BG_COLOR_VITTORIA
 		
 		#disegna un ellisse leggermente più piccolo sopra quello di prima (così da mantenere solo un contorno nero)

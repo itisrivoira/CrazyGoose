@@ -24,37 +24,37 @@ WIDTH_PEDINA = 65
 HEIGHT_PEDINA = 60
 
 class Giocatore():
-	def __init__(self, crazyGoose, game, caselle, percorso, tag, pedinaScelta=None):
+	def __init__(self, crazyGoose, game, caselle, percorso, tag, pedinaScelta):
 			#Mi serve per lanciare un suo metodo
 		self.crazyGoose = crazyGoose
 		self.game = game
 		self.caselle = caselle
 		self.percorso = percorso
 		self.tag = tag
-		self.pedinaScelta = pedinaScelta
+		if (self.tag == "PL1"):
+			self.pedinaScelta = pedinaScelta
+		else:
+			#Pedina scelta mi serve solo per scegliere le img giuste anche per il COM, altrimenti
+			# serve a nnt al COM
+			self.pedinaScelta = None
 		
 		if(self.tag == "PL1"):
 			#self.pedinaScelta sarà uguale a "gialla", "verde", "rossa" o "blu"
 			
-			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_"+self.pedinaScelta+".png")
-			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_"+self.pedinaScelta+".png")
-			self.imgScontroNoEffDxSx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/dxVersoSx/COM_vs_"+self.pedinaScelta+".png")
-			self.imgScontroNoEffSxDx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/sxVersoDx/"+self.pedinaScelta+"_vs_COM.png")
-			self.imgScontroEffDxSx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/dxVersoSx/COM_vs_" + self.pedinaScelta + ".png")
-			self.imgScontroEffSxDx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/sxVersoDx/"+self.pedinaScelta+"_vs_COM.png")
+			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_"+pedinaScelta+".png")
+			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_"+pedinaScelta+".png")
 		
 		else:
 			# self.pedinaScelta sarà uguale a "gialla", "verde", "rossa" o "blu" (l'oca scelta dal player)
 			
 			self.imgPedinaSxDx = pygame.image.load("./images/pedine/pedineNelGioco/sxVersoDx/pedina_COM.png")
 			self.imgPedinaDxSx = pygame.image.load("./images/pedine/pedineNelGioco/dxVersoSx/pedina_COM.png")
-			self.imgScontroNoEffDxSx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/dxVersoSx/COM_vs_" + self.pedinaScelta + ".png")
-			self.imgScontroNoEffSxDx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/sxVersoDx/" + self.pedinaScelta + "_vs_COM.png")
-			self.imgScontroEffDxSx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/dxVersoSx/COM_vs_" + self.pedinaScelta + ".png")
-			self.imgScontroEffSxDx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/sxVersoDx/" + self.pedinaScelta + "_vs_COM.png")
 			
-			# non mi serve più a nnt
-			self.pedinaScelta = None
+
+		self.imgScontroNoEffDxSx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/dxVersoSx/COM_vs_"+pedinaScelta+".png")
+		self.imgScontroNoEffSxDx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/sxVersoDx/"+pedinaScelta+"_vs_COM.png")
+		self.imgScontroEffDxSx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/dxVersoSx/COM_vs_" + pedinaScelta + ".png")
+		self.imgScontroEffSxDx = pygame.image.load("./images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/sxVersoDx/"+pedinaScelta+"_vs_COM.png")
 
 
 		self.posizione = 0
@@ -63,16 +63,16 @@ class Giocatore():
 		self.turniFermo = 0
 		self.vincitore = False
 		
-		self.sopraEffetto = False
-			# il flag mi serve per "bloccare" alcune azioni finchè la pedina ha smesso di muoversi
+			#flag che mi serve per "bloccare" alcune azioni finchè la pedina ha smesso di muoversi
 		self.isMoving = False
 			
 		self.attendoAbilita = False
 		self.abilitaAttivata = False
 		
+		#qui ci sarà l'effetto e il bg_color
 		self.ultimoMsg = ["", ""]
 		self.penultimoMsg = ["", ""]
-		self.colorePedina = (255,0,0)
+
 		self.creaCasellaIniziale()
 
 
@@ -86,6 +86,7 @@ class Giocatore():
 		# poi inserisce l'img della pedina del giocatore
 		
 		self.casellaIniziale = Casella(self.game.display, x, y)
+		#diventerà un bordo decente (un po' spesso) della casella iniziale
 		pygame.draw.ellipse(self.game.display, (255,255,255),
 							(self.casellaIniziale.x+2, self.casellaIniziale.y+2,
 							 self.casellaIniziale.width-4, self.casellaIniziale.height-4), 0)
@@ -100,52 +101,50 @@ class Giocatore():
 		if(self.posizione+spostamento <= QTA_CASELLE_TOTALI):
 				#aggiorno la posizione
 			self.posizione += spostamento
-			self.sopraEffetto = False
 			
 			try:
 				if(controllaCasella):
 						#prendo il codice della casella in cui si trova il giocatore
 					codCasella = self.percorso.dictCaselle[self.posizione]
-
 				#Muove la pedina e POI controlla se è finità su una casella con un effetto
-				self.ridisegnaTutto(spostamento)
 				
-				if (controllaCasella):
+				#(Mi serve la posizione di PARTENZA, e io ho già aumentato la posizione. quindi
+				# passo la posizione meno lo spostamento)
+				self.spostaPedina((self.posizione-spostamento), spostamento)
+
+				if(controllaCasella):
 					#Controlla l'effetto contenuto nella
 					# casella (richiamerà di nuovo "posiziona()" se ci fosse da spostare la pedina)
 					self.controllaCodiceCasella(codCasella)
 			except KeyError:
 				#Non ha trovato quella posizione nel dizionario, perciò dev'essere una casella VUOTA
-				self.ridisegnaTutto(spostamento)
+				
+				#(Mi serve la posizione di PARTENZA, e io ho già aumentato la posizione. quindi
+				# passo la posizione meno lo spostamento)
+				self.spostaPedina((self.posizione-spostamento), spostamento)
 
 		else:
-			# - - - Ha tirato un numero troppo alto che lo farebbe "andare oltre" la casella di vittoria - - -
-		
-			#sposto fino alla casella finale (Non constrollo il codice
-			# casella xkè sennò mi darebbe la vittoria ma in realtà non ha vinto)
-			# E POI ri-sposto INDIETRO di tot caselle
-			# es. sono casella 37 faccio 7 (dovrei andare a 44 ma è oltre le 40 casella)
-			#  ==> mi sposto di 3 fino alla casella di vittoria	e poi torno indietro di 4
+			#* * * TIRO TROPPO LUNGO: va fino alla casella finale e poi si sposta indietro di tot * * *
+			#Sposto fino alla casella finale (Non constrollo il codice
+            # casella xkè sennò segnalerebbe la vittoria anche se in realtà non ha vinto)
+            # E POI ri-sposto INDIETRO di tot caselle
+            # es. sono casella 37 faccio 7 (dovrei andare a 44 ma è oltre le 40 casella)
+            #  ==> mi sposto di 3 fino alla casella di vittoria	e poi torno indietro di 4
 			
 			if (self.newSpostamento == 0):
 				self.newSpostamento = -((self.posizione + spostamento) - QTA_CASELLE_TOTALI)
 				
-			#quindi ora sposto la pedina sulla casella finale
+			#Sposto la pedina sulla casella finale
 			self.posiziona((QTA_CASELLE_TOTALI-self.posizione), False)
+
 			#ferma un attimo il giocatore sulla casella finale
 			time.sleep(0.2)
 			
-			#Ora ri-sposto indietro il giocatore di TOT
+			#Ora ri-sposto indietro il giocatore di tot caselle
 			self.posiziona(self.newSpostamento)
 			
-			#una sorta di flag
+			#lo uso anche come una sorta di flag
 			self.newSpostamento = 0
-	
-	
-	def ridisegnaTutto(self, spostamento):
-		#mi serve la posizione di PARTENZA, e io ho già aumentato la posizione. quindi
-		# passo la posizione meno lo spostamento
-		self.spostaPedina((self.posizione-spostamento), spostamento)
 	
 	
 	def spostaPedina(self, partenza, spostamento):
@@ -158,7 +157,8 @@ class Giocatore():
 			y2 = self.caselle[0].getCenterY()
 			
 			#(il 7 come ultimo parametro è per muovere la pedina più velocemente sulle x,
-			# rispetto a 5px per volta, per dare l'effetto di un movimento proprio diagonale)
+			# rispetto a 5 di default, sennò arriverebbe su una delle prime caselle e poi
+			# si muoverebbe in orrizontale fino alla prima casella)
 			self.spostaFraDueCaselle(x1, y1, x2, y2, 0, 7)
 		else:
 			#Se parte dalla casella iniziale (prima dell'inizio del percorso) deve muoversi da lì alla prima casella
@@ -172,45 +172,49 @@ class Giocatore():
 				self.spostaFraDueCaselle(x1, y1, x2, y2, 0)
 				
 				#Ora si muoverà dalla prima casella a quella in cui deve arrivare
-				# (spostamento-1 xkè un spostamento l'ha già fatto)
+				# (spostamento-1 xkè uno spostamento l'ha appena fatto)
 				self.spostaPedina(1, spostamento - 1)
 			else:
-				""" Ora muovo la pedina dello spostamento da fare.
-					 NON muovo la pedina dalla partenza alla fine DIRETTAMENTE,
-					 MA muovo di CASELLA IN CASELLA, per ogni casella che
-					 deve superare """
+				#Ora muovo la pedina dello spostamento da fare.
+				# NON muovo la pedina dalla partenza alla fine DIRETTAMENTE,
+				# MA muovo di CASELLA IN CASELLA, per ogni casella che
+				# deve superare
 				
 				if(spostamento > 0):
 					
 					#partenza è la posizione della casella da 1 a 40,
 					# ma la lista di caselle è 0-based per questo "partenza-1"
 					i = 0
-					while(i < spostamento):
-						x1 = self.caselle[partenza - 1 + i].getCenterX()
-						y1 = self.caselle[partenza - 1 + i].getCenterY()
+					while(i < spostamento and self.crazyGoose.giocoPartito):
+						casellaCorrente = partenza - 1 + i
+						
+						x1 = self.caselle[casellaCorrente].getCenterX()
+						y1 = self.caselle[casellaCorrente].getCenterY()
 						
 						#prendo la casella successiva
-						x2 = self.caselle[partenza - 1 + i + 1].getCenterX()
-						y2 = self.caselle[partenza - 1 + i + 1].getCenterY()
+						x2 = self.caselle[casellaCorrente + 1].getCenterX()
+						y2 = self.caselle[casellaCorrente + 1].getCenterY()
 						
-						self.spostaFraDueCaselle(x1, y1, x2, y2, (partenza - 1 + i + 1))
+						self.spostaFraDueCaselle(x1, y1, x2, y2, (casellaCorrente + 1))
 						
 						i += 1
 				else:
-					#devo prendere le caselle in modo inverso !
+					#Lo spostamento è negativo... devo prendere le caselle in modo inverso !
 					
-					#lo trasformo in positivo, sennò "i" sarebbe maggiore di "spostamento"
+					#Lo trasformo in positivo, sennò "i" sarebbe maggiore di "spostamento"
 					spostamento = -spostamento
 					
 					i = 0
-					while (i < spostamento):
-						x1 = self.caselle[partenza - 1 - i].getCenterX()
-						y1 = self.caselle[partenza - 1 - i].getCenterY()
+					while (i < spostamento and self.crazyGoose.giocoPartito):
+						casellaCorrente = partenza - 1 - i
 						
-						x2 = self.caselle[partenza - 1 - i - 1].getCenterX()
-						y2 = self.caselle[partenza - 1 - i - 1].getCenterY()
+						x1 = self.caselle[casellaCorrente].getCenterX()
+						y1 = self.caselle[casellaCorrente].getCenterY()
 						
-						self.spostaFraDueCaselle(x1, y1, x2, y2, (partenza - 1 - i - 1))
+						x2 = self.caselle[casellaCorrente - 1].getCenterX()
+						y2 = self.caselle[casellaCorrente - 1].getCenterY()
+						
+						self.spostaFraDueCaselle(x1, y1, x2, y2, (casellaCorrente - 1))
 						
 						i += 1
 			
@@ -227,7 +231,7 @@ class Giocatore():
 		while(continua and self.crazyGoose.giocoPartito):
 			# metto un minuscolo fermo, altrimenti sarebbe troppo veloce
 			pygame.time.wait(14)
-			# Non disegnerà il giocatore che si sta muovendo (lo disegna in questo metodo fra poco)
+			# Non disegnerà il giocatore che si sta muovendo (lo disegna fra poco questo metodo)
 			self.crazyGoose.disegnaTutto(self.tag)
 			
 			if(partenza_x < fine_x):
@@ -235,7 +239,8 @@ class Giocatore():
 			elif(partenza_x > fine_x):
 				partenza_x -= mov_x
 			
-			#Controllo se è già arrivato alla fine.
+			#Controllo se è già arrivato alla fine (pixel in più pixel in meno... lo spostamento con questi
+			# pixel non è precisissimo)
 			if(partenza_x >= fine_x-5 and partenza_x <= fine_x+5):
 				partenza_x = fine_x
 			
@@ -244,16 +249,13 @@ class Giocatore():
 			elif(partenza_y < fine_y):
 				partenza_y += mov_y
 			
-			#Controllo se è già arrivato alla fine
+			#Controllo se è già arrivato alla fine (pixel in più pixel in meno... lo spostamento con questi
+			# pixel non è precisissimo)
 			if(partenza_y >= fine_y-5 and partenza_y <= fine_y+5):
 				partenza_y = fine_y
 			
 			
-			# Non mi muovo in modo da arrivare PRECISAMENTE alle coordinate x y,
-			# quindi controllo se sono arrivato intorno alle coord x y
-			if (partenza_x >= fine_x-5 and partenza_x <= fine_x+5
-					and partenza_y >= fine_y-5 and partenza_y <= fine_y+5):
-				
+			if (partenza_x == fine_x and partenza_y == fine_y):
 				# fermo il loop
 				continua = False
 				self.game.display.blit(imgPedina,
@@ -295,7 +297,7 @@ class Giocatore():
 			y = self.caselle[self.posizione-1].getCenterY()
 
 			image = self.cambiaVersoPedina(self.caselle[self.posizione - 1].getCenterX(),
-										   self.caselle[self.posizione].getCenterX(),  # self.posizione-1 +1
+										   self.caselle[self.posizione].getCenterX(),
 										   self.posizione - 1)
 
 			if(self.tag == "PL1"):
@@ -331,68 +333,74 @@ class Giocatore():
 			
 
 	def avanza(self, spostamento, controllaCodCasella=True):
-		#Di default appena si muove, il giocatore ha finito il turno e quindi setto
+		if(self.crazyGoose.giocoPartito):
+			
+			#Di default appena si muove, il giocatore ha finito il turno e quindi setto
 			#subito turnoMio = False, tuttavia potrebbe essere risettato a True se il
 			# giocatore finisce sulla casella TIRA_DI_NUOVO
-		self.turnoMio = False
-		
-		#il flag tornerà a False solo quando l'animazione sarà finita
-		self.isMoving = True
-		self.posiziona(spostamento, controllaCodCasella)
-		self.isMoving = False
-		
-		#Quand'è che controllaCodCasella è False ? Quando il COM attiva la sua abilita.
-		# Quindi quando il COM attiva la sua abilita il PL1 non potra attivare la sua abilita
-		if(controllaCodCasella):
-			if(self.abilitaAttivata == False and self.pedinaScelta == "verde"
-					#Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giro"
-					and self.turnoMio == False and self.turniFermo == 0):
-				
-				numGiri = 0
-				# (controllo anche che il gioco non sia stato fermato)
-				while (numGiri < 20 and self.crazyGoose.giocoPartito):
-					self.attendoAbilita = True
-					self.crazyGoose.buttonAbilitaPL1.evidenziaTempoRimanente((2000 - numGiri * 100), True)
-					
-					if (self.abilitaAttivata):
-						numGiri = 20
-					else:
-						numGiri += 1
-						pygame.time.wait(100)
-				
-				# (in CrazyGoose.disegna() non disegna il button per l'abilita se
-				# vede attendoAbilita a True, questo xke se è a True vuol dire che
-				# è nel while qui sopra e qui sta fancedo evidenziaTempoRimandente
-				# che andrà a disegnare il button dell'abilita)
-				self.attendoAbilita = False
-				
-				if (self.abilitaAttivata):
-					# Ormai ha attivato l'abilità perciò non la può più usare
-					self.crazyGoose.buttonAbilitaPL1.cancellaButtonAbilita()
-					self.turnoMio = True
+			self.turnoMio = False
+			
+			#il flag tornerà a False solo quando l'animazione sarà finita
+			self.isMoving = True
+			self.posiziona(spostamento, controllaCodCasella)
+			self.isMoving = False
+			
+			#Quand'è che controllaCodCasella è False ? Quando il COM attiva la sua abilita.
+			# Quindi quando il COM attiva la sua abilita il PL1 non potra attivare la sua abilita
+			if(controllaCodCasella):
+				if(self.abilitaAttivata == False and self.vincitore == False):
+					if(self.pedinaScelta == "verde"
+							#Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giro"
+							and self.turnoMio == False and self.turniFermo == 0 and
+							# e che non ci sia finito neanche l'avversario
+							self.crazyGoose.com.turniFermo == 0):
+						
+						#Farò 20 giri, ogni 100millisecondi ==> 2 secondi di tempo do
+						# all'utente per usare l'abilità
+						numGiri = 0
+						# (controllo anche che il gioco non sia stato fermato)
+						while (numGiri < 20 and self.crazyGoose.giocoPartito):
+							self.attendoAbilita = True
+							self.crazyGoose.buttonAbilitaPL1.evidenziaTempoRimanente((2000 - numGiri * 100), True)
+							
+							if (self.abilitaAttivata):
+								#fermo il loop
+								numGiri = 20
+							else:
+								numGiri += 1
+								pygame.time.wait(100)
+						
+						# (in CrazyGoose.disegna() non disegna il button per l'abilita se
+						# vede attendoAbilita a True, questo xke se è a True vuol dire che
+						# è nel while qui sopra e qui sta fancedo evidenziaTempoRimandente
+						# che andrà a disegnare il button dell'abilita)
+						self.attendoAbilita = False
+						
+						if (self.abilitaAttivata):
+							# Ormai ha attivato l'abilità perciò non la può più usare
+							self.crazyGoose.buttonAbilitaPL1.cancellaButtonAbilita()
+							#oca verde ==> ritira il dado; mi basta settare un flag
+							self.turnoMio = True
 
-			elif(self.abilitaAttivata == False and self.pedinaScelta == "blu"
-					#Controllo che non sia finito su un "Tira di nuovo" o "Stai fermo x giro"
-					and self.turnoMio == False and self.turniFermo == 0):
-				
-				numGiri = 0
-				# (controllo anche che il gioco non sia stato fermato)
-				while (numGiri < 20 and self.crazyGoose.giocoPartito):
-					self.attendoAbilita = True
-					self.crazyGoose.buttonAbilitaPL1.evidenziaTempoRimanente((2000 - numGiri * 100), True)
-					
-					if (self.abilitaAttivata):
-						numGiri = 20
-					else:
-						numGiri += 1
-						pygame.time.wait(100)
-				
-				self.attendoAbilita = False
+					elif(self.pedinaScelta == "blu"
+							and self.turnoMio == False and self.turniFermo == 0):
+						
+						numGiri = 0
+						while (numGiri < 20 and self.crazyGoose.giocoPartito):
+							self.attendoAbilita = True
+							self.crazyGoose.buttonAbilitaPL1.evidenziaTempoRimanente((2000 - numGiri * 100), True)
+							
+							if (self.abilitaAttivata):
+								numGiri = 20
+							else:
+								numGiri += 1
+								pygame.time.wait(100)
+						
+						self.attendoAbilita = False
 
-				if (self.abilitaAttivata):
-					# Ormai ha attivato l'abilità perciò non la può più usare
-					self.crazyGoose.buttonAbilitaPL1.cancellaButtonAbilita()
-					self.avanza(2)
+						if (self.abilitaAttivata):
+							self.crazyGoose.buttonAbilitaPL1.cancellaButtonAbilita()
+							self.avanza(2)
 
 		#Ritorna indietro il flag, in questo modo si saprà a chi toccherà
 		return self.turnoMio
@@ -401,11 +409,9 @@ class Giocatore():
 	
 	def controllaCodiceCasella(self, codCasella):
 		attivatoAbilita = False
-		if (self.abilitaAttivata == False and self.pedinaScelta == "rossa"
-			and codCasella != VITTORIA):
-			# attende 2 sec (nel mentre deve fare controlli quindi non posso
-			# usare semplicemente una wait di 2000, ogni 100ms faccio un giro
-			# e controllo, arrivati a 20 giri avro' aspettato 2000ms)
+		if (self.abilitaAttivata == False and self.pedinaScelta == "rossa" and codCasella != VITTORIA):
+			#Farò 20 giri, ogni 100millisecondi ==> 2 secondi di tempo do
+			# all'utente per usare l'abilità
 			numGiri = 0
 			# (controllo anche che il gioco non sia stato fermato)
 			while (numGiri < 20 and self.crazyGoose.giocoPartito):
@@ -414,6 +420,7 @@ class Giocatore():
 				
 				if (self.abilitaAttivata):
 					attivatoAbilita = True
+					#fermo il loop
 					numGiri = 20
 				else:
 					numGiri += 1
@@ -453,53 +460,53 @@ class Giocatore():
 				msg = "TIRA ANCORA IL DADO"
 				color = BG_COLOR_X2
 				self.turnoMio = True
-				self.sopraEffetto = True
+				
 	
 			elif(codCasella == INDIETRO_DI_UNO[0]):
 				msg = "INDIETRO DI UNA CASELLA"
 				color = BG_COLOR_MENO1
 				spostamento = -1
-				self.sopraEffetto = True
+				
 	
 			elif(codCasella == INDIETRO_DI_TRE[0]):
 				msg = "INDIETRO DI TRE CASELLE"
 				color = BG_COLOR_MENO3
 				spostamento = -3
-				self.sopraEffetto = True
+				
 	
 			elif(codCasella == AVANTI_DI_UNO[0]):
 				msg = "AVANTI DI UNA CASELLA"
 				color = BG_COLOR_PIU1
 				spostamento = 1
-				self.sopraEffetto = True
+				
 	
 			elif(codCasella == AVANTI_DI_QUATTRO[0]):
 				msg = "AVANTI DI QUATTRO CASELLE"
 				color = BG_COLOR_PIU4
 				spostamento = 4
-				self.sopraEffetto = True
+				
 	
 			elif(codCasella == FERMO_DA_UNO[0]):
 				msg = "FERMO PER UN GIRO"
 				color = BG_COLOR_FERMO1
 				self.turniFermo = 1
-				self.sopraEffetto = True
+				
 	
 			elif(codCasella == FERMO_DA_DUE[0]):
 				msg = "FERMO PER DUE GIRI"
 				color = BG_COLOR_FERMO2
 				self.turniFermo = 2
-				self.sopraEffetto = True
+				
 	
-			elif(codCasella == TORNA_ALL_INIZIO):
+			elif(codCasella == TORNA_ALL_INIZIO[0]):
 				msg = "RICOMINCIA DA CAPO !!!"
 				color = BG_COLOR_DACAPO
 				#Lo fa ritornare alla 1° casella
 				#Dalla posizione == 39 va alla 1° ==> si muove di 38 posizioni indietro
 				spostamento = -(self.posizione-1)
-				self.sopraEffetto = True
 				
-			elif(codCasella == VITTORIA):
+				
+			elif(codCasella == VITTORIA[0]):
 				self.vincitore = True
 	
 			if(msg != ""):
@@ -508,16 +515,15 @@ class Giocatore():
 				self.ultimoMsg[0] = msg
 				self.ultimoMsg[1] = color
 				
-				#mostra i msg
+				#mostrerà i msg
 				self.crazyGoose.disegnaTutto()
 	
 			if(spostamento != 0):
 				
 				if(self.abilitaAttivata == False):
 					if(self.pedinaScelta == "gialla" and spostamento == 1):
-						#attende 2 sec (nel mentre deve fare controlli quindi non posso
-						# usare semplicemente una wait di 2000, ogni 100ms faccio un giro
-						# e controllo, arrivati a 20 giri avro' aspettato 2000ms)
+						#Farò 20 giri, ogni 100millisecondi ==> 2 secondi di tempo do
+						# all'utente per usare l'abilità
 						numGiri = 0
 						#(controllo anche che il gioco non sia stato fermato)
 						while(numGiri < 20 and self.crazyGoose.giocoPartito):
@@ -525,7 +531,9 @@ class Giocatore():
 							self.crazyGoose.buttonAbilitaPL1.evidenziaTempoRimanente((2000-numGiri*100), True)
 							
 							if(self.abilitaAttivata):
+								#aumenta lo spostamento a 3
 								spostamento = 3
+								#ferma il loop
 								numGiri = 20
 							else:
 								numGiri += 1
@@ -541,6 +549,8 @@ class Giocatore():
 							#Ormai ha attivato l'abilità perciò non la può più usare
 							self.crazyGoose.buttonAbilitaPL1.cancellaButtonAbilita()
 				
+				
 				#attende un attimino sulla casella
 				pygame.time.wait(500)
+				#ri-sposta la pedina
 				self.posiziona(spostamento)

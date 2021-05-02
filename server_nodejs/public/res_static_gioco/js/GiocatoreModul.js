@@ -521,7 +521,7 @@ class Giocatore {
                         this.crazyGoose.buttonAbilita.evidenziaTempoRimanente((2000 - numGiri * 100), true)
 
                         if (this.abilitaAttivata) {
-                            //aumenta spostamento a 3
+                            //aumenta lo spostamento a 3
                             spostamento = 3
                                 //fermo il loop
                             numGiri = 20

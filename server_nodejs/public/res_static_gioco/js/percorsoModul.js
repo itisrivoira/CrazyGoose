@@ -95,14 +95,224 @@ class Percorso {
                     this.dictCaselle[randomPos] = randomCodCasella
                 }
             }
+        }
+        this.controllaPossibiliLoop()
+        this.controllaQtaCaselleVicino()
 
-            this.controllaPossibiliLoop()
+        this.dictCaselle[QTA_CASELLE_TOTALI - 1] = TORNA_ALL_INIZIO[0]
+        this.dictCaselle[QTA_CASELLE_TOTALI] = VITTORIA[0]
+    }
 
-            this.dictCaselle[QTA_CASELLE_TOTALI - 1] = TORNA_ALL_INIZIO[0]
-            this.dictCaselle[QTA_CASELLE_TOTALI] = VITTORIA[0]
+    trovaNuovaPosPerCasella(codCasella, oldPos) {
+        let newPos = oldPos
+        let flagCeNelDict = true
+        while (flagCeNelDict || newPos == oldPos) {
+            if (codCasella == AVANTI_DI_QUATTRO[0]) {
+                //se ci fosse un +4 in posizione 38 si creerebbe un loop
+                newPos = Math.floor(Math.random() * (QTA_CASELLE_TOTALI - 2 - 2)) + 2
+            } else if (codCasella == INDIETRO_DI_TRE[0]) {
+                //se ci fosse un -3 in posizione 1/2/3 "uscirebbe" dal percorso
+                newPos = Math.floor(Math.random() * (QTA_CASELLE_TOTALI - 1 - 4)) + 4
+            } else {
+                newPos = Math.floor(Math.random() * (QTA_CASELLE_TOTALI - 1 - 2)) + 2
+            }
+
+            let x = this.dictCaselle[newPos]
+            if (x != undefined) {
+                flagCeNelDict = true
+            } else {
+                flagCeNelDict = false
+            }
+
+        }
+        this.dictCaselle[newPos] = codCasella
+    }
+
+    controllaQtaCaselleVicino() {
+        //In questo metodo vado a "spezzare" le catene di caselle con effetti.
+        //Se c'è una catena di 4 caselle con effetti allora prende 1 di quei
+        // effetti e lo sposta da un altra parte
+        let caselleVicino = true
+        while (caselleVicino) {
+            caselleVicino = false
+
+            let i = 0
+            for (i = 1; i < QTA_CASELLE_TOTALI - 1; i++) {
+                if (this.controllaSeCasellaNonEVuota([i, i + 1, i + 2, i + 3])) {
+                    let casDaTogliere = Math.floor(Math.random() * 4)
+                    let codCasellaDaTogliere = this.dictCaselle[i + casDaTogliere]
+
+                    delete this.dictCaselle[i + casDaTogliere]
+                    this.trovaNuovaPosPerCasella(codCasellaDaTogliere, (i + casDaTogliere))
+
+                    this.controllaPossibiliLoop()
+
+                    caselleVicino = true
+                    i = QTA_CASELLE_TOTALI
+                }
+            }
         }
     }
 
+    controllaPossibiliLoop() {
+        let loopTrovato = true
+        while (loopTrovato) {
+            loopTrovato = false
+
+            for (let pos in this.dictCaselle) {
+                loopTrovato = this.possibileLoop(parseInt(pos), parseInt(this.dictCaselle[pos]))
+                if (loopTrovato) {
+                    //Ferma xke deve ricominciare da capo (per corregere un loop che potrebbe
+                    // essersi creato)
+                    break
+                } else {
+                    loopTrovato = this.controllaLoopSfigato(parseInt(pos))
+                    if (loopTrovato) {
+                        //Ferma xke deve ricominciare da capo (per corregere un loop che potrebbe
+                        // essersi creato)
+                        break
+                    }
+                }
+            }
+        }
+    }
+
+    controllaLoopSfigato(pos) {
+        let loop = false
+        if (this.controllaSeCasellaNonEVuota([pos - 1, pos - 2, pos + 1, pos + 2, pos + 3, pos + 4])) {
+            if (this.dictCaselle[pos] == AVANTI_DI_QUATTRO[0] &&
+                this.dictCaselle[pos - 1] == AVANTI_DI_UNO[0] &&
+                this.dictCaselle[pos - 2] == AVANTI_DI_UNO[0] &&
+                this.dictCaselle[pos + 1] == INDIETRO_DI_TRE[0] &&
+                this.dictCaselle[pos + 2] == INDIETRO_DI_UNO[0] &&
+                this.dictCaselle[pos + 3] == INDIETRO_DI_UNO[0] &&
+                this.dictCaselle[pos + 4] == INDIETRO_DI_UNO[0]) {
+
+                delete this.dictCaselle[pos]
+                delete this.dictCaselle[pos - 1]
+                delete this.dictCaselle[pos - 2]
+                delete this.dictCaselle[pos + 1]
+                delete this.dictCaselle[pos + 2]
+                delete this.dictCaselle[pos + 3]
+                delete this.dictCaselle[pos + 4]
+
+                this.trovaNuovaPosPerCasella(AVANTI_DI_QUATTRO[0], (pos))
+                this.trovaNuovaPosPerCasella(AVANTI_DI_UNO[0], (pos - 1))
+                this.trovaNuovaPosPerCasella(AVANTI_DI_UNO[0], (pos - 2))
+                this.trovaNuovaPosPerCasella(INDIETRO_DI_TRE[0], (pos + 1))
+                this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0], (pos + 2))
+                this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0], (pos + 3))
+                this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0], (pos + 4))
+
+                loop = true
+            }
+        }
+
+        return loop
+    }
+
+
+    possibileLoop(pos, codCasella) {
+        let loop = false
+        if (codCasella == AVANTI_DI_QUATTRO[0]) {
+
+            if (this.controllaSeCasellaNonEVuota([pos + 1, pos + 4]) &&
+                this.dictCaselle[pos + 1] == INDIETRO_DI_UNO[0] &&
+                this.dictCaselle[pos + 4] == INDIETRO_DI_TRE[0]) {
+
+                //+4  -1  x  x  -3
+                // inverto casella +4 con -1
+                //-1  +4  x  x  -3
+
+                this.dictCaselle[pos] = INDIETRO_DI_UNO[0]
+                this.dictCaselle[pos + 1] = AVANTI_DI_QUATTRO[0]
+                loop = true
+
+            } else if (this.controllaSeCasellaNonEVuota([pos - 1, pos + 1, pos + 3, pos + 4]) &&
+                this.dictCaselle[pos - 1] == AVANTI_DI_UNO[0] &&
+                this.dictCaselle[pos + 3] == INDIETRO_DI_TRE[0] &&
+                this.dictCaselle[pos + 4] == INDIETRO_DI_UNO[0]) {
+
+                //+1  +4  x  x  -3  -1
+                // inverto casella +4 con -3
+                //+1  -3  x  x  +4  -1
+
+                this.dictCaselle[pos] = INDIETRO_DI_TRE[0]
+                this.dictCaselle[pos + 3] = AVANTI_DI_QUATTRO[0]
+                loop = true
+
+            } else if (this.controllaSeCasellaNonEVuota([pos + 3, pos + 4]) &&
+                this.dictCaselle[pos + 3] == INDIETRO_DI_TRE[0] &&
+                this.dictCaselle[pos + 4] == INDIETRO_DI_UNO[0]) {
+
+                //+4  x  x  -3  -1
+                // inverto casella +4 con -1
+                //-1  x  x  -3  +4
+
+                this.dictCaselle[pos] = INDIETRO_DI_UNO[0]
+                this.dictCaselle[pos + 4] = AVANTI_DI_QUATTRO[0]
+                loop = true
+            }
+
+        } else if (codCasella == AVANTI_DI_UNO[0]) {
+
+            if (this.controllaSeCasellaNonEVuota([pos + 1]) &&
+                this.dictCaselle[pos + 1] == INDIETRO_DI_UNO[0]) {
+
+                //+1  -1
+                // inverto casella +1 con -1
+                //-1  +1
+                this.dictCaselle[pos] = INDIETRO_DI_UNO[0]
+                this.dictCaselle[pos + 1] = AVANTI_DI_UNO[0]
+                loop = true
+
+            } else if (this.controllaSeCasellaNonEVuota([pos + 1, pos + 2, pos + 3]) &&
+                this.dictCaselle[pos + 1] == AVANTI_DI_UNO[0] &&
+                this.dictCaselle[pos + 2] == AVANTI_DI_UNO[0] &&
+                this.dictCaselle[pos + 3] == INDIETRO_DI_TRE[0]) {
+
+                //+1  +1  +1  -3
+
+                if (pos > 3) {
+                    // inverto casella primo +1 con -3
+                    //-3  +1  +1  +1
+                    this.dictCaselle[pos] = INDIETRO_DI_TRE[0]
+                    this.dictCaselle[pos + 3] = AVANTI_DI_UNO[0]
+                } else {
+                    //se invertissi finirebbe un -3 nelle prime caselle,
+                    // e se ci si finisse sopra si dovrebbe "andare fuori dal percorso"
+                    // quindi metto il -3 in una posizione casuale (in cui non ce nulla)
+                    //+1  +1  +1  x
+                    delete this.dictCaselle[pos + 3]
+
+                    this.trovaNuovaPosPerCasella(INDIETRO_DI_TRE[0], (pos + 3))
+
+                    loop = true
+                }
+            }
+        }
+        return loop
+    }
+
+    controllaSeCasellaNonEVuota(caselleDaControllare) {
+        //Se nell'if di controllo del loop provasse a prendere una casella non presente nel dizionario
+        // lancerebbe una eccezione. Io potrei mettere un grande try except che CONTIENE tutti gli if
+        // ma in questo modo "bloccherei" la possibilita' di andare negli if successivi
+
+        let i = 0
+        let flag = true
+        while (i < caselleDaControllare.length) {
+            let x = this.dictCaselle[caselleDaControllare[i]]
+            if (x == undefined) {
+                i = 999
+                flag = false
+            }
+
+            i++
+        }
+
+        return flag
+    }
 
     contaEffettiSettati(codEffetto = -1) {
         //Prende i valori del dizionario conta le occorenze di un certo valore
@@ -130,164 +340,6 @@ class Percorso {
             }
         }
         return counter
-    }
-
-
-    controllaPossibiliLoop() {
-        let loopTrovato = true
-        while (loopTrovato) {
-            loopTrovato = false
-
-            for (let pos in this.dictCaselle) {
-                loopTrovato = this.possibileLoop(parseInt(pos), parseInt(this.dictCaselle[pos]))
-                if (loopTrovato) {
-                    //ferma xke deve ricominciare da capo (per corregere un loop magari ne
-                    // ho creato un altro)
-                    break
-                } else {
-                    loopTrovato = this.controllaLoopSfigato(parseInt(pos))
-                    if (loopTrovato) {
-                        // ferma xke deve ricominciare da capo (per corregere un loop magari ne
-                        // ho creato un altro)
-                        break
-                    }
-                }
-            }
-        }
-    }
-
-    controllaLoopSfigato(pos) {
-        let loop = false
-        if (this.controllaSeCasellaNonEVuota([pos - 1, pos - 2, pos + 1, pos + 2, pos + 3, pos + 4])) {
-            if (this.dictCaselle[pos] == AVANTI_DI_QUATTRO[0] &&
-                this.dictCaselle[pos - 1] == AVANTI_DI_UNO[0] &&
-                this.dictCaselle[pos - 2] == AVANTI_DI_UNO[0] &&
-                this.dictCaselle[pos + 1] == INDIETRO_DI_TRE[0] &&
-                this.dictCaselle[pos + 2] == INDIETRO_DI_UNO[0] &&
-                this.dictCaselle[pos + 3] == INDIETRO_DI_UNO[0] &&
-                this.dictCaselle[pos + 4] == INDIETRO_DI_UNO[0]) {
-
-                delete this.dictCaselle[pos]
-                delete this.dictCaselle[pos - 1]
-                delete this.dictCaselle[pos - 2]
-                delete this.dictCaselle[pos + 1]
-                delete this.dictCaselle[pos + 2]
-                delete this.dictCaselle[pos + 3]
-                delete this.dictCaselle[pos + 4]
-
-                this.trovaNuovaPosPerCasella(AVANTI_DI_QUATTRO[0])
-                this.trovaNuovaPosPerCasella(AVANTI_DI_UNO[0])
-                this.trovaNuovaPosPerCasella(AVANTI_DI_UNO[0])
-                this.trovaNuovaPosPerCasella(INDIETRO_DI_TRE[0])
-                this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
-                this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
-                this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
-
-                loop = true
-            }
-        }
-
-        return loop
-    }
-
-
-    trovaNuovaPosPerCasella(codCasella) {
-        let newPos = QTA_CASELLE_TOTALI - 1 // (di certo questa casella ha un effetto, "DA CAPO")
-        while (newPos in Object.keys(this.dictCaselle)) {
-            newPos = Math.floor(Math.random() * (QTA_CASELLE_TOTALI - 1)) + 2
-        }
-        this.dictCaselle[newPos] = codCasella
-    }
-
-
-    possibileLoop(pos, codCasella) {
-        let loop = false
-        if (codCasella == AVANTI_DI_QUATTRO[0]) {
-
-            if (this.controllaSeCasellaNonEVuota([pos + 1, pos + 4]) &&
-                this.dictCaselle[pos + 1] == INDIETRO_DI_UNO[0] &&
-                this.dictCaselle[pos + 4] == INDIETRO_DI_TRE[0]) {
-
-                // inverto casella +4 con -1
-                this.dictCaselle[pos] = INDIETRO_DI_UNO[0]
-                this.dictCaselle[pos + 1] = AVANTI_DI_QUATTRO[0]
-                loop = true
-
-            } else if (this.controllaSeCasellaNonEVuota([pos + 3, pos + 4]) &&
-                this.dictCaselle[pos + 3] == INDIETRO_DI_TRE[0] &&
-                this.dictCaselle[pos + 4] == INDIETRO_DI_UNO[0]) {
-
-                // inverto casella +4 con -1
-                this.dictCaselle[pos] = INDIETRO_DI_UNO[0]
-                this.dictCaselle[pos + 4] = AVANTI_DI_QUATTRO[0]
-                loop = true
-
-            } else if (this.controllaSeCasellaNonEVuota([pos + 1, pos + 2, pos + 3, pos + 4]) &&
-                this.dictCaselle[pos + 1] == INDIETRO_DI_UNO[0] && this.dictCaselle[pos + 2] ==
-                INDIETRO_DI_UNO[0] && this.dictCaselle[pos + 3] == INDIETRO_DI_UNO[0] &&
-                this.dictCaselle[pos + 4] == INDIETRO_DI_UNO[0]) {
-
-                delete this.dictCaselle[pos + 1]
-                delete this.dictCaselle[pos + 2]
-                delete this.dictCaselle[pos + 3]
-                delete this.dictCaselle[pos + 4]
-
-                //Metto in una nuova posizione gli effetti delle caselle
-                this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
-                this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
-                this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
-                this.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
-                loop = true
-            }
-
-
-        } else if (codCasella == AVANTI_DI_UNO[0]) {
-
-            if (this.controllaSeCasellaNonEVuota([pos + 1]) &&
-                this.dictCaselle[pos + 1] == INDIETRO_DI_UNO[0]) {
-
-                // inverto casella +1 con -1
-                this.dictCaselle[pos] = INDIETRO_DI_UNO[0]
-                this.dictCaselle[pos + 1] = AVANTI_DI_UNO[0]
-                loop = true
-
-            } else if (this.controllaSeCasellaNonEVuota([pos + 1, pos + 2, pos + 3]) &&
-                this.dictCaselle[pos + 1] == AVANTI_DI_UNO[0] &&
-                this.dictCaselle[pos + 2] == AVANTI_DI_UNO[0] &&
-                this.dictCaselle[pos + 3] == INDIETRO_DI_TRE[0]) {
-
-                if (pos > 3) {
-                    // inverto casella primo +1 con -3
-                    this.dictCaselle[pos] = INDIETRO_DI_TRE[0]
-                    this.dictCaselle[pos + 3] = AVANTI_DI_UNO[0]
-                } else {
-                    //se invertissi finirebbe un -3 nelle prime caselle,
-                    // e se ci si finisse sopra si dovrebbe "andare fuori dal percorso"
-                    // quindi metto il -3 in una posizione casuale (in cui non ce nulla)
-                    delete this.dictCaselle[pos + 3]
-
-                    this.trovaNuovaPosPerCasella(INDIETRO_DI_TRE[0])
-
-                    loop = true
-                }
-            }
-
-            return loop
-        }
-    }
-
-    controllaSeCasellaNonEVuota(caselleDaControllare) {
-        //Se nell'if di controllo del loop provasse a prendere una casella non presente nel dizionario
-        // lancerebbe una eccezione. Io potrei mettere un grande try except che CONTIENE tutti gli if
-        // ma in questo modo "bloccherei" la possibilita' di andare negli if successivi
-
-        caselleDaControllare.forEach((posCasella) => {
-            if (!caselleDaControllare.includes(posCasella)) {
-                return false
-            }
-        })
-
-        return true
     }
 
 }

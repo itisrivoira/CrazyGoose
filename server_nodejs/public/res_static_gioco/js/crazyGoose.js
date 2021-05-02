@@ -367,7 +367,6 @@ class CrazyGoose {
                                         this.buttonAbilita.evidenziaTempoRimanente(0)
 
                                         if (this.player.abilitaAttivata) {
-                                            //fa avanzare di due caselle l'oca
                                             this.avanzaPlayer1(2)
                                         } else {
                                             this.controllaAChiTocca()

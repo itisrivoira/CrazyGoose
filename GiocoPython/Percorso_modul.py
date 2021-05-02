@@ -4,19 +4,19 @@ QTA_CASELLE_TOTALI = 40
 	#caselle con effetto randomico (NON include l'ultima e la penultima casella che sono SEMPRE UGUALI)
 QTA_CASELLE_DINAMICHE = 22
 
-#Per ogni effetto c'è un array con due elementi: il codice identificativo 
-#	e il totale di volte in cui deve apparire
-TIRA_DI_NUOVO = [0, 4]
-INDIETRO_DI_UNO = [1, 4]
-INDIETRO_DI_TRE = [2, 2]
-AVANTI_DI_UNO = [3, 4]
-AVANTI_DI_QUATTRO = [4, 2]
-FERMO_DA_UNO = [5, 4]
-FERMO_DA_DUE = [6, 2]
-	#Caselle con degli "effetti" che compaiono solo una volta, quindi non serve array
-TORNA_ALL_INIZIO = 7
-VITTORIA = 8
-
+#Per ogni effetto c'è un array con tre elementi: il codice identificativo,
+# il totale di volte in cui deve apparire e il nome che compare nella casella
+TIRA_DI_NUOVO = [0, 4, "X2"]
+INDIETRO_DI_UNO = [1, 4, "-1"]
+INDIETRO_DI_TRE = [2, 2, "-3"]
+AVANTI_DI_UNO = [3, 4, "+1"]
+AVANTI_DI_QUATTRO = [4, 2, "+4"]
+FERMO_DA_UNO = [5, 4, "ALT"]
+FERMO_DA_DUE = [6, 2, "ALT X2"]
+	
+	#compaiono una sola volta, non serve il secondo elemento
+TORNA_ALL_INIZIO = [7, "DA CAPO !"]
+VITTORIA = [8, "VITTORIA !!!"]
 
 class Percorso():
 	def __init__(self):
@@ -97,9 +97,50 @@ class Percorso():
 					self.dictCaselle[randomPos] = randomCodCasella
 		
 		self.controllaPossibiliLoop()
+		self.controllaQtaCaselleVicino()
+		
+		self.dictCaselle[QTA_CASELLE_TOTALI-1] = TORNA_ALL_INIZIO[0]
+		self.dictCaselle[QTA_CASELLE_TOTALI] = VITTORIA[0]
+	
+	
+	def trovaNuovaPosPerCasella(self, codCasella, oldPos):
+		#Estrae una nuova posizione. Se in quella posizione non c'è nessun'altro effetto allora va bene, sennò tira di 
 
-		self.dictCaselle[QTA_CASELLE_TOTALI-1] = TORNA_ALL_INIZIO
-		self.dictCaselle[QTA_CASELLE_TOTALI] = VITTORIA
+		newPos = oldPos
+		while (newPos in self.dictCaselle.keys() or newPos == oldPos):
+			if(codCasella == AVANTI_DI_QUATTRO[0]):
+				#se ci fosse un +4 in posizione 38 si creerebbe un loop
+				newPos = random.randint(2, (QTA_CASELLE_TOTALI - 3))
+			elif(codCasella == INDIETRO_DI_TRE[0]):
+				#se ci fosse un -3 in posizione 1/2/3 "uscirebbe" dal percorso
+				newPos = random.randint(4, (QTA_CASELLE_TOTALI - 2))
+			else:
+				newPos = random.randint(2, (QTA_CASELLE_TOTALI - 2))
+				
+		self.dictCaselle[newPos] = codCasella
+	
+
+	def controllaQtaCaselleVicino(self):
+		#In questo metodo vado a "spezzare" le catene di caselle con effetti.
+		#Se c'è una catena di 4 caselle con effetti allora prende 1 di quei
+		# effetti e lo sposta da un altra parte
+		caselleVicino = True
+		while(caselleVicino):
+			caselleVicino = False
+			
+			for i in range(0, QTA_CASELLE_TOTALI-1):
+				if(i != 0):
+					if(self.controllaSeCasellaNonEVuota((i, i+1, i+2, i+3))):
+						casDaTogliere = random.randint(0, 3)
+						codCasellaDaTogliere = self.dictCaselle[i+casDaTogliere]
+
+						self.dictCaselle.pop(i+casDaTogliere)
+						self.trovaNuovaPosPerCasella(codCasellaDaTogliere, (i+casDaTogliere))
+						
+						self.controllaPossibiliLoop()
+						
+						caselleVicino = True
+						i = QTA_CASELLE_TOTALI
 
 
 	def controllaPossibiliLoop(self):
@@ -110,18 +151,20 @@ class Percorso():
 			for (pos, codCasella) in self.dictCaselle.items():
 				loopTrovato = self.possibileLoop(pos, codCasella)
 				if(loopTrovato):
-					#ferma xke deve ricominciare da capo (per corregere un loop magari ne
-					# ho creato un altro)
+					#Ferma xke deve ricominciare da capo (per corregere un loop che potrebbe
+					# essersi creato)
 					break
 				else:
 					loopTrovato = self.controllaLoopSfigato(pos)
 					if (loopTrovato):
-						# ferma xke deve ricominciare da capo (per corregere un loop magari ne
-						# ho creato un altro)
+						#Ferma xke deve ricominciare da capo (per corregere un loop che potrebbe
+						# essersi creato)
 						break
 	
 	
 	def controllaLoopSfigato(self, pos):
+		#Effetti caselle: +4  +1  +1  -3  -1  -1
+		
 		loop = False
 		if(self.controllaSeCasellaNonEVuota((pos-1, pos-2, pos+1, pos+2, pos+3, pos+4))):
 			if(self.dictCaselle[pos] == AVANTI_DI_QUATTRO[0]
@@ -137,26 +180,20 @@ class Percorso():
 				self.dictCaselle.pop(pos-2)
 				self.dictCaselle.pop(pos+1)
 				self.dictCaselle.pop(pos+2)
+				self.dictCaselle.pop(pos+3)
 				self.dictCaselle.pop(pos+4)
 
-				self.trovaNuovaPosPerCasella(AVANTI_DI_QUATTRO[0])
-				self.trovaNuovaPosPerCasella(AVANTI_DI_UNO[0])
-				self.trovaNuovaPosPerCasella(AVANTI_DI_UNO[0])
-				self.trovaNuovaPosPerCasella(INDIETRO_DI_TRE[0])
-				self.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
-				self.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
-				self.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
-
+				self.trovaNuovaPosPerCasella(AVANTI_DI_QUATTRO[0], pos)
+				self.trovaNuovaPosPerCasella(AVANTI_DI_UNO[0], (pos-1))
+				self.trovaNuovaPosPerCasella(AVANTI_DI_UNO[0], (pos-2))
+				self.trovaNuovaPosPerCasella(INDIETRO_DI_TRE[0], (pos+1))
+				self.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0], (pos+2))
+				self.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0], (pos+3))
+				self.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0], (pos+4))
+				
 				loop = True
 
 		return loop
-
-
-	def trovaNuovaPosPerCasella(self, codCasella):
-		newPos = QTA_CASELLE_TOTALI - 1  # (di certo questa casella ha un effetto, "DA CAPO")
-		while (newPos in self.dictCaselle.keys()):
-			newPos = random.randint(2, (QTA_CASELLE_TOTALI - 2))
-		self.dictCaselle[newPos] = codCasella
 
 
 	def possibileLoop(self, pos, codCasella):
@@ -167,44 +204,61 @@ class Percorso():
 					self.dictCaselle[pos+1] == INDIETRO_DI_UNO[0]
 					and self.dictCaselle[pos+4] == INDIETRO_DI_TRE[0]):
 				
+				#+4  -1  x  x  -3
 				# inverto casella +4 con -1
+				#-1  +4  x  x  -3
+				
 				self.dictCaselle[pos] = INDIETRO_DI_UNO[0]
 				self.dictCaselle[pos + 1] = AVANTI_DI_QUATTRO[0]
+				loop = True
+			
+			elif(self.controllaSeCasellaNonEVuota((pos-1, pos+1, pos+3, pos+4))
+					and self.dictCaselle[pos-1] == AVANTI_DI_UNO[0]
+					and self.dictCaselle[pos+3] == INDIETRO_DI_TRE[0]
+					and self.dictCaselle[pos+4] == INDIETRO_DI_UNO[0]):
+			
+				#+1  +4  x  x  -3  -1
+				# inverto casella +4 con -3
+				#+1  -3  x  x  +4  -1
+				
+				self.dictCaselle[pos] = INDIETRO_DI_TRE[0]
+				self.dictCaselle[pos+3] = AVANTI_DI_QUATTRO[0]
 				loop = True
 			
 			elif(self.controllaSeCasellaNonEVuota((pos+3, pos+4)) and
 					self.dictCaselle[pos+3] == INDIETRO_DI_TRE[0]
 				and self.dictCaselle[pos+4] == INDIETRO_DI_UNO[0]):
 				
+				#+4  x  x  -3  -1
 				# inverto casella +4 con -1
+				#-1  x  x  -3  +4
+				
 				self.dictCaselle[pos] = INDIETRO_DI_UNO[0]
 				self.dictCaselle[pos + 4] = AVANTI_DI_QUATTRO[0]
 				loop = True
 			
-			elif(self.controllaSeCasellaNonEVuota((pos+1, pos+2, pos+3, pos+4)) and
-					self.dictCaselle[pos+1] == INDIETRO_DI_UNO[0] and self.dictCaselle[pos+2] ==
-				 INDIETRO_DI_UNO[0] and self.dictCaselle[pos+3] == INDIETRO_DI_UNO[0]
-				 and self.dictCaselle[pos+4] == INDIETRO_DI_UNO[0]):
-				
-				self.dictCaselle.pop(pos+1)
-				self.dictCaselle.pop(pos+2)
-				self.dictCaselle.pop(pos+3)
-				self.dictCaselle.pop(pos+4)
+			elif(self.controllaSeCasellaNonEVuota((pos+3, pos+4))
+				and (self.dictCaselle.get(pos+3) == AVANTI_DI_UNO[0])
+				and (self.dictCaselle.get(pos+4) == INDIETRO_DI_TRE[0]) ):
 
-				#Metto in una nuova posizione gli effetti delle caselle
-				self.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
-				self.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
-				self.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
-				self.trovaNuovaPosPerCasella(INDIETRO_DI_UNO[0])
+				#+4  x  x  +1  -3
+				#inverto casella +4 con +1
+				#+1  x  x  +4  -3
+
+				self.dictCaselle[pos] = AVANTI_DI_UNO[0]
+				self.dictCaselle[pos+3] = AVANTI_DI_QUATTRO[0]
 				loop = True
-				
+			
 			
 		elif(codCasella == AVANTI_DI_UNO[0]):
 			
 			if(self.controllaSeCasellaNonEVuota((pos+1,)) and
 					self.dictCaselle[pos+1] == INDIETRO_DI_UNO[0]):
 				
+				#+1  -1
 				# inverto casella +1 con -1
+				#-1  +1
+				
 				self.dictCaselle[pos] = INDIETRO_DI_UNO[0]
 				self.dictCaselle[pos + 1] = AVANTI_DI_UNO[0]
 				loop = True
@@ -214,20 +268,25 @@ class Percorso():
 				and self.dictCaselle[pos+2] == AVANTI_DI_UNO[0]
 				and self.dictCaselle[pos+3] == INDIETRO_DI_TRE[0]):
 				
+				#+1  +1  +1  -3
+				
 				if(pos > 3):
 					# inverto casella primo +1 con -3
+					#-3  +1  +1  +1
+					
 					self.dictCaselle[pos] = INDIETRO_DI_TRE[0]
 					self.dictCaselle[pos + 3] = AVANTI_DI_UNO[0]
 				else:
 					#se invertissi finirebbe un -3 nelle prime caselle,
 					# e se ci si finisse sopra si dovrebbe "andare fuori dal percorso"
 					# quindi metto il -3 in una posizione casuale (in cui non ce nulla)
-					self.dictCaselle.pop(pos+3)
+					#+1  +1  +1  x
 
+					self.dictCaselle.pop(pos+3)
 					self.trovaNuovaPosPerCasella(INDIETRO_DI_TRE[0])
 				
 				loop = True
-		
+
 		return loop
 	
 	
@@ -244,58 +303,6 @@ class Percorso():
 
 		return True
 		
-
-	def controllaLoop(self, codCasella, posizione):
-		loopTrovato = False
-
-			#"not self.dictCaselle.get(posizione-1) == None" (non funzia se non lo metto)
-		if(codCasella == INDIETRO_DI_TRE[0]):
-			"""
-			Esempio: casella 2 c'è "Avanti di 4" ==> il giocatore finirà sulla casella 6
-						e su questa vi è "Indietro di 1" ==> il giocatore finirà sulla
-						casella 5 e su questa vi è "Indietro di 3"
-					IL GIOCATORE RITORNA SULLA CASELLA 2   ==>   LOOP
-			"""
-			if(not (self.dictCaselle.get(posizione+1) == None)
-				and (self.dictCaselle.get(posizione+1) == INDIETRO_DI_UNO[0])
-				and not (self.dictCaselle.get(posizione-3) == None)
-				and (self.dictCaselle.get(posizione-3) == AVANTI_DI_QUATTRO[0]) ):
-
-				self.dictCaselle[posizione-3] = INDIETRO_DI_TRE[0]
-				self.dictCaselle[posizione] = AVANTI_DI_UNO[0]
-
-				loopTrovato = True
-
-		elif(codCasella == INDIETRO_DI_UNO[0]):
-			if( not (self.dictCaselle.get(posizione-1) == None)
-				and (self.dictCaselle.get(posizione-1) == AVANTI_DI_UNO[0]) ):
-
-				self.dictCaselle[posizione-1] = INDIETRO_DI_UNO[0]
-				self.dictCaselle[posizione] = AVANTI_DI_UNO[0]
-
-				loopTrovato = True
-
-			elif(not (self.dictCaselle.get(posizione-1) == None)
-				and (self.dictCaselle.get(posizione-1) == AVANTI_DI_QUATTRO[0])
-				and not (self.dictCaselle.get(posizione+3) == None)
-				and (self.dictCaselle.get(posizione+3) == INDIETRO_DI_TRE[0]) ):
-
-				"""
-					Esempio: casella 4 c'è "Avanti di 4" ==> il giocatore finirà sulla
-						casella 8 e su questa vi è "Indietro di 3" ==> il giocatore
-						finirà sulla casella 5 che ha "Indietro di 1" ==>
-					IL GIOCATORE RITORNA SULLA CASELLA 4   ==>   LOOP
-				"""
-
-				self.dictCaselle[posizione-1] = INDIETRO_DI_TRE[0]
-				self.dictCaselle[posizione+3] = AVANTI_DI_QUATTRO[0]
-
-				#in questo caso non devo ho da cambiare la casella "corrente", ma le altre:
-				loopTrovato = True
-
-		
-
-		return loopTrovato
 
 
 	def contaEffettiSettati(self, codEffetto=-1):

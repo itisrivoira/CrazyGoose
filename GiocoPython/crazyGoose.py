@@ -545,11 +545,12 @@ class CrazyGoose():
 			pygame.time.wait(2000)
 			self.buttonDadoCOM.faiGirare()
 
-		self.avanzaCOM(numEstratto)
+		if(self.giocoPartito):
+			self.avanzaCOM(numEstratto)
 
 
 	def avanzaPlayer1(self, numEstratto, controllaCodCasella=True):
-		#numEstratto = 40
+		numEstratto = 40
 		
 		#se num estratto è < 0 vuol dire che è stata attivata l'abilità
 		# del COM (che richiama questo metodo con numEstratto = -2), quindi
@@ -626,48 +627,49 @@ class CrazyGoose():
 		#numEstratto = 40
 		
 		#(Per i commenti, più o meno tutti, VEDI "avanzaPlayer1")
-		if(self.com.turniFermo > 0):
-			self.com.turniFermo -= 1
+		if(self.giocoPartito):
+			if(self.com.turniFermo > 0):
+				self.com.turniFermo -= 1
 
-			self.player.turnoMio = True
-			self.com.turnoMio = False
+				self.player.turnoMio = True
+				self.com.turnoMio = False
 
-			self.aChiTocca = True
-			
-			self.turnoPL1 = threading.Thread(target=self.avanzaPlayer1, args=(numEstratto,))
-			self.turnoPL1.start()
-		else:
-			self.valDadoCOM = numEstratto
-
-			toccaAncoraA_Me = self.com.avanza(numEstratto)
-			
-			if(self.com.posizione == self.player.posizione and
-				self.player.posizione > 2):
+				self.aChiTocca = True
 				
-				self.attivaAbilitaCOM(False, toccaAncoraA_Me)
+				self.turnoPL1 = threading.Thread(target=self.avanzaPlayer1, args=(numEstratto,))
+				self.turnoPL1.start()
 			else:
-				if(not self.com.vincitore):
-					self.player.turnoMio = not toccaAncoraA_Me
-					if(self.com.turniFermo > 0):
-						self.player.turniFermo = 0
-						self.aChiTocca = True
-					else:
-						if(self.player.turniFermo > 0):
-							self.aChiTocca = False
-							self.tiraDado()
-						else:
-							if(self.player.turnoMio):
-								self.aChiTocca = True
-							else:
-								self.aChiTocca = False
-								self.turnoCOM = threading.Thread(target=self.toccaAlCOM)
-								self.turnoCOM.start()
-								
-					# finito il turno, segnalerà a chi tocca
-					self.disegnaTutto()
+				self.valDadoCOM = numEstratto
+
+				toccaAncoraA_Me = self.com.avanza(numEstratto)
+				
+				if(self.com.posizione == self.player.posizione and
+					self.player.posizione > 2):
+					
+					self.attivaAbilitaCOM(False, toccaAncoraA_Me)
 				else:
-					self.segnalaVincitore(False)
-					self.partitaTerminata = True
+					if(not self.com.vincitore):
+						self.player.turnoMio = not toccaAncoraA_Me
+						if(self.com.turniFermo > 0):
+							self.player.turniFermo = 0
+							self.aChiTocca = True
+						else:
+							if(self.player.turniFermo > 0):
+								self.aChiTocca = False
+								self.tiraDado()
+							else:
+								if(self.player.turnoMio):
+									self.aChiTocca = True
+								else:
+									self.aChiTocca = False
+									self.turnoCOM = threading.Thread(target=self.toccaAlCOM)
+									self.turnoCOM.start()
+									
+						# finito il turno, segnalerà a chi tocca
+						self.disegnaTutto()
+					else:
+						self.segnalaVincitore(False)
+						self.partitaTerminata = True
 
 
 	def attivaAbilitaCOM(self, turnoPL1, toccaAncoraA_Me):
