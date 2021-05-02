@@ -140,7 +140,7 @@ app.get("/download", (req, resp) => {
 //----------------- gioco web ----------------------------------
 
 app.get("/menuGioco", (req, resp) => {
-    if (req.session.loggato) {
+    if (true){//req.session.loggato) {
 
         let sito = fs.readFileSync("./webApp/menu/index.html", "utf-8")
         let sitoConIP = rimpiazzaLocalhostConIP(sito)
@@ -161,7 +161,7 @@ app.get("/menuGioco", (req, resp) => {
 })
 
 app.get("/start", (req, resp) => {
-    if (req.session.loggato) {
+    if (true){//req.session.loggato) {
         let sito = fs.readFileSync("./webApp/giocoWeb/scelta_oca.html", "utf-8")
         let sitoConIP = rimpiazzaLocalhostConIP(sito)
 
@@ -173,7 +173,7 @@ app.get("/start", (req, resp) => {
 })
 
 app.get("/options", (req, resp) => {
-    if (req.session.loggato) {
+    if (true){//req.session.loggato) {
         let sito = fs.readFileSync("./webApp/menu/options.html", "utf-8")
         let sitoConIP = rimpiazzaLocalhostConIP(sito)
 
@@ -185,7 +185,7 @@ app.get("/options", (req, resp) => {
 })
 
 app.get("/credits", (req, resp) => {
-    if (req.session.loggato) {
+    if (true){//req.session.loggato) {
         let sito = fs.readFileSync("./webApp/menu/credits.html", "utf-8")
         let sitoConIP = rimpiazzaLocalhostConIP(sito)
 
@@ -197,7 +197,7 @@ app.get("/credits", (req, resp) => {
 })
 
 app.get("/gioco", (req, resp) => {
-    if (req.session.loggato) {
+    if (true){//req.session.loggato) {
         let sito = fs.readFileSync("./webApp/giocoWeb/index.html", "utf-8")
         let sitoConIP = rimpiazzaLocalhostConIP(sito)
 

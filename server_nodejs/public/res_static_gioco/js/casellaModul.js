@@ -14,38 +14,42 @@ class Casella {
         this.y = y
         this.width = width
         this.height = height
+        this.indice = indice
 
         this.numeroCasella = null
 
         if (indice > 0) {
             this.questaCasella = document.getElementById(("_" + indice))
             this.numeroCasella = document.getElementById(("-" + indice))
+
+            if (indice != 40) {
+                //ad es. da "100px" ==> mi devo togliere quel "px" e trasformare il tutto in intero
+                let pos = getComputedStyle(document.querySelector(".caselle")).width
+                this.width = parseInt(pos.slice(0, pos.length - 2))
+                pos = getComputedStyle(document.querySelector(".caselle")).height
+                this.height = parseInt(pos.slice(0, pos.length - 2))
+            } else {
+                let pos = getComputedStyle(document.querySelector(".casella40")).width
+                this.width = parseInt(pos.slice(0, pos.length - 2))
+                pos = getComputedStyle(document.querySelector(".casella40")).height
+                this.height = parseInt(pos.slice(0, pos.length - 2))
+            }
+
         } else {
             //prendo la casella iniziale dei giocatori
             if (indice == 0) {
                 this.questaCasella = document.getElementById("inizPL1")
-            } else if (indice == -1) {
+            } else { //indice == -1
                 this.questaCasella = document.getElementById("inizCOM")
             }
+            //ad es. da "100px" ==> mi devo togliere quel "px" e trasformare il tutto in intero
+            let pos = getComputedStyle(document.querySelector(".caselleIniziali")).width
+            this.width = parseInt(pos.slice(0, pos.length - 2))
+            pos = getComputedStyle(document.querySelector(".caselleIniziali")).height
+            this.height = parseInt(pos.slice(0, pos.length - 2))
         }
-
-        if (casellaVittoria) { //dimensioni e posizione diverse se è la casella vittoria
-            this.width = 120
-            this.height = 100
-            this.y = this.y - 20
-        }
-        this.questaCasella.style.width = this.width + "px"
-        this.questaCasella.style.height = this.height + "px"
-        this.questaCasella.style.position = "absolute"
-        this.questaCasella.style.left = this.x + "px"
-        this.questaCasella.style.top = this.y + "px"
-
-        if (this.numeroCasella != null) {
-            this.numeroCasella.style.position = "absolute"
-                //centra il numero di casella nella casella (orizzontalmente)
-            this.numeroCasella.style.left = (this.getCenterX() - (15 / 2)) + "px"
-            this.numeroCasella.style.top = this.y + "px"
-        } //else questo oggetto Casella è la casella iniziale dei giocatori
+        this.x = this.questaCasella.getBoundingClientRect().left
+        this.y = this.questaCasella.getBoundingClientRect().top
     }
 
     settaEffetto(codCasella) {
@@ -91,18 +95,67 @@ class Casella {
             this.questaCasella.style.fontSize = "15px"
         }
 
-        let x = document.createElement("LABEL")
-        x.innerHTML = testo
-            //per allineare verticalmente (insieme a "display:table;" nella classe CSS "caselle")
-        x.style.display = "table-cell"
-        x.style.verticalAlign = "middle"
-        x.style.fontWeight = "bold"
-            //aggiunto al div della casella l'effetto della casella
+        let x = document.createElement("DIV")
+        x.style.textAlign = "center"
+        x.style.float = "left"
+        if (codCasella != TORNA_ALL_INIZIO[0]) {
+            x.style.marginLeft = "30px"
+        } else {
+            x.style.marginLeft = "5px"
+        }
+
+        if (this.indice == 18 || this.indice == 34) {
+
+            x.style.marginLeft = "5px"
+            x.style.marginTop = this.height - 30 + "px"
+
+        } else if (this.indice == 12 || this.indice == 22 || this.indice == 30 || this.indice == 36) {
+            x.style.marginTop = this.height - 50 + "px"
+
+            if (codCasella == FERMO_DA_UNO[0]) {
+                x.style.marginLeft = this.width - 50 + "px"
+            } else if (codCasella == FERMO_DA_DUE[0]) {
+                x.style.marginLeft = this.width - 105 + "px"
+                x.style.marginTop = this.height - 30 + "px"
+            } else {
+                x.style.marginLeft = this.width - 35 + "px"
+            }
+
+        } else if (this.indice == 7 || this.indice == 27) {
+
+            if (codCasella == FERMO_DA_UNO[0]) {
+                x.style.marginLeft = "75px"
+            } else if (codCasella == FERMO_DA_DUE[0]) {
+                x.style.marginLeft = "38px"
+            } else {
+                x.style.marginLeft = "95px"
+            }
+
+        } else if (this.indice == 40) {
+            x.style.marginLeft = "95px"
+            x.style.marginTop = "20px"
+        }
+
+        let text = document.createElement("label")
+        text.innerHTML = testo
+
+        text.style.fontSize = "20px"
+        text.style.fontWeight = "bold"
+        if (this.indice == 40) {
+            text.style.fontSize = "40px"
+        }
+
+        x.appendChild(text)
         this.questaCasella.appendChild(x)
     }
 
     getCenterX() {
-        return this.x + this.width / 2
+        if (this.indice != 40) {
+            return this.x + this.width / 2
+        } else {
+            console.log(this.width)
+            return (this.x + this.width / 2)
+        }
     }
     getCenterY() {
         return this.y + this.height / 2

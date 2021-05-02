@@ -3,8 +3,10 @@ body {
 }
 
 .tabellone {
-    border: black;
-    margin-left: 200px;
+    /* border:10px solid black;  */
+    width: 1910px;
+    height: 1200px;
+    /* margin:0px 310px 300px 310px; */
 }
 
 #gioco {
@@ -12,6 +14,7 @@ body {
     height: 100vh;
     background-position: center;
     background-image: url("/res_static_gioco/images/sfondo4k.jpg");
+    clear: both;
 }
 
 #vittoria,
@@ -40,32 +43,150 @@ body {
     top: 45vh;
 }
 
-.caselle {
-    border: 1px solid black;
-    border-radius: 50%;
-    text-align: center;
-    /* margin-left: 100px; */
+
+/*------------------CSS PER LE CASELLE------------------------*/
+
+.divCasIniziali {
+    float: left;
+    /* border: 10px solid green; */
+    width: 120px;
+    height: 250px;
+    margin: 600px 0px 0px 300px;
+}
+
+.tabellonio {
+    margin: 0px 0px 0px 400px;
+    /* border: 7px solid red;  */
+    width: 1500px;
+    height: 900px;
 }
 
 .caselleIniziali {
-    border: 2.9px solid black;
-    border-radius: 35%;
+    border: 4px solid black;
+    /* border-radius: 35%;  */
     text-align: center;
-}
-
-.caselle {
-    display: table;
+    width: 100px;
+    height: 100px;
+    margin: -4px 0px 0px 0px;
 }
 
 .numCasella {
+    float: left;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    margin-left: 5px;
+}
+
+.casella34 .numCasella,
+.casella18 .numCasella {
+    float: right;
+    margin-right: 5px;
+}
+
+.numCasella40 {
     border-radius: 3px;
     width: 20px;
-    font-size: 14px;
-    margin-top: -8px;
+    font-size: 15px;
+    font-weight: bold;
     text-align: center;
-    z-index: 1;
-    background-color: rgb(201, 196, 196);
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    margin: -2px 0px 0px 220px;
 }
+
+.caselle {
+    float: left;
+    border: 4px solid black;
+    width: 150px;
+    height: 120px;
+    margin: 0px 0px 0px -4px;
+    border-radius: 0% 10% 10% 0%;
+}
+
+.casella7,
+.casella27,
+.casella39 {
+    float: left;
+    border: 4px solid black;
+    border-radius: 0% 0% 85% 0%;
+    width: 150px;
+    height: 120px;
+    /* text-align: center; */
+    margin: 0px 0px 0px -4px;
+}
+
+.casella8 {
+    float: left;
+    border-left: 4px solid black;
+    border-top: 4px solid black;
+    border-bottom: 4px solid black;
+    /* border-radius: 0% 10% 10% 0%; */
+    width: 150px;
+    height: 120px;
+    margin: 0px 0px 0px -4px;
+}
+
+.casella12,
+.casella30 {
+    float: left;
+    border: 4px solid black;
+    border-radius: 0% 85% 0% 0%;
+    width: 150px;
+    height: 120px;
+    /* text-align: center; */
+    margin: 0px 0px 0px -4px;
+}
+
+.casella18,
+.casella34 {
+    float: left;
+    border: 4px solid black;
+    border-radius: 85% 0% 0% 0%;
+    width: 150px;
+    height: 120px;
+    /* text-align: center; */
+    margin: 0px 0px 0px -4px;
+}
+
+.casella22,
+.casella36 {
+    float: left;
+    border: 4px solid black;
+    border-radius: 0% 0% 0% 85%;
+    width: 150px;
+    height: 120px;
+    /* text-align: center; */
+    margin: 0px 0px 0px -4px;
+}
+
+.casella40 {
+    float: left;
+    background-color: rgb(0, 60, 255);
+    border: 4px solid black;
+    width: 458px;
+    height: 120px;
+    /* text-align: center; */
+    margin: 0px 0px 0px -4px;
+}
+
+.primaRiga,
+.secondaRiga,
+.terzaRiga,
+.quartaRiga,
+.quintaRiga,
+.sestaRiga {
+    width: 1100px;
+    /* border: 4px solid red; */
+    height: 120px;
+    padding: 0px 0px 0px 0px;
+}
+
+
+/*------------------------------------------*/
 
 #imgTitolo {
     height: 17vh;

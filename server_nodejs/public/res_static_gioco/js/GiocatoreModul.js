@@ -1,9 +1,3 @@
-//x/y delle CASELLE INIZIALI dei due giocatori
-const X_PLAYER1 = 320
-const X_PLAYER2 = 320
-const Y_PLAYER1 = 570
-const Y_PLAYER2 = 670
-
 const TEMPO_SPOST_FRA_CASELLE = 600
 const PICCOLA_PAUSA = 50
 
@@ -69,12 +63,12 @@ class Giocatore {
         let indice = 0
 
         if (this.tag == "PL1") {
-            x = X_PLAYER1
-            y = Y_PLAYER1
+            x = document.getElementById("inizPL1").getBoundingClientRect().left
+            y = document.getElementById("inizPL1").getBoundingClientRect().top
             indice = 0
         } else {
-            x = X_PLAYER2
-            y = Y_PLAYER2
+            x = document.getElementById("inizCOM").getBoundingClientRect().left
+            y = document.getElementById("inizCOM").getBoundingClientRect().top
             indice = -1
         }
 
@@ -122,17 +116,18 @@ class Giocatore {
 
         if (x_partenza > x_fine) {
             percorsoImg = this.percorsoImgDxSx
-        } else if (x_partenza == x_fine) { //partenza e fine sono sulla stessa x
-            //controlla la posizione della casella finale e decide
+        } else {
+            if ((posCasellaFinale >= 7 && posCasellaFinale <= 12) ||
+                (posCasellaFinale >= 27 && posCasellaFinale <= 30)) {
 
-            //!!!!!   È SOLAMENTE LEGATO AL LAYOUT DEL PERCORSO   !!!!!
-
-            if (posCasellaFinale >= 18 && posCasellaFinale <= 20) {
-                percorsoImg = this.percorsoImgSxDx
-            } else if (posCasellaFinale == 26 || posCasellaFinale == 27) {
                 percorsoImg = this.percorsoImgDxSx
-            }
-        } //else prende img da sx a dx
+            } else if ((posCasellaFinale >= 18 && posCasellaFinale <= 22) ||
+                (posCasellaFinale >= 34 && posCasellaFinale <= 36)) {
+
+                percorsoImg = this.percorsoImgSxDx
+            } //else prende img da sx verso dx
+        }
+
 
 
         if (this.isMoving == false && this.posizione == avversario.posizione) {
@@ -204,7 +199,7 @@ class Giocatore {
             if (this.newSpostamento == 0) {
                 this.newSpostamento = -((this.posizione + spostamento) - QTA_CASELLE_TOTALI)
             }
-                //(sposto la pedina sulla casella finale)
+            //(sposto la pedina sulla casella finale)
             this.posiziona((QTA_CASELLE_TOTALI - this.posizione), false)
 
             //Aspetta che finisca l'animazione della pedina e poi la fa ritornare indietro
