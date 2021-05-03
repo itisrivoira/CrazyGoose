@@ -6,8 +6,6 @@ const jsdom = require("jsdom")
     //destrutturazione (prendo solo quello che mi serve)
 const { JSDOM } = jsdom
 
-//https://codeshack.io/basic-login-system-nodejs-express-mysql/
-const session = require("express-session")
 const express = require("express")
 const app = express()
 
@@ -21,12 +19,6 @@ app.listen(3000, () => {
         fs.writeFileSync("./indirizzo_server.txt", IP)
     })
 })
-
-app.use(session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: false
-}));
 
 app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
@@ -60,24 +52,27 @@ function rimpiazzaLocalhostConIP(pagina) {
     return paginaModif
 }
 
-app.get("/", (req, resp) => {
-    let paginaRegoleSenzaFooter = fs.readFileSync("./sitoWeb/home.html", "utf-8")
-    let paginaConFooter = aggiungiFooterAllaPagina(paginaRegoleSenzaFooter)
-    let pagina = rimpiazzaLocalhostConIP(paginaConFooter)
+
+app.get("/passaAPaginaPHP", (req, resp) => {
+    let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
 
     let jsDom = new JSDOM(pagina)
 
-    if (req.session.loggato) {
-        msgBenvenuto = "Benvenuto<br><i>" + req.session.nome + " " + req.session.cognome + "</i>"
-        jsDom.window.document.getElementById("dropdownBtn").innerHTML = msgBenvenuto
-        jsDom.window.document.getElementById("divDropdown").style.display = "inline-block"
+    jsDom.window.document.getElementById("chePagina").innerHTML = req.query.pagina
 
-        jsDom.window.document.getElementById("testataSito").setAttribute("class", "col-10 d-flex justify-content-center")
-        jsDom.window.document.getElementById("menuUtente").setAttribute("class", "col-2")
-    } else {
-        jsDom.window.document.getElementById("testataSito").setAttribute("class", "col-12 d-flex justify-content-center")
-    }
-    resp.send(jsDom.window.document.documentElement.outerHTML)
+    resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
+})
+
+
+
+app.get("/", (req, resp) => {
+    let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
+
+    let jsDom = new JSDOM(pagina)
+
+    jsDom.window.document.getElementById("chePagina").innerHTML = "sitoWeb/phpFiles/logout"
+
+    resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
 
 app.get("/regole", (req, resp) => {
@@ -100,7 +95,8 @@ app.get("/profilo", (req, resp) => {
     //TODO fare una pagina per il profilo, con statistiche ecc.
     // DA "RIEMPIRE" QUI (o lì con ejs) ==> SERVE DB
     //resp.sendFile(__dirname + "/sitoWeb/profilo.html")
-    resp.send("WORK IN PROGRESS")
+    //resp.send("WORK IN PROGRESS")
+    resp.sendFile(__dirname + "/fanculo.html", "utf-8")
 })
 
 app.get("/login", (req, resp) => {
@@ -111,9 +107,13 @@ app.get("/login", (req, resp) => {
 })
 
 app.get("/esci", (req, resp) => {
-    req.session.destroy()
-        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
-    resp.redirect(301, "/")
+    let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
+
+    let jsDom = new JSDOM(pagina)
+
+    jsDom.window.document.getElementById("chePagina").innerHTML = "sitoWeb/phpFiles/logout"
+
+    resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
 
 app.get("/registrati", (req, resp) => {
@@ -123,89 +123,42 @@ app.get("/registrati", (req, resp) => {
     resp.send(paginaConIP)
 })
 
-app.post("/registrazioneFatta", (req, resp) => {
-    //TODO ci sarebbe da aggiungere nel database l'utente
-    req.session.loggato = true
-    req.session.nome = req.body.nome
-    req.session.cognome = req.body.cognome
-        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
-    resp.redirect(301, "/")
-})
-
 app.get("/download", (req, resp) => {
     resp.sendFile(__dirname + "/GiocoPython.zip")
 })
 
-
 //----------------- gioco web ----------------------------------
 
-app.get("/menuGioco", (req, resp) => {
-    if (true){//req.session.loggato) {
+app.get("/crazyGoose", (req, resp) => {
+    //TODO: sarà loggato o ha solo cambiato url nella barra degli indirizzi ???
+    let sito = fs.readFileSync("./webApp/giocoWeb/gioco.html", "utf-8")
+    let sitoConIP = rimpiazzaLocalhostConIP(sito)
 
-        let sito = fs.readFileSync("./webApp/menu/index.html", "utf-8")
-        let sitoConIP = rimpiazzaLocalhostConIP(sito)
-
-        let jsDom = new JSDOM(sitoConIP)
-
-        msgBenvenuto = "Benvenuto<br><i>" + req.session.nome + " " + req.session.cognome + "</i>"
-        jsDom.window.document.getElementById("dropdownBtn").innerHTML = msgBenvenuto
-        jsDom.window.document.getElementById("divDropdown").style.display = "inline-block"
-            /*130px è la larghezza del divDropdown. (devo usarlo per centrare l'img alla pagina)*/
-        jsDom.window.document.getElementById("divImgTitolo").style.marginLeft = "130px"
-
-        resp.send(jsDom.window.document.documentElement.outerHTML)
-    } else {
-        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
-        resp.redirect(301, "/")
-    }
+    resp.send(sitoConIP)
 })
 
 app.get("/start", (req, resp) => {
-    if (true){//req.session.loggato) {
-        let sito = fs.readFileSync("./webApp/giocoWeb/scelta_oca.html", "utf-8")
-        let sitoConIP = rimpiazzaLocalhostConIP(sito)
+    //TODO: sarà loggato o ha solo cambiato url nella barra degli indirizzi ???
+    let sito = fs.readFileSync("./webApp/giocoWeb/scelta_oca.html", "utf-8")
+    let sitoConIP = rimpiazzaLocalhostConIP(sito)
 
-        resp.send(sitoConIP)
-    } else {
-        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
-        resp.redirect(301, "/")
-    }
+    resp.send(sitoConIP)
 })
 
 app.get("/options", (req, resp) => {
-    if (true){//req.session.loggato) {
-        let sito = fs.readFileSync("./webApp/menu/options.html", "utf-8")
-        let sitoConIP = rimpiazzaLocalhostConIP(sito)
+    //TODO: sarà loggato o ha solo cambiato url nella barra degli indirizzi ???
+    let sito = fs.readFileSync("./webApp/menu/options.html", "utf-8")
+    let sitoConIP = rimpiazzaLocalhostConIP(sito)
 
-        resp.send(sitoConIP)
-    } else {
-        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
-        resp.redirect(301, "/")
-    }
+    resp.send(sitoConIP)
 })
 
 app.get("/credits", (req, resp) => {
-    if (true){//req.session.loggato) {
-        let sito = fs.readFileSync("./webApp/menu/credits.html", "utf-8")
-        let sitoConIP = rimpiazzaLocalhostConIP(sito)
+    //TODO: sarà loggato o ha solo cambiato url nella barra degli indirizzi ???
+    let sito = fs.readFileSync("./webApp/menu/credits.html", "utf-8")
+    let sitoConIP = rimpiazzaLocalhostConIP(sito)
 
-        resp.send(sitoConIP)
-    } else {
-        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
-        resp.redirect(301, "/")
-    }
-})
-
-app.get("/gioco", (req, resp) => {
-    if (true){//req.session.loggato) {
-        let sito = fs.readFileSync("./webApp/giocoWeb/index.html", "utf-8")
-        let sitoConIP = rimpiazzaLocalhostConIP(sito)
-
-        resp.send(sitoConIP)
-    } else {
-        //301 è il codice http per il reindirizzamento (https://developer.mozilla.org/it/docs/Web/HTTP/Status)
-        resp.redirect(301, "/")
-    }
+    resp.send(sitoConIP)
 })
 
 app.use("*", (req, resp) => {

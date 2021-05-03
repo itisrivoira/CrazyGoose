@@ -37,17 +37,8 @@
         </div>
     </center>
     <script>
-        //cambia url ma "diciamo non aggiorna", cioè funziona, l'url viene
-        // cambiato ma per andare alla pagina giusta devi refreshare una volta
-        // la pagina non so xke
-        /*window.addEventListener("keydown", (event) => {
-            if (event.key == "Escape") {
-                window.location = "http://localhost:3000/"
-            }
-        })*/
-
         function exit() {
-            window.location = "http://localhost:3000/menuGioco"
+            location.replace("http://localhost:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco")
         }
     </script>
 </body>

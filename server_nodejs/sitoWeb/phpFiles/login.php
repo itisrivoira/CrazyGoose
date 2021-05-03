@@ -1,4 +1,6 @@
 <?php 
+	session_start();
+
 	//Nel file c'è solo una riga, solo l'IP. Quindi prendo il primo elemento dell'array
 	// che mi restituisce la funzione file()
 	$IP = file("../../indirizzo_server.txt")[0];
@@ -43,8 +45,7 @@
 						$flagPasswCorretta = false;
 					}else{
 						$flagLoggato = true;
-						$nome = $ris_arr_assoc[$i]["nome"];
-						$cognome = $ris_arr_assoc[$i]["cognome"];
+						$ID = $ris_arr_assoc[$i]["ID_giocatore"];
 					}
 				}
 
@@ -60,17 +61,14 @@
 			echo "EMAIL NON REGISTRATA O PASSWORD ERRATA !";
 		}
 
-		//session_start();
-		//$_SESSION["nome"] = $nome;
-		//$_SESSION["cognome"] = $cognome;
-
 		if($loggatoCorrettamente){
-			$changePage = "Location: http://".$IP.":3000/";//?nome=$nome&cognome=$cognome";
-			echo $nome." ".$cognome;
+			$_SESSION["ID"] = $ID;
+			$changePage = "Location: http://".$IP.":3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home";
 		}else{
 			//in qualche modo si mette msg
 			$changePage = "Location: http://".$IP.":3000/login";
 		}
-		//header($changePage);
+		//echo $changePage;
+		header($changePage);
 	}
 ?>

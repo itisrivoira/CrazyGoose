@@ -1,3 +1,60 @@
+<?php 
+    session_start();
+
+    //Nel file c'è solo una riga, solo l'IP. Quindi prendo il primo elemento dell'array
+    // che mi restituisce la funzione file()
+    $IP = file("../../indirizzo_server.txt")[0];
+    $nome = null;
+    $cognome = null;
+
+    if(isset($_SESSION["ID"])){
+            //arriva da "creazioneDB.php" che, se non c'era ancora, crea il DB CrazyGoose
+        $mysqli = new mysqli("localhost", "root", "", "CrazyGoose");
+        if($mysqli->connect_error){
+            if($mysqli->connect_errno == 1049){
+                //è la prima visita sul server, nessuno è ancora passato da registrati/login
+                // quindi il DB non è stato creato ancora
+            }else{
+                die("Errore:".$mysqli->connect_errno." per ".$mysqli->connect_error);
+            }
+        }else{
+            $ID = $_SESSION["ID"];
+            //TODO usare una query decente
+            //$queryResults = $mysqli->query("SELECT nome, cognome FROM Utenti WHERE (Utenti.ID_giocatore == $ID);");
+            $queryResults = $mysqli->query("SELECT * FROM Utenti;");
+            $ris_arr_assoc = $queryResults->fetch_all(MYSQLI_ASSOC);
+
+            if(count($ris_arr_assoc) > 0){
+                $i = 0;
+                $nome = null;
+                while($i < count($ris_arr_assoc) && $nome == null){
+                    if($ris_arr_assoc[$i]["ID_giocatore"] == $ID){
+                        $nome = $ris_arr_assoc[$i]["nome"];
+                        $cognome = $ris_arr_assoc[$i]["cognome"];
+                    }
+
+                    $i += 1;
+                }  
+            }
+        }
+    }
+    
+
+    //TODO ancora il footer ! 
+    $classDelMenuUtente = "";
+    $styleDelMenuUtente = "";
+    $msgDelMenuUtente = "";
+    if($nome != null){
+        $classDellaTestata = "class = \"col-10 d-flex justify-content-center\"";
+        $classDelMenuUtente = "class = \"col-2\"";
+        $styleDelMenuUtente = "display: inline-block;";
+        $msgDelMenuUtente = "Benvenuto<br>$nome $cognome";
+    }else{
+        $classDellaTestata = "class = \"col-12 d-flex justify-content-center\"";
+    }
+
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -7,9 +64,9 @@
     <!--css aggiuntivo contente le varie icone-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="res_static_sitoweb/css/home.css">
-    <link rel="stylesheet" href="res_static_sitoweb/css/navbar.css">
-    <link rel="stylesheet" href="res_static_sitoweb/css/soloFooter.css">
+    <link rel="stylesheet" href="../../public/res_static_sitoweb/css/home.css">
+    <link rel="stylesheet" href="../../public/res_static_sitoweb/css/navbar.css">
+    <link rel="stylesheet" href="../../public/res_static_sitoweb/css/soloFooter.css">
     <meta charset="UTF-8">
 
     <title>Crazy Goose</title>
@@ -19,18 +76,18 @@
 <body style="background-color:rgba(92, 58, 142, 0.87);">
     <div class="container-fluid">
         <div class="row">
-            <div id="testataSito">
-                <img src="res_static_sitoweb/images/logo_130x130.png">
-                <img src="res_static_sitoweb/images/scrittaCrazyGoose_400x130_noBagliore.png">
+            <div id="testataSito" <?php echo $classDellaTestata; ?> >
+                <img src="../../public/res_static_sitoweb/images/logo_130x130.png">
+                <img src="../../public/res_static_sitoweb/images/scrittaCrazyGoose_400x130_noBagliore.png">
             </div>
-            <div id="menuUtente" style="padding:0px;">
-                <div id="divDropdown">
-                    <button id="dropdownBtn"></button>
+            <div id="menuUtente" style="padding:0px;" <?php echo $classDelMenuUtente; ?> >
+                <div id="divDropdown" style="<?php echo $styleDelMenuUtente; ?>">
+                    <button id="dropdownBtn"><?php echo $msgDelMenuUtente; ?></button>
                     <div id="dropdown-menu">
-                        <a href="http://localhost:3000/profilo">Profilo</a>
-                        <a href="http://localhost:3000/menuGioco">Vai al gioco</a>
-                        <a href="http://localhost:3000/download">Download gioco python</a>
-                        <a href="http://localhost:3000/esci">Esci</a>
+                        <a href="http://<?php echo $IP; ?>:3000/profilo">Profilo</a>
+                        <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco">Vai al gioco</a>
+                        <a href="http://<?php echo $IP; ?>:3000/download">Download gioco python</a>
+                        <a href="http://<?php echo $IP; ?>:3000/esci">Esci</a>
                     </div>
                 </div>
             </div>
@@ -45,25 +102,25 @@
                     </ol>-->
                     <div class="carousel-inner" role="listbox">
                         <div class="carousel-item active">
-                            <img src="res_static_sitoweb/images/gioco.png" class="img-fluid" id="imgSchedaCrazyGoose">
+                            <img src="../../public/res_static_sitoweb/images/gioco.png" class="img-fluid" id="imgSchedaCrazyGoose">
                             <div class="carousel-caption" id="divSchedaCarosello">
                                 <p class="titoloSchedaCarousel">CRAZY GOOSE</p>
                                 <p class="testoCarousel">Il gioco dell'oca che non c'era!</p>
                             </div>
                         </div>
                         <div class="carousel-item">
-                            <img src="res_static_sitoweb/images/regolamento.jpg" class="img-fluid" id="imgSchedaRegolamento">
+                            <img src="../../public/res_static_sitoweb/images/regolamento.jpg" class="img-fluid" id="imgSchedaRegolamento">
                             <div class="carousel-caption" id="divSchedaCarosello">
-                                <a href="http://localhost:3000/regole" class="titoloSchedaCarousel">
+                                <a href="http://<?php echo $IP; ?>:3000/regole" class="titoloSchedaCarousel">
                                     <p><u>REGOLAMENTO</u></p>
                                 </a>
                                 <p class="testoCarousel">Queste sono le regole del nostro gioco, qui potrai scoprire quanti 'passi' dovrai fare per vincere, quali e quante sono le caselle speciali, quante volte un'abilità potrà essere attivata e....se hai delle domande passa</p>
                             </div>
                         </div>
                         <div class="carousel-item">
-                            <img src="res_static_sitoweb/images/email.png" class="img-fluid" id="imgSchedaContattaci">
+                            <img src="../../public/res_static_sitoweb/images/email.png" class="img-fluid" id="imgSchedaContattaci">
                             <div class="carousel-caption" id="divSchedaCarosello">
-                                <a href="http://localhost:3000/contattaci" class="titoloSchedaCarousel">
+                                <a href="http://<?php echo $IP; ?>:3000/contattaci" class="titoloSchedaCarousel">
                                     <p><u>CONTATTACI</u></p>
                                 </a>
                                 <p class="testoCarousel">Se hai ancora domande oppure vuoi semplicemente metterti in contatto con i diretti creatori Contattaci!</p>
@@ -94,9 +151,9 @@
                     Se non hai ancora un account Crazy Goose <br>clicca sul tasto Registrati basteranno pochi secondi per iniziar far parte del nostro branco e divertirti giocando al gioco dell'oca !
                 </p>
                 <div>
-                    <a href="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=login" class="btnIn"><b>ACCEDI</b></a>
+                    <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=login" class="btnIn"><b>ACCEDI</b></a>
                     <br><br>
-                    <a href="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=registrati" class="btnIn"><b>REGISTRATI</b></a>
+                    <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=registrati" class="btnIn"><b>REGISTRATI</b></a>
                 </div>
             </div>
         </div>
