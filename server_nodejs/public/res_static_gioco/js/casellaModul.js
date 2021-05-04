@@ -150,12 +150,7 @@ class Casella {
     }
 
     getCenterX() {
-        if (this.indice != 40) {
-            return this.x + this.width / 2
-        } else {
-            console.log(this.width)
-            return (this.x + this.width / 2)
-        }
+        return this.x + this.width / 2
     }
     getCenterY() {
         return this.y + this.height / 2

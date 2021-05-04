@@ -13,34 +13,8 @@ body {
     width: 100vw;
     height: 100vh;
     background-position: center;
-    background-image: url("/res_static_gioco/images/sfondo4k.jpg");
+    background-image: url("../images/sfondo4k.jpg");
     clear: both;
-}
-
-#vittoria,
-#sconfitta {
-    display: none;
-    width: 100vw;
-    height: 100vh;
-    background-color: #077cfa;
-}
-
-#msgHaiVinto,
-#msgHaiPerso {
-    width: 100vw;
-    font-size: 50px;
-    color: white;
-    font-family: "Ubuntu", "helvetica";
-    position: relative;
-    top: 25vh;
-}
-
-.premiEsc {
-    font-size: 30px;
-    color: white;
-    font-family: "Ubuntu", "helvetica";
-    position: relative;
-    top: 45vh;
 }
 
 
@@ -347,42 +321,42 @@ body {
     position: absolute;
     width: 100px;
     height: 100px;
-    background-image: url("/res_static_gioco/images/img_dado/dado_1.png");
+    background-image: url("../images/img_dado/dado_1.png");
 }
 
 .cube__face--2 {
     position: absolute;
     width: 100px;
     height: 100px;
-    background-image: url("/res_static_gioco/images/img_dado/dado_2.png");
+    background-image: url("../images/img_dado/dado_2.png");
 }
 
 .cube__face--3 {
     position: absolute;
     width: 100px;
     height: 100px;
-    background-image: url("/res_static_gioco/images/img_dado/dado_3.png");
+    background-image: url("../images/img_dado/dado_3.png");
 }
 
 .cube__face--4 {
     position: absolute;
     width: 100px;
     height: 100px;
-    background-image: url("/res_static_gioco/images/img_dado/dado_4.png");
+    background-image: url("../images/img_dado/dado_4.png");
 }
 
 .cube__face--5 {
     position: absolute;
     width: 100px;
     height: 100px;
-    background-image: url("/res_static_gioco/images/img_dado/dado_5.png");
+    background-image: url("../images/img_dado/dado_5.png");
 }
 
 .cube__face--6 {
     position: absolute;
     width: 100px;
     height: 100px;
-    background-image: url("/res_static_gioco/images/img_dado/dado_6.png");
+    background-image: url("../images/img_dado/dado_6.png");
 }
 
 .cube__face--1 {

@@ -131,18 +131,22 @@ app.get("/download", (req, resp) => {
 
 app.get("/crazyGoose", (req, resp) => {
     //TODO: sarà loggato o ha solo cambiato url nella barra degli indirizzi ???
-    let sito = fs.readFileSync("./webApp/giocoWeb/gioco.html", "utf-8")
-    let sitoConIP = rimpiazzaLocalhostConIP(sito)
+    let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
+    let jsDom = new JSDOM(pagina)
 
-    resp.send(sitoConIP)
+    jsDom.window.document.getElementById("chePagina").innerHTML = "webApp/giocoWeb/gioco"
+
+    resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
 
 app.get("/start", (req, resp) => {
     //TODO: sarà loggato o ha solo cambiato url nella barra degli indirizzi ???
-    let sito = fs.readFileSync("./webApp/giocoWeb/scelta_oca.html", "utf-8")
-    let sitoConIP = rimpiazzaLocalhostConIP(sito)
+    let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
+    let jsDom = new JSDOM(pagina)
 
-    resp.send(sitoConIP)
+    jsDom.window.document.getElementById("chePagina").innerHTML = "webApp/giocoWeb/scelta_oca"
+
+    resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
 
 app.get("/options", (req, resp) => {

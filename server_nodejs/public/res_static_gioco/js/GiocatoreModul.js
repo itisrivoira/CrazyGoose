@@ -18,22 +18,26 @@ class Giocatore {
 
         this.imgPedina = new Image();
 
+        //../../public/eccetera xke sto "lanciando" questo file js da gioco.php, quindi il percorso
+        // deve partire da li
+
         if (tag == "COM") {
-            this.percorsoImgSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_COM.png"
-            this.percorsoImgDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_COM.png"
+            this.percorsoImgSxDx = "../../public/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_COM.png"
+            this.percorsoImgDxSx = "../../public/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_COM.png"
         } else {
-            this.percorsoImgSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_" + this.pedinaScelta + ".png"
-            this.percorsoImgDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_" + this.pedinaScelta + ".png"
+            this.percorsoImgSxDx = "../../public/res_static_gioco/images/pedine/pedineNelGioco/sxVersoDx/pedina_" + this.pedinaScelta + ".png"
+            this.percorsoImgDxSx = "../../public/res_static_gioco/images/pedine/pedineNelGioco/dxVersoSx/pedina_" + this.pedinaScelta + ".png"
         }
-        this.percorsoImgScontroNoEffDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/dxVersoSx/COM_vs_" + pedinaScelta + ".png"
-        this.percorsoImgScontroNoEffSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/sxVersoDx/" + pedinaScelta + "_vs_COM.png"
-        this.percorsoImgScontroEffDxSx = "/res_static_gioco/images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/dxVersoSx/COM_vs_" + pedinaScelta + ".png"
-        this.percorsoImgScontroEffSxDx = "/res_static_gioco/images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/sxVersoDx/" + pedinaScelta + "_vs_COM.png"
+        this.percorsoImgScontroNoEffDxSx = "../../public/res_static_gioco/images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/dxVersoSx/COM_vs_" + pedinaScelta + ".png"
+        this.percorsoImgScontroNoEffSxDx = "../../public/res_static_gioco/images/pedine/pedineNelGioco/COM_vs_PL1/abilitaNonAttivata/sxVersoDx/" + pedinaScelta + "_vs_COM.png"
+        this.percorsoImgScontroEffDxSx = "../../public/res_static_gioco/images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/dxVersoSx/COM_vs_" + pedinaScelta + ".png"
+        this.percorsoImgScontroEffSxDx = "../../public/res_static_gioco/images/pedine/pedineNelGioco/COM_vs_PL1/abilitaAttivata/sxVersoDx/" + pedinaScelta + "_vs_COM.png"
 
 
         this.imgPedina.src = this.percorsoImgSxDx
 
-        this.posizione = 0
+        this.dadiLanciati = 0
+        this.posizione = 30
         this.turnoMio = false
         this.turniFermo = 0
         this.vincitore = false
@@ -84,7 +88,11 @@ class Giocatore {
         document.getElementById("gioco").appendChild(this.gioc)
     }
 
-    avanza(spostamento, controllaCodCasella = true) {
+    avanza(spostamento, controllaCodCasella = true, incrementaDado) {
+        if (incrementaDado) {
+            this.dadiLanciati++
+        }
+
         /*Di default appena si muove, il giocatore ha finito il turno e quindi setto
         	subito turnoMio = False, tuttavia potrebbe essere risettato a true se il
         	giocatore finisce sulla casella TIRA_DI_NUOVO*/
@@ -94,12 +102,12 @@ class Giocatore {
     }
 
     cambiaVersoPedina(x_partenza = 0, x_fine = 0, posCasellaFinale = 0) {
+        let percorsoImg = this.percorsoImgSxDx
         if (x_partenza == 0) {
             x_partenza = this.caselle[this.posizione - 1].getCenterX()
             x_fine = this.caselle[this.posizione].getCenterX()
             posCasellaFinale = this.posizione + 1
         }
-
 
         //Sceglie in base alla casella in cui deve andare la pedina, se quest'ultima
         // sarà girata (avrà la testa) verso dx oppure sx
@@ -112,7 +120,6 @@ class Giocatore {
             avversario = this.crazyGoose.player
         }
 
-        let percorsoImg = this.percorsoImgSxDx
 
         if (x_partenza > x_fine) {
             percorsoImg = this.percorsoImgDxSx
@@ -262,7 +269,7 @@ class Giocatore {
                 let y2 = this.caselle[0].getCenterY()
 
                 //"this.counter" deve arrivare fino a "spostamento", quindi se non cambio "spostamento"
-                // lui continuerà a spostare la pedina fra le caselle (38 a 37, 37 a 36,... 2 a 1)
+                // lui continuerà a spostare la pedina fra le caselle (38 a 37, 37 a 36,../../public/res_static_gioco. 2 a 1)
                 spostamento = 1
                     //Può settare a false this.isMoving xke intanto sulla prima casella NON c'è
                     // alcun effetto, qunidi non deve controllare il codice della casella

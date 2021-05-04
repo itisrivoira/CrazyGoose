@@ -1,3 +1,26 @@
+<?php
+    //Nel file c'è solo una riga, solo l'IP. Quindi prendo il primo elemento dell'array
+    // che mi restituisce la funzione file()
+    $IP = file("../../indirizzo_server.txt")[0];
+
+    session_start();
+    if(isset($_SESSION["ocaScelta"])){
+        //Diversi dati non li posso prendere dalla classe CrazyGoose (javascript) e portarmeli
+        // in php. Inoltre ho tentato di calcolare la durata usando
+        //       time() o (new DateTime())->getTimestamp()
+        // ma non funzionava. Quindi mi calcolo tutto in javascript poi lo passo in GET
+        // a questa pagina che li memorizza (e passa alla pagina di vittoria/sconfitta)
+
+        //http://192.168.43.19/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/gioco.php?durata=0.1274#7.644&numMosse=0&vitt=false
+        if( isset($_GET["durata"]) && isset($_GET["numMosse"]) && isset($_GET["vitt"]) ){
+            $_SESSION["durata"] = $_GET["durata"];
+            $_SESSION["numMosse"] = (int)$_GET["numMosse"];
+            $_SESSION["vitt"] = $_GET["vitt"] == "true";
+            
+            header("Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/finePartita.php");
+        }else{
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,13 +28,13 @@
     <meta charset="UTF-8">
     <title>Crazy Goose</title>
 
-    <link rel="stylesheet" href="res_static_gioco/css/index.css">
+    <link rel="stylesheet" href="../../public/res_static_gioco/css/index.css">
 </head>
 
-<body>
+<body onload="inizioPartita()">
     <div id="gioco">
         <center>
-            <a href="http://localhost:3000/"><img id="imgTitolo" src="/res_static_gioco/images/scrittaCrazyGoose_400x130_bagliore.png"></a>
+            <a href="http://<?php echo $IP; ?>:3000/"><img id="imgTitolo" src="../../public/res_static_gioco/images/scrittaCrazyGoose_400x130_bagliore.png"></a>
         </center>
 
         <!-- INFO giocatori -->
@@ -20,7 +43,7 @@
         <label id="info_com">Computer (COM)</label>
         <!-- DADI giocatori -->
         <div id="dado_pl1">
-            <img src="/res_static_gioco/images/cross.png" id="imgCroce" style="position: absolute; z-index: 5;">
+            <img src="../../public/res_static_gioco/images/cross.png" id="imgCroce" style="position: absolute; z-index: 5;">
             <div class="scene" style="border-radius: 15px;">
                 <div class="cube">
                     <div class="cube__face--1"></div>
@@ -182,7 +205,7 @@
                         <div class="numCasella" id="-25">25</div>
                     </div>
                     <div class="caselle" id="_26">
-                        <div class="numCasella" id="-26"><label>26</label></div>
+                        <div class="numCasella" id="-26">26</div>
                     </div>
                     <div class="casella27 casella" id="_27">
                         <div class="numCasella" id="-27">27</div>
@@ -220,22 +243,46 @@
             </div>
         </div>
     </div>
-    <div id="vittoria">
-        <label id="msgHaiVinto"><center><b>HAI VINTO</b></center></label>
-        <center><a class="premiEsc" href="http://localhost:3000/menuGioco"><b>Premi per rigiocare</b></a></center>
-    </div>
-
-    <div id="sconfitta">
-        <label id="msgHaiPerso"><center><b>HAI PERSO</b></center></label>
-        <center><a class="premiEsc" href="http://localhost:3000/menuGioco"><b>Premi per rigiocare</b></a></center>
-    </div>
 
     <!--Se in uno script X ho bisogno di importare un nuovo file js Y basta che importi qui Y PRIMA di X -->
-    <script src="res_static_gioco/js/percorsoModul.js"></script>
-    <script src="res_static_gioco/js/casellaModul.js "></script>
-    <script src="res_static_gioco/js/GiocatoreModul.js "></script>
-    <script src="res_static_gioco/js/crazyGoose.js "></script>
-    <script src="res_static_gioco/js/index.js "></script>
+    <script src="../../public/res_static_gioco/js/percorsoModul.js"></script>
+    <script src="../../public/res_static_gioco/js/casellaModul.js"></script>
+    <script src="../../public/res_static_gioco/js/GiocatoreModul.js"></script>
+    <script src="../../public/res_static_gioco/js/crazyGoose.js"></script>
+    <script>
+        var game = null
+        var partenza = 0
+        var fine = null
+        var durata = 0
+        var numMosse = 0
+
+        function inizioPartita() {
+            let ocaScelta = "<?php echo $_SESSION["ocaScelta"]; ?>"
+            partenza = Date.now()
+            game = new CrazyGoose()
+            game.start(ocaScelta)
+        }
+
+        function finePartita(pl1_ha_vinto) {
+            fine = Date.now()
+            //minuti_secondi
+            let min = ((fine - partenza) / 1000 / 60)
+            if(min < 1){
+                min = 0
+            }
+            durata = min + "_" + ((fine - partenza) / 1000 % 60)
+            numMosse = game.player.dadiLanciati
+
+            let url = "http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/gioco.php?durata="+durata+"&numMosse="+numMosse+"&vitt="+game.player.vincitore
+            location.replace(url)
+        }   
+    </script>
 </body>
 
 </html>
+<?php 
+        }
+    }else{
+        echo "COME SEI ARRIVATO QUI !";
+    }
+?>

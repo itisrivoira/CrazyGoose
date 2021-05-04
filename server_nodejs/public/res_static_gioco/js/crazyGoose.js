@@ -23,10 +23,12 @@ class ButtonAbilitaPL1 {
             cartella = "/OcaRossa"
         }
 
-        this.imgOk = "/res_static_gioco/images/imgAbilita" + cartella + "/OK.png"
-        this.imgQuasi = "/res_static_gioco/images/imgAbilita" + cartella + "/QUASI.png"
-        this.imgNonPiu = "/res_static_gioco/images/imgAbilita" + cartella + "/NON_PIU.png"
-        this.imgNo = "/res_static_gioco/images/imgAbilita" + cartella + "/NO.png"
+        //../../public/eccetera xke sto "lanciando" questo file js da gioco.php, quindi il percorso
+        // deve partire da li
+        this.imgOk = "../../public/res_static_gioco/images/imgAbilita" + cartella + "/OK.png"
+        this.imgQuasi = "../../public/res_static_gioco/images/imgAbilita" + cartella + "/QUASI.png"
+        this.imgNonPiu = "../../public/res_static_gioco/images/imgAbilita" + cartella + "/NON_PIU.png"
+        this.imgNo = "../../public/res_static_gioco/images/imgAbilita" + cartella + "/NO.png"
 
         //sempplice label dove ci sarà il countdown di quanto gli resta per attivare l'abilità
         this.tmpRimanenteAbilita = document.getElementById("tmpRimanenteAbilita")
@@ -81,7 +83,7 @@ class CrazyGoose {
         this.giocoPartito = false
     }
 
-    start() {
+    start(ocaScelta) {
         if (this.giocoPartito == false) {
             this.giocoPartito = true
             this.partitaTerminata = false
@@ -103,11 +105,11 @@ class CrazyGoose {
             this.turnoCOM = null
             this.timeoutCOM = null
 
-            this.disegnaTutto()
+            this.disegnaTutto(ocaScelta)
         }
     }
 
-    disegnaTutto() {
+    disegnaTutto(ocaScelta) {
         //Riempe la lista di caselle, cioè "disegna" gli ellissi.
         this.posizionaLeCaselle()
             //Scrive nelle caselle il loro effetto
@@ -153,12 +155,12 @@ class CrazyGoose {
 
         this.buttonDadoCOM = document.getElementById("dado_com")
 
-        this.player = new Giocatore(this, this.caselle, this.percorso, "PL1", sessionStorage.getItem("ocaScelta"))
+        this.player = new Giocatore(this, this.caselle, this.percorso, "PL1", ocaScelta)
             //(gli serve sapere che oca ha scelto l'avversario per scegliere le giuste img)
-        this.com = new Giocatore(this, this.caselle, this.percorso, "COM", sessionStorage.getItem("ocaScelta"))
+        this.com = new Giocatore(this, this.caselle, this.percorso, "COM", ocaScelta)
 
         //(gli serve sapere che oca ha scelto l'avversario per scegliere le giuste img)
-        this.buttonAbilita = new ButtonAbilitaPL1(this, sessionStorage.getItem("ocaScelta"))
+        this.buttonAbilita = new ButtonAbilitaPL1(this, ocaScelta)
 
         // Decide chi incomincia, tira il dado e vede se il numero tirato è pari o dispari
         // (tra 1 e 6 ci sono 3 pari e 3 dispari, perciò 50% possbilità a testa)
@@ -219,7 +221,7 @@ class CrazyGoose {
             let numEstratto = (new Dado()).tiraDado()
 
             if (this.player.turnoMio) {
-                this.avanzaPlayer1(numEstratto)
+                this.avanzaPlayer1(numEstratto, true, true)
             } else {
                 this.toccaAlCOM()
             }
@@ -245,14 +247,14 @@ class CrazyGoose {
         }
     }
 
-    avanzaPlayer1(numEstratto, controllaCodCasella = true) {
+    avanzaPlayer1(numEstratto, controllaCodCasella, incrDado = false) {
         /*(Per testare abilità grimilde; lancia il numero esatto per finire
              sulla casella dell'avversario)
         if (this.player.posizione < this.com.posizione) {
             numEstratto = this.com.posizione - this.player.posizione
         }*/
-        /*(Per testare vittoria)
-        numEstratto = 40*/
+        /*(Per testare vittoria)*/
+        numEstratto = 10
 
         //se fossero sulla stessa casella (la prima o la seconda) in cui non si attiva l'effetto
         // sono rimasti fermi e con la stessa img di prima, quindi ora (che il PL1 si muove) devo cambiarla 
@@ -279,7 +281,7 @@ class CrazyGoose {
         } else {
             this.cambiaImgDado(numEstratto, this.imgDadoPL1, this.buttonDadoPL1, this.player)
 
-            this.player.avanza(numEstratto, controllaCodCasella)
+            this.player.avanza(numEstratto, controllaCodCasella, incrDado)
 
             //(* * * setinterval esegue, in una sorta di altro processo (quindi non blocca il codice),
             // la funzione passata OGNI tot millisecondi (finchè non lo si ferma con clearTimeout
@@ -367,7 +369,9 @@ class CrazyGoose {
                                         this.buttonAbilita.evidenziaTempoRimanente(0)
 
                                         if (this.player.abilitaAttivata) {
-                                            this.avanzaPlayer1(2)
+                                            //fa avanzare il player di due caselle (non deve contarlo
+                                            // come mossa fatta dall'utente, quelle memorizzate nel DB)
+                                            this.avanzaPlayer1(2, true)
                                         } else {
                                             this.controllaAChiTocca()
                                         }
@@ -412,7 +416,7 @@ class CrazyGoose {
                     this.tiraDado()
                 } else {
                     if (this.com.turniFermo > 0) {
-                        //Se l'avversario ha un fermo al 100% tocca al PL1...
+                        //Se l'avversario ha un fermo al 100% tocca al PL1
                         this.segnalaChiTocca(true)
                             //(devo settarlo a false così in tiraDado() mi andrà nel false, e in avanzaCOM() decrementerà il contatore dei turni fermo edl PL1)
                         this.player.turnoMio = false
@@ -428,8 +432,8 @@ class CrazyGoose {
                     }
                 }
             } else {
-                //Segnala PL1 come vincitore e fa TERMINARE la partita
-                this.segnalaVincitore(true)
+                //(funzione in index.js)
+                finePartita(true)
                 this.partitaTerminata = true
             }
         }
@@ -443,7 +447,7 @@ class CrazyGoose {
         }*/
         /*(Per testare sconfitta)
         numEstratto = 40*/
-
+        numEstratto = 10
         if (this.com.posizione == this.player.posizione) {
             this.com.imgPedina.src = this.com.percorsoImgSxDx
             this.player.imgPedina.src = this.player.percorsoImgSxDx
@@ -458,7 +462,7 @@ class CrazyGoose {
 
             this.segnalaChiTocca(true)
 
-            this.avanzaPlayer1(numEstratto)
+            this.avanzaPlayer1(numEstratto, true, true)
         } else {
             this.cambiaImgDado(numEstratto, this.imgDadoCOM, this.buttonDadoCOM, this.com)
 
@@ -494,7 +498,8 @@ class CrazyGoose {
                                 }
                             }
                         } else {
-                            this.segnalaVincitore(false)
+                            //(funzione in index.js)
+                            finePartita(false)
                             this.partitaTerminata = true
                         }
                     }
@@ -519,8 +524,10 @@ class CrazyGoose {
             if (this.player.posizione > 2) {
                 this.com.imgPedina.src = prevImg[0]
                 this.player.imgPedina.src = prevImg[1]
-                    //false xke non dovrà controllare l'effetto della casella o provare ad attivare l'abilità
-                    // (oca verde o blu)
+                    //primo false xke non dovrà controllare l'effetto della casella o provare ad
+                    // attivare l'abilità (oca verde o blu)
+                    //terzo parametro non passato (e di default false) xke non deve contare questo
+                    // come mossa del player (nel numero di mosse che salvo nel DB)
                 this.avanzaPlayer1(-2, false)
             } else {
                 this.player.isMoving = false
@@ -605,18 +612,6 @@ class CrazyGoose {
         if (numEstratto > 0) {
             rollDice()
         }
-    }
-
-    segnalaVincitore(pl1_ha_vinto) {
-        //nasconde l'intero gioco
-        document.getElementById("gioco").style.display = "none"
-
-        if (pl1_ha_vinto) {
-            document.getElementById("vittoria").style.display = "block"
-        } else {
-            document.getElementById("sconfitta").style.display = "block"
-        }
-
     }
 
     segnalaChiTocca(tocca_al_pl1) {
