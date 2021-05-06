@@ -30,7 +30,7 @@
 										);")){
 		*/
 
-		if(!$mysqli->query("INSERT INTO Profili VALUES ('$username', 'novellino', 0, 0, '$ID_giocatore');")){
+		if(!$mysqli->query("INSERT INTO Profili VALUES ('$username', 'Novellino', 0, 0, '$ID_giocatore');")){
 			//username già inserito ==> Error: Duplicate entry usernameScritto for key 'PRIMARY'
 			if($mysqli->errno == 1062){
 				echo "USERNAME GIÀ SCELTO !!!";
