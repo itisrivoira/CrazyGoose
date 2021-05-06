@@ -1,17 +1,18 @@
 <?php 
 	session_start();
 
-	//Nel file c'è solo una riga, solo l'IP. Quindi prendo il primo elemento dell'array
-	// che mi restituisce la funzione file()
+	//Mi serve l'IP del server. Questo lo leggo solo nel nodejs all'inizio e non riesco a passarlo
+	// a tutte le pagine... lo scrivo su un file e quando ne ho bisogno lo leggo
 	$IP = file("../../indirizzo_server.txt")[0];
 
-	//arriva da "creazioneDB.php" che, se non c'era ancora, crea il DB CrazyGoose
+	//Tento di connettermi al DB CrazyGoose
 	$mysqli = new mysqli("localhost", "root", "", "CrazyGoose");
 	if($mysqli->connect_error){
 		if($mysqli->connect_errno == 1049){
-			//L'utente è arrivato qui senza passare dal link ma modificando lui url.
-			//Tornerà alla pagina login dove dovrà rimettere i campi ma pazienza, se lo merita
-			$changePage = "Location: http://".$IP.":80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=login";
+			//Puo' entrare qui solo se l'utente ha MODIFICATO l'url, quindi senza passare dai link, e se
+			// questo e' pure il primo utente sul sito (non ha ancora creato il DB).
+			//Crea il DB e torna alla pagina di login
+			$changePage = "Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=login";
 			header($changePage);
 		}else{
 			die("Errore:".$mysqli->connect_errno." per ".$mysqli->connect_error);
@@ -23,52 +24,29 @@
 
 		
 		$queryResult = $mysqli->query("SELECT * FROM Utenti;");
-		$ris_arr_assoc = $queryResult->fetch_all(MYSQLI_ASSOC);
+		if(!$queryResult){
+			echo "ERRORE SELECT Utenti: ".$mysqli->error." (".$mysqli->errno.")";
+		}else{
+			$ris_arr_assoc = $queryResult->fetch_all(MYSQLI_ASSOC);
 
-		//echo "<pre>";
-		//print_r($ris_arr_assoc);
-		//echo "</pre>";
-		//echo count($ris_arr_assoc);
-		
-		$loggatoCorrettamente = false;
-		$nome = null;
-		$cognome = null;
+			//echo "<pre>";
+			//print_r($ris_arr_assoc);
+			//echo "</pre>";
 
-		if(count($ris_arr_assoc) > 0){
-			$flagLoggato = false;
-			$flagPasswCorretta = true;
-
-			$i = 0;
-			while($i < count($ris_arr_assoc) && $flagPasswCorretta && $flagLoggato == false){
-				if($ris_arr_assoc[$i]["email"] == $email){
-					if($ris_arr_assoc[$i]["password"] != $password){
-						$flagPasswCorretta = false;
-					}else{
-						$flagLoggato = true;
-						$ID = $ris_arr_assoc[$i]["ID_giocatore"];
-					}
-				}
-
-				$i += 1;
-			}
+				//passo in get un flag alla fine... mi serve per modificare con jsdom la pagina
+				// e mostrare o meno il msg email o passw sbagliati
+			$changePage = "Location: http://$IP:3000/login?err=1";
 			
-			if(!$flagPasswCorretta || !$flagLoggato){
-				echo "EMAIL NON REGISTRATA O PASSWORD ERRATA !";
-			}else{
-				$loggatoCorrettamente = true;
+			foreach($ris_arr_assoc as $utente){
+				if($utente["email"] == $email && $utente["password"] == $password){
+					$_SESSION["ID"] = $utente["ID_gioc"];
+					unset($_SESSION["username"]);
+					$changePage = "Location: http://$IP:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home";
+					break;
+				}
 			}
-		}else{
-			echo "EMAIL NON REGISTRATA O PASSWORD ERRATA !";
+			header($changePage);
 		}
-
-		if($loggatoCorrettamente){
-			$_SESSION["ID"] = $ID;
-			$changePage = "Location: http://".$IP.":3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home";
-		}else{
-			//in qualche modo si mette msg
-			$changePage = "Location: http://".$IP.":3000/login";
-		}
-		//echo $changePage;
-		header($changePage);
+		
 	}
 ?>

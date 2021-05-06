@@ -11,11 +11,14 @@
         // ma non funzionava. Quindi mi calcolo tutto in javascript poi lo passo in GET
         // a questa pagina che li memorizza (e passa alla pagina di vittoria/sconfitta)
 
-        //http://192.168.43.19/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/gioco.php?durata=0.1274#7.644&numMosse=0&vitt=false
         if( isset($_GET["durata"]) && isset($_GET["numMosse"]) && isset($_GET["vitt"]) ){
             $_SESSION["durata"] = $_GET["durata"];
             $_SESSION["numMosse"] = (int)$_GET["numMosse"];
-            $_SESSION["vitt"] = $_GET["vitt"] == "true";
+            if($_GET["vitt"] == "true"){
+                $_SESSION["vitt"] = 1;
+            }else{
+                $_SESSION["vitt"] = 0;
+            }
             
             header("Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/finePartita.php");
         }else{
@@ -267,13 +270,9 @@
             fine = Date.now()
             //minuti_secondi
             let min = ((fine - partenza) / 1000 / 60)
-            if(min < 1){
-                min = 0
-            }
-            durata = min + "_" + ((fine - partenza) / 1000 % 60)
             numMosse = game.player.dadiLanciati
 
-            let url = "http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/gioco.php?durata="+durata+"&numMosse="+numMosse+"&vitt="+game.player.vincitore
+            let url = "http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/gioco.php?durata="+min+"&numMosse="+numMosse+"&vitt="+game.player.vincitore
             location.replace(url)
         }   
     </script>

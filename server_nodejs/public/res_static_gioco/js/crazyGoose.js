@@ -254,7 +254,6 @@ class CrazyGoose {
             numEstratto = this.com.posizione - this.player.posizione
         }*/
         /*(Per testare vittoria)*/
-        numEstratto = 10
 
         //se fossero sulla stessa casella (la prima o la seconda) in cui non si attiva l'effetto
         // sono rimasti fermi e con la stessa img di prima, quindi ora (che il PL1 si muove) devo cambiarla 
@@ -447,7 +446,6 @@ class CrazyGoose {
         }*/
         /*(Per testare sconfitta)
         numEstratto = 40*/
-        numEstratto = 10
         if (this.com.posizione == this.player.posizione) {
             this.com.imgPedina.src = this.com.percorsoImgSxDx
             this.player.imgPedina.src = this.player.percorsoImgSxDx

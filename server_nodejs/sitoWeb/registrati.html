@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="res_static_sitoweb/css/registrati.css">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 
-    <title>Sign up</title>
+    <title>Registrati</title>
 </head>
 
 <body>
@@ -13,7 +13,7 @@
         <div>
             <center>
                 <p id="registrParagInfo">Crea il tuo account Crazy Goose</p>
-                <a href="http://localhost:3000/"><img src="res_static_sitoweb/images/logo_32x32.png"></a>
+                <a href="http://localhost:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home"><img src="res_static_sitoweb/images/logo_32x32.png"></a>
             </center>
         </div>
         <form action="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/registrazione.php" name="formReg" method="post" onsubmit="return(controllaDati());">
@@ -21,14 +21,15 @@
             <input class="caselleDiTesto" name="cognome" type="text" placeholder="Cognome">
             <input class="caselleDiTesto" name="email" type="text" placeholder="Email">
             <input class="caselleDiTesto" name="password" type="password" placeholder="Password">
-            <input type="submit" value="Sign up" id="submit">
+            <input type="submit" value="Registrati" id="submit">
         </form>
         <div id="divAccedi">
             <center>
-                <p id="passaALogin">Hai gi&agrave; un account ? <a href="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=login" id="btnAccedi"><b>Sign in</b></a></p>
+                <p id="passaALogin">Hai gi&agrave; un account ? <a href="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=login" id="btnAccedi"><b>Login</b></a></p>
             </center>
         </div>
     </div>
+    <br><center id="emailGiaUsata"><p style="color:red;font-size:17px;">EMAIL GI&Agrave; IN USO !</p></center>
 
     <script>
         function controllaDati() {
@@ -37,8 +38,7 @@
              quale ci sono delle componenti con un certo "name" ("nome", "cognome", "email", "password").
              Ne controllo il valore, cioè quello che contengono. Se non contengono nulla sposto
              il focus su una di loro (scriverà con la tastiera all'interno della componente vuota senza doverci 
-             cliccare lui)
-            */
+             cliccare lui) */
 
             if (document.formReg.nome.value == "") {
                 document.formReg.nome.focus()
@@ -54,7 +54,7 @@
                 document.formReg.email.focus()
                 alert("Inserisci l'email per registrarsi.")
                 return false
-            }
+            }//TODO controllo che sia indirizzo email valido
             if (document.formReg.password.value == "") {
                 document.formReg.password.focus()
                 alert("Inserisci la password che avrà il tuo account.")

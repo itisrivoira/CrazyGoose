@@ -9,7 +9,7 @@
 		if($mysqli->connect_errno == 1049){
 			//L'utente è arrivato qui senza passare dal link ma modificando lui url.
 			//Tornerà alla pagina login dove dovrà rimettere i campi ma pazienza, se lo merita
-			$changePage = "Location: http://".$IP.":80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=registrati";
+			$changePage = "Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=registrati";
 			header($changePage);
 		}else{
 			die("Errore:".$mysqli->connect_errno." per ".$mysqli->connect_error);
@@ -21,49 +21,41 @@
 		//cifra la password
 		$password = hash("sha256", $_POST["password"]);
 
-		
 		$queryResult = $mysqli->query("SELECT * FROM Utenti;");
-		$ris_arr_assoc = $queryResult->fetch_all(MYSQLI_ASSOC);
+		if(!$queryResult){
+			echo "ERRORE SELECT Utenti: ".$mysqli->error." (".$mysqli->errno.")";
+		}else{
+			$ris_arr_assoc = $queryResult->fetch_all(MYSQLI_ASSOC);
 
-		//echo "<pre>";
-		//print_r($ris_arr_assoc);
-		//echo "</pre>";
-		//echo count($ris_arr_assoc);
-		
-		if(count($ris_arr_assoc) > 0){
-			$flagGiaRegistrato = false;
+			//echo "<pre>";
+			//print_r($ris_arr_assoc);
+			//echo "</pre>";
 
-			$i = 0;
-			while($i < count($ris_arr_assoc) && $flagGiaRegistrato == false){
-				if($ris_arr_assoc[$i]["email"] == $email){
-					$flagGiaRegistrato = true;
+				//passo in get un flag alla fine... mi serve per modificare con jsdom la pagina
+				// e mostrare o meno il msg email gia' in uso
+			$changePage = "Location: http://$IP:3000/registrati?err=1";
+			$flagEmailGiaInUso = false;
+			
+			foreach($ris_arr_assoc as $utente){
+				if($utente["email"] == $email){
+					$flagEmailGiaInUso = true;
+					break;
 				}
-
-				$i += 1;
 			}
 			
-			if(!$flagGiaRegistrato){
-				registra_utente($mysqli, $nome, $cognome, $email, $password);
+			if(!$flagEmailGiaInUso){
+				// !!! NON devo inserire l'ID_gioc XKE E' AUTO_INCREMENT
+				$queryResult = $mysqli->query("INSERT INTO Utenti (nome, cognome, email, password) VALUES ('$nome', '$cognome', '$email', '$password');");
+				if(!$queryResult){
+					echo "ERRORE INSERT IN Utenti: ".$mysqli->error." (".$mysqli->errno.")";
+				}else{
+					//si e' registrato con successo
+					$changePage = "Location: http://$IP:3000/login";
+					header($changePage);
+				}
 			}else{
-				echo "EMAIL GIÀ IN USO";
+				header($changePage);
 			}
-		}else{
-			registra_utente($mysqli, $nome, $cognome, $email, $password);
-		}
-
-		//session_start();
-		//$_SESSION["nome"] = $nome;
-		//$_SESSION["cognome"] = $cognome;
-
-		$changePage = "Location: http://".$IP.":3000/";//?nome=$nome&cognome=$cognome";
-		header($changePage);
-	}
-
-	function registra_utente($mysqli, $nome, $cognome, $email, $password){
-		if(!$mysqli->query("INSERT INTO Utenti (nome, cognome, email, password) VALUES ('$nome', '$cognome', '$email', '$password');")){
-			echo "<br>ERRORE NELLA INSERT ".$mysqli->error;
-		}else{
-			echo "<br>inserito";
 		}
 	}
 ?>

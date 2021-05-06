@@ -4,7 +4,60 @@
     $IP = file("../../indirizzo_server.txt")[0];
 	
 	session_start();
-	if( isset($_SESSION["ID"]) && isset($_SESSION["vitt"]) ){
+	if( isset($_SESSION["ID"]) && isset($_SESSION["username"]) && isset($_SESSION["durata"]) &&
+		isset($_SESSION["numMosse"]) && isset($_SESSION["vitt"]) ){
+
+		$mysqli = new mysqli("localhost", "root", "", "CrazyGoose");
+		if($mysqli->connect_error){
+			echo "Errore ".$mysqli->connect_error;
+		}else{
+			$username = $_SESSION["username"];
+			$durata = $_SESSION["durata"];
+			$numMosse = $_SESSION["numMosse"];
+			$vitt = $_SESSION["vitt"];
+
+			$queryResults = $mysqli->query("INSERT INTO Partite (durata) VALUES ('$durata');");
+			if(!$queryResults){
+				echo "Errore inseritmento parita ".$mysqli->error;
+			}else{
+				//ritorna l'ultimo ID assegnato automaticamente (campo AUTO_INCREMENT) nell'ultima query
+				$idPartita = $mysqli->insert_id;
+				$queryResults = $mysqli->query("INSERT INTO Partecipare VALUES ('$idPartita', '$username', '$vitt', '$numMosse');");
+				if(!$queryResults){
+					echo "Errore inseritmento 0> $vitt <0 partecipare ".$mysqli->error;
+				}else{
+					$queryResults = $mysqli->query("SELECT * FROM Profili WHERE(username = '$username');");
+					if(!$queryResults){
+						echo "Errore get profilo ".$mysqli->error;
+					}else{
+						$ris_array_assoc = $queryResults->fetch_assoc();
+						if($vitt){
+							$partiteVinteAdesso = $ris_array_assoc["partiteVinte"]+1;
+
+							$queryResults = $mysqli->query("UPDATE Profili SET partiteVinte = '$partiteVinteAdesso' WHERE username = '$username';");
+						}else{
+							$partiteVinteAdesso = $ris_array_assoc["partitePerse"]+1;
+
+							$queryResults = $mysqli->query("UPDATE Profili SET partitePerse = '$partiteVinteAdesso' WHERE username = '$username';");
+						}
+
+						if(!$queryResults){
+							echo "Errore set profilo ".$mysqli->error;
+						}else{
+							//ora non mi servono più queste variabili, inoltre distruggendole evito che
+							// se l'utente ricarica la pagina, venga caricata un nuovo record di Partecipare
+							
+							unset($_SESSION["durata"]);
+							unset($_SESSION["numMosse"]);
+							unset($_SESSION["vitt"]);
+						}
+						
+					}
+					
+				}
+			}
+
+		}
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +68,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>
 		<?php
-			if($_SESSION["vitt"] == "true"){
+			if($vitt == 1){
 				echo "VITTORIA !";
 				$styleVittoria = "display: block;";
 				$styleSconfitta = "display: none;";
@@ -30,15 +83,6 @@
 	<link rel="stylesheet" href="../../public/res_static_gioco/css/finePartita.css">
 </head>
 <body>
-	<center style="font-size: 22px;">
-		<?php
-			$min = explode("_", $_SESSION["durata"])[0];
-			$sec = explode("_", $_SESSION["durata"])[1];
-			$numMosse = $_SESSION["numMosse"];
-
-			echo "CI HAI MESSO $min min e $sec sec, tirando $numMosse volte il dado.";
-		?>
-	</center>
 	<div id="vittoria" style="<?php echo $styleVittoria; ?>">
         <label id="msgHaiVinto"><center><b>HAI VINTO</b></center></label>
         <center><a class="premiEsc" href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/webApp/menu/homeGioco.php"><b>Premi per rigiocare</b></a></center>

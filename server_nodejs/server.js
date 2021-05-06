@@ -58,19 +58,30 @@ app.get("/passaAPaginaPHP", (req, resp) => {
 
     let jsDom = new JSDOM(pagina)
 
-    jsDom.window.document.getElementById("chePagina").innerHTML = req.query.pagina
+    jsDom.window.document.getElementById("percorso").innerHTML = req.query.pagina
 
     resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
 
 
-
-app.get("/", (req, resp) => {
+app.get("/esci", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
 
     let jsDom = new JSDOM(pagina)
 
-    jsDom.window.document.getElementById("chePagina").innerHTML = "sitoWeb/phpFiles/logout"
+    jsDom.window.document.getElementById("percorso").innerHTML = "sitoWeb/phpFiles/logout"
+
+    resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
+})
+
+app.get("/", (req, resp) => {
+	//porta alla home DOPO AVER FATTO IL LOGOUT
+	//(la home, essendo in php, si raggiunge con passaAPaginaPHP?pagina=sitoWeb/phpPages/home)
+    let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
+
+    let jsDom = new JSDOM(pagina)
+
+    jsDom.window.document.getElementById("percorso").innerHTML = "sitoWeb/phpFiles/logout"
 
     resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
@@ -92,35 +103,43 @@ app.get("/contattaci", (req, resp) => {
 })
 
 app.get("/profilo", (req, resp) => {
-    //TODO fare una pagina per il profilo, con statistiche ecc.
-    // DA "RIEMPIRE" QUI (o lì con ejs) ==> SERVE DB
-    //resp.sendFile(__dirname + "/sitoWeb/profilo.html")
-    //resp.send("WORK IN PROGRESS")
-    resp.sendFile(__dirname + "/fanculo.html", "utf-8")
+    let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
+
+    let jsDom = new JSDOM(pagina)
+
+    jsDom.window.document.getElementById("percorso").innerHTML = "sitoWeb/phpPages/profilo"
+
+    resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
 
 app.get("/login", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/login.html", "utf-8")
     let paginaConIP = rimpiazzaLocalhostConIP(pagina)
 
-    resp.send(paginaConIP)
-})
-
-app.get("/esci", (req, resp) => {
-    let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
-
-    let jsDom = new JSDOM(pagina)
-
-    jsDom.window.document.getElementById("chePagina").innerHTML = "sitoWeb/phpFiles/logout"
-
-    resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
+	let erroreLogin = req.query.err
+	let jsDom = new JSDOM(paginaConIP)
+	jsDom.window.document.getElementById("passEmailScorretti").style.display = "block";	
+	
+	if(erroreLogin == undefined){
+		jsDom.window.document.getElementById("passEmailScorretti").style.display = "none";	
+	}
+	
+	resp.send(jsDom.window.document.documentElement.outerHTML)
 })
 
 app.get("/registrati", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/registrati.html", "utf-8")
     let paginaConIP = rimpiazzaLocalhostConIP(pagina)
 
-    resp.send(paginaConIP)
+	let erroreLogin = req.query.err
+	let jsDom = new JSDOM(paginaConIP)
+	jsDom.window.document.getElementById("emailGiaUsata").style.display = "block";	
+	
+	if(erroreLogin == undefined){
+		jsDom.window.document.getElementById("emailGiaUsata").style.display = "none";	
+	}
+	
+	resp.send(jsDom.window.document.documentElement.outerHTML)
 })
 
 app.get("/download", (req, resp) => {
@@ -134,7 +153,7 @@ app.get("/crazyGoose", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
     let jsDom = new JSDOM(pagina)
 
-    jsDom.window.document.getElementById("chePagina").innerHTML = "webApp/giocoWeb/gioco"
+    jsDom.window.document.getElementById("percorso").innerHTML = "webApp/giocoWeb/gioco"
 
     resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
@@ -144,7 +163,7 @@ app.get("/start", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
     let jsDom = new JSDOM(pagina)
 
-    jsDom.window.document.getElementById("chePagina").innerHTML = "webApp/giocoWeb/scelta_oca"
+    jsDom.window.document.getElementById("percorso").innerHTML = "webApp/giocoWeb/scelta_oca"
 
     resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })

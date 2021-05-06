@@ -1,45 +1,42 @@
 <?php 
     session_start();
 
-    //Nel file c'è solo una riga, solo l'IP. Quindi prendo il primo elemento dell'array
-    // che mi restituisce la funzione file()
+	//Mi serve l'IP del server. Questo lo leggo solo nel nodejs all'inizio e non riesco a passarlo
+	// a tutte le pagine... lo scrivo su un file e quando ne ho bisogno lo leggo
     $IP = file("../../indirizzo_server.txt")[0];
     $nome = null;
     $cognome = null;
+    $username = null;
 
     if(isset($_SESSION["ID"])){
-            //arriva da "creazioneDB.php" che, se non c'era ancora, crea il DB CrazyGoose
+        //Tento di connettermi al DB CrazyGoose (di certo ci sarà xke si è loggato)
         $mysqli = new mysqli("localhost", "root", "", "CrazyGoose");
         if($mysqli->connect_error){
-            if($mysqli->connect_errno == 1049){
-                //è la prima visita sul server, nessuno è ancora passato da registrati/login
-                // quindi il DB non è stato creato ancora
-            }else{
-                die("Errore:".$mysqli->connect_errno." per ".$mysqli->connect_error);
-            }
+            die("Errore:".$mysqli->connect_errno." per ".$mysqli->connect_error);
         }else{
             $ID = $_SESSION["ID"];
-            //TODO usare una query decente
-            //$queryResults = $mysqli->query("SELECT nome, cognome FROM Utenti WHERE (Utenti.ID_giocatore == $ID);");
-            $queryResults = $mysqli->query("SELECT * FROM Utenti;");
-            $ris_arr_assoc = $queryResults->fetch_all(MYSQLI_ASSOC);
-
-            if(count($ris_arr_assoc) > 0){
-                $i = 0;
-                $nome = null;
-                while($i < count($ris_arr_assoc) && $nome == null){
-                    if($ris_arr_assoc[$i]["ID_giocatore"] == $ID){
-                        $nome = $ris_arr_assoc[$i]["nome"];
-                        $cognome = $ris_arr_assoc[$i]["cognome"];
-                    }
-
-                    $i += 1;
-                }  
+            $queryResults = $mysqli->query("SELECT * FROM Utenti WHERE ID_gioc = '$ID';");
+            if(!$queryResults){
+                echo "ERRORE SELECT di quel Utente: ".$mysqli->error." (".$mysqli->errno.")";
+            }else{
+                $ris_arr_assoc = $queryResults->fetch_assoc();
+    
+                //echo "<pre>";
+                //print_r($ris_arr_assoc);
+                //echo "</pre>";
+                
+                if(!empty($ris_arr_assoc)){
+                    $nome = $ris_arr_assoc["nome"];
+                    $cognome = $ris_arr_assoc["cognome"];
+                }
+            }
+            
+            if(isset($_SESSION["username"])){
+            	$username = $_SESSION["username"];
             }
         }
     }
     
-    //TODO ancora il footer ! 
     $styleDivImgTitolo = "";
     $styleDelMenuUtente = "";
     $msgDelMenuUtente = "";
@@ -47,6 +44,9 @@
         $styleDivImgTitolo = "margin-left: 130px;";
         $styleDelMenuUtente = "display: inline-block;";
         $msgDelMenuUtente = "Benvenuto<br>$nome $cognome";
+        if($username != null){
+        	$msgDelMenuUtente = "Benvenuto<br><i><b>$nome $cognome</b></i><br>Con profilo:<br><i><b>$username</b></i>"; 
+        }
     }
 
 ?>
@@ -56,7 +56,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Crazy Goose</title>
+    <title>Crazy Goose: Gioco</title>
+
+	<!-- siamo in un file php quindi non "usa nodejs" e la cartella public per le risorse statiche,
+	 quindi devo cambiare il percorso -->
 
     <link rel="stylesheet" href="../../public/res_static_menu/css/index.css">
 

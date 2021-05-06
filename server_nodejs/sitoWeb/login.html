@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="res_static_sitoweb/css/Login.css">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 
-    <title>Sign in</title>
+    <title>Login</title>
 </head>
 
 <body>
@@ -13,30 +13,30 @@
         <div>
             <center>
                 <p id="loginParagInfo">Accedi al tuo account Crazy Goose</p>
-                <a href="http://localhost:3000/"><img src="res_static_sitoweb/images/logo_32x32.png"></a>
+                <a href="http://localhost:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home"><img src="res_static_sitoweb/images/logo_32x32.png"></a>
             </center>
         </div>
         <form action="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/login.php" method="post" name="formReg" onsubmit="return(controllaDati())">
             <input name="email" type="text" placeholder="Email">
             <input name="password" type="password" placeholder="Password">
-            <button name="submit" id="submit" onclick="controllaDati()">Sign in</button>
+            <button name="submit" id="submit" onclick="controllaDati()">Login</button>
         </form>
         <div id="divRegistrati">
             <center>
-                <p id="passaARegistr">Non hai ancora un account ? <a href="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=registrati" id="btnRegistrati"><b>Sign up</b></a></p>
+                <p id="passaARegistr">Non hai ancora un account ? <a href="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=registrati" id="btnRegistrati"><b>Registrati</b></a></p>
             </center>
         </div>
     </div>
+    <center id="passEmailScorretti"><p style="color:red;font-size:17px;">EMAIL o PASSWORD ERRATI !</p></center>
 
     <script>
         function controllaDati() {
             /* AL TENTATIVO DI INVIO DEI DATI ("onSubmit" nel tag "form")
             Prendo il form che nella pagina ha quel "name" "formReg", all'itnerno del
-             quale ci sono delle componenti con un certo "name" ("nome", "cognome", "email", "password").
+             quale ci sono delle componenti con un certo "name" ("email", "password").
              Ne controllo il valore, cioè quello che contengono. Se non contengono nulla sposto
              il focus su una di loro (scriverà con la tastiera all'interno della componente vuota senza doverci 
-             cliccare lui)
-            */
+             cliccare lui) */
 
             if (document.formReg.email.value == "") {
                 document.formReg.email.focus()
