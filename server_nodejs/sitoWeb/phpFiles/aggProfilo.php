@@ -38,7 +38,7 @@
 				echo "Errore nell'inserimento: ".$mysqli->error;
 			}
 		}else{
-			echo "inserito";
+			header("Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php");
 		}
 
 	}

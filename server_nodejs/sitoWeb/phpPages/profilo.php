@@ -101,7 +101,7 @@
 					<div id="divDropdown">
 						<button id="dropdownBtn">- - - MENU UTENTE - - -</button>
 						<div id="dropdown-menu">
-							<a href="">Home</a>
+							<a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/home.php">Home</a>
 							<?php if($username != null){ ?>
 								<a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco">Vai al gioco</a>
 								<a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php">Logout da <i><b><?php echo $username; ?></i></b></a>
@@ -115,39 +115,39 @@
 		<div class="row" id="rowSceltaProfilo">
 			<div class="col-4">
 				<center>
-					<div class="divScegliProfilo">
+					<div class="divBtnScegliProfilo">
 						<?php
 							if(isset($profili[0])){
 						?>
 						<button onclick="profiloScelto(0)" class="btnScegliProfilo">Profilo N.1<br><i><b><?php echo $profili[0]; ?></i></b></button>
 						<?php }else{ ?>
-							<button><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/formAggProfilo.php">AGGIUNGI<br>PROFILO N.1 <h3>➕</h3> </a></button>
+							<button class="btnScegliProfilo"><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/formAggProfilo.php">AGGIUNGI<br>PROFILO N.1 <h3>➕</h3> </a></button>
 						<?php } ?>
 					</div>
 				</center>
 			</div>
 			<div class="col-4">
 				<center>
-					<div class="divScegliProfilo">
+					<div class="divBtnScegliProfilo">
 						<?php
 							if(isset($profili[1])){
 						?>
 						<button onclick="profiloScelto(1)" class="btnScegliProfilo">Profilo N.2<br><i><b><?php echo $profili[1]; ?></i></b></button>
 						<?php }else{ ?>
-							<button><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/formAggProfilo.php">AGGIUNGI<br>PROFILO N.2 <h3>➕</h3> </a></button>
+							<button class="btnScegliProfilo"><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/formAggProfilo.php">AGGIUNGI<br>PROFILO N.2 <h3>➕</h3> </a></button>
 						<?php } ?>
 					</div>
 				</center>
 			</div>
 			<div class="col-4">
 			<center>
-					<div class="divScegliProfilo">
+					<div class="divBtnScegliProfilo">
 						<?php
 							if(isset($profili[2])){
 						?>
 						<button onclick="profiloScelto(2)" class="btnScegliProfilo">Profilo N.3<br><i><b><?php echo $profili[2]; ?></i></b></button>
 						<?php }else{ ?>
-							<button><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/formAggProfilo.php">AGGIUNGI<br>PROFILO N.3 <h3>➕</h3> </a></button>
+							<button class="btnScegliProfilo"><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/formAggProfilo.php">AGGIUNGI<br>PROFILO N.3 <h3>➕</h3> </a></button>
 						<?php } ?>
 					</div>
 				</center>
@@ -164,8 +164,12 @@
 		<div class="row" id="rowStatistiche1">
 			<div class="col-12 col-md-6">
 				<div id="totPartite">In totale hai giocato <?php echo ($partiteVinte+$partitePerse); ?> partite</div>
+				<?php if($partiteVinte+$partitePerse > 0){ ?>
 				<div class="numPartite">&#8614; di cui ne hai vinte <?php echo $partiteVinte; ?> </div>
 				<div class="numPartite">&#8627; e ne hai perse <?php echo $partitePerse; ?></div>
+				<?php }else{ ?>
+					<br><br>
+				<?php } ?>
 				<div id="grado">
 					<div id="intestazioneGrado">Sei di grado:</div>
 					<div id="divElencoGradi">
@@ -241,7 +245,7 @@
 					</ul>
 					<?php
 						}else{
-							echo "Non hai ancora giocato nessuna partita... Forza <a href=\"http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco\">vai a divertirti</a>";
+							echo "Non hai ancora giocato nessuna partita... Forza <a href=\"http://$IP:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco\">vai a divertirti</a>";
 						} ?>
 				</div>
 			</div>

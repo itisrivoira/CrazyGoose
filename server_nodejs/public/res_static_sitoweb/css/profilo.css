@@ -30,6 +30,7 @@ body {
     font-size: 1.6em;
     color: rgba(46, 11, 99, 0.973);
     background-color: rgb(119, 0, 255);
+    width: -moz-fit-content;
     width: fit-content;
     padding-top: 6px;
     padding-bottom: 6px;
@@ -37,8 +38,11 @@ body {
     padding-left: 20px;
 }
 
-.btnScegliProfilo {
+.divBtnScegliProfilo {
     border-radius: 20%;
+}
+.btnScegliProfilo:hover {
+    background-color: #b93aca;
     cursor: pointer;
 }
 
@@ -47,6 +51,8 @@ body {
 }
 
 #infoStatistUsername {
+    /*Per la dimensione in firefox (non posso usare il semplice fit-content)*/
+    width: -moz-fit-content;
     width: fit-content;
     border: 0.25em blue solid;
     border-radius: 25%;

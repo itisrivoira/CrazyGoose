@@ -86,7 +86,9 @@
                     <button id="dropdownBtn"><?php echo $msgDelMenuUtente; ?></button>
                     <div id="dropdown-menu">
                         <a href="http://<?php echo $IP; ?>:3000/profilo">Profilo</a>
+                        <?php if($username != null){ ?>
                         <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco">Vai al gioco</a>
+                        <?php } ?>
                         <a href="http://<?php echo $IP; ?>:3000/download">Download gioco python</a>
                         <a href="http://<?php echo $IP; ?>:3000/esci">Esci</a>
                     </div>
