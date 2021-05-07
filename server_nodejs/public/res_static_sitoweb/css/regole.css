@@ -1,0 +1,283 @@
+body {
+    background-color: rgba(192, 191, 191, 0.712);
+}
+
+.col {
+    padding: 0px;
+    text-align: center;
+}
+
+#titolo {
+    color: rgb(240, 249, 255);
+    font-family: Ubuntu;
+    font-size: 40px;
+    text-align: center;
+}
+
+.titoli {
+    color: rgba(82, 9, 116, 0.884);
+    font-family: Ubuntu;
+    font-size: 27px;
+    text-align: center;
+}
+
+#rowLogoGrande {
+    margin-bottom: 100px;
+}
+
+.rowParteDellaDoc {
+    margin-bottom: 70px;
+}
+
+.testo {
+    color: aliceblue;
+    font-family: Ubuntu;
+    font-size: 16px;
+    text-align: center;
+}
+
+
+/* CSS PER I COLLAPSIBLE */
+
+.collapsible {
+    background-color: rgba(82, 9, 116, 0.884);
+    color: aliceblue;
+    font-family: Ubuntu;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+
+/*Cambia sfondo quando ci passi sopra col mouse*/
+
+.active,
+.collapsible:hover {
+    background-color: rgb(92, 0, 134);
+}
+
+.content {
+    color: aliceblue;
+    padding: 18px;
+    display: none;
+    overflow: hidden;
+    background-color: rgb(58, 0, 85);
+    font-family: Ubuntu;
+}
+
+
+/*inizio carousel*/
+
+.carousel-item {
+    /* height: 65vh;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; */
+    height: 65vh;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 500px;
+    background-color: rgba(129, 128, 128, 0.411);
+    margin-top: 20px;
+    font-family: Ubuntu;
+}
+
+.titoloSchedaCarousel {
+    color: black;
+    font-size: 55px;
+    font-weight: 500;
+    font-family: Ubuntu;
+}
+
+.testoCarousel {
+    /* color: black;
+    font-size: 25px;
+    font-weight: 300; */
+    color: black;
+    /* background-color: green; */
+    margin-top: 40px;
+    font-size: 25px;
+    margin-left: 150px;
+    margin-right: 150px;
+    text-align: center;
+    font-family: Ubuntu;
+}
+
+#ocaRossa {
+    padding-top: 10px;
+    color: rgb(250, 0, 18);
+    text-align: center;
+    font-size: 40px;
+    font-family: Ubuntu;
+}
+
+#ocaBlu {
+    padding-top: 10px;
+    color: rgb(47, 52, 149);
+    text-align: center;
+    font-size: 40px;
+    font-family: Ubuntu;
+}
+
+#ocaVerde {
+    padding-top: 10px;
+    color: rgb(0, 180, 78);
+    text-align: center;
+    font-size: 40px;
+    font-family: Ubuntu;
+}
+
+#ocaGialla {
+    padding-top: 10px;
+    color: rgb(245, 255, 0);
+    text-align: center;
+    font-size: 40px;
+    font-family: Ubuntu;
+}
+
+#ocaCattiva {
+    padding-top: 10px;
+    color: rgb(158, 0, 144);
+    text-align: center;
+    font-size: 40px;
+    font-family: Ubuntu;
+}
+
+.sfondoTestoCarousel {
+    background-color: lightgray;
+}
+
+.titoloSchedaCarousel:hover {
+    color: black;
+    font-family: Ubuntu;
+}
+
+#imgSchedaCrazyGoose {
+    width: 250px;
+    height: 250px;
+    /* display: block; */
+    margin: auto;
+    margin-top: 40px;
+    margin-left: 450px;
+    /* background-color: red; */
+}
+
+#imgAbilita {
+    width: 70px;
+    height: 70px;
+    margin-left: 25px;
+    /* background-color: blue; */
+    display: inline-block;
+}
+
+#imgOcaCattiva {
+    width: 250px;
+    height: 250px;
+    display: block;
+    margin: auto;
+    margin-top: 40px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    height: 50px;
+    width: 50px;
+    background-color: rgba(0, 0, 0, 0.3);
+    background-size: 65%, 65%;
+    position: relative;
+}
+
+
+/*fine carousel*/
+
+.scritteCentrali {
+    text-align: center;
+    font-size: 50px;
+    /* color: rgb(0, 0, 0); */
+    font-family: Ubuntu;
+}
+
+
+/* #dado {
+    font-size: 25px;
+} */
+
+#sottotitoliRossi {
+    text-align: center;
+    font-size: 25px;
+    color: red;
+    font-family: Ubuntu;
+}
+
+#sottotitoliVerdi {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 25px;
+    color: rgb(0, 180, 78);
+    font-family: Ubuntu;
+}
+
+#casellaFinale {
+    text-align: center;
+    font-size: 30px;
+    margin-top: 30px;
+    color: rgb(47, 52, 149);
+    font-family: Ubuntu;
+}
+
+#effettiNegativi {
+    text-align: left;
+    font-family: Ubuntu;
+}
+
+#effettiPositivi {
+    text-align: left;
+    font-family: Ubuntu;
+}
+
+.imgEffetto {
+    margin-left: 450px;
+    margin-bottom: 5px;
+    margin-right: 20px;
+    float: left;
+    font-family: Ubuntu;
+    /* display: inline-block; */
+}
+
+.descEffetto {
+    display: inline-block;
+    text-align: right;
+    margin-left: 10px;
+    /* background-color: blue; */
+    font-size: 20px;
+    font-family: Ubuntu;
+}
+
+#casellaVincitrice {
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: Ubuntu;
+}
+
+.separatore {
+    background-color: rgba(82, 9, 116, 0.644);
+    height: 10px;
+}
+
+#divDesc {
+    text-align: center;
+}
+
+#desc {
+    font-size: 20px;
+    font-family: Ubuntu;
+}
