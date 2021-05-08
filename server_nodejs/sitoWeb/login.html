@@ -27,7 +27,9 @@
             </center>
         </div>
     </div>
-    <center id="passEmailScorretti"><p style="color:red;font-size:17px;">EMAIL o PASSWORD ERRATI !</p></center>
+    <center id="passEmailScorretti">
+        <p style="color:red;font-size:17px;">EMAIL o PASSWORD ERRATI !</p>
+    </center>
 
     <script>
         function controllaDati() {
@@ -42,11 +44,17 @@
                 document.formReg.email.focus()
                 alert("Inserisci l'email con cui ti sei registrato !")
                 return false
+            } else {
+                var x = document.formReg.email.value
+                document.formReg.email.value = x.trim()
             }
             if (document.formReg.password.value == "") {
                 document.formReg.password.focus()
                 alert("Inserisci la password del tuo account.")
                 return false
+            } else {
+                var x = document.formReg.password.value
+                document.formReg.password.value = x.trim()
             }
             return true
         }

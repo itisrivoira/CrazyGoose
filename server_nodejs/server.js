@@ -75,8 +75,8 @@ app.get("/esci", (req, resp) => {
 })
 
 app.get("/", (req, resp) => {
-	//porta alla home DOPO AVER FATTO IL LOGOUT
-	//(la home, essendo in php, si raggiunge con passaAPaginaPHP?pagina=sitoWeb/phpPages/home)
+    //porta alla home DOPO AVER FATTO IL LOGOUT
+    //(la home, essendo in php, si raggiunge con passaAPaginaPHP?pagina=sitoWeb/phpPages/home)
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
 
     let jsDom = new JSDOM(pagina)
@@ -116,34 +116,37 @@ app.get("/login", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/login.html", "utf-8")
     let paginaConIP = rimpiazzaLocalhostConIP(pagina)
 
-	let erroreLogin = req.query.err
-	let jsDom = new JSDOM(paginaConIP)
-	jsDom.window.document.getElementById("passEmailScorretti").style.display = "block";	
-	
-	if(erroreLogin == undefined){
-		jsDom.window.document.getElementById("passEmailScorretti").style.display = "none";	
-	}
-	
-	resp.send(jsDom.window.document.documentElement.outerHTML)
+    let erroreLogin = req.query.err
+    let jsDom = new JSDOM(paginaConIP)
+    jsDom.window.document.getElementById("passEmailScorretti").style.display = "block";
+
+    if (erroreLogin == undefined) {
+        jsDom.window.document.getElementById("passEmailScorretti").style.display = "none";
+    }
+
+    resp.send(jsDom.window.document.documentElement.outerHTML)
 })
 
 app.get("/registrati", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/registrati.html", "utf-8")
     let paginaConIP = rimpiazzaLocalhostConIP(pagina)
 
-	let erroreLogin = req.query.err
-	let jsDom = new JSDOM(paginaConIP)
-	jsDom.window.document.getElementById("emailGiaUsata").style.display = "block";	
-	
-	if(erroreLogin == undefined){
-		jsDom.window.document.getElementById("emailGiaUsata").style.display = "none";	
-	}
-	
-	resp.send(jsDom.window.document.documentElement.outerHTML)
+    let erroreLogin = req.query.err
+    let jsDom = new JSDOM(paginaConIP)
+    jsDom.window.document.getElementById("emailGiaUsata").style.display = "block";
+
+    if (erroreLogin == undefined) {
+        jsDom.window.document.getElementById("emailGiaUsata").style.display = "none";
+    }
+
+    resp.send(jsDom.window.document.documentElement.outerHTML)
 })
 
 app.get("/download", (req, resp) => {
-    resp.sendFile(__dirname + "/GiocoPython.zip")
+    resp.sendFile(__dirname + "/downloads/GiocoPython.zip")
+})
+app.get("/guida", (req, resp) => {
+    resp.sendFile(__dirname + "/downloads/DOC_CrazyGoose.pdf")
 })
 
 //----------------- gioco web ----------------------------------

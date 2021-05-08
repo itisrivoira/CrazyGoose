@@ -76,9 +76,9 @@
             <div id="divDropdown"style="<?php echo $styleDelMenuUtente; ?>">
                 <button id="dropdownBtn"><?php echo $msgDelMenuUtente; ?></button>
                 <div id="dropdown-menu" >
-                    <a href="http://localhost:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home">Home</a>
-                    <a href="http://localhost:3000/contattaci">Contattaci</a>
-                    <a href="http://localhost:3000/esci">Esci</a>
+                    <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home">Home</a>
+                    <a href="http://<?php echo $IP; ?>:3000/contattaci">Contattaci</a>
+                    <a href="http://<?php echo $IP; ?>:3000/esci">Esci</a>
                 </div>
             </div>
         </div>
@@ -90,15 +90,15 @@
         </div>
 
         <div id="divStart">
-            <a href="http://localhost:3000/start" id="start" class="link">START</a>
+            <a href="http://<?php echo $IP; ?>:3000/start" id="start" class="link">START</a>
         </div>
 
         <div id="divOptions">
-            <a href="http://localhost:3000/options" id="options" class="link">OPTIONS</a>
+            <a href="http://<?php echo $IP; ?>:3000/options" id="options" class="link">OPTIONS</a>
         </div>
 
         <div id="divCredits">
-            <a href="http://localhost:3000/credits" id="credits" class="link">CREDITS</a>
+            <a href="http://<?php echo $IP; ?>:3000/credits" id="credits" class="link">CREDITS</a>
         </div>
 
     </div>

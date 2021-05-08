@@ -9,9 +9,13 @@
 	$username = null;
 	$profili = array();
 	$partite = array();
-
+	$flagAgg = false;
 
     if(isset($_SESSION["ID"])){
+		if(isset($_GET["agg"]) ){
+			$flagAgg = true;
+		}
+
         //Tento di connettermi al DB CrazyGoose (di certo ci sarà xke si è loggato)
         $mysqli = new mysqli("localhost", "root", "", "CrazyGoose");
         if($mysqli->connect_error){
@@ -43,6 +47,7 @@
 							array_push($profili, $utente["username"]);
 						}
 						
+						
 						if(isset($_GET["scelta"])){
 							$username = $profili[ $_GET["scelta"] ];
 							$_SESSION["username"] = $username;
@@ -57,6 +62,8 @@
 								$partiteVinte = $ris_arr_assoc["partiteVinte"];
 								$partitePerse = $ris_arr_assoc["partitePerse"];
 								
+								$msgMotivazionale = "Qui ci sar&agrave; un msg motivazionale";
+
 								//(dalla più recente)
 								$queryResult = $mysqli->query("SELECT ID_part, durata, flagVittoria, numMosse FROM Partecipare, Partite WHERE(username = '$username' AND ID_partita = ID_part) ORDER BY ID_part DESC;");
 
@@ -88,9 +95,27 @@
         function profiloScelto(indice){
 			location.replace("http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php?scelta="+indice)
         }
+		function controllaUsername(){
+			/* AL TENTATIVO DI INVIO DEI DATI ("onSubmit" nel tag "form")
+            Prendo il form che nella pagina ha quel "name" "formReg", all'itnerno del
+             quale ci sono delle componenti con un certo "name" ("email", "password").
+             Ne controllo il valore, cioè quello che contengono. Se non contengono nulla sposto
+             il focus su una di loro (scriverà con la tastiera all'interno della componente vuota senza doverci 
+             cliccare lui) */
+
+			if(document.formUsername.username.value == ""){
+				document.formUsername.username.focus()
+				alert("Inserisci l'username !!!")
+				return false
+			} else {
+                var x = document.formReg.username.value
+                document.formReg.username.value = x.trim()
+            }
+			return true
+		}
     </script>
 </head>
-<body>
+<body style="padding:2px;">
 	<div class="container-fluid">
 		<div class="row" id="rowIntestazione">
 			<div class="col-9">
@@ -121,7 +146,7 @@
 						?>
 						<button onclick="profiloScelto(0)" class="btnScegliProfilo">Profilo N.1<br><i><b><?php echo $profili[0]; ?></i></b></button>
 						<?php }else{ ?>
-							<button class="btnScegliProfilo"><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/formAggProfilo.php">AGGIUNGI<br>PROFILO N.1 <h3>➕</h3> </a></button>
+							<button class="btnScegliProfilo"><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php?agg=1">AGGIUNGI<br>PROFILO N.1 <h3>➕</h3> </a></button>
 						<?php } ?>
 					</div>
 				</center>
@@ -134,7 +159,7 @@
 						?>
 						<button onclick="profiloScelto(1)" class="btnScegliProfilo">Profilo N.2<br><i><b><?php echo $profili[1]; ?></i></b></button>
 						<?php }else{ ?>
-							<button class="btnScegliProfilo"><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/formAggProfilo.php">AGGIUNGI<br>PROFILO N.2 <h3>➕</h3> </a></button>
+							<button class="btnScegliProfilo"><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php?agg=1">AGGIUNGI<br>PROFILO N.2 <h3>➕</h3> </a></button>
 						<?php } ?>
 					</div>
 				</center>
@@ -147,13 +172,13 @@
 						?>
 						<button onclick="profiloScelto(2)" class="btnScegliProfilo">Profilo N.3<br><i><b><?php echo $profili[2]; ?></i></b></button>
 						<?php }else{ ?>
-							<button class="btnScegliProfilo"><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/formAggProfilo.php">AGGIUNGI<br>PROFILO N.3 <h3>➕</h3> </a></button>
+							<button class="btnScegliProfilo"><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php?agg=1">AGGIUNGI<br>PROFILO N.3 <h3>➕</h3> </a></button>
 						<?php } ?>
 					</div>
 				</center>
 			</div>
 		</div>
-		<?php if($username != null){ ?>
+		<?php if($username != null){?>
 		<div class="row" id="rowStatisitche">
 			<div class="col-12">
 				<center>
@@ -162,7 +187,7 @@
 			</div>
 		</div>
 		<div class="row" id="rowStatistiche1">
-			<div class="col-12 col-md-6">
+			<div class="col-md-6 col-12">
 				<div id="totPartite">In totale hai giocato <?php echo ($partiteVinte+$partitePerse); ?> partite</div>
 				<?php if($partiteVinte+$partitePerse > 0){ ?>
 				<div class="numPartite">&#8614; di cui ne hai vinte <?php echo $partiteVinte; ?> </div>
@@ -220,10 +245,10 @@
 					</div>
 				</div>
 				<div id="msgMotivazionale">
-					<?php echo "Qui ci sar&agrave; un msg motivazionale"; ?>
+					<?php echo $msgMotivazionale; ?>
 				</div><br>
 			</div>
-			<div class="col-12 col-md-6" id="colonnaElencoPartite">
+			<div class="col-md-6 col-12" id="colonnaElencoPartite">
 				<div id="intestazionePartite">Cronologia partite:</div>
 				<div id="divElencoPartite">
 					<?php if(!empty($partite)){ ?>
@@ -250,7 +275,8 @@
 				</div>
 			</div>
 		</div>
-		<?php }else{ ?>
+		<?php }else{
+				if(!$flagAgg){ ?>
 		<div class="row" class="intestazionePagina">
 			<div class="col">
 				<center>
@@ -258,7 +284,23 @@
 				</center>
 			</div>
 		</div>
-		<?php } ?>
+		<?php 		}else{ ?>
+			<div class="col-12">
+				<center>
+					<div style="padding:5px; border: 0.3em solid black; width: -moz-fit-content;">
+						<form action="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/aggProfilo.php" method="post" name="formUsername" onsubmit="return(controllaUsername())">
+							<h3>Scegli un username <u>univoco</u>:</h3><br>
+							<input type="text" name="username" placeholder="es. giovannirossi01"><br><br>
+							<button type="submit" id="btnSubmit">CREA PROFILO</button>
+						</form>
+						<?php if(isset($_GET["err"])){ ?>
+							<br><label id="msgErroreUsername">USERNAME GI&Agrave; IN USO !</label>
+						<?php } ?>
+					</div>
+				</center>
+			</div>
+		<?php 		}
+			} ?>
 	</div>
 
 

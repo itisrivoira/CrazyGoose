@@ -29,7 +29,10 @@
             </center>
         </div>
     </div>
-    <br><center id="emailGiaUsata"><p style="color:red;font-size:17px;">EMAIL GI&Agrave; IN USO !</p></center>
+    <br>
+    <center id="emailGiaUsata">
+        <p style="color:red;font-size:17px;">EMAIL GI&Agrave; IN USO !</p>
+    </center>
 
     <script>
         function controllaDati() {
@@ -44,21 +47,41 @@
                 document.formReg.nome.focus()
                 alert("Inserisci il tuo nome !")
                 return false
+            } else {
+                var x = document.formReg.nome.value
+                document.formReg.nome.value = x.trim()
             }
+
             if (document.formReg.cognome.value == "") {
                 document.formReg.cognome.focus()
                 alert("Inserisci il tuo cognome !")
                 return false
+            } else {
+                var x = document.formReg.cognome.value
+                document.formReg.cognome.value = x.trim()
             }
+
             if (document.formReg.email.value == "") {
                 document.formReg.email.focus()
                 alert("Inserisci l'email per registrarsi.")
                 return false
-            }//TODO controllo che sia indirizzo email valido
+            } else {
+                var x = document.formReg.email.value
+                document.formReg.email.value = x.trim()
+                if (!x.includes("@")) {
+                    document.formReg.email.focus()
+                    alert("Questa non è un email !")
+                    return false
+                }
+            }
+
             if (document.formReg.password.value == "") {
                 document.formReg.password.focus()
                 alert("Inserisci la password che avrà il tuo account.")
                 return false
+            } else {
+                var x = document.formReg.password.value
+                document.formReg.password.value = x.trim()
             }
 
             return true

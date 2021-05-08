@@ -29,17 +29,23 @@
 											FOREIGN KEY(ID_giocatore) REFERENCES Utenti(ID_giocatore)
 										);")){
 		*/
+		
+		$changePage = "Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php";
 
 		if(!$mysqli->query("INSERT INTO Profili VALUES ('$username', 'Novellino', 0, 0, '$ID_giocatore');")){
 			//username già inserito ==> Error: Duplicate entry usernameScritto for key 'PRIMARY'
 			if($mysqli->errno == 1062){
-				echo "USERNAME GIÀ SCELTO !!!";
+				$changePage = "Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php?agg=1&err=1";
+				echo "fanuclo";
 			}else{
 				echo "Errore nell'inserimento: ".$mysqli->error;
+				$changePage = null;
 			}
 		}else{
-			header("Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php");
+			echo "merda";
 		}
-
+		if($changePage != null){
+			header($changePage);
+		}
 	}
 ?>
