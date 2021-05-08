@@ -271,13 +271,22 @@ body {
 .separatore {
     background-color: rgba(82, 9, 116, 0.644);
     height: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-#divDesc {
+.divDesc {
     text-align: center;
 }
 
-#desc {
+.desc {
     font-size: 20px;
     font-family: Ubuntu;
+}
+
+.descRegole {
+    font-size: 20px;
+    font-family: Ubuntu;
+    text-align: left;
+    margin-left: 100px;
 }
