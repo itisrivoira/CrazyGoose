@@ -75,6 +75,10 @@
 									$partite = $queryResult->fetch_all(MYSQLI_ASSOC);
 								}
 							}
+						}else{
+							if(isset($_SESSION["username"])){
+								unset($_SESSION["username"]);
+							}
 						}
 				    }
                 }
@@ -95,6 +99,17 @@
         function profiloScelto(indice){
 			location.replace("http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php?scelta="+indice)
         }
+		function aggProfilo(){
+			location.replace("http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php?agg=1")
+        }
+		function chiediConferma(profilo){
+			let link = "http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/eliminaProfilo.php?username="+profilo;
+
+			//alert con scelta 'annulla' o 'OK'
+			if(confirm("Sicuro di voler eliminare il profilo\n==> "+profilo+" <== ?")){
+				location.replace(link)
+			}
+		}
 		function controllaUsername(){
 			/* AL TENTATIVO DI INVIO DEI DATI ("onSubmit" nel tag "form")
             Prendo il form che nella pagina ha quel "name" "formReg", all'itnerno del
@@ -144,9 +159,10 @@
 						<?php
 							if(isset($profili[0])){
 						?>
+						<img onclick="chiediConferma('<?php echo $profili[0];?>')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
 						<button onclick="profiloScelto(0)" class="btnScegliProfilo">Profilo N.1<br><i><b><?php echo $profili[0]; ?></i></b></button>
 						<?php }else{ ?>
-							<button class="btnScegliProfilo"><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php?agg=1">AGGIUNGI<br>PROFILO N.1 <h3>➕</h3> </a></button>
+							<button onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.1 <h3>➕</h3></button>
 						<?php } ?>
 					</div>
 				</center>
@@ -157,9 +173,10 @@
 						<?php
 							if(isset($profili[1])){
 						?>
+						<img onclick="chiediConferma('<?php echo $profili[0];?>')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
 						<button onclick="profiloScelto(1)" class="btnScegliProfilo">Profilo N.2<br><i><b><?php echo $profili[1]; ?></i></b></button>
 						<?php }else{ ?>
-							<button class="btnScegliProfilo"><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php?agg=1">AGGIUNGI<br>PROFILO N.2 <h3>➕</h3> </a></button>
+							<button onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.2<h3>➕</h3></button>
 						<?php } ?>
 					</div>
 				</center>
@@ -170,9 +187,10 @@
 						<?php
 							if(isset($profili[2])){
 						?>
+						<img onclick="chiediConferma('<?php echo $profili[0];?>')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
 						<button onclick="profiloScelto(2)" class="btnScegliProfilo">Profilo N.3<br><i><b><?php echo $profili[2]; ?></i></b></button>
 						<?php }else{ ?>
-							<button class="btnScegliProfilo"><a href="http://<?php echo $IP;?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php?agg=1">AGGIUNGI<br>PROFILO N.3 <h3>➕</h3> </a></button>
+							<button onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.3<h3>➕</h3></button>
 						<?php } ?>
 					</div>
 				</center>

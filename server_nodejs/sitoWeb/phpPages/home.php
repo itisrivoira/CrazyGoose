@@ -44,7 +44,7 @@
         $classDellaTestata = "class = \"col-10 d-flex justify-content-center\"";
         $classDelMenuUtente = "class = \"col-2\"";
         $styleDelMenuUtente = "display: inline-block;";
-        $msgDelMenuUtente = "Benvenuto<br>$nome $cognome";
+        $msgDelMenuUtente = "Benvenuto<br><i><b>$nome $cognome</b></i>";
         if($username != null){
         	$msgDelMenuUtente = "Benvenuto<br><i><b>$nome $cognome</b></i><br>Con profilo:<br><i><b>$username</b></i>"; 
         }
@@ -89,7 +89,7 @@
                         <?php if($username != null){ ?>
                         <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco">Vai al gioco</a>
                         <?php } ?>
-                        <a href="http://<?php echo $IP; ?>:3000/download">Download gioco python</a>
+                        <a href="http://<?php echo $IP; ?>:3000/download">Download<br>gioco</a>
                         <a href="http://<?php echo $IP; ?>:3000/esci">Esci</a>
                     </div>
                 </div>
@@ -154,7 +154,7 @@
                     Se non hai ancora un account Crazy Goose <br>clicca sul tasto Registrati basteranno pochi secondi per iniziar far parte del nostro branco e divertirti giocando al gioco dell'oca !
                 </p>
                 <div>
-                    <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=login" class="btnIn"><b>ACCEDI</b></a>
+                    <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=accedi" class="btnIn"><b>ACCEDI</b></a>
                     <br><br>
                     <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=registrati" class="btnIn"><b>REGISTRATI</b></a>
                 </div>

@@ -112,8 +112,8 @@ app.get("/profilo", (req, resp) => {
     resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
 
-app.get("/login", (req, resp) => {
-    let pagina = fs.readFileSync("./sitoWeb/login.html", "utf-8")
+app.get("/accedi", (req, resp) => {
+    let pagina = fs.readFileSync("./sitoWeb/accedi.html", "utf-8")
     let paginaConIP = rimpiazzaLocalhostConIP(pagina)
 
     let erroreLogin = req.query.err

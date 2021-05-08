@@ -5,7 +5,6 @@
 	// che mi restituisce la funzione file()
 	$IP = file("../../indirizzo_server.txt")[0];
 
-	//arriva da "creazioneDB.php" che, se non c'era ancora, crea il DB CrazyGoose
 	$mysqli = new mysqli("localhost", "root", "", "CrazyGoose");
 	if($mysqli->connect_error){
 		if($mysqli->connect_errno == 1049){

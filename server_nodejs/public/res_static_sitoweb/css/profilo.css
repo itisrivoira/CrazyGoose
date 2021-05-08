@@ -47,6 +47,15 @@ body {
     cursor: pointer;
 }
 
+.linkImgCestino:hover {
+    cursor: pointer;
+}
+
+.imgCestino {
+    margin-bottom: 20px;
+    margin-right: 5px;
+}
+
 #rowStatistiche1 {
     margin-top: 25px;
 }
