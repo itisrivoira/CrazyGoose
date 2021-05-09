@@ -8,7 +8,7 @@
     <title>Registrati</title>
 </head>
 
-<body>
+<body onload="focusIniziale()">
     <div id="main">
         <div>
             <center>
@@ -35,6 +35,10 @@
     </center>
 
     <script>
+        function focusIniziale() {
+            document.formReg.nome.focus()
+        }
+
         function controllaDati() {
             /* AL TENTATIVO DI INVIO DEI DATI ("onSubmit" nel tag "form")
             Prendo il form che nella pagina ha quel "name" "formReg", all'itnerno del

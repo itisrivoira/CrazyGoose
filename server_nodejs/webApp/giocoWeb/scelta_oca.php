@@ -27,48 +27,48 @@
             <p>*OGNI OCA HA UN' ABILITA DIVERSA*</p>
         </div>
 
-        <div id="areaOche">
-            <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/scelta_oca.php?ocaScelta=gialla">    
-                <div id="ocaGialla">
-                    <div id="gialla">
-                        <p>OCA GIALLA</p>
-                        <!-- <style data-text="Con la sua abilità si potrà avanzare di 3 caselle al posto di1 quando si capita su una casella 'avanti di 1'"></style> -->
-                        <img src="../../public/res_static_gioco/images/pedine/pedineMenuSceltaPedina/pedina_gialla_150x141.png">
-                        <p class="si">Con la sua abilità si potrà avanzare di 3 caselle quando si finisce su una casella 'avanti di 1'</p>
+        <center>
+            <div id="areaOche">
+                <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/scelta_oca.php?ocaScelta=gialla">    
+                    <div id="ocaGialla">
+                        <div id="gialla">
+                            <p>OCA GIALLA</p>
+                            <!-- <style data-text="Con la sua abilità si potrà avanzare di 3 caselle al posto di1 quando si capita su una casella 'avanti di 1'"></style> -->
+                            <img src="../../public/res_static_gioco/images/pedine/pedineMenuSceltaPedina/pedina_gialla_150x141.png">
+                            <p class="descrOca">Con la sua abilità si potrà avanzare di 3 caselle quando si finisce su una casella 'avanti di 1'</p>
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
 
-            <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/scelta_oca.php?ocaScelta=verde">    
-                <div id="ocaVerde">
-                    <div id="verde">
-                        <p>OCA VERDE</p>
-                        <img src="../../public/res_static_gioco/images/pedine/pedineMenuSceltaPedina/pedina_verde_150x141.png">
-                        <p class="si">Con la sua abilità si potrà tirare nuovamente il dado!</p>
+                <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/scelta_oca.php?ocaScelta=verde">    
+                    <div id="ocaVerde">
+                        <div id="verde">
+                            <p>OCA VERDE</p>
+                            <img src="../../public/res_static_gioco/images/pedine/pedineMenuSceltaPedina/pedina_verde_150x141.png">
+                            <p class="descrOca">Con la sua abilità si potrà tirare nuovamente il dado!</p>
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
-        <div id="areaOche2">
-            <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/scelta_oca.php?ocaScelta=blu">    
-                <div id="ocaBlu">
-                    <div id="blu">
-                        <p>OCA BLU</p>
-                        <img src="../../public/res_static_gioco/images/pedine/pedineMenuSceltaPedina/pedina_blu_150x141.png">
-                        <p class="si">Con la sua abilità si potrà avanzare di 2 caselle!</p>
+                </a>
+                <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/scelta_oca.php?ocaScelta=blu">    
+                    <div id="ocaBlu">
+                        <div id="blu">
+                            <p>OCA BLU</p>
+                            <img src="../../public/res_static_gioco/images/pedine/pedineMenuSceltaPedina/pedina_blu_150x141.png">
+                            <p class="descrOca">Con la sua abilità si potrà avanzare di 2 caselle!</p>
+                        </div>
                     </div>
-                </div>
-            </a>
-            <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/scelta_oca.php?ocaScelta=rossa">
-                <div id="ocaRossa">
-                    <div id="rossa">
-                        <p>OCA ROSSA</p>
-                        <img src="../../public/res_static_gioco/images/pedine/pedineMenuSceltaPedina/pedina_rosso_150x141.png">
-                        <p class="si">Con la sua abilità si potrà annullare l'effetto di una casella!</p>
+                </a>
+                <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/scelta_oca.php?ocaScelta=rossa">
+                    <div id="ocaRossa">
+                        <div id="rossa">
+                            <p>OCA ROSSA</p>
+                            <img src="../../public/res_static_gioco/images/pedine/pedineMenuSceltaPedina/pedina_rosso_150x141.png">
+                            <p class="descrOca">Con la sua abilità si potrà annullare l'effetto di una casella!</p>
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
+        </center>
     </div>
 </body>
 

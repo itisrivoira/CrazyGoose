@@ -32,9 +32,9 @@ class MainMenu(Menu):
         Menu.__init__(self, game)
         self.state = "Start"
         self.startx, self.starty = self.mid_w, self.mid_h + 0
-        self.optionsx, self.optionsy = self.mid_w, self.mid_h + 50
-        self.creditsx, self.creditsy = self.mid_w, self.mid_h + 100
-        self.quitx, self.quity = self.mid_w, self.mid_h + 150
+        #self.optionsx, self.optionsy = self.mid_w, self.mid_h + 50
+        self.creditsx, self.creditsy = self.mid_w, self.mid_h + 90
+        self.quitx, self.quity = self.mid_w, self.mid_h + 170
         self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
 
     
@@ -53,7 +53,6 @@ class MainMenu(Menu):
             self.game.display.blit(imgCrazyGoose, (160, 50))
 
             draw_text(self.game, "Start Game", 30, self.game.WHITE, self.startx, self.starty)
-            draw_text(self.game, "Options", 30, self.game.WHITE, self.optionsx, self.optionsy)
             draw_text(self.game, "Credits", 30, self.game.WHITE, self.creditsx, self.creditsy)
             draw_text(self.game, "Quit", 30, self.game.WHITE, self.quitx, self.quity)
             
@@ -66,9 +65,6 @@ class MainMenu(Menu):
     def move_cursor(self):
         if self.game.DOWN_KEY:
             if self.state == 'Start':
-                self.cursor_rect.midtop = (self.optionsx + self.offset, self.optionsy)
-                self.state = 'Options'
-            elif self.state == 'Options':
                 self.cursor_rect.midtop = (self.creditsx + self.offset, self.creditsy)
                 self.state = 'Credits'
             elif self.state == 'Credits':
@@ -81,12 +77,9 @@ class MainMenu(Menu):
             if self.state == 'Start':
                 self.cursor_rect.midtop = (self.quitx + self.offset, self.quity)
                 self.state = 'Quit'
-            elif self.state == 'Options':
+            elif self.state == 'Credits':
                 self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
                 self.state = 'Start'
-            elif self.state == 'Credits':
-                self.cursor_rect.midtop = (self.optionsx + self.offset, self.optionsy)
-                self.state = 'Options'
             elif self.state == 'Quit':
                 self.cursor_rect.midtop = (self.creditsx + self.offset, self.creditsy)
                 self.state = 'Credits'
@@ -99,8 +92,6 @@ class MainMenu(Menu):
             if self.state == 'Start':
                 self.game.playing = True
                 self.game.curr_menu = None
-            elif self.state == 'Options':
-                self.game.curr_menu = self.game.options
             elif self.state == 'Credits':
                 self.game.curr_menu = self.game.credits
             elif self.state == 'Quit':
@@ -111,104 +102,6 @@ class MainMenu(Menu):
             #Se ha premuto invio di certo andrà in un altro menu/entrerà
             # nel gioco/chiuderà la finestra, quindi questo menu non deve più essere mostrato
             self.run_display = False
-
-
-class OptionsMenu(Menu):
-    def __init__(self, game):
-        Menu.__init__(self, game)
-        self.state = 'Volume'
-        self.volx, self.voly = self.mid_w, self.mid_h - 50
-        self.resx, self.resy = self.mid_w, self.mid_h + 10
-        self.ctrlx, self.ctrly = self.mid_w, self.mid_h + 70
-        self.backx, self.backy = self.mid_w, self.mid_h + 120
-        self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
-
-
-    # cosa esce quando entri in Options Menu
-    def display_menu(self):
-        self.run_display = True
-        while self.run_display:
-        	#Per non occupare moolta CPU abbasso gli fps (in pratica fa meno giri al sec xke aspetta un attimo ogni volta)
-            pygame.time.wait(100)
-        
-            self.game.check_events()
-            self.check_input()
-            self.game.display.fill((self.game.AZZURRO))
-            draw_text(self.game, 'Options', 50, self.game.WHITE, self.mid_w, self.mid_h - 200)
-            draw_text(self.game, "Volume", 30, self.game.WHITE, self.volx, self.voly)
-            draw_text(self.game, "Resolutions", 30, self.game.WHITE, self.resx, self.resy)
-            draw_text(self.game, "Controls", 30, self.game.WHITE, self.ctrlx, self.ctrly)
-            draw_text(self.game, "Back", 30, self.game.WHITE, self.backx, self.backy)
-            self.draw_cursor()
-            self.blit_screen()
-
-
-    # serve a muovere il cursore per la selezione dentro il menu
-    def move_cursor(self):
-        if self.game.DOWN_KEY:
-            if self.state == 'Volume':
-                self.cursor_rect.midtop = (self.resx + self.offset, self.resy)
-                self.state = 'Res'
-                print("Premuto downkey e vado in RESOLUTIONS")
-            elif self.state == 'Res':
-                self.cursor_rect.midtop = (self.ctrlx + self.offset, self.ctrly)
-                self.state = 'Controls'
-                print("Premuto downkey e vado in CONTROLS")
-            elif self.state == 'Controls':
-                self.cursor_rect.midtop = (self.backx + self.offset, self.backy)
-                self.state = 'Back'
-                print("Premuto downkey e vado in VOLUME")
-            elif self.state == 'Back':
-                self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
-                self.state = 'Volume'
-        elif self.game.UP_KEY:
-            if self.state == 'Volume':
-                self.cursor_rect.midtop = (self.backx + self.offset, self.backy)
-                self.state = 'Back'
-                print("Premuto upkey e vado in BACK")
-            elif self.state == 'Back':
-                self.cursor_rect.midtop = (self.ctrlx + self.offset, self.ctrly)
-                self.state = 'Controls'
-                print("Premuto upkey e vado in CONTROLS")
-            elif self.state == 'Controls':
-                self.cursor_rect.midtop = (self.resx + self.offset, self.resy)
-                self.state = 'Res'
-                print("Premuto upkey e vado in RESOLUTIONS")
-            elif self.state == 'Res':
-                self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
-                self.state = 'Volume'
-                print("Premuto upkey e vado in VOLUME")
-
-
-    # controlla gli input
-    def check_input(self):
-        self.move_cursor()
-        if self.game.START_KEY:
-            if self.state == 'Res':
-                # self.res_options()
-                print("SONO IN Risoluzioni")
-            elif self.state == 'Volume':
-                # TODO: class Volume needed
-                print("SONO IN VOLUME")
-            elif self.state == 'Controls':
-                # TODO: class Controls needed
-                print("SONO IN CONTROLS")
-            elif self.state == 'Back':
-                print("TORNO INDIETRO")
-                self.go_back()
-        elif self.game.BACK_KEY:
-            self.game.curr_menu = self.game.main_menu
-            self.run_display = False
-
-
-    def go_back(self):
-        self.game.curr_menu = self.game.main_menu
-        self.run_display = False
-    """
-    def res_options(self):
-        draw_text("1270x690", 30, self.mid_w, self.mid_h )
-        self.blit_screen()
-    """
 
 
 class CreditsMenu(Menu):

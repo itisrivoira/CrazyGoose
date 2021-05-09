@@ -30,7 +30,7 @@
                     $cognome = $ris_arr_assoc["cognome"];
                 }
             }
-            
+
             if(isset($_SESSION["username"])){
             	$username = $_SESSION["username"];
             }
@@ -77,6 +77,7 @@
                 <button id="dropdownBtn"><?php echo $msgDelMenuUtente; ?></button>
                 <div id="dropdown-menu" >
                     <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home">Home</a>
+                    <a href="http://<?php echo $IP; ?>:3000/profilo">Profilo</a>
                     <a href="http://<?php echo $IP; ?>:3000/contattaci">Contattaci</a>
                     <a href="http://<?php echo $IP; ?>:3000/esci">Esci</a>
                 </div>
@@ -91,10 +92,6 @@
 
         <div id="divStart">
             <a href="http://<?php echo $IP; ?>:3000/start" id="start" class="link">START</a>
-        </div>
-
-        <div id="divOptions">
-            <a href="http://<?php echo $IP; ?>:3000/options" id="options" class="link">OPTIONS</a>
         </div>
 
         <div id="divCredits">

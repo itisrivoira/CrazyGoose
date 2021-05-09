@@ -104,7 +104,7 @@
                         <li data-target="#carouselIndicators" data-slide-to="2"></li>
                     </ol>-->
                     <div class="carousel-inner" role="listbox">
-                        <div class="carousel-item active">
+                        <div class="carousel-item active" id="caroselloGioco">
                             <img src="../../public/res_static_sitoweb/images/gioco.png" class="img-fluid" id="imgSchedaCrazyGoose">
                             <div class="carousel-caption" id="divSchedaCarosello">
                                 <p class="titoloSchedaCarousel">CRAZY GOOSE</p>

@@ -24,7 +24,7 @@ body {
     background-color: #2980B9;
     color: white;
     padding: 16px;
-    font-size: 16px;
+    font-size: 1em;
     border: none;
 }
 
@@ -65,8 +65,7 @@ body {
 /* - - - - - - - - - - - - - - */
 
 .carousel-item {
-    height: 65vh;
-    min-height: 350px;
+    height: 600px;
     background: no-repeat center center scroll;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -76,13 +75,13 @@ body {
 
 .titoloSchedaCarousel {
     color: black;
-    font-size: 55px;
+    font-size: 3.4em;
     font-weight: 500;
 }
 
 .testoCarousel {
     color: black;
-    font-size: 25px;
+    font-size: 1.5em;
     font-weight: 300;
 }
 
@@ -143,7 +142,7 @@ blu/azzurro (classe sopra e sotto il commento)*/
     padding: 4vh;
     width: 70vw;
     text-align: center;
-    font-size: 17px;
+    font-size: 1.07em;
 }
 
 .btnIn {
@@ -157,7 +156,7 @@ blu/azzurro (classe sopra e sotto il commento)*/
     padding-right: 40px;
     padding-bottom: 10px;
     padding-top: 10px;
-    font-size: 13px;
+    font-size: 0.81em;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
 }
 

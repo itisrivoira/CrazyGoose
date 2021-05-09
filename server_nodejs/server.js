@@ -171,14 +171,6 @@ app.get("/start", (req, resp) => {
     resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
 
-app.get("/options", (req, resp) => {
-    //TODO: sarà loggato o ha solo cambiato url nella barra degli indirizzi ???
-    let sito = fs.readFileSync("./webApp/menu/options.html", "utf-8")
-    let sitoConIP = rimpiazzaLocalhostConIP(sito)
-
-    resp.send(sitoConIP)
-})
-
 app.get("/credits", (req, resp) => {
     //TODO: sarà loggato o ha solo cambiato url nella barra degli indirizzi ???
     let sito = fs.readFileSync("./webApp/menu/credits.html", "utf-8")

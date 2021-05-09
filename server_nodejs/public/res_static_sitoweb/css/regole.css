@@ -32,7 +32,7 @@ body {
 .testo {
     color: aliceblue;
     font-family: Ubuntu;
-    font-size: 16px;
+    font-size: 1em;
     text-align: center;
 }
 
@@ -49,7 +49,7 @@ body {
     border: none;
     text-align: left;
     outline: none;
-    font-size: 15px;
+    font-size: 1em;
 }
 
 
@@ -93,7 +93,7 @@ body {
 
 .titoloSchedaCarousel {
     color: black;
-    font-size: 55px;
+    font-size: 3.43em;
     font-weight: 500;
     font-family: Ubuntu;
 }
@@ -105,7 +105,7 @@ body {
     color: black;
     /* background-color: green; */
     margin-top: 40px;
-    font-size: 25px;
+    font-size: 1.5em;
     margin-left: 150px;
     margin-right: 150px;
     text-align: center;
@@ -116,7 +116,7 @@ body {
     padding-top: 10px;
     color: rgb(250, 0, 18);
     text-align: center;
-    font-size: 40px;
+    font-size: 2.5em;
     font-family: Ubuntu;
 }
 
@@ -124,7 +124,7 @@ body {
     padding-top: 10px;
     color: rgb(47, 52, 149);
     text-align: center;
-    font-size: 40px;
+    font-size: 2.5em;
     font-family: Ubuntu;
 }
 
@@ -132,7 +132,7 @@ body {
     padding-top: 10px;
     color: rgb(0, 180, 78);
     text-align: center;
-    font-size: 40px;
+    font-size: 2.5em;
     font-family: Ubuntu;
 }
 
@@ -140,7 +140,7 @@ body {
     padding-top: 10px;
     color: rgb(245, 255, 0);
     text-align: center;
-    font-size: 40px;
+    font-size: 2.5em;
     font-family: Ubuntu;
 }
 
@@ -148,7 +148,7 @@ body {
     padding-top: 10px;
     color: rgb(158, 0, 144);
     text-align: center;
-    font-size: 40px;
+    font-size: 2.5em;
     font-family: Ubuntu;
 }
 
@@ -201,13 +201,12 @@ body {
 
 .scritteCentrali {
     text-align: center;
-    font-size: 50px;
+    font-size: 3.12em;
     /* color: rgb(0, 0, 0); */
     font-family: Ubuntu;
 }
 
 #scaricaGuida {
-    text-align: center;
     margin: 10px;
     margin-top: 20px;
     font-size: 1.2em;
@@ -217,7 +216,7 @@ body {
 
 #sottotitoliRossi {
     text-align: center;
-    font-size: 25px;
+    font-size: 1.5em;
     color: red;
     font-family: Ubuntu;
 }
@@ -225,14 +224,14 @@ body {
 #sottotitoliVerdi {
     margin-top: 30px;
     text-align: center;
-    font-size: 25px;
+    font-size: 1.5em;
     color: rgb(0, 180, 78);
     font-family: Ubuntu;
 }
 
 #casellaFinale {
     text-align: center;
-    font-size: 30px;
+    font-size: 1.6em;
     margin-top: 30px;
     color: rgb(47, 52, 149);
     font-family: Ubuntu;
@@ -262,7 +261,7 @@ body {
     text-align: right;
     margin-left: 10px;
     /* background-color: blue; */
-    font-size: 20px;
+    font-size: 1.25em;
     font-family: Ubuntu;
 }
 
@@ -284,12 +283,12 @@ body {
 }
 
 .desc {
-    font-size: 20px;
+    font-size: 1.25em;
     font-family: Ubuntu;
 }
 
 .descRegole {
-    font-size: 20px;
+    font-size: 1.25em;
     font-family: Ubuntu;
     text-align: left;
     margin-left: 100px;

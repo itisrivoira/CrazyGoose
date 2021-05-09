@@ -31,7 +31,6 @@ class Game():
 
         #Creo i vari menu e il GIOCO
         self.main_menu = MainMenu(self)
-        self.options = OptionsMenu(self)
         self.credits = CreditsMenu(self)
         self.crazyGoose = CrazyGoose(self)
         

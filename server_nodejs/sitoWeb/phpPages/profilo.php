@@ -14,6 +14,13 @@
     if(isset($_SESSION["ID"])){
 		if(isset($_GET["agg"]) ){
 			$flagAgg = true;
+			
+			//così fa il logout dal profilo corrente
+			if(isset($_SESSION["username"])){
+				unset($_SESSION["username"]);
+			}
+		}else if(isset($_GET["logout"])){
+			unset($_SESSION["username"]);
 		}
 
         //Tento di connettermi al DB CrazyGoose (di certo ci sarà xke si è loggato)
@@ -33,7 +40,7 @@
                     $nome = $ris_arr_assoc["nome"];
                     $cognome = $ris_arr_assoc["cognome"];
                     
-                    $queryResults = $mysqli->query("SELECT Profili.* FROM Utenti, Profili WHERE(ID_gioc = '$ID' AND ID_gioc = ID_giocatore);");
+                    $queryResults = $mysqli->query("SELECT Profili.* FROM Utenti, Profili WHERE(ID_gioc = '$ID' AND ID_gioc = ID_giocatore) ORDER BY partiteVinte DESC;");
 				    if(!$queryResults){
 				        echo "ERRORE SELECT Profili: ".$mysqli->error." (".$mysqli->errno.")";
 				    }else{
@@ -48,8 +55,12 @@
 						}
 						
 						
-						if(isset($_GET["scelta"])){
-							$username = $profili[ $_GET["scelta"] ];
+						if(isset($_GET["scelta"]) || isset($_SESSION["username"])){
+							if(isset($_GET["scelta"])){
+								$username = $profili[ $_GET["scelta"] ];
+							}else{
+								$username = $_SESSION["username"];
+							}
 
 							$queryResults = $mysqli->query("SELECT partiteVinte FROM Profili WHERE(username = '$username');");
 							if(!$queryResults){
@@ -103,8 +114,10 @@
 								}
 							}
 						}else{
-							if(isset($_SESSION["username"])){
-								unset($_SESSION["username"]);
+							if(!isset($_GET["scelta"]) && !isset($_SESSION["username"])){
+								if(isset($_SESSION["username"])){
+									unset($_SESSION["username"]);
+								}
 							}
 						}
 				    }
@@ -134,6 +147,7 @@
 
 			//alert con scelta 'annulla' o 'OK'
 			if(confirm("Sicuro di voler eliminare il profilo\n==>   "+profilo+"   <== ?")){
+				<?php if(isset($_SESSION["username"])){ unset($_SESSION["username"]); } ?>
 				location.replace(link)
 			}
 		}
@@ -155,9 +169,18 @@
             }
 			return true
 		}
+
+		function focusIniziale(){
+			<?php 
+				if($username == null && $flagAgg){
+			?>
+			document.formUsername.username.focus()
+			<?php } ?>
+		}
+
     </script>
 </head>
-<body style="padding:2px;">
+<body style="padding:2px;" onload="focusIniziale()">
 	<div class="container-fluid">
 		<div class="row" id="rowIntestazione">
 			<div class="col-9">
@@ -171,7 +194,7 @@
 							<a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/home.php">Home</a>
 							<?php if($username != null){ ?>
 								<a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco">Vai al gioco</a>
-								<a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php">Logout da <i><b><?php echo $username; ?></i></b></a>
+								<a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php?logout=1">Logout da <i><b><?php echo $username; ?></i></b></a>
 							<?php } ?>
 							<a href="http://<?php echo $IP; ?>:3000/esci">Esci</a>
 						</div>
@@ -200,7 +223,7 @@
 						<?php
 							if(isset($profili[1])){
 						?>
-						<img onclick="chiediConferma('<?php echo $profili[0];?>')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
+						<img onclick="chiediConferma('<?php echo $profili[1];?>')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
 						<button onclick="profiloScelto(1)" class="btnScegliProfilo">Profilo N.2<br><i><b><?php echo $profili[1]; ?></i></b></button>
 						<?php }else{ ?>
 							<button onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.2<h3>➕</h3></button>
@@ -214,7 +237,7 @@
 						<?php
 							if(isset($profili[2])){
 						?>
-						<img onclick="chiediConferma('<?php echo $profili[0];?>')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
+						<img onclick="chiediConferma('<?php echo $profili[2];?>')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
 						<button onclick="profiloScelto(2)" class="btnScegliProfilo">Profilo N.3<br><i><b><?php echo $profili[2]; ?></i></b></button>
 						<?php }else{ ?>
 							<button onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.3<h3>➕</h3></button>
@@ -227,12 +250,12 @@
 		<div class="row" id="rowStatisitche">
 			<div class="col-12">
 				<center>
-					<div id="infoStatistUsername"><h4>Statistiche del profilo <i><b><?php echo $username; ?></b></i></h4></div>
+					<div id="infoStatistUsername"><h4>Statistiche del profilo <i><b style="color:red;"><?php echo $username; ?></b></i></h4></div>
 				</center>
 			</div>
 		</div>
 		<div class="row" id="rowStatistiche1">
-			<div class="col-md-6 col-12">
+			<div class="col-lg-6 col-12">
 				<div id="totPartite">In totale hai giocato <?php echo ($partiteVinte+$partitePerse); ?> partite</div>
 				<?php if($partiteVinte+$partitePerse > 0){ ?>
 				<div class="numPartite">&#8614; di cui ne hai vinte <?php echo $partiteVinte; ?> </div>
@@ -296,7 +319,7 @@
 					<?php echo $msgMotivazionale; ?>
 				</div><br>
 			</div>
-			<div class="col-md-6 col-12" id="colonnaElencoPartite">
+			<div class="col-lg-6 col-12" id="colonnaElencoPartite">
 				<div id="intestazionePartite">Cronologia partite:</div>
 				<div id="divElencoPartite">
 					<?php if(!empty($partite)){ ?>

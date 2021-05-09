@@ -117,8 +117,17 @@ body {
     height: fit-content;
 }
 
+#colonnaElencoPartite a {
+    color: rgb(13, 44, 136);
+}
+
 #divElencoPartite li {
     font-size: 1.02em;
+}
+
+#btnSubmit:hover {
+    background-color: #706b70;
+    cursor: pointer;
 }
 
 #msgErroreUsername {
