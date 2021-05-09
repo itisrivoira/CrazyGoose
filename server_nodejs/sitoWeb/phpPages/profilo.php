@@ -50,29 +50,56 @@
 						
 						if(isset($_GET["scelta"])){
 							$username = $profili[ $_GET["scelta"] ];
-							$_SESSION["username"] = $username;
 
-							$queryResult = $mysqli->query("SELECT * FROM Profili WHERE username = '$username';");
-							if(!$queryResult){
-								echo "ERRORE SELECT dati profilo: ".$mysqli->error." (".$mysqli->errno.")";
+							$queryResults = $mysqli->query("SELECT partiteVinte FROM Profili WHERE(username = '$username');");
+							if(!$queryResults){
+								echo "Errore get profilo ".$mysqli->error;
 							}else{
-								$ris_arr_assoc = $queryResult->fetch_assoc();
+								$ris_array_assoc = $queryResults->fetch_assoc();
+								$vittorie = $ris_array_assoc["partiteVinte"];
 								
-								$grado = $ris_arr_assoc["grado"];
-								$partiteVinte = $ris_arr_assoc["partiteVinte"];
-								$partitePerse = $ris_arr_assoc["partitePerse"];
+								if($vittorie < 5){
+									$grado = "Novellino";
+								}elseif($vittorie >= 5 && $vittorie < 10){
+									$grado = "Principiante";
+								}elseif($vittorie >= 10 && $vittorie < 20){
+									$grado = "Intermedio";
+								}elseif($vittorie >= 20 && $vittorie < 30){
+									$grado = "Esperto";
+								}elseif($vittorie >= 30){
+									$grado = "Maestro";
+								}
 								
-								$msgMotivazionale = "Qui ci sar&agrave; un msg motivazionale";
+								$queryResults = $mysqli->query("UPDATE Profili SET grado = '$grado' WHERE(username = '$username');");
 
-								//(dalla più recente)
-								$queryResult = $mysqli->query("SELECT ID_part, durata, flagVittoria, numMosse FROM Partecipare, Partite WHERE(username = '$username' AND ID_partita = ID_part) ORDER BY ID_part DESC;");
-
-								if(!$queryResult){
-									echo "ERRORE SELECT dati partite/partecipare: ".$mysqli->error." (".$mysqli->errno.")";
+								if(!$queryResults){
+									echo "Errore set profilo ".$mysqli->error;
 								}else{
-									//la query non mi ritorna 1 solo record... non posso prendere il risultato in 
-									// semplice array associativo (con "fetch_assoc()")
-									$partite = $queryResult->fetch_all(MYSQLI_ASSOC);
+									$_SESSION["username"] = $username;
+
+									$queryResult = $mysqli->query("SELECT * FROM Profili WHERE username = '$username';");
+									if(!$queryResult){
+										echo "ERRORE SELECT dati profilo: ".$mysqli->error." (".$mysqli->errno.")";
+									}else{
+										$ris_arr_assoc = $queryResult->fetch_assoc();
+										
+										$grado = $ris_arr_assoc["grado"];
+										$partiteVinte = $ris_arr_assoc["partiteVinte"];
+										$partitePerse = $ris_arr_assoc["partitePerse"];
+										
+										$msgMotivazionale = "Qui ci sar&agrave; un msg motivazionale";
+
+										//(dalla più recente)
+										$queryResult = $mysqli->query("SELECT ID_part, durata, flagVittoria, numMosse FROM Partecipare, Partite WHERE(username = '$username' AND ID_partita = ID_part) ORDER BY ID_part DESC;");
+
+										if(!$queryResult){
+											echo "ERRORE SELECT dati partite/partecipare: ".$mysqli->error." (".$mysqli->errno.")";
+										}else{
+											//la query non mi ritorna 1 solo record... non posso prendere il risultato in 
+											// semplice array associativo (con "fetch_assoc()")
+											$partite = $queryResult->fetch_all(MYSQLI_ASSOC);
+										}
+									}
 								}
 							}
 						}else{
@@ -106,7 +133,7 @@
 			let link = "http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/eliminaProfilo.php?username="+profilo;
 
 			//alert con scelta 'annulla' o 'OK'
-			if(confirm("Sicuro di voler eliminare il profilo\n==> "+profilo+" <== ?")){
+			if(confirm("Sicuro di voler eliminare il profilo\n==>   "+profilo+"   <== ?")){
 				location.replace(link)
 			}
 		}
@@ -218,6 +245,9 @@
 					<div id="divElencoGradi">
 						<ul>
 							<!--TODO rifare meglio  -->
+							<!--class="gradi" Rende "trasparente" i gradi non ancora raggiunti
+								<del> barra la scritta (per i gradi SUPERATI)
+								class="gradiNoTrasp" per il grado corrente -->
 							<?php
 								switch($grado){
 									case "Novellino":
@@ -227,7 +257,7 @@
 										echo "<li class=\"gradi\">Esperto</li>";
 										echo "<li class=\"gradi\">Maestro</li>";
 										break;
-									case "Principante":
+									case "Principiante":
 										echo "<liclass=\"gradiNoTrasp\"><del>Novellino</del></li>";
 										echo "<li class=\"gradiNoTrasp\">Principiante</li>";
 										echo "<li class=\"gradi\">Intermedio</li>";

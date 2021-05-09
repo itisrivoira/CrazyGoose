@@ -24,7 +24,7 @@
 				$idPartita = $mysqli->insert_id;
 				$queryResults = $mysqli->query("INSERT INTO Partecipare VALUES ('$idPartita', '$username', '$vitt', '$numMosse');");
 				if(!$queryResults){
-					echo "Errore inseritmento 0> $vitt <0 partecipare ".$mysqli->error;
+					echo "Errore inseritmento partecipare ".$mysqli->error;
 				}else{
 					$queryResults = $mysqli->query("SELECT * FROM Profili WHERE(username = '$username');");
 					if(!$queryResults){
@@ -44,20 +44,43 @@
 						if(!$queryResults){
 							echo "Errore set profilo ".$mysqli->error;
 						}else{
-							//ora non mi servono più queste variabili, inoltre distruggendole evito che
-							// se l'utente ricarica la pagina, venga caricata un nuovo record di Partecipare
-							
-							unset($_SESSION["durata"]);
-							unset($_SESSION["numMosse"]);
-							unset($_SESSION["vitt"]);
+							$queryResults = $mysqli->query("SELECT partiteVinte FROM Profili WHERE(username = '$username');");
+							if(!$queryResults){
+								echo "Errore get profilo ".$mysqli->error;
+							}else{
+								$ris_array_assoc = $queryResults->fetch_assoc();
+								$vittorie = $ris_array_assoc["partiteVinte"];
+								
+								if($vittorie < 5){
+									$grado = "Novellino";
+								}elseif($vittorie >= 5 && $vittorie < 10){
+									$grado = "Principiante";
+								}elseif($vittorie >= 10 && $vittorie < 20){
+									$grado = "Intermedio";
+								}elseif($vittorie >= 20 && $vittorie < 30){
+									$grado = "Esperto";
+								}elseif($vittorie >= 30){
+									$grado = "Maestro";
+								}
+								
+								$queryResults = $mysqli->query("UPDATE Profili SET grado = '$grado' WHERE(username = '$username');");
+
+								if(!$queryResults){
+									echo "Errore set profilo ".$mysqli->error;
+								}else
+									//ora non mi servono più queste variabili, inoltre distruggendole evito che
+									// se l'utente ricarica la pagina, venga caricata un nuovo record di Partecipare
+									
+									unset($_SESSION["durata"]);
+									unset($_SESSION["numMosse"]);
+									unset($_SESSION["vitt"]);
+								}
+							}
 						}
 						
 					}
-					
 				}
 			}
-
-		}
 ?>
 
 <!DOCTYPE html>
