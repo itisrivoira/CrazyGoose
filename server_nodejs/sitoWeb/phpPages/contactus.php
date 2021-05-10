@@ -70,9 +70,9 @@
     <script>
         function focusIniziale() {
             document.formContattaci.nome.focus()
-            <?php if isset($_GET["flag"]{?>
+            <?php if (isset($_GET["flag"])){?>
                 alert("EMAIL INVIATA!!")
-            <?php })?>
+            <?php }?>
         }
 
         function controllaDati() {
@@ -122,10 +122,9 @@
                 }
             }
             function nomeFunz(){
-                <?php if isset($_GET["flag"]{ ?>
+                <?php if (isset($_GET["flag"])){ ?>
                     alert("EMAIL INVIATA!!!")
-
-                <?php })?>
+                <?php }?>
 
 
             }

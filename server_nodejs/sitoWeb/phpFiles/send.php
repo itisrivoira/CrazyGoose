@@ -1,4 +1,5 @@
 <?php
+   $IP = file("../../indirizzo_server.txt")[0];
    $to = 'crazygoose.help@gmail.com';
 
    // Oggetto della mail
