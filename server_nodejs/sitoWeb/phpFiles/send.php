@@ -33,4 +33,11 @@
    // Inviamo la mail!
    mail($to, $subject, $message, implode("\r\n", $headers));
    echo "<script type='text/javascript'>alert('Email inviata!');</script>"; 
+
+
+   $changePage = "Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/contactus.php?flag=1";
+   if($changePage != null){
+        header($changePage);
+    }
+
 ?>
