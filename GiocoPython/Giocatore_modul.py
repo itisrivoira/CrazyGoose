@@ -17,8 +17,8 @@ from Percorso_modul import VITTORIA
 #x/y delle CASELLE INIZIALI dei due giocatori
 X_PLAYER1 = 25
 X_PLAYER2 = 25
-Y_PLAYER1 = 565
-Y_PLAYER2 = 630
+Y_PLAYER1 = 540
+Y_PLAYER2 = 620
 
 WIDTH_PEDINA = 65
 HEIGHT_PEDINA = 60
@@ -79,17 +79,20 @@ class Giocatore():
 	def creaCasellaIniziale(self):
 		if(self.tag == "PL1"):
 			x, y = X_PLAYER1, Y_PLAYER1
+			radiusN, radiusS = 25, 5
 		else:
 			x, y = X_PLAYER2, Y_PLAYER2
+			radiusN, radiusS = 5, 25
 		
 		#crea e posiziona l'ellisse (la casella) prima dell'inizio del percorso
 		# poi inserisce l'img della pedina del giocatore
 		
-		self.casellaIniziale = Casella(self.game.display, x, y)
-		#diventerà un bordo decente (un po' spesso) della casella iniziale
-		pygame.draw.ellipse(self.game.display, (255,255,255),
-							(self.casellaIniziale.x+2, self.casellaIniziale.y+2,
-							 self.casellaIniziale.width-4, self.casellaIniziale.height-4), 0)
+		self.casellaIniziale = Casella(self.game.display, x, y, 90, 70, radiusN, radiusN, radiusS, radiusS)
+		pygame.draw.rect(self.casellaIniziale.display, (255,255,255), pygame.Rect(
+			self.casellaIniziale.x + 2, self.casellaIniziale.y + 2,
+			self.casellaIniziale.width - 5, self.casellaIniziale.height - 5), 0,
+						 0, self.casellaIniziale.radiusNO, self.casellaIniziale.radiusNE,
+						 self.casellaIniziale.radiusSO, self.casellaIniziale.radiusSE)
 		
 		self.game.display.blit(self.imgPedinaSxDx,
 							   (self.casellaIniziale.getCenterX() - WIDTH_PEDINA/2,
@@ -274,20 +277,17 @@ class Giocatore():
 	def cambiaVersoPedina(self, x_partenza, x_fine, posCasellaFinale):
 		#Sceglie in base alla casella in cui deve andare la pedina, se quest'ultima
 		# sarà girata (avrà la testa) verso dx oppure sx
-		
-		image = self.imgPedinaSxDx
-		if(x_partenza > x_fine):
+
+		if(7 <= posCasellaFinale <= 12 or 27 <= posCasellaFinale <= 30):
 			image = self.imgPedinaDxSx
-		elif(x_partenza == x_fine):	#partenza e fine sono sulla stessa x
-			#controlla la posizione della casella finale e decide
-			
-		#!!!!!   È SOLAMENTE LEGATO AL LAYOUT DEL PERCORSO   !!!!!
-			
-			if(18 <= posCasellaFinale <= 20):
-				image = self.imgPedinaSxDx
-			elif(posCasellaFinale == 26 or posCasellaFinale == 27):
+		elif (18 <= posCasellaFinale <= 22 or 34 <= posCasellaFinale <= 36):
+			image = self.imgPedinaSxDx
+		else:
+			if(x_partenza > x_fine):
 				image = self.imgPedinaDxSx
-			
+			else:
+				image = self.imgPedinaSxDx
+
 		return image
 		
 	

@@ -23,16 +23,24 @@ BG_COLOR_DACAPO = (255, 0, 0)
 BG_COLOR_VITTORIA = (50, 140, 230)
 
 class Casella():
-	def __init__(self, display, posx, posy, width=90, height=60):
+	def __init__(self, display, posx, posy, width=90, height=60, radiusNO=10, radiusNE=10, radiusSO=10, radiusSE=10):
 		self.display = display
 		
 		self.x = posx
 		self.y = posy
 		self.width = width
 		self.height = height
+		
+		self.radiusNO = radiusNO
+		self.radiusNE = radiusNE
+		self.radiusSO = radiusSO
+		self.radiusSE = radiusSE
 
-		#disegna ellisse nero riempito (ultimo param. è 0) (mi serve per fare un bordo decente, che ci veda un po)
-		pygame.draw.ellipse(self.display, (0, 0, 0, 1), (self.x, self.y, self.width, self.height), 0)
+
+		#(sarà solo il bordo, un bordo un po' spesso)
+		pygame.draw.rect(self.display, (0, 0, 0), pygame.Rect(
+			self.x-1, self.y-1, self.width+1, self.height+1), 0,
+						 0, self.radiusNO, self.radiusNE, self.radiusSO, self.radiusSE)
 		
 	
 	def settaEffetto(self, codCasella, font_name, numCasella):
@@ -77,8 +85,8 @@ class Casella():
 			testo = VITTORIA[1]
 			color = BG_COLOR_VITTORIA
 		
-		#disegna un ellisse leggermente più piccolo sopra quello di prima (così da mantenere solo un contorno nero)
-		pygame.draw.ellipse(self.display, color, (self.x+2, self.y+2, self.width-4, self.height-4), 0)
+		pygame.draw.rect(self.display, color, pygame.Rect(self.x+2, self.y+2, self.width-5, self.height-5), 0,
+						 0, self.radiusNO, self.radiusNE, self.radiusSO, self.radiusSE)
 		
 		if(len(testo) > 0):
 			if(codCasella == VITTORIA):

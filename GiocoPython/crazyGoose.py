@@ -17,7 +17,7 @@ INFO_DADO_PL1 = "Dado PL1: "
 INFO_DADO_COM = "Dado COM: "
 
 #carica l'img della scritta
-imgCrazyGoose = pygame.image.load("../Logo/scrittaCrazyGoose_400x130_noBagliore.png")
+imgCrazyGoose = pygame.image.load("./images/scrittaCrazyGoose_400x130_noBagliore.png")
 sfondo = pygame.image.load("./images/sfondo.png")
 
 
@@ -65,11 +65,18 @@ class Button():
 			# PIÙ GRANDE E VISIBILE
 			
 			# Questo verrà nascosto, si vedrà solo più una parte che diventerà il bordo del dado
-			pygame.draw.rect(self.game.display, (70, 220, 25),
+			pygame.draw.rect(self.game.display, (20, 250, 15),
 							 pygame.Rect(self.rect.x-3, self.rect.y-3,
 										 self.rect.width + 6, self.rect.height + 6)
 							 , 0, 15)
-		
+		else:
+			#non avevo voglia di fare un flag per vedere se è il buttton del PL1 o del COM. Se
+			# le x sono minori di 300 di certo sono il dado del PL1
+			if(self.x < 300):
+				#(lo cancella) (il colore scelto è quello dello sfondo)
+				pygame.draw.rect(self.game.display, (113, 157, 122), pygame.Rect(self.rect.x-3, self.rect.y-3,
+											 self.rect.width + 6, self.rect.height + 6), 0)
+
 		if(1 <= valDado <= 6):
 		
 			if(valDado == 1):
@@ -239,7 +246,7 @@ class ButtonAbilitaPL1():
 	
 	def cancellaButtonAbilita(self, doBlitScreen=True):
 		# "cancella" il button che c'era prima
-		pygame.draw.rect(self.game.display, self.game.WHITE, self.rectArc)
+		pygame.draw.rect(self.game.display, (113, 157, 122), self.rectArc)
 		if (doBlitScreen):
 			self.crazyGoose.blit_screen()
 	
@@ -550,7 +557,7 @@ class CrazyGoose():
 
 
 	def avanzaPlayer1(self, numEstratto, controllaCodCasella=True):
-		numEstratto = 40
+		#numEstratto = 40
 		
 		#se num estratto è < 0 vuol dire che è stata attivata l'abilità
 		# del COM (che richiama questo metodo con numEstratto = -2), quindi
@@ -782,53 +789,64 @@ class CrazyGoose():
 
 
 	def posizionaLeCaselle(self):
-		self.caselle.append( Casella(self.game.display, 160, 600) )
-		self.caselle.append( Casella(self.game.display, 270, 600) )
-		self.caselle.append( Casella(self.game.display, 380, 600) )
-		self.caselle.append( Casella(self.game.display, 490, 600) )
-		self.caselle.append( Casella(self.game.display, 600, 600) )
-		self.caselle.append( Casella(self.game.display, 710, 600) )
+		#witdh = 90; height = 60; radius = 10 DI DEFAULT
 		
-		self.caselle.append( Casella(self.game.display, 790, 545) )
-		self.caselle.append( Casella(self.game.display, 840, 475) )
-		self.caselle.append( Casella(self.game.display, 850, 405) )
-		self.caselle.append( Casella(self.game.display, 840, 335) )
-		self.caselle.append( Casella(self.game.display, 790, 265) )
+		#caselle da 1 a 7 (ORIZZONTALI)
+		self.caselle.append(Casella(self.game.display, 150, 590))
+		self.caselle.append(Casella(self.game.display, 260, 590))
+		self.caselle.append(Casella(self.game.display, 370, 590))
+		self.caselle.append(Casella(self.game.display, 480, 590))
+		self.caselle.append(Casella(self.game.display, 590, 590))
+		self.caselle.append(Casella(self.game.display, 700, 590))
+		self.caselle.append(Casella(self.game.display, 810, 590, 90, 60, 10, 10, 10, 80))
 		
-		self.caselle.append( Casella(self.game.display, 710, 210) )
-		self.caselle.append( Casella(self.game.display, 600, 180) )
-		self.caselle.append( Casella(self.game.display, 490, 180) )
-		self.caselle.append( Casella(self.game.display, 380, 180) )
-		self.caselle.append( Casella(self.game.display, 270, 180) )
-		self.caselle.append( Casella(self.game.display, 170, 220) )
+		#caselle da 8 a 11 (VERTICALI)
+		self.caselle.append(Casella(self.game.display, 810, 510))
+		self.caselle.append(Casella(self.game.display, 810, 430))
+		self.caselle.append(Casella(self.game.display, 810, 350))
+		self.caselle.append(Casella(self.game.display, 810, 270))
+		
+		#caselle da 12 a 18 (ORIZZONTALI)
+		self.caselle.append(Casella(self.game.display, 810, 190, 90, 60, 10, 80, 10, 10))
+		self.caselle.append(Casella(self.game.display, 700, 190))
+		self.caselle.append(Casella(self.game.display, 590, 190))
+		self.caselle.append(Casella(self.game.display, 480, 190))
+		self.caselle.append(Casella(self.game.display, 370, 190))
+		self.caselle.append(Casella(self.game.display, 260, 190))
+		self.caselle.append(Casella(self.game.display, 150, 190, 90, 60, 80, 10, 10, 10))
+		
+		#caselle da 19 a 21 (VERTICALI)
+		self.caselle.append(Casella(self.game.display, 150, 270))
+		self.caselle.append(Casella(self.game.display, 150, 350))
+		self.caselle.append(Casella(self.game.display, 150, 430))
+		self.caselle.append(Casella(self.game.display, 150, 510, 90, 60, 10, 10, 80, 10))
 
-		self.caselle.append( Casella(self.game.display, 125, 300) )
-		self.caselle.append( Casella(self.game.display, 125, 385) )
-		self.caselle.append( Casella(self.game.display, 125, 470) )
+		#caselle da 22 a 27 (ORIZZONTALI)
+		self.caselle.append(Casella(self.game.display, 260, 510))
+		self.caselle.append(Casella(self.game.display, 370, 510))
+		self.caselle.append(Casella(self.game.display, 480, 510))
+		self.caselle.append(Casella(self.game.display, 590, 510))
+		self.caselle.append(Casella(self.game.display, 700, 510, 90, 60, 10, 10, 10, 80))
 
-		self.caselle.append( Casella(self.game.display, 215, 530) )
-		self.caselle.append( Casella(self.game.display, 325, 530) )
-		self.caselle.append( Casella(self.game.display, 435, 530) )
-		self.caselle.append( Casella(self.game.display, 545, 530) )
-		self.caselle.append( Casella(self.game.display, 653, 515) )
-		
-		self.caselle.append( Casella(self.game.display, 735, 465) )
-		self.caselle.append( Casella(self.game.display, 735, 380) )
-		self.caselle.append( Casella(self.game.display, 680, 305) )
-		
-		self.caselle.append( Casella(self.game.display, 585, 260) )
-		self.caselle.append( Casella(self.game.display, 475, 260) )
-		self.caselle.append( Casella(self.game.display, 365, 260) )
-		
-		self.caselle.append( Casella(self.game.display, 265, 295) )
-		self.caselle.append( Casella(self.game.display, 230, 370) )
-		self.caselle.append( Casella(self.game.display, 270, 445) )
-		
-		self.caselle.append( Casella(self.game.display, 380, 460) )
-		self.caselle.append( Casella(self.game.display, 490, 460) )
-		self.caselle.append( Casella(self.game.display, 590, 440) )
-		
-		self.caselle.append( Casella(self.game.display, 625, 370) )
-		self.caselle.append( Casella(self.game.display, 525, 335) )
-			#Casella finale non sarà un ellisse di normale dimensioni
-		self.caselle.append( Casella(self.game.display, 370, 340, 105, 95) )
+		#caselle da 28 a 29 (VERTICALI)
+		self.caselle.append(Casella(self.game.display, 700, 420))
+		self.caselle.append(Casella(self.game.display, 700, 340))
+
+		#caselle da 30 a 34 (ORIZZONTALI)
+		self.caselle.append(Casella(self.game.display, 700, 270, 90, 60, 10, 80, 10, 10))
+		self.caselle.append(Casella(self.game.display, 590, 270))
+		self.caselle.append(Casella(self.game.display, 480, 270))
+		self.caselle.append(Casella(self.game.display, 370, 270))
+		self.caselle.append(Casella(self.game.display, 260, 270, 90, 60, 80, 10, 10, 10))
+
+		#casella 35 (VERTICALE)
+		self.caselle.append(Casella(self.game.display, 260, 340))
+
+		#caselle da 36 a 39 (ORIZZONTALI)
+		self.caselle.append(Casella(self.game.display, 260, 420, 90, 60, 10, 10, 80, 10))
+		self.caselle.append(Casella(self.game.display, 370, 420))
+		self.caselle.append(Casella(self.game.display, 480, 420))
+		self.caselle.append(Casella(self.game.display, 590, 420, 100, 60, 10, 10, 10, 80))
+
+		#casella finale (40)
+		self.caselle.append(Casella(self.game.display, 370, 340, 315))

@@ -144,7 +144,6 @@ app.get("/guida", (req, resp) => {
 //----------------- gioco web ----------------------------------
 
 app.get("/crazyGoose", (req, resp) => {
-    //TODO: sarà loggato o ha solo cambiato url nella barra degli indirizzi ???
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
     let jsDom = new JSDOM(pagina)
 
@@ -154,7 +153,6 @@ app.get("/crazyGoose", (req, resp) => {
 })
 
 app.get("/start", (req, resp) => {
-    //TODO: sarà loggato o ha solo cambiato url nella barra degli indirizzi ???
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
     let jsDom = new JSDOM(pagina)
 
@@ -164,7 +162,6 @@ app.get("/start", (req, resp) => {
 })
 
 app.get("/credits", (req, resp) => {
-    //TODO: sarà loggato o ha solo cambiato url nella barra degli indirizzi ???
     let sito = fs.readFileSync("./webApp/menu/credits.html", "utf-8")
     let sitoConIP = rimpiazzaLocalhostConIP(sito)
 

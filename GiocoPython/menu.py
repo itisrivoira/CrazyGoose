@@ -1,7 +1,7 @@
 import pygame
 from globalFunction import *
 
-imgCrazyGoose = pygame.image.load("../Logo/scrittaCrazyGoose_700x230_noBagliore.png")
+imgCrazyGoose = pygame.image.load("./images/scrittaCrazyGoose_700x230_noBagliore.png")
 
 
 class Menu():
