@@ -123,7 +123,7 @@
                         <div class="carousel-item">
                             <img src="../../public/res_static_sitoweb/images/email.png" class="img-fluid" id="imgSchedaContattaci">
                             <div class="carousel-caption" id="divSchedaCarosello">
-                                <a href="http://<?php echo $IP; ?>:3000/contattaci" class="titoloSchedaCarousel">
+                                <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/contattaci.php" class="titoloSchedaCarousel">
                                     <p><u>CONTATTACI</u></p>
                                 </a>
                                 <p class="testoCarousel">Se hai ancora domande oppure vuoi semplicemente metterti in contatto con i diretti creatori Contattaci!</p>

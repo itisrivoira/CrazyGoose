@@ -94,14 +94,6 @@ app.get("/regole", (req, resp) => {
     resp.send(pagina)
 })
 
-app.get("/contattaci", (req, resp) => {
-    let paginaRegoleSenzaFooter = fs.readFileSync("./sitoWeb/contactus.html", "utf-8")
-    let paginaConFooter = aggiungiFooterAllaPagina(paginaRegoleSenzaFooter)
-    let pagina = rimpiazzaLocalhostConIP(paginaConFooter)
-
-    resp.send(pagina)
-})
-
 app.get("/profilo", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
 

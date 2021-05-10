@@ -1,11 +1,17 @@
+<?php
+    //Mi serve l'IP del server. Questo lo leggo solo nel nodejs all'inizio e non riesco a passarlo
+	// a tutte le pagine... lo scrivo su un file e quando ne ho bisogno lo leggo
+    $IP = file("../../indirizzo_server.txt")[0];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="res_static_sitoweb/css/contattaci.css">
-    <link rel="stylesheet" href="res_static_sitoweb/css/navbar.css">
-    <link rel="stylesheet" href="res_static_sitoweb/css/soloFooter.css">
+    <link rel="stylesheet" href="../../public/res_static_sitoweb/css/contattaci.css">
+    <link rel="stylesheet" href="../../public/res_static_sitoweb/css/navbar.css">
+    <link rel="stylesheet" href="../../public/res_static_sitoweb/css/soloFooter.css">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
@@ -16,10 +22,10 @@
     <div class="container-fluid">
         <div class="row" id="rowNavbar">
             <div class="col">
-                <img id="logo" src="res_static_sitoweb/images/logo_32x32.png">
-                <a class="linkNavbar" href="http://localhost:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home"><b>Home</b></a>
-                <a class="linkNavbar" href="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=accedi"><b>Accedi</b></a>
-                <a class="linkNavbar" href="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=registrati"><b>Registrati</b></a>
+                <img id="logo" src="../../public/res_static_sitoweb/images/logo_32x32.png">
+                <a class="linkNavbar" href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home"><b>Home</b></a>
+                <a class="linkNavbar" href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=accedi"><b>Accedi</b></a>
+                <a class="linkNavbar" href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=registrati"><b>Registrati</b></a>
             </div>
         </div>
         <div class="row">
@@ -34,10 +40,10 @@
         </div>
         <div class="row">
             <div class="col-12 col-lg-6 column d-flex justify-content-center">
-                <img id="logo" src="res_static_sitoweb/images/logo_dim_originale.png" style="width: 500px; height: 500px;">
+                <img id="logo" src="../../public/res_static_sitoweb/images/logo_dim_originale.png" style="width: 500px; height: 500px;">
             </div>
             <div class="col-12 col-lg-6 column">
-                <form action="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/send.php" method="post" name="formContattaci" onsubmit="return(controllaDati())">
+                <form action="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/send.php" method="post" name="formContattaci" onsubmit="return(controllaDati())">
                     <div class="divVoce">
                         <label>Nome:</label>
                         <input class="caselle" type="text" name="nome" placeholder="Giovanni..">
@@ -70,7 +76,7 @@
     <script>
         function focusIniziale() {
             document.formContattaci.nome.focus()
-            <?php if (isset($_GET["flag"])){?>
+            <?php if(isset($_GET["flag"])){ ?>
                 alert("EMAIL INVIATA!!")
             <?php }?>
         }
@@ -120,13 +126,6 @@
                         }
                     }
                 }
-            }
-            function nomeFunz(){
-                <?php if (isset($_GET["flag"])){ ?>
-                    alert("EMAIL INVIATA!!!")
-                <?php }?>
-
-
             }
             if (flagAlert) {
                 alert("COMPLETA I CAMPI DEL FORM !")
