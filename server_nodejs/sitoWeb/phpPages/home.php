@@ -9,7 +9,7 @@
     $username = null;
 
     if(isset($_SESSION["ID"])){
-        //Tento di connettermi al DB CrazyGoose (di certo ci sarà xke si è loggato)
+        //Mi connetto al DB
         $mysqli = new mysqli("localhost", "root", "", "CrazyGoose");
         if($mysqli->connect_error){
             die("Errore:".$mysqli->connect_errno." per ".$mysqli->connect_error);
@@ -17,17 +17,20 @@
             $ID = $_SESSION["ID"];
             $queryResults = $mysqli->query("SELECT * FROM Utenti WHERE ID_gioc = '$ID';");
             if(!$queryResults){
-                echo "ERRORE SELECT di quel Utente: ".$mysqli->error." (".$mysqli->errno.")";
+                die("ERRORE SELECT di quel Utente: ".$mysqli->error." (".$mysqli->errno.")");
             }else{
+                 //Nella query controllo che l'ID sia uguale a un certo valore. L'ID È CHIAVE
+                // PRIMARIA QUINDI MI RESTITUISCE UN SOLO RECORD.
+                //Allora posso usare fetch_assoc() per trasformare il risultato della query
                 $ris_arr_assoc = $queryResults->fetch_assoc();
-    
-                //echo "<pre>";
-                //print_r($ris_arr_assoc);
-                //echo "</pre>";
                 
                 if(!empty($ris_arr_assoc)){
                     $nome = $ris_arr_assoc["nome"];
                     $cognome = $ris_arr_assoc["cognome"];
+                }else{
+                    //In realta è impossibile che entri qui... può entrarci SOLO se per qualche motivo X
+                    // l'utente con quel certo ID viene cancellato dal DB... (e quindi la query non trova nulla)
+                    die("UTENTE CANCELLATO...");
                 }
             }
             
@@ -45,32 +48,42 @@
         $classDelMenuUtente = "class = \"col-2\"";
         $styleDelMenuUtente = "display: inline-block;";
         $msgDelMenuUtente = "Benvenuto<br><i><b>$nome $cognome</b></i>";
+        
         if($username != null){
         	$msgDelMenuUtente = "Benvenuto<br><i><b>$nome $cognome</b></i><br>Con profilo:<br><i><b>$username</b></i>"; 
         }
     }else{
         $classDellaTestata = "class = \"col-12 d-flex justify-content-center\"";
     }
-
 ?>
 
 <!DOCTYPE html>
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <title>Crazy Goose: Home</title>
+
+    <!-- css per bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <!--css aggiuntivo contente le varie icone-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-	<!-- siamo in un file php quindi non "usa nodejs" e la cartella public per le risorse statiche,
-	 quindi devo cambiare il percorso -->
+    <!-- siamo in un file php quindi non "usa nodejs" e la cartella public per le risorse statiche,
+	 quindi devo cambiare il percorso (in un file normale userei /res_static_menu/... perchè sa che
+     una risorsa statica la deve prendere dalla cartella /public) -->
+
     <link rel="stylesheet" href="../../public/res_static_sitoweb/css/home.css">
     <link rel="stylesheet" href="../../public/res_static_sitoweb/css/navbar.css">
     <link rel="stylesheet" href="../../public/res_static_sitoweb/css/soloFooter.css">
-    <meta charset="UTF-8">
 
-    <title>Crazy Goose: Home</title>
+    <!-- Per l'icona piccoliina nella scheda -->
+    <link rel="icon" type="image/png" href="../../public/favicon/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="../../public/favicon/favicon-128.png" sizes="128x128" />
+    <link rel="icon" type="image/png" href="../../public/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="../../public/favicon/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="../../public/favicon/favicon-16x16.png" sizes="16x16" />
 
 </head>
 
@@ -98,7 +111,9 @@
         <div class="row">
             <div class="col">
                 <div id="carouselIndicators" class="carousel slide" data-ride="carousel">
-                    <!--<ol class="carousel-indicators">
+                    <!--Abbiamo deciso di rimuovere i rettangolini in basso per passare da un imamgine alltra,
+                         ci sono già le frecce
+                        <ol class="carousel-indicators">
                         <li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
                         <li data-target="#carouselIndicators" data-slide-to="1"></li>
                         <li data-target="#carouselIndicators" data-slide-to="2"></li>
@@ -108,7 +123,7 @@
                             <img src="../../public/res_static_sitoweb/images/gioco.png" class="img-fluid" id="imgSchedaCrazyGoose">
                             <div class="carousel-caption" id="divSchedaCarosello">
                                 <p class="titoloSchedaCarousel">CRAZY GOOSE</p>
-                                <p class="testoCarousel">Il gioco dell'oca che non c'era!</p>
+                                <p class="testoCarousel">Il gioco dell'oca che non c'era !</p>
                             </div>
                         </div>
                         <div class="carousel-item">
@@ -117,13 +132,13 @@
                                 <a href="http://<?php echo $IP; ?>:3000/regole" class="titoloSchedaCarousel">
                                     <p><u>REGOLAMENTO</u></p>
                                 </a>
-                                <p class="testoCarousel">Queste sono le regole del nostro gioco, qui potrai scoprire quanti 'passi' dovrai fare per vincere, quali e quante sono le caselle speciali, quante volte un'abilità potrà essere attivata e....se hai delle domande passa</p>
+                                <p class="testoCarousel">Queste sono le regole del nostro gioco, qui potrai scoprire quanti 'passi' dovrai fare per vincere, quali e quante sono le caselle speciali, quante volte un'abilità potrà essere attivata e... se hai delle domande passa a contattaci =></p>
                             </div>
                         </div>
                         <div class="carousel-item">
                             <img src="../../public/res_static_sitoweb/images/email.png" class="img-fluid" id="imgSchedaContattaci">
                             <div class="carousel-caption" id="divSchedaCarosello">
-                                <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/contattaci.php" class="titoloSchedaCarousel">
+                                <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/contattaci" class="titoloSchedaCarousel">
                                     <p><u>CONTATTACI</u></p>
                                 </a>
                                 <p class="testoCarousel">Se hai ancora domande oppure vuoi semplicemente metterti in contatto con i diretti creatori Contattaci!</p>
@@ -141,7 +156,7 @@
         </div>
         <div class="row">
             <div class="col d-flex justify-content-center">
-                <p class="introduz_giocoERegole"><i>Benvenuto su Crazy Goose il sito che ti permetterà di giocare al gioco dell'oca in modo mai visto fino ad ora!!<br>Crazy Goose si basa dalla voglia di innovare un gioco tradizionale quanto mai eterno come quello del gioco dell'oca infatti ci sarà una piccola novità che scopriremo succesivamente :</i>
+                <p class="introduz_giocoERegole"><i>Benvenuto su Crazy Goose il sito che ti permetter&agrave; di giocare al gioco dell'oca in modo mai visto fino ad ora!!<br>Crazy Goose si basa dalla voglia di innovare un gioco tradizionale quanto mai eterno come quello del gioco dell'oca infatti ci sarà una piccola novità che scopriremo succesivamente:</i>
                 </p>
             </div>
         </div>
@@ -163,13 +178,13 @@
         <br>
         <div class="row">
             <div class="col d-flex justify-content-center">
-                <p class="introduz_giocoERegole"><i>Ti sei Registrato ??? Bene. Ora è il tempo di presentare la nostra grande novità: Le Abilità.<br>Le abilità sarà il grande punto di forza che avrai durante la partita, ebbene si infatti infatti in un dato momento, uno e uno solo, della partita potrai usare a seconda della pedina scelta all'inizio un potere speciale: </i>
+                <p class="introduz_giocoERegole"><i>Ti sei Registrato ??? Bene. Ora &egrave; il tempo di presentare la nostra grande novità: Le Abilità.<br>Le abilità sarà il grande punto di forza che avrai durante la partita, ebbene si infatti infatti in un dato momento, uno e uno solo, della partita potrai usare a seconda della pedina scelta all'inizio un potere speciale: </i>
                 </p>
             </div>
         </div>
         <div class="row">
             <div class="col d-flex justify-content-center">
-                <h2><b>LE ABILITÀ: </b></h2>
+                <h2><b>LE ABILIT&Agrave;: </b></h2>
             </div>
         </div>
         <br><br>
@@ -224,11 +239,11 @@
         <br><br>
         <div class="row">
             <div class="col d-flex justify-content-center">
-                <h2><b>VS: </b></h2>
+                <h2><b>VS:</b></h2>
             </div>
         </div>
         <div class="col d-flex justify-content-center">
-            <p class="introduz_giocoERegole"><i>Le buone notizie purtroppo sono già finite infatti le nostre amiche oche non avranno strada spianata fino alla raggiunto del tesoro , in aggiunta a tutte le caselle che possono contenere sia malus che bonus saremo contro la temuta oca Grimilde la quale cercherà in tutti i modi di arrivare alla fine prima di noi anche utilizzato la sua magia nera...</i>
+            <p class="introduz_giocoERegole"><i>Le buone notizie purtroppo sono gi&agrave; finite infatti le nostre amiche oche non avranno strada spianata fino alla raggiunto del tesoro , in aggiunta a tutte le caselle che possono contenere sia malus che bonus saremo contro la temuta oca <b>Grimilde</b> la quale cercherà in tutti i modi di arrivare alla fine prima di noi anche utilizzato la sua magia nera...</i>
             </p>
         </div>
         <div class="row" style="margin-bottom: 100px;">
@@ -240,7 +255,7 @@
                         </div>
                         <div class="cardBackOcaCattiva flip-card-back">
                             <p id="nomeOcaCattiva">GRIMILDE</p>
-                            <p>Con la sua magia riuscirà, se malauguratamente capiteremo sulla sua stessa casella, a mandarci indietro di due caselle facendoci perdere il vantaggio nei suoi confronti</p>
+                            <p>Con la sua magia riuscir&agrave;, se malauguratamente capiteremo sulla sua stessa casella, a mandarci indietro di due caselle facendoci perdere il vantaggio nei suoi confronti</p>
                         </div>
                     </div>
                 </div>
@@ -249,7 +264,10 @@
 
         <div class="row" id="footer">
             <?php
+                //legge il footer da un file (in questo modo si può modificare in quel file e in nessun altro)
                 $footer = file("../soloFooter.html");
+
+                //(legge riga per riga)
                 foreach($footer as $row){
                     echo $row;
                 }

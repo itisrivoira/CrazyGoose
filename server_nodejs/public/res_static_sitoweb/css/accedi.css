@@ -85,3 +85,9 @@ button {
 #passaARegistr {
     font-size: 12px;
 }
+
+#passwEmailErrati {
+    color: red;
+    font-size: 17px;
+    font-weight: bold;
+}

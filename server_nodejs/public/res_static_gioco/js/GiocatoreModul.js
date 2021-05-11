@@ -121,20 +121,19 @@ class Giocatore {
         }
 
 
-        if (x_partenza > x_fine) {
+        if ((posCasellaFinale > 7 && posCasellaFinale <= 12) ||
+            (posCasellaFinale > 27 && posCasellaFinale <= 30)) {
+
             percorsoImg = this.percorsoImgDxSx
+        } else if ((posCasellaFinale > 18 && posCasellaFinale <= 22) ||
+            (posCasellaFinale > 34 && posCasellaFinale <= 36)) {
+
+            percorsoImg = this.percorsoImgSxDx
         } else {
-            if ((posCasellaFinale >= 7 && posCasellaFinale <= 12) ||
-                (posCasellaFinale >= 27 && posCasellaFinale <= 30)) {
-
+            if (x_partenza > x_fine) {
                 percorsoImg = this.percorsoImgDxSx
-            } else if ((posCasellaFinale >= 18 && posCasellaFinale <= 22) ||
-                (posCasellaFinale >= 34 && posCasellaFinale <= 36)) {
-
-                percorsoImg = this.percorsoImgSxDx
-            } //else prende img da sx verso dx
+            }
         }
-
 
 
         if (this.isMoving == false && this.posizione == avversario.posizione) {
@@ -162,6 +161,7 @@ class Giocatore {
         //se è stato richiamato posiziona() vuol dire che si deve spostare, e quindi se era
         // nella casella iniziale deve spostarsi da lì e nascondere la casella iniziale
         if (this.posizione == 0) {
+            console.log(this.casellaIniziale)
             this.casellaIniziale.nascondi()
         } //else l'ha già fatto in precedenza
 

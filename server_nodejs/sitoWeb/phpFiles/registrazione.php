@@ -1,38 +1,38 @@
 <?php 
-	//Nel file c'è solo una riga, solo l'IP. Quindi prendo il primo elemento dell'array
-	// che mi restituisce la funzione file()
+	//Mi serve l'IP del server. Questo lo leggo solo nel nodejs all'inizio e non riesco a passarlo
+	// a tutte le pagine... lo scrivo su un file e quando ne ho bisogno lo leggo
 	$IP = file("../../indirizzo_server.txt")[0];
 
-	//arriva da "creazioneDB.php" che, se non c'era ancora, crea il DB CrazyGoose
+	//Si connette al DB CrazyGoose
 	$mysqli = new mysqli("localhost", "root", "", "CrazyGoose");
 	if($mysqli->connect_error){
 		if($mysqli->connect_errno == 1049){
-			//L'utente è arrivato qui senza passare dal link ma modificando lui url.
-			//Tornerà alla pagina login dove dovrà rimettere i campi ma pazienza, se lo merita
+			/*Cosa è successo ? Il DB non esiste ancora com'è possibile ? Può entrare qui SOLO se l'utente
+				ha modificato l'URL per andare alla pagina di registrazione ma in quel modo non è passato
+				da creazioneDB.php ...*/
 			$changePage = "Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=registrati";
 			header($changePage);
 		}else{
 			die("Errore:".$mysqli->connect_errno." per ".$mysqli->connect_error);
 		}
 	}else{
+		//(sono sicuro che i dati ci siano xke ho fatto i controlli nella pagina  registrati.html)
 		$nome = $_POST["nome"];
 		$cognome = $_POST["cognome"];
 		$email = $_POST["email"];
-		//cifra la password
+		//cifra la password (è memorizzata cifrata nel DB)
 		$password = hash("sha256", $_POST["password"]);
 
 		$queryResult = $mysqli->query("SELECT * FROM Utenti;");
 		if(!$queryResult){
-			echo "ERRORE SELECT Utenti: ".$mysqli->error." (".$mysqli->errno.")";
+			die("ERRORE SELECT Utenti: ".$mysqli->error." (".$mysqli->errno.")");
 		}else{
+			//Mi ritorna un array posizionale, dove in ogni posizione (0,1,2,3,...) ho un Utente
+			// sotto forma di array associativo ([ID_gioc]=..., [nome]=...)
 			$ris_arr_assoc = $queryResult->fetch_all(MYSQLI_ASSOC);
 
-			//echo "<pre>";
-			//print_r($ris_arr_assoc);
-			//echo "</pre>";
-
-				//passo in get un flag alla fine... mi serve per modificare con jsdom la pagina
-				// e mostrare o meno il msg email gia' in uso
+			//Passo semplicemente in GET un flag alla fine... mi serve per modificare con jsdom la pagina
+			// e mostrare o meno il msg "email gia' in uso"
 			$changePage = "Location: http://$IP:3000/registrati?err=1";
 			$flagEmailGiaInUso = false;
 			
@@ -44,18 +44,16 @@
 			}
 			
 			if(!$flagEmailGiaInUso){
-				// !!! NON devo inserire l'ID_gioc XKE E' AUTO_INCREMENT
+				// !!! NON devo inserire l'ID_gioc XKE E' AUTO_INCREMENT !!!
 				$queryResult = $mysqli->query("INSERT INTO Utenti (nome, cognome, email, password) VALUES ('$nome', '$cognome', '$email', '$password');");
 				if(!$queryResult){
-					echo "ERRORE INSERT IN Utenti: ".$mysqli->error." (".$mysqli->errno.")";
+					die("ERRORE INSERT IN Utenti: ".$mysqli->error." (".$mysqli->errno.")");
 				}else{
-					//si e' registrato con successo
-					$changePage = "Location: http://$IP:3000/login";
-					header($changePage);
+					//È andato tutto bene, si è registrato...
+					$changePage = "Location: http://$IP:3000/accedi";
 				}
-			}else{
-				header($changePage);
 			}
+			header($changePage);
 		}
 	}
 ?>

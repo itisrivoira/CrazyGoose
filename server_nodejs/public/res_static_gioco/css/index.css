@@ -2,42 +2,38 @@ body {
     margin: 0px;
 }
 
-.tabellone {
-    /* border:10px solid black;  */
-    width: 1910px;
-    height: 1200px;
-    /* margin:0px 310px 300px 310px; */
-}
-
 #gioco {
-    width: 1910px;
-    height: 1200px;
+    width: 100vw;
+    height: 100vh;
     background-position: center;
     background-image: url("../images/sfondo4k.png");
+    background-repeat: no-repeat;
     clear: both;
+}
+
+.tabellone {
+    width: 100vw;
+    height: 100vh;
+    margin-top: 30px;
 }
 
 
 /*------------------CSS PER LE CASELLE------------------------*/
 
+.percorsoCaselle {
+    width: 1500px;
+    height: 900px;
+}
+
 .divCasIniziali {
     float: left;
-    /* border: 10px solid green; */
     width: 120px;
     height: 250px;
     margin: 600px 0px 0px 300px;
 }
 
-.tabellonio {
-    margin: 0px 0px 0px 400px;
-    /* border: 7px solid red;  */
-    width: 1500px;
-    height: 900px;
-}
-
 .caselleIniziali {
     border: 4px solid black;
-    /* border-radius: 35%;  */
     text-align: center;
     width: 100px;
     height: 100px;
@@ -98,7 +94,6 @@ body {
     border-left: 4px solid black;
     border-top: 4px solid black;
     border-bottom: 4px solid black;
-    /* border-radius: 0% 10% 10% 0%; */
     width: 150px;
     height: 120px;
     margin: 0px 0px 0px -4px;
@@ -111,7 +106,6 @@ body {
     border-radius: 0% 85% 0% 0%;
     width: 150px;
     height: 120px;
-    /* text-align: center; */
     margin: 0px 0px 0px -4px;
 }
 
@@ -122,7 +116,6 @@ body {
     border-radius: 85% 0% 0% 0%;
     width: 150px;
     height: 120px;
-    /* text-align: center; */
     margin: 0px 0px 0px -4px;
 }
 
@@ -133,7 +126,6 @@ body {
     border-radius: 0% 0% 0% 85%;
     width: 150px;
     height: 120px;
-    /* text-align: center; */
     margin: 0px 0px 0px -4px;
 }
 
@@ -143,7 +135,6 @@ body {
     border: 4px solid black;
     width: 458px;
     height: 120px;
-    /* text-align: center; */
     margin: 0px 0px 0px -4px;
 }
 
@@ -154,7 +145,6 @@ body {
 .quintaRiga,
 .sestaRiga {
     width: 1100px;
-    /* border: 4px solid red; */
     height: 120px;
     padding: 0px 0px 0px 0px;
 }
@@ -165,6 +155,9 @@ body {
 #imgTitolo {
     height: 17vh;
 }
+
+
+/*- - - - -CSS del PL1 - - - - -*/
 
 #info_pl1 {
     position: absolute;
@@ -186,6 +179,9 @@ body {
     left: 175px;
 }
 
+
+/*- - - - -CSS del COM - - - - -*/
+
 #info_com {
     position: absolute;
     top: 10px;
@@ -198,9 +194,9 @@ body {
     position: absolute;
     top: 10px;
     left: 250px;
-    border: 3px solid black;
+    border: 4px solid black;
     font-weight: bold;
-    font-size: 17px;
+    font-size: 18px;
     padding: 2px;
 }
 
@@ -219,9 +215,9 @@ body {
     position: absolute;
     top: 10px;
     right: 210px;
-    border: 3px solid black;
+    border: 4px solid black;
     font-weight: bold;
-    font-size: 17px;
+    font-size: 18px;
     padding: 2px;
 }
 
@@ -236,7 +232,7 @@ body {
 }
 
 
-/* Stile Scena */
+/* ------------ CSS PER I DADI ------------ */
 
 #dado_pl1 {
     position: absolute;
@@ -265,9 +261,6 @@ body {
     position: relative;
     display: inline-block;
 }
-
-
-/* Stile Cubo */
 
 .cube {
     width: 100px;
@@ -316,6 +309,10 @@ body {
 .cubeCOM.show-6 {
     transform: translateZ(-100px) rotateX( 90deg);
 }
+
+
+/* NOTA BENE !!!!! I PERCORSI QUI SONO PERCORSI RELATIVI, MA RELATIVI A COSA ?
+                    ALLA POSIZIONE DEL FILE CSS */
 
 .cube__face--1 {
     position: absolute;

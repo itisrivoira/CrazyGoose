@@ -1,47 +1,31 @@
 <?php
 	session_start();
 	
-	//Nel file c'è solo una riga, solo l'IP. Quindi prendo il primo elemento dell'array
-	// che mi restituisce la funzione file()
+	//Mi serve l'IP del server. Questo lo leggo solo nel nodejs all'inizio e non riesco a passarlo
+	// a tutte le pagine... lo scrivo su un file e quando ne ho bisogno lo leggo
 	$IP = file("../../indirizzo_server.txt")[0];
 
+	//Si connette al DB CrazyGoose
 	$mysqli = new mysqli("localhost", "root", "", "CrazyGoose");
 	if($mysqli->connect_error){
-		if($mysqli->connect_errno == 1049){
-			//L'utente è arrivato qui senza passare dal link ma modificando lui url.
-			//Tornerà alla pagina login dove dovrà rimettere i campi ma pazienza, se lo merita
-			echo "DB non ancora creato !";
-		}else{
-			die("Errore:".$mysqli->connect_errno." per ".$mysqli->connect_error);
-		}
+		die("Errore:".$mysqli->connect_errno." per ".$mysqli->connect_error);
 	}else{
-
 		$ID_giocatore = $_SESSION["ID"];
+		//(sono sicuro che il dato ci sia xke ho fatto i controlli nella pagina  registrati.html)
 		$username = $_POST["username"];
-		/*
-			if(!$mysqli->query("CREATE TABLE IF NOT EXISTS Profili (
-											username VARCHAR(20) PRIMARY KEY NOT NULL,
-											grado VARCHAR(15) NOT NULL,
-											partiteVinte INT NOT NULL,
-											partitePerse INT NOT NULL,
-											ID_giocatore INT NOT NULL,
-											FOREIGN KEY(ID_giocatore) REFERENCES Utenti(ID_giocatore)
-										);")){
-		*/
 		
 		$changePage = "Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php";
 
 		if(!$mysqli->query("INSERT INTO Profili VALUES ('$username', 'Novellino', 0, 0, '$ID_giocatore');")){
-			//username già inserito ==> Error: Duplicate entry usernameScritto for key 'PRIMARY'
+			//username già presente ==> Error: Duplicate entry usernameScritto for key 'PRIMARY'
 			if($mysqli->errno == 1062){
+				//Passo semplicemente in GET un flag alla fine... mi serve per modificare con jsdom la pagina
+				// e mostrare o meno il msg "username già in uso"
 				$changePage = "Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php?agg=1&err=1";
-				echo "fanuclo";
 			}else{
-				echo "Errore nell'inserimento: ".$mysqli->error;
+				die("Errore nell'inserimento: ".$mysqli->error);
 				$changePage = null;
 			}
-		}else{
-			echo "merda";
 		}
 		if($changePage != null){
 			header($changePage);

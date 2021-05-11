@@ -2,10 +2,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="res_static_sitoweb/css/registrati.css">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-
     <title>Registrati</title>
+
+    <link rel="stylesheet" href="/res_static_sitoweb/css/registrati.css">
+    <!-- Per l'icona piccoliina nella scheda -->
+    <link rel="icon" type="image/png" href="/favicon/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-128.png" sizes="128x128" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-16x16.png" sizes="16x16" />
 </head>
 
 <body onload="focusIniziale()">
@@ -13,7 +19,9 @@
         <div>
             <center>
                 <p id="registrParagInfo">Crea il tuo account Crazy Goose</p>
-                <a href="http://localhost:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home"><img src="res_static_sitoweb/images/logo_32x32.png"></a>
+                <a href="http://localhost:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home">
+                    <img src="res_static_sitoweb/images/logo_32x32.png">
+                </a>
             </center>
         </div>
         <form action="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/registrazione.php" name="formReg" method="post" onsubmit="return(controllaDati());">
@@ -30,8 +38,8 @@
         </div>
     </div>
     <br>
-    <center id="emailGiaUsata">
-        <p style="color:red;font-size:17px;">EMAIL GI&Agrave; IN USO !</p>
+    <center>
+        <p id="emailGiaUsata">EMAIL GI&Agrave; IN USO !</p>
     </center>
 
     <script>
@@ -46,6 +54,8 @@
              Ne controllo il valore, cioè quello che contengono. Se non contengono nulla sposto
              il focus su una di loro (scriverà con la tastiera all'interno della componente vuota senza doverci 
              cliccare lui) */
+
+            //x.trim() ==> (rimuove spazi ad inizio e fine della stringa x)
 
             if (document.formReg.nome.value == "") {
                 document.formReg.nome.focus()

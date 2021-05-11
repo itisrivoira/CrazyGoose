@@ -1,11 +1,11 @@
 <?php
 	function stampaErrore($mysqli, $dove){
-		echo "ERRORE $dove: ".$mysqli->error." (".$mysqli->errno.")";
+		die("ERRORE $dove: ".$mysqli->error." (".$mysqli->errno.")");
 	}
 	
 	function cambiaPagina($IP){
 		//per es. l'utente va nella pagina di login, viene reindirizzato qui, eventualemente crea
-		// il DB poi torna indietro
+		// il DB, poi torna in quella pagina
 		$endpoint = $_GET["prox"];
 			
 		$changePage = "Location: http://".$IP.":3000/$endpoint";
@@ -20,20 +20,18 @@
 	//Tento di connettermi al DB CrazyGoose
 	$mysqli = new mysqli("localhost", "root", "", "CrazyGoose");
 	if($mysqli->connect_error){
-		if($mysqli->connect_errno == 1049){		// ==> "Unknown database 'CrazyGoose'"
+		if($mysqli->connect_errno == 1049){		// ==> "Unknown database 'CrazyGoose'" = devo crearlo
 			//ricreo l'oggetto mysqli (xke non posso usare quello di prima dove
 			// ho tentato di connettermi ad un DB inesistente)
 			$mysqli = new mysqli("localhost", "root", "");
 
 			$flagErrore = false;
 
-			//Creo il DB. Se la query mi ritorna false = c'e' stato un errore		
 			if(!$mysqli->query("CREATE DATABASE CrazyGoose;")){
 				stampaErrore($mysqli, "CREAZIONE DB");
 				$flagErrore = true;
 			}else{
-				//come potrebbe darmi errore? Se il DB non esiste... ma l'ho appena creato
-				// quindi non controllo neanche che questa query mi dia errore
+				//(non controllo nemmero che dia o meno errore...  il DB l'ho appena creato)
 				$mysqli->query("USE CrazyGoose;");
 				
 				//creo tutte le varie tabelle

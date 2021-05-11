@@ -110,10 +110,10 @@ app.get("/accedi", (req, resp) => {
 
     let erroreLogin = req.query.err
     let jsDom = new JSDOM(paginaConIP)
-    jsDom.window.document.getElementById("passEmailScorretti").style.display = "block";
+    jsDom.window.document.getElementById("passwEmailErrati").style.display = "block";
 
     if (erroreLogin == undefined) {
-        jsDom.window.document.getElementById("passEmailScorretti").style.display = "none";
+        jsDom.window.document.getElementById("passwEmailErrati").style.display = "none";
     }
 
     resp.send(jsDom.window.document.documentElement.outerHTML)

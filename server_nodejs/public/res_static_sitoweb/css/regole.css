@@ -9,14 +9,14 @@ body {
 
 #titolo {
     color: rgb(240, 249, 255);
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
     font-size: 40px;
     text-align: center;
 }
 
 .titoli {
     color: rgba(82, 9, 116, 0.884);
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
     font-size: 27px;
     text-align: center;
 }
@@ -31,7 +31,7 @@ body {
 
 .testo {
     color: aliceblue;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
     font-size: 1em;
     text-align: center;
 }
@@ -42,7 +42,7 @@ body {
 .collapsible {
     background-color: rgba(82, 9, 116, 0.884);
     color: aliceblue;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -66,19 +66,13 @@ body {
     display: none;
     overflow: hidden;
     background-color: rgb(58, 0, 85);
-    font-family: Ubuntu;
+    font-family: "Helvetica";
 }
 
 
 /*inizio carousel*/
 
 .carousel-item {
-    /* height: 65vh;
-    background: no-repeat center center scroll;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover; */
     height: 65vh;
     background: no-repeat center center scroll;
     -webkit-background-size: cover;
@@ -88,28 +82,24 @@ body {
     height: 500px;
     background-color: rgba(129, 128, 128, 0.411);
     margin-top: 20px;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 .titoloSchedaCarousel {
     color: black;
     font-size: 3.43em;
     font-weight: 500;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 .testoCarousel {
-    /* color: black;
-    font-size: 25px;
-    font-weight: 300; */
     color: black;
-    /* background-color: green; */
     margin-top: 40px;
     font-size: 1.5em;
     margin-left: 150px;
     margin-right: 150px;
     text-align: center;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 #ocaRossa {
@@ -117,7 +107,7 @@ body {
     color: rgb(250, 0, 18);
     text-align: center;
     font-size: 2.5em;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 #ocaBlu {
@@ -125,7 +115,7 @@ body {
     color: rgb(47, 52, 149);
     text-align: center;
     font-size: 2.5em;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 #ocaVerde {
@@ -133,7 +123,7 @@ body {
     color: rgb(0, 180, 78);
     text-align: center;
     font-size: 2.5em;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 #ocaGialla {
@@ -141,7 +131,7 @@ body {
     color: rgb(245, 255, 0);
     text-align: center;
     font-size: 2.5em;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 #ocaCattiva {
@@ -149,7 +139,7 @@ body {
     color: rgb(158, 0, 144);
     text-align: center;
     font-size: 2.5em;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 .sfondoTestoCarousel {
@@ -158,24 +148,21 @@ body {
 
 .titoloSchedaCarousel:hover {
     color: black;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 #imgSchedaCrazyGoose {
     width: 250px;
     height: 250px;
-    /* display: block; */
     margin: auto;
     margin-top: 40px;
     margin-left: 450px;
-    /* background-color: red; */
 }
 
 #imgAbilita {
     width: 70px;
     height: 70px;
     margin-left: 25px;
-    /* background-color: blue; */
     display: inline-block;
 }
 
@@ -202,8 +189,7 @@ body {
 .scritteCentrali {
     text-align: center;
     font-size: 3.12em;
-    /* color: rgb(0, 0, 0); */
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 #scaricaGuida {
@@ -218,7 +204,7 @@ body {
     text-align: center;
     font-size: 1.5em;
     color: red;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 #sottotitoliVerdi {
@@ -226,7 +212,7 @@ body {
     text-align: center;
     font-size: 1.5em;
     color: rgb(0, 180, 78);
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 #casellaFinale {
@@ -234,17 +220,17 @@ body {
     font-size: 1.6em;
     margin-top: 30px;
     color: rgb(47, 52, 149);
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 #effettiNegativi {
     text-align: left;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 #effettiPositivi {
     text-align: left;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 .imgEffetto {
@@ -252,23 +238,21 @@ body {
     margin-bottom: 5px;
     margin-right: 20px;
     float: left;
-    font-family: Ubuntu;
-    /* display: inline-block; */
+    font-family: Ubuntu, "Sans-serif";
 }
 
 .descEffetto {
     display: inline-block;
     text-align: right;
     margin-left: 10px;
-    /* background-color: blue; */
     font-size: 1.25em;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 #casellaVincitrice {
     text-align: center;
     margin-bottom: 30px;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 .separatore {
@@ -284,12 +268,12 @@ body {
 
 .desc {
     font-size: 1.25em;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
 }
 
 .descRegole {
     font-size: 1.25em;
-    font-family: Ubuntu;
+    font-family: Ubuntu, "Sans-serif";
     text-align: left;
     margin-left: 100px;
 }

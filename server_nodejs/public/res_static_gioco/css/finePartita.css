@@ -19,10 +19,10 @@ body {
     top: 25vh;
 }
 
-.premiEsc {
+.premiPerUscire {
     font-size: 30px;
     color: white;
-    font-family: "Ubuntu", "helvetica";
+    font-family: "helvetica";
     position: relative;
     top: 45vh;
 }

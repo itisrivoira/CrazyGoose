@@ -9,13 +9,24 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../../public/res_static_sitoweb/css/contattaci.css">
-    <link rel="stylesheet" href="../../public/res_static_sitoweb/css/navbar.css">
-    <link rel="stylesheet" href="../../public/res_static_sitoweb/css/soloFooter.css">
+    <title>Contatta Crazy Goose</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <title>Contatta Crazy Goose</title>
+    <!-- siamo in un file php quindi non "usa nodejs" e la cartella public per le risorse statiche,
+	 quindi devo cambiare il percorso (in un file normale userei /res_static_menu/... perchè sa che
+     una risorsa statica la deve prendere dalla cartella /public) -->
+
+     <link rel="stylesheet" href="../../public/res_static_sitoweb/css/contattaci.css">
+    <link rel="stylesheet" href="../../public/res_static_sitoweb/css/navbar.css">
+    <link rel="stylesheet" href="../../public/res_static_sitoweb/css/soloFooter.css">
+
+    <!-- Per l'icona piccoliina nella scheda -->
+    <link rel="icon" type="image/png" href="../../public/favicon/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="../../public/favicon/favicon-128.png" sizes="128x128" />
+    <link rel="icon" type="image/png" href="../../public/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="../../public/favicon/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="../../public/favicon/favicon-16x16.png" sizes="16x16" />
 </head>
 
 <body onload="focusIniziale()">
@@ -71,11 +82,22 @@
             </div>
         </div>
     </div>
-    <div class="row" id="footer"></div>
+    <div class="row" id="footer">
+            <?php
+                //legge il footer da un file (in questo modo si può modificare in quel file e in nessun altro)
+                $footer = file("../soloFooter.html");
+
+                //(legge riga per riga)
+                foreach($footer as $row){
+                    echo $row;
+                }
+            ?>
+    </div>
 
     <script>
         function focusIniziale() {
             document.formContattaci.nome.focus()
+
             <?php if(isset($_GET["flag"])){ ?>
                 alert("EMAIL INVIATA!!")
             <?php }?>
@@ -88,6 +110,9 @@
              Ne controllo il valore, cioè quello che contengono. Se non contengono nulla sposto
              il focus su una di loro (scriverà con la tastiera all'interno della componente vuota senza doverci 
              cliccare lui) */
+
+            //x.trim() ==> (rimuove spazi ad inizio e fine della stringa x)
+
             let flagAlert = false
 
             if (document.formContattaci.nome.value == "") {

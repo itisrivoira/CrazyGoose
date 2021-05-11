@@ -157,7 +157,11 @@ class Casella {
     }
 
     nascondi() { //mi serve per le casella iniziali
-        this.questaCasella.style.display = "none"
+        this.questaCasella.style.visibility = "hidden"
+            //this.questaCasella.style.display = "none"
+            //Non lo posso usare xke altrimenti lo spazio che occupava questaCasella viene riempito
+            //Cioè con "none" proprio è come se quel oggetto non ci fosse, e allora l'oggetto posizionato
+            // sotto si sposta sopra (in questo caso la casella iniziale del COM si sposterebbe sopra)
     }
 
 }

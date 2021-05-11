@@ -1,6 +1,5 @@
-/*Uso quasi ovunque questo font, quindi lo imposto come "default"*/
-
 body {
+    /*Uso quasi ovunque questo font, quindi lo imposto come "default"*/
     font-family: Ubuntu, sans-serif;
     color: aliceblue;
 }
@@ -98,23 +97,6 @@ body {
     position: relative;
 }
 
-
-/*  Frecce del carousel da provare a sostituire con immagini. DA PROBLEMI
-.carousel-control-prev-icon {
-    height: 100px;
-    width: 100px;
-    background-image: url("/public/res_static_sitoweb/images/LeftArrow.png")
-}
-
-.carousel-control-next-icon {
-    background-image: url("/public/res_static_sitoweb/images/RightArrow.png")
-}
-*/
-
-
-/*In questi due devo ribadire il colore xke ci sono dei tag <a>, link, che sono impostati per essere di colore 
-blu/azzurro (classe sopra e sotto il commento)*/
-
 .titoloSchedaCarousel:hover {
     color: black;
 }
@@ -150,7 +132,6 @@ blu/azzurro (classe sopra e sotto il commento)*/
     cursor: pointer;
     border-radius: 5em;
     background: purple;
-    /*linear-gradient(to right, #c1a8c5, #000000);*/
     border: 0;
     padding-left: 40px;
     padding-right: 40px;

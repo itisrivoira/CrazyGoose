@@ -82,3 +82,9 @@ form {
 #passaALogin {
     font-size: 12px;
 }
+
+#emailGiaUsata {
+    color: red;
+    font-size: 17px;
+    font-weight: bold;
+}

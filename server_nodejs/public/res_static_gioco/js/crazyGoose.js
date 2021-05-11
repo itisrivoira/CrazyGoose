@@ -324,6 +324,7 @@ class CrazyGoose {
                                             numGiri = 20
                                                 //oca verde ==> ritira il dado; mi basta settare un flag
                                             this.player.turnoMio = true
+                                            this.com.turnoMio = false
                                         } else {
                                             numGiri += 1
                                         }
@@ -412,6 +413,7 @@ class CrazyGoose {
                     // avanzaPLayer1() che decrementerà il contatore di
                     // turni fermi del player (e farà muovere il com)
                     this.player.turnoMio = true
+                    this.com.turnoMio = false
                     this.tiraDado()
                 } else {
                     if (this.com.turniFermo > 0) {
@@ -419,6 +421,7 @@ class CrazyGoose {
                         this.segnalaChiTocca(true)
                             //(devo settarlo a false così in tiraDado() mi andrà nel false, e in avanzaCOM() decrementerà il contatore dei turni fermo edl PL1)
                         this.player.turnoMio = false
+                        this.com.turnoMio = true
                     } else {
                         //L'avversario non ha un fermo MA non è detto che tocchi a lui 
                         // (PL1 potrebbe aver preso un TIRA DI NUOVO) quindi controllo
@@ -484,6 +487,7 @@ class CrazyGoose {
                                         // avanzaPLayer1() che decrementerà il contatore di
                                         // turni fermi del player (e farà muovere il com)
                                     this.player.turnoMio = true
+                                    this.com.turnoMio = false
                                     this.tiraDado()
                                 } else {
                                     if (this.com.turnoMio) {
@@ -491,6 +495,7 @@ class CrazyGoose {
                                         this.toccaAlCOM()
                                     } else {
                                         this.player.turnoMio = true
+                                        this.com.turnoMio = false
                                         this.segnalaChiTocca(true)
                                     }
                                 }
@@ -545,6 +550,7 @@ class CrazyGoose {
                             if (this.com.turniFermo > 0) {
                                 this.segnalaChiTocca(true)
                                 this.player.turnoMio = true
+                                this.com.turnoMio = false
                             } else {
                                 if (!toccaAncoraA_Me) { //tocca al COM
                                     this.segnalaChiTocca(false)
@@ -552,6 +558,7 @@ class CrazyGoose {
                                 } else { //tocca a me PL1 (ramo vero del if turnoPL1)
                                     this.segnalaChiTocca(true)
                                     this.player.turnoMio = true
+                                    this.com.turnoMio = false
                                 }
                             }
                         }
@@ -571,6 +578,7 @@ class CrazyGoose {
                                 } else { //tocca al PL1
                                     this.segnalaChiTocca(true)
                                     this.player.turnoMio = true
+                                    this.com.turnoMio = false
                                 }
                             }
                         }

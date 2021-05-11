@@ -91,7 +91,9 @@ body {
 }
 
 #msgMotivazionale {
-    font-size: 1.3em;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: rgb(17, 17, 194);
 }
 
 #divNonHaAccesso {
