@@ -14,7 +14,7 @@
 		//(sono sicuro che il dato ci sia xke ho fatto i controlli nella pagina  registrati.html)
 		$username = $_POST["username"];
 		
-		$changePage = "Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php";
+		$changePage = "Location: http://$IP:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/profilo.php";
 
 		if(!$mysqli->query("INSERT INTO Profili VALUES ('$username', 'Novellino', 0, 0, '$ID_giocatore');")){
 			//username già presente ==> Error: Duplicate entry usernameScritto for key 'PRIMARY'

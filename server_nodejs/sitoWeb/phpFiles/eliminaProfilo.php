@@ -14,7 +14,7 @@
 	}else{
 		$username = $_GET["username"];
 		
-		$changePage = "Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php";
+		$changePage = "Location: http://$IP:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/profilo.php";
 
 		$queryResult = $mysqli->query("SELECT * FROM Partecipare WHERE username = '$username';");
 		if(!$queryResult){

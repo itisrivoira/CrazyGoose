@@ -54,6 +54,7 @@
                 <img id="logo" src="../../public/res_static_sitoweb/images/logo_dim_originale.png" style="width: 500px; height: 500px;">
             </div>
             <div class="col-12 col-lg-6 column">
+                <!-- NON HO MODO DI PASSARE CAMPI IN POST DA NODEJS A PAGINA PHP QUINDI VADO DIRETTAMENTE ALLA PAGINA PHP -->
                 <form action="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/send.php" method="post" name="formContattaci" onsubmit="return(controllaDati())">
                     <div class="divVoce">
                         <label>Nome:</label>

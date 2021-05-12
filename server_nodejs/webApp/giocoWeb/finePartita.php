@@ -127,14 +127,14 @@
 	<div id="vittoria" style="<?php echo $styleVittoria; ?>">
         <label id="msgHaiVinto"><center><b>HAI VINTO</b></center></label>
         <center>
-			<a class="premiPerUscire" href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco"><b>Premi per rigiocare</b></a>
+			<a class="premiPerUscire" href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco.php"><b>Premi per rigiocare</b></a>
 		</center>
     </div>
 
     <div id="sconfitta" style="<?php echo $styleSconfitta; ?>">
         <label id="msgHaiPerso"><center><b>HAI PERSO</b></center></label>
         <center>
-			<a class="premiPerUscire" href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco"><b>Premi per rigiocare</b></a>
+			<a class="premiPerUscire" href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco.php"><b>Premi per rigiocare</b></a>
 		</center>
     </div>
 	<br><br>

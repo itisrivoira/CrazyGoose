@@ -23,7 +23,7 @@
                 $_SESSION["vitt"] = 0;
             }
             
-            header("Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/webApp/giocoWeb/finePartita.php");
+            header("Location: http://$IP:3000/passaAPaginaPHP?pagina=webApp/giocoWeb/finePartita.php");
         }else{
 ?>
 

@@ -7,6 +7,6 @@
 	session_destroy();
 	//e viah, le variabili di sessione sono state tutte cancellate, posso andare alla home
 
-	$changePage = "Location: http://$IP:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home";
+	$changePage = "Location: http://$IP:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home.php";
 	header($changePage);
 ?>

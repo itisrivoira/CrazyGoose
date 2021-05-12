@@ -86,7 +86,7 @@
                 <div id="dropdown-menu" >
                     <a href="http://<?php echo $IP; ?>:3000/">Home</a>
                     <a href="http://<?php echo $IP; ?>:3000/profilo">Profilo</a>
-                    <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/contattaci">Contattaci</a>
+                    <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/contattaci.php">Contattaci</a>
                     <a href="http://<?php echo $IP; ?>:3000/esci">Esci</a>
                 </div>
             </div>

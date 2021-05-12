@@ -1,7 +1,6 @@
 var IP = null
 
 const fs = require("fs")
-const bodyParser = require("body-parser")
 const jsdom = require("jsdom")
     //destrutturazione (prendo solo quello che mi serve)
 const { JSDOM } = jsdom
@@ -19,9 +18,6 @@ app.listen(3000, () => {
         fs.writeFileSync("./indirizzo_server.txt", IP)
     })
 })
-
-app.use(bodyParser.urlencoded())
-app.use(bodyParser.json())
 
 app.use(express.static("public"))
 
@@ -52,7 +48,6 @@ function rimpiazzaLocalhostConIP(pagina) {
     return paginaModif
 }
 
-
 app.get("/passaAPaginaPHP", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
 
@@ -63,13 +58,12 @@ app.get("/passaAPaginaPHP", (req, resp) => {
     resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
 
-
 app.get("/esci", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
 
     let jsDom = new JSDOM(pagina)
 
-    jsDom.window.document.getElementById("percorso").innerHTML = "sitoWeb/phpFiles/logout"
+    jsDom.window.document.getElementById("percorso").innerHTML = "sitoWeb/phpFiles/logout.php"
 
     resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
@@ -79,11 +73,21 @@ app.get("/", (req, resp) => {
 
     let jsDom = new JSDOM(pagina)
 
-    jsDom.window.document.getElementById("percorso").innerHTML = "sitoWeb/phpPages/home"
+    jsDom.window.document.getElementById("percorso").innerHTML = "sitoWeb/phpPages/home.php"
 
     let paginaConIP = rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML)
 
     resp.send(paginaConIP)
+})
+
+app.get("/profilo", (req, resp) => {
+    let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
+
+    let jsDom = new JSDOM(pagina)
+
+    jsDom.window.document.getElementById("percorso").innerHTML = "sitoWeb/phpPages/profilo.php"
+
+    resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
 
 app.get("/regole", (req, resp) => {
@@ -92,16 +96,6 @@ app.get("/regole", (req, resp) => {
     let pagina = rimpiazzaLocalhostConIP(paginaConFooter)
 
     resp.send(pagina)
-})
-
-app.get("/profilo", (req, resp) => {
-    let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
-
-    let jsDom = new JSDOM(pagina)
-
-    jsDom.window.document.getElementById("percorso").innerHTML = "sitoWeb/phpPages/profilo"
-
-    resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
 
 app.get("/accedi", (req, resp) => {
@@ -145,7 +139,7 @@ app.get("/CrazyGoose", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
     let jsDom = new JSDOM(pagina)
 
-    jsDom.window.document.getElementById("percorso").innerHTML = "webApp/giocoWeb/gioco"
+    jsDom.window.document.getElementById("percorso").innerHTML = "webApp/giocoWeb/gioco.php"
 
     resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
@@ -154,7 +148,7 @@ app.get("/start", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
     let jsDom = new JSDOM(pagina)
 
-    jsDom.window.document.getElementById("percorso").innerHTML = "webApp/giocoWeb/scelta_oca"
+    jsDom.window.document.getElementById("percorso").innerHTML = "webApp/giocoWeb/scelta_oca.php"
 
     let paginaConIP = rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML)
 

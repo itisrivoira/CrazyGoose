@@ -202,7 +202,7 @@
 						<div id="dropdown-menu">
 							<a href="http://<?php echo $IP; ?>:3000/">Home</a>
 							<?php if($username != null){ ?>
-								<a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco">Vai al gioco</a>
+								<a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco.php">Vai al gioco</a>
 								<a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php?logout=1">Logout da <i><b><?php echo $username; ?></i></b></a>
 							<?php } ?>
 							<a href="http://<?php echo $IP; ?>:3000/esci">Esci</a>
@@ -353,7 +353,7 @@
 						}else{
 							?>
 							<label>Non hai ancora giocato nessuna partita... Forza 
-								<a href="http://<?php echo $IP;?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco">vai a divertirti</a>
+								<a href="http://<?php echo $IP;?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco.php">vai a divertirti</a>
 						</label>
 							<?php
 						} ?>
@@ -373,7 +373,8 @@
 			<div class="col-12">
 				<center>
 					<div style="padding:5px; border: 0.3em solid black; width: -moz-fit-content;">
-						<form action="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpFiles/aggProfilo" method="post" name="formUsername" onsubmit="return(controllaUsername())">
+						<!-- NON HO MODO DI PASSARE CAMPI IN POST DA NODEJS A PAGINA PHP QUINDI VADO DIRETTAMENTE ALLA PAGINA PHP -->
+						<form action="http://<?php echo $IP ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/aggProfilo.php" method="post" name="formUsername" onsubmit="return(controllaUsername())">
 							<h3>Scegli un username <u>univoco</u>:</h3><br>
 							<input type="text" name="username" placeholder="es. giovannirossi01"><br><br>
 							<button type="submit" id="btnSubmit">CREA PROFILO</button>
