@@ -100,7 +100,7 @@
                     <div id="dropdown-menu">
                         <a href="http://<?php echo $IP; ?>:3000/profilo">Profilo</a>
                         <?php if($username != null){ ?>
-                        <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco">Vai al gioco</a>
+                        <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco.php">Vai al gioco</a>
                         <?php } ?>
                         <a href="http://<?php echo $IP; ?>:3000/download">Download<br>gioco</a>
                         <a href="http://<?php echo $IP; ?>:3000/esci">Esci</a>
@@ -138,7 +138,7 @@
                         <div class="carousel-item">
                             <img src="../../public/res_static_sitoweb/images/email.png" class="img-fluid" id="imgSchedaContattaci">
                             <div class="carousel-caption" id="divSchedaCarosello">
-                                <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/contattaci" class="titoloSchedaCarousel">
+                                <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/contattaci.php" class="titoloSchedaCarousel">
                                     <p><u>CONTATTACI</u></p>
                                 </a>
                                 <p class="testoCarousel">Se hai ancora domande oppure vuoi semplicemente metterti in contatto con i diretti creatori Contattaci!</p>

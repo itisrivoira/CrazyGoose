@@ -84,7 +84,7 @@
             <div id="divDropdown"style="<?php echo $styleDelMenuUtente; ?>">
                 <button id="dropdownBtn"><?php echo $msgDelMenuUtente; ?></button>
                 <div id="dropdown-menu" >
-                    <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home">Home</a>
+                    <a href="http://<?php echo $IP; ?>:3000/">Home</a>
                     <a href="http://<?php echo $IP; ?>:3000/profilo">Profilo</a>
                     <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/contattaci">Contattaci</a>
                     <a href="http://<?php echo $IP; ?>:3000/esci">Esci</a>

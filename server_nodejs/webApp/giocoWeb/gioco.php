@@ -51,7 +51,7 @@
 <body onload="inizioPartita()">
     <div id="gioco">
         <center>
-            <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home"><img id="imgTitolo" src="../../public/res_static_gioco/images/scrittaCrazyGoose_400x130_bagliore.png"></a>
+            <a href="http://<?php echo $IP; ?>:3000/"><img id="imgTitolo" src="../../public/res_static_gioco/images/scrittaCrazyGoose_400x130_bagliore.png"></a>
         </center>
 
         <!-- INFO giocatori -->

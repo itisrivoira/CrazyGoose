@@ -45,7 +45,7 @@
 					// non gli deve mostrare un profilo di un altro account utente)
 					unset($_SESSION["username"]);
 
-					$changePage = "Location: http://$IP:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home";
+					$changePage = "Location: http://$IP:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home.php";
 					break;
 				}
 			}

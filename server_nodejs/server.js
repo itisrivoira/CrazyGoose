@@ -75,15 +75,15 @@ app.get("/esci", (req, resp) => {
 })
 
 app.get("/", (req, resp) => {
-    //porta alla home DOPO AVER FATTO IL LOGOUT
-    //(la home, essendo in php, si raggiunge con passaAPaginaPHP?pagina=sitoWeb/phpPages/home)
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
 
     let jsDom = new JSDOM(pagina)
 
-    jsDom.window.document.getElementById("percorso").innerHTML = "sitoWeb/phpFiles/logout"
+    jsDom.window.document.getElementById("percorso").innerHTML = "sitoWeb/phpPages/home"
 
-    resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
+    let paginaConIP = rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML)
+
+    resp.send(paginaConIP)
 })
 
 app.get("/regole", (req, resp) => {
@@ -108,11 +108,11 @@ app.get("/accedi", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/accedi.html", "utf-8")
     let paginaConIP = rimpiazzaLocalhostConIP(pagina)
 
-    let erroreLogin = req.query.err
     let jsDom = new JSDOM(paginaConIP)
     jsDom.window.document.getElementById("passwEmailErrati").style.display = "block";
 
-    if (erroreLogin == undefined) {
+    let erroreLogin = req.query.err
+    if (erroreLogin == undefined) { //cioè non gli è stato passato
         jsDom.window.document.getElementById("passwEmailErrati").style.display = "none";
     }
 
@@ -123,11 +123,11 @@ app.get("/registrati", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/registrati.html", "utf-8")
     let paginaConIP = rimpiazzaLocalhostConIP(pagina)
 
-    let erroreLogin = req.query.err
     let jsDom = new JSDOM(paginaConIP)
     jsDom.window.document.getElementById("emailGiaUsata").style.display = "block";
 
-    if (erroreLogin == undefined) {
+    let erroreLogin = req.query.err
+    if (erroreLogin == undefined) { //cioè non gli è stato passato
         jsDom.window.document.getElementById("emailGiaUsata").style.display = "none";
     }
 
@@ -141,9 +141,7 @@ app.get("/guida", (req, resp) => {
     resp.sendFile(__dirname + "/downloads/DOC_CrazyGoose.pdf")
 })
 
-//----------------- gioco web ----------------------------------
-
-app.get("/crazyGoose", (req, resp) => {
+app.get("/CrazyGoose", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
     let jsDom = new JSDOM(pagina)
 
@@ -158,7 +156,9 @@ app.get("/start", (req, resp) => {
 
     jsDom.window.document.getElementById("percorso").innerHTML = "webApp/giocoWeb/scelta_oca"
 
-    resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
+    let paginaConIP = rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML)
+
+    resp.send(paginaConIP)
 })
 
 app.get("/credits", (req, resp) => {

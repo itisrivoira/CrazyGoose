@@ -200,7 +200,7 @@
 					<div id="divDropdown">
 						<button id="dropdownBtn">- - - MENU UTENTE - - -</button>
 						<div id="dropdown-menu">
-							<a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home">Home</a>
+							<a href="http://<?php echo $IP; ?>:3000/">Home</a>
 							<?php if($username != null){ ?>
 								<a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco">Vai al gioco</a>
 								<a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/profilo.php?logout=1">Logout da <i><b><?php echo $username; ?></i></b></a>

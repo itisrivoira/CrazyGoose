@@ -84,6 +84,6 @@
         session_start();
         $_SESSION["ocaScelta"] = $_GET["ocaScelta"];
         
-        header("Location: http://$IP:3000/passaAPaginaPHP?pagina=webApp/giocoWeb/gioco");
+        header("Location: http://$IP:3000/CrazyGoose");
     }
 ?>

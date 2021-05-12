@@ -34,7 +34,7 @@
         <div class="row" id="rowNavbar">
             <div class="col">
                 <img id="logo" src="../../public/res_static_sitoweb/images/logo_32x32.png">
-                <a class="linkNavbar" href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/home"><b>Home</b></a>
+                <a class="linkNavbar" href="http://<?php echo $IP; ?>:3000/"><b>Home</b></a>
                 <a class="linkNavbar" href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=accedi"><b>Accedi</b></a>
                 <a class="linkNavbar" href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=registrati"><b>Registrati</b></a>
             </div>
