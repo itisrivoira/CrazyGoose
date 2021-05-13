@@ -90,4 +90,5 @@ button {
     color: red;
     font-size: 17px;
     font-weight: bold;
+    display: none;
 }

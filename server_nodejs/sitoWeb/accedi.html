@@ -26,14 +26,14 @@
             </center>
         </div>
         <!-- NON HO MODO DI PASSARE CAMPI IN POST DA NODEJS A PAGINA PHP QUINDI VADO DIRETTAMENTE ALLA PAGINA PHP -->
-        <form action="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/accedi.php" method="post" name="formReg" onsubmit="return(controllaDati())">
+        <form action="http://localhost:3000/formAccedi" method="post" name="formReg" onsubmit="return(controllaDati())">
             <input name="email" type="text" placeholder="Email">
             <input name="password" type="password" placeholder="Password">
             <button name="submit" id="submit" onclick="controllaDati()">Accedi</button>
         </form>
         <div id="divRegistrati">
             <center>
-                <p id="passaARegistr">Non hai ancora un account ? <a href="http://localhost:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpFiles/creazioneDB.php?prox=registrati" id="btnRegistrati"><b>Registrati</b></a></p>
+                <p id="passaARegistr">Non hai ancora un account ? <a href="http://localhost:3000/registrati" id="btnRegistrati"><b>Registrati</b></a></p>
             </center>
         </div>
     </div>

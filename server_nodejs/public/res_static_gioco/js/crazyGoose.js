@@ -23,12 +23,12 @@ class ButtonAbilitaPL1 {
             cartella = "/OcaRossa"
         }
 
-        //../../public/eccetera xke sto "lanciando" questo file js da gioco.php, quindi il percorso
+        ///eccetera xke sto "lanciando" questo file js da gioco.php, quindi il percorso
         // deve partire da li
-        this.imgOk = "../../public/res_static_gioco/images/imgAbilita" + cartella + "/OK.png"
-        this.imgQuasi = "../../public/res_static_gioco/images/imgAbilita" + cartella + "/QUASI.png"
-        this.imgNonPiu = "../../public/res_static_gioco/images/imgAbilita" + cartella + "/NON_PIU.png"
-        this.imgNo = "../../public/res_static_gioco/images/imgAbilita" + cartella + "/NO.png"
+        this.imgOk = "/res_static_gioco/images/imgAbilita" + cartella + "/OK.png"
+        this.imgQuasi = "/res_static_gioco/images/imgAbilita" + cartella + "/QUASI.png"
+        this.imgNonPiu = "/res_static_gioco/images/imgAbilita" + cartella + "/NON_PIU.png"
+        this.imgNo = "/res_static_gioco/images/imgAbilita" + cartella + "/NO.png"
 
         //sempplice label dove ci sarà il countdown di quanto gli resta per attivare l'abilità
         this.tmpRimanenteAbilita = document.getElementById("tmpRimanenteAbilita")

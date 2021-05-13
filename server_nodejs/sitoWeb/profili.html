@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Crazy Goose: Scegli il profilo</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="/res_static_sitoweb/css/profilo.css">
+
+    <!-- Per l'icona piccoliina nella scheda -->
+    <link rel="icon" type="image/png" href="/favicon/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-128.png" sizes="128x128" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-16x16.png" sizes="16x16" />
+
+    <script>
+        function profiloScelto(username) {
+            location.replace("http://localhost:3000/profiloScelto?username=" + username)
+        }
+
+        function aggProfilo() {
+            location.replace("http://localhost:3000/profili?agg=true")
+        }
+
+        function chiediConferma(username) {
+            let link = "http://localhost:3000/eliminaProfilo?username=" + username;
+
+            //alert con scelta 'annulla' o 'OK'
+            if (confirm("Sicuro di voler eliminare il profilo\n==>   " + username + "   <== ?")) {
+                location.replace(link)
+            }
+        }
+
+        function controllaUsername() {
+            /* AL TENTATIVO DI INVIO DEI DATI ("onSubmit" nel tag "form")
+            Prendo il form che nella pagina ha quel "name" "formReg", all'itnerno del
+             quale ci sono delle componenti con un certo "name" ("email", "password").
+             Ne controllo il valore, cioè quello che contengono. Se non contengono nulla sposto
+             il focus su una di loro (scriverà con la tastiera all'interno della componente vuota senza doverci 
+             cliccare lui) */
+
+            if (document.formUsername.username.value == "") {
+                document.formUsername.username.focus()
+                alert("Inserisci l'username !!!")
+                return false
+            } else {
+                var x = document.formUsername.username.value
+                document.formUsername.username.value = x.trim()
+            }
+            return true
+        }
+
+        function focusIniziale() {
+            document.formUsername.username.focus()
+        }
+    </script>
+</head>
+
+<body style="padding:2px;" onload="focusIniziale()">
+    <div class="container-fluid">
+        <div class="row" id="rowIntestazione">
+            <div class="col-9">
+                <center>
+                    <div id="infoQualeUtente"></div>
+                </center>
+            </div>
+            <div class="col-3">
+                <div id="menuUtente" style="padding:0px;">
+                    <div id="divDropdown">
+                        <button id="dropdownBtn">- - - MENU UTENTE - - -</button>
+                        <div id="dropdown-menu">
+                            <a href="http://localhost:3000/">Home</a>
+                            <a id="linkVaiAlGioco" href="http://localhost:3000/CrazyGoose">Vai al gioco</a>
+                            <a id="voceLogout" href="http://localhost:3000/esciDalProfilo"></a>
+                            <a href="http://localhost:3000/esci">Esci</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="rowSceltaProfilo">
+            <div class="col-4">
+                <center>
+                    <div class="divBtnScegliProfilo">
+                        <div id="mostra0">
+                            <img onclick="chiediConferma('__USERNAME0__')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
+                            <button onclick="profiloScelto('__USERNAME0__')" class="btnScegliProfilo">Profilo N.1<br><i><b>__USERNAME0__</i></b></button>
+                        </div>
+
+                        <button id="btnScegli0" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.1 <h3>➕</h3></button>
+                    </div>
+                </center>
+            </div>
+            <div class="col-4">
+                <center>
+                    <div class="divBtnScegliProfilo">
+                        <div id="mostra1">
+                            <img onclick="chiediConferma('__USERNAME1__')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
+                            <button onclick="profiloScelto('__USERNAME1__')" class="btnScegliProfilo">Profilo N.2<br><i><b>__USERNAME1__</i></b></button>
+                        </div>
+
+                        <button id="btnScegli1" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.2<h3>➕</h3></button>
+                    </div>
+                </center>
+            </div>
+            <div class="col-4">
+                <center>
+                    <div class="divBtnScegliProfilo">
+                        <div id="mostra2">
+                            <img onclick="chiediConferma('__USERNAME2__')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
+                            <button onclick="profiloScelto('__USERNAME2__')" class="btnScegliProfilo">Profilo N.3<br><i><b>__USERNAME2__</i></b></button>
+                        </div>
+
+                        <button id="btnScegli2" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.3<h3>➕</h3></button>
+                    </div>
+                </center>
+            </div>
+        </div>
+        <div id="usernameNotNull">
+            <div class="row" id="rowStatisitche">
+                <div class="col-12">
+                    <center>
+                        <div id="infoStatistUsername"></div>
+                    </center>
+                </div>
+            </div>
+            <div class="row" id="rowStatistiche1">
+                <div class="col-lg-6 col-12">
+                    <div id="totPartite"></div>
+                    <div id="numPartite">
+                        <div class="numPartite" id="partiteVinte"></div>
+                        <div class="numPartite" id="partitePerse"></div>
+                        <br><br>
+                    </div>
+                    <div id="grado">
+                        <div id="intestazioneGrado">Sei di grado:</div>
+                        <div id="divElencoGradi">
+                            <ul id="ulElencoGradi"></ul>
+                        </div>
+                    </div>
+                    <div id="msgMotivazionale"></div><br>
+                </div>
+                <div class="col-lg-6 col-12" id="colonnaElencoPartite">
+                    <div id="intestazionePartite">Cronologia partite:</div>
+                    <div id="divElencoPartite"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row" class="intestazionePagina" id="noProfiloScelto">
+            <div class="col">
+                <center>
+                    <div id="divNonHaAccesso">ACCEDI AD UNO DEI TUOI PROFILI O CREANE UNO NUOVO.<br>Puoi creare fino a 3 profili</div>
+                </center>
+            </div>
+        </div>
+        <div class="col-12" id="aggiungeProfilo">
+            <center>
+                <div style="padding:5px; border: 0.3em solid black; width: -moz-fit-content;">
+                    <form action="http://localhost:3000/aggProfilo" method="post" name="formUsername" onsubmit="return(controllaUsername())">
+                        <h3>Scegli un username <u>univoco</u>:</h3><br>
+                        <input type="text" name="username" placeholder="es. giovannirossi01"><br><br>
+                        <button type="submit" id="btnSubmit">CREA PROFILO</button>
+                    </form>
+                    <br><label id="msgErroreUsername">USERNAME GI&Agrave; IN USO !</label>
+                </div>
+            </center>
+        </div>
+    </div>
+</body>
+
+</html>
