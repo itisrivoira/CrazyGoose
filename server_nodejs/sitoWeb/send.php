@@ -1,7 +1,7 @@
 <?php
     //Mi serve l'IP del server. Questo lo leggo solo nel nodejs all'inizio e non riesco a passarlo
     // a tutte le pagine... lo scrivo su un file e quando ne ho bisogno lo leggo
-    $IP = file("../../indirizzo_server.txt")[0];
+    $IP = $_GET["IP"];
 
     $to = 'crazygoose.help@gmail.com';
     $oggettoEmail = 'Richiesta di assistenza';
@@ -35,6 +35,6 @@
 
     //Torna alla pagina contattaci ma passandogli un flag per mostrare un alert di avviso di
     // email spedita all'utente
-    $changePage = "Location: http://$IP:80/progetti/CrazyGoose/server_nodejs/sitoWeb/phpPages/contattaci.php?flag=1";
+    $changePage = "Location: http://$IP:3000/contattaci?flag=true";
     header($changePage);
 ?>

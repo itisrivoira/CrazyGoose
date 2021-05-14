@@ -220,10 +220,10 @@ class GestioneDatabase {
 
     datiProfilo(callback) {
         this.conn.connect(() => {
-            let datiProfilo = "SELECT * FROM Profili WHERE username = \"" + this.username + "\";"
+            let datiProfilo = "SELECT * FROM Profili WHERE username = \"" + this.username + "\" AND email = \"" + this.email + "\";"
 
             this.conn.query(datiProfilo, (err, result) => {
-                if (this.controllaErrQuery(err)) {
+                if (this.controllaErrQuery(err) || result.length == 0) {
                     //(dalla più recente alla meno recente (ID_part è AUTO_INCREMENT))
                     let recupPartite = "SELECT ID_part, durata, flagVittoria, numMosse FROM Partecipare, Partite WHERE(username = \"" + this.username + "\" AND ID_partita = ID_part) ORDER BY ID_part DESC;"
 
@@ -233,8 +233,12 @@ class GestioneDatabase {
                             // e per le partite fare un ciclo (e poi per prendere i singoli dati si
                             // fa stesso modo)
                             callback(result[0], resultPart)
+                        } else {
+                            callback(null, null)
                         }
                     })
+                } else {
+                    callback(null, null)
                 }
             })
         })
@@ -245,6 +249,8 @@ class GestioneDatabase {
     }
 
     eliminaProfilo(username, callback) {
+        this.username = null
+
         //DEVO CANCELLARE IN ORDINE IL PROFILO E TUTTE LE SUE PARTITE !!!
         // Prima cancello il record di Partecipare (che non ha un ID particolare
         // che diventa chiave esterna da qualche parte)
@@ -324,7 +330,7 @@ class GestioneDatabase {
                         if (this.controllaErrQuery(errAutoIncr)) {
                             let lastAutoIncr = resultAutoIncr[0].lastAutoIncr
                             let vittBit = 0
-                            if (vitt) {
+                            if (vitt == true) {
                                 vittBit = 1
                             }
                             let insertPartecipare = "INSERT INTO Partecipare VALUES (\"" + lastAutoIncr + "\", \"" + this.username + "\", \"" + vittBit + "\", \"" + numMosse + "\");"
@@ -337,12 +343,13 @@ class GestioneDatabase {
                                         if (this.controllaErrQuery(errGetUtente)) {
                                             let setPartite = ""
                                             let partiteVinteAdesso = (resultGetUtente[0].partiteVinte) + 1;
-                                            if (vitt) {
+                                            if (vitt == true) {
 
                                                 setPartite = "UPDATE Profili SET partiteVinte = \"" + partiteVinteAdesso + "\" WHERE username = \"" + this.username + "\";"
                                             } else {
                                                 let partitePerseAdesso = (resultGetUtente[0].partitePerse) + 1;
 
+                                                setPartite = "UPDATE Profili SET partitePerse = \"" + partitePerseAdesso + "\" WHERE username = \"" + this.username + "\";"
                                                 setPartite = "UPDATE Profili SET partitePerse = \"" + partitePerseAdesso + "\" WHERE username = \"" + this.username + "\";"
                                             }
 

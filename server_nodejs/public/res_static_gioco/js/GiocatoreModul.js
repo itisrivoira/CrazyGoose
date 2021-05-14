@@ -34,7 +34,7 @@ class Giocatore {
         this.imgPedina.src = this.percorsoImgSxDx
 
         this.dadiLanciati = 0
-        this.posizione = 30
+        this.posizione = 0
         this.turnoMio = false
         this.turniFermo = 0
         this.vincitore = false
@@ -86,7 +86,6 @@ class Giocatore {
     }
 
     avanza(spostamento, controllaCodCasella = true, incrementaDado) {
-        spostamento = 10
         if (incrementaDado) {
             this.dadiLanciati++
         }

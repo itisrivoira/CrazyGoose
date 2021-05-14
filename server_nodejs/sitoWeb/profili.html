@@ -19,7 +19,7 @@
 
     <script>
         function profiloScelto(username) {
-            location.replace("http://localhost:3000/profiloScelto?username=" + username)
+            location.replace("http://localhost:3000/profili?username=" + username)
         }
 
         function aggProfilo() {
@@ -111,7 +111,7 @@
                 <center>
                     <div class="divBtnScegliProfilo">
                         <div id="mostra2">
-                            <img onclick="chiediConferma('__USERNAME2__')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
+                            <img onclick="chiediConferma('__USERNAME2__')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
                             <button onclick="profiloScelto('__USERNAME2__')" class="btnScegliProfilo">Profilo N.3<br><i><b>__USERNAME2__</i></b></button>
                         </div>
 
