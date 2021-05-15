@@ -233,22 +233,6 @@ body {
     font-family: Ubuntu, "Sans-serif";
 }
 
-.imgEffetto {
-    margin-left: 450px;
-    margin-bottom: 5px;
-    margin-right: 20px;
-    float: left;
-    font-family: Ubuntu, "Sans-serif";
-}
-
-.descEffetto {
-    display: inline-block;
-    text-align: right;
-    margin-left: 10px;
-    font-size: 1.25em;
-    font-family: Ubuntu, "Sans-serif";
-}
-
 #casellaVincitrice {
     text-align: center;
     margin-bottom: 30px;
@@ -276,4 +260,51 @@ body {
     font-family: Ubuntu, "Sans-serif";
     text-align: left;
     margin-left: 100px;
+}
+
+#negativi {
+    background-color: rgba(82, 9, 116, 0.096);
+    text-align: center;
+    margin: auto;
+    border: 2px solid rgb(0, 0, 0);
+}
+
+#negativi tr:nth-child(even) {
+    background-color: #f2f2f2c7;
+}
+
+#negativi tr th {
+    border: 2px solid rgb(0, 0, 0);
+    text-align: center;
+}
+
+#positivi {
+    background-color: rgba(82, 9, 116, 0.055);
+    text-align: center;
+    margin: auto;
+    border: 2px solid rgb(0, 0, 0);
+    ;
+}
+
+#positivi tr th {
+    border: 2px solid rgb(0, 0, 0);
+}
+
+#positivi tr:nth-child(even) {
+    background-color: #f2f2f2c7;
+}
+
+.imgEffetto {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    float: left;
+    font-family: Ubuntu, "Sans-serif";
+}
+
+.descEffetto {
+    display: inline-block;
+    text-align: right;
+    margin-left: 10px;
+    font-size: 1.25em;
+    font-family: Ubuntu, "Sans-serif";
 }
