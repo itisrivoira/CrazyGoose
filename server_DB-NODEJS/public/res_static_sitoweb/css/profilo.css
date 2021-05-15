@@ -1,0 +1,197 @@
+body {
+    background-color: rgba(85, 48, 139, 0.87);
+    color: rgb(189, 184, 184);
+    margin: 0px;
+}
+
+.col,
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12 {
+    padding: 0px;
+}
+
+#rowIntestazione,
+#rowSceltaProfilo {
+    margin-bottom: 20px;
+}
+
+#infoQualeUtente {
+    /*font size 1.6 volte superiore a com'era prima (di com'era di default)*/
+    font-size: 1.6em;
+    color: rgba(46, 11, 99, 0.973);
+    background-color: rgb(119, 0, 255);
+    width: -moz-fit-content;
+    width: fit-content;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.divBtnScegliProfilo {
+    border-radius: 20%;
+}
+
+.btnScegliProfilo:hover {
+    background-color: #b93aca;
+    cursor: pointer;
+}
+
+.linkImgCestino:hover {
+    cursor: pointer;
+}
+
+.imgCestino {
+    margin-bottom: 20px;
+    margin-right: 5px;
+}
+
+#rowStatistiche1 {
+    margin-top: 25px;
+}
+
+#infoStatistUsername {
+    /*Per la dimensione in firefox (non posso usare il semplice fit-content)*/
+    width: -moz-fit-content;
+    width: fit-content;
+    border: 0.25em blue solid;
+    border-radius: 25%;
+    background-color: blueviolet;
+    padding: 10px;
+}
+
+#infoStatistUsername h4 {
+    font-size: 1.6em;
+}
+
+#totPartite,
+#intestazionePartite {
+    font-size: 1.7em;
+    text-decoration: underline;
+}
+
+.numPartite {
+    font-size: 1.3em;
+    margin-left: 20px;
+}
+
+#intestazioneGrado {
+    font-size: 1.6em;
+    text-decoration: underline;
+}
+
+#msgMotivazionale {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: rgb(17, 17, 194);
+}
+
+#divNonHaAccesso {
+    font-size: 2em;
+}
+
+#divElencoGradi ul {
+    list-style-type: "➭";
+}
+
+.gradi {
+    font-size: 1.2em;
+    color: rgba(230, 230, 230, 0.342);
+}
+
+.gradiNoTrasp {
+    font-size: 1.2em;
+    color: rgba(230, 230, 230);
+}
+
+#colonnaElencoPartite {
+    border: 2px dotted black;
+    height: fit-content;
+}
+
+#colonnaElencoPartite a {
+    color: rgb(13, 44, 136);
+}
+
+#divElencoPartite li {
+    font-size: 1.02em;
+}
+
+#noProfiloScelto {
+    display: none;
+}
+
+#aggiungeProfilo {
+    display: none;
+}
+
+#btnSubmit:hover {
+    background-color: #706b70;
+    cursor: pointer;
+}
+
+#msgErroreUsername {
+    color: red;
+    font-weight: bold;
+    display: none;
+}
+
+
+/* - - - CSS per il dropdown menu  - - - */
+
+#dropdownBtn {
+    background-color: #2980B9;
+    color: white;
+    padding: 16px;
+    /*font size 1.07 volte superiore a com'era prima (di com'era di default)*/
+    font-size: 1.07em;
+    border: none;
+    border-radius: 8%;
+}
+
+#dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #529bcc;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 10%;
+}
+
+#dropdown-menu a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    /*(per farli andare a capo)*/
+    display: block;
+    border-radius: 50% 65% 50% 65%;
+}
+
+#dropdown-menu a:hover {
+    background-color: #ddd;
+}
+
+#divDropdown {
+    float: right;
+}
+
+#divDropdown:hover #dropdown-menu {
+    display: block;
+}
+
+#divDropdown:hover #dropdownBtn {
+    background-color: #1973af;
+}
+
+
+/* - - - - - - - - - - - - - - */

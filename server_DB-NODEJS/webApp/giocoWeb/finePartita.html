@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title id="title"></title>
+
+    <!-- siamo in un file php quindi non "usa nodejs" e la cartella public per le risorse statiche,
+	 quindi devo cambiare il percorso (in un file normale userei /res_static_menu/... perchè sa che
+     una risorsa statica la deve prendere dalla cartella /public) -->
+
+    <link rel="stylesheet" href="./res_static_gioco/css/finePartita.css">
+
+    <!-- Per l'icona piccoliina nella scheda -->
+    <link rel="icon" type="image/png" href="./favicon/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="./favicon/favicon-128.png" sizes="128x128" />
+    <link rel="icon" type="image/png" href="./favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="./favicon/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="./favicon/favicon-16x16.png" sizes="16x16" />
+</head>
+
+<body>
+    <div id="vittoria">
+        <label id="msgHaiVinto"><center><b>HAI VINTO</b></center></label>
+        <center>
+            <a class="premiPerUscire" href="http://localhost:3000/CrazyGoose"><b>Premi per rigiocare</b></a>
+        </center>
+    </div>
+
+    <div id="sconfitta">
+        <label id="msgHaiPerso"><center><b>HAI PERSO</b></center></label>
+        <center>
+            <a class="premiPerUscire" href="http://localhost:3000/CrazyGoose"><b>Premi per rigiocare</b></a>
+        </center>
+    </div>
+    <br><br>
+</body>
+
+</html>
