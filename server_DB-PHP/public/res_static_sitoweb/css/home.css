@@ -1,0 +1,276 @@
+body {
+    /*Uso quasi ovunque questo font, quindi lo imposto come "default"*/
+    font-family: Ubuntu, sans-serif;
+    color: aliceblue;
+}
+
+.classTestoNero {
+    color: black;
+}
+
+.container-fluid {
+    background-color: rgba(92, 58, 142, 0.87);
+}
+
+.col {
+    padding: 0px;
+}
+
+
+/* - - - CSS per il dropdown menu  - - - */
+
+#dropdownBtn {
+    background-color: #2980B9;
+    color: white;
+    padding: 16px;
+    font-size: 1em;
+    border: none;
+}
+
+#dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #529bcc;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+#dropdown-menu a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-radius: 50% 65% 50% 65%;
+}
+
+#dropdown-menu a:hover {
+    background-color: #ddd;
+}
+
+#divDropdown {
+    display: none;
+    float: right;
+}
+
+#divDropdown:hover #dropdown-menu {
+    display: block;
+}
+
+#divDropdown:hover #dropdownBtn {
+    background-color: #1973af;
+}
+
+
+/* - - - - - - - - - - - - - - */
+
+.carousel-item {
+    height: 600px;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.titoloSchedaCarousel {
+    color: black;
+    font-size: 3.4em;
+    font-weight: 500;
+}
+
+.testoCarousel {
+    color: black;
+    font-size: 1.5em;
+    font-weight: 300;
+}
+
+.sfondoTestoCarousel {
+    background-color: lightgray;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    height: 50px;
+    width: 50px;
+    background-color: rgba(0, 0, 0, 0.3);
+    background-size: 65%, 65%;
+    position: relative;
+}
+
+.titoloSchedaCarousel:hover {
+    color: black;
+}
+
+#divSchedaCarosello p {
+    background-color: rgb(124, 154, 184);
+    opacity: 0.7;
+    width: 100%;
+    height: auto;
+    position: relative;
+    margin-bottom: 0px;
+}
+
+#imgSchedaCrazyGoose {
+    width: 100%;
+    height: 100%;
+}
+
+#imgSchedaRegolamento {
+    width: 100%;
+    height: 100%;
+}
+
+.introduz_giocoERegole {
+    padding: 4vh;
+    width: 70vw;
+    text-align: center;
+    font-size: 1.07em;
+}
+
+.btnIn {
+    color: aliceblue;
+    cursor: pointer;
+    border-radius: 5em;
+    background: purple;
+    border: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: 0.81em;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+}
+
+#rowAccediRegistrati {
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: white;
+    padding: 20px;
+}
+
+.btnIn:hover {
+    color: aliceblue;
+    text-decoration: underline;
+}
+
+
+/*--- CSS per le flip-card delle 4 pedine ---*/
+
+.flip-card {
+    top: 10px;
+    float: left;
+    background-color: transparent;
+    width: 250px;
+    height: 250px;
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.flip-card-front {
+    background-color: rgba(255, 255, 255, 0.808);
+    color: black;
+}
+
+.flip-card-back {
+    color: black;
+    transform: rotateY(180deg);
+}
+
+.flip-card-inner p {
+    background-color: white;
+}
+
+.colContainerFlipCard {
+    margin-bottom: 10px;
+}
+
+.cardFrontOcaGialla {
+    background-image: url(../images/pedina_gialla_250x250.png);
+}
+
+.cardBackOcaGialla {
+    color: rgba(179, 157, 35, 0.952);
+    background-color: rgba(255, 217, 0, 0.849);
+    background-image: url(../images/pedina_gialla_250x250.png);
+}
+
+.cardFrontOcaBlu {
+    background-image: url(../images/pedina_blu_250x250.png);
+}
+
+.cardBackOcaBlu {
+    align-items: center;
+    background-color: rgba(0, 0, 255, 0.692);
+    color: blue;
+    background-image: url(../images/pedina_blu_250x250.png);
+}
+
+.cardBackOcaBlu p {
+    background-color: rgba(0, 0, 255, 0.24);
+}
+
+.cardFrontOcaVerde {
+    background-image: url(../images/pedina_verde_250x250.png);
+}
+
+.cardBackOcaVerde {
+    color: green;
+    background-color: rgba(23, 156, 23, 0.952);
+    background-image: url(../images/pedina_verde_250x250.png);
+}
+
+.cardFrontOcaRossa {
+    background-image: url(../images/pedina_rosso_250x250.png);
+}
+
+.cardBackOcaRossa {
+    color: red;
+    background-color: rgba(255, 0, 0, 0.822);
+    background-image: url(../images/pedina_rosso_250x250.png);
+}
+
+.cardFrontOcaCattiva {
+    background-image: url(../images/pedina_cattiva_250x250.png);
+}
+
+.cardBackOcaCattiva {
+    background-image: url(../images/pedina_cattiva_250x250.png);
+    color: rgb(71, 1, 62);
+    background-color: rgba(99, 22, 80, 0.521);
+}
+
+.cardBackOcaGialla p,
+.cardBackOcaBlu p,
+.cardBackOcaVerde p,
+.cardBackOcaRossa p,
+.cardBackOcaCattiva p {
+    background-color: rgba(235, 231, 231, 0.822);
+}
+
+#nomeOcaCattiva {
+    font-weight: bold;
+}
+
+
+/*---------- FINE CSS per le flip-card delle 4 pedine --------------*/

@@ -1,0 +1,80 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <title>Accedi</title>
+
+    <link rel="stylesheet" href="/res_static_sitoweb/css/accedi.css">
+
+    <!-- Per l'icona piccoliina nella scheda -->
+    <link rel="icon" type="image/png" href="/favicon/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-128.png" sizes="128x128" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-16x16.png" sizes="16x16" />
+</head>
+
+<body onload="focusIniziale()">
+    <div id="main">
+        <div>
+            <center>
+                <p id="loginParagInfo">Accedi al tuo account Crazy Goose</p>
+                <a href="http://localhost:3000/">
+                    <img src="/res_static_sitoweb/images/logo_32x32.png">
+                </a>
+            </center>
+        </div>
+        <!-- NON HO MODO DI PASSARE CAMPI IN POST DA NODEJS A PAGINA PHP QUINDI VADO DIRETTAMENTE ALLA PAGINA PHP -->
+        <form action="http://localhost:80/progetti/CrazyGoose/server_DB-PHP/phpFiles/accedi.php" method="post" name="formReg" onsubmit="return(controllaDati())">
+            <input name="email" type="text" placeholder="Email">
+            <input name="password" type="password" placeholder="Password">
+            <button name="submit" id="submit" onclick="controllaDati()">Accedi</button>
+        </form>
+        <div id="divRegistrati">
+            <center>
+                <p id="passaARegistr">Non hai ancora un account ? <a href="http://localhost:3000/registrati" id="btnRegistrati"><b>Registrati</b></a></p>
+            </center>
+        </div>
+    </div>
+    <center>
+        <p id="passwEmailErrati">EMAIL o PASSWORD ERRATI !</p>
+    </center>
+
+    <script>
+        function focusIniziale() {
+            document.formReg.email.focus()
+        }
+
+        function controllaDati() {
+            /* AL TENTATIVO DI INVIO DEI DATI ("onSubmit" nel tag "form")
+            Prendo il form che nella pagina ha quel "name" "formReg", all'itnerno del
+             quale ci sono delle componenti con un certo "name" ("email", "password").
+             Ne controllo il valore, cioè quello che contengono. Se non contengono nulla sposto
+             il focus su una di loro (scriverà con la tastiera all'interno della componente vuota senza doverci 
+             cliccare lui) */
+
+            //x.trim() ==> (rimuove spazi ad inizio e fine della stringa x)
+
+            if (document.formReg.email.value == "") {
+                document.formReg.email.focus()
+                alert("Inserisci l'email con cui ti sei registrato !")
+                return false
+            } else {
+                var x = document.formReg.email.value
+                document.formReg.email.value = x.trim()
+            }
+            if (document.formReg.password.value == "") {
+                document.formReg.password.focus()
+                alert("Inserisci la password del tuo account.")
+                return false
+            } else {
+                var x = document.formReg.password.value
+                document.formReg.password.value = x.trim()
+            }
+            return true
+        }
+    </script>
+</body>
+
+</html>

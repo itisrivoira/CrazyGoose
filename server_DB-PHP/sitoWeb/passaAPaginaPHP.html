@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<body onload="paginaPhp()">
+    <label style="display:none;" id="percorso"></label>
+    <script>
+        function paginaPhp() {
+            //Non posso cambiare url da nodejs (dal server). Lo faccio tramite javascritp lato client al
+            // termine del carimento di questa pagina ("onload" del body).
+
+            //Questa pagina reindirizza solamente in un altra pagina. Dato che è utilizzata più volte,
+            // la pagina php che sceglie gliela specifico modificando un tag html (in jsdom, dal server).
+
+            //(non specifico solamente la pagina ma l'intero percorso che dalla cartella server_nodejs)
+
+            let percorsoPagina = document.getElementById("percorso").innerHTML
+
+            location.replace("http://localhost:80/progetti/CrazyGoose/server_DB-PHP/" + percorsoPagina)
+        }
+    </script>
+</body>
+
+</html>
