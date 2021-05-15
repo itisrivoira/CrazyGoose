@@ -3,6 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- MI SERVE XKE SE IL BROWSER MEMORIZZA IN CACHE DEI DATI DEL SITO
+        SMETTE DI ENTRARE IN ALCUNI ENDPOINT-->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
+    
     <title>Crazy Goose: Scegli il profilo</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -76,7 +83,7 @@
                             <a href="http://localhost:3000/">Home</a>
                             <a id="linkVaiAlGioco" href="http://localhost:3000/CrazyGoose">Vai al gioco</a>
                             <a id="voceLogout" href="http://localhost:3000/esciDalProfilo"></a>
-                            <a href="http://localhost:3000/esci">Esci</a>
+                            <a href="http://localhost:3000/logoutUtente">Esci</a>
                         </div>
                     </div>
                 </div>

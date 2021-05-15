@@ -10,8 +10,8 @@ const { JSDOM } = jsdom
 
 const express = require("express")
 const app = express()
-const gestDB = new GestioneDatabase()
-gestDB.creaDB()
+var gestDB_per_client = {}
+
 
 app.listen(3000, () => {
     require('dns').lookup(require('os').hostname(), function(err, address, fam) {
@@ -23,7 +23,16 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ extended: true }))
 app.use(express.static("public"))
 
-//----------------- sito web ----------------------------------
+
+function getGestDB_client(IP){
+    let gestDB_ritorno = gestDB_per_client[IP]
+    
+    if(gestDB_per_client[IP] == undefined){
+        gestDB_ritorno = gestDB_per_client[IP] = new GestioneDatabase()    
+    }
+    
+    return gestDB_ritorno
+}
 
 function aggiungiFooterAllaPagina(pagina) {
     let jsDom = new JSDOM(pagina)
@@ -50,7 +59,10 @@ function rimpiazzaLocalhostConIP(pagina) {
     return paginaModif
 }
 
-function controllaSeLoggato(resp) {
+function controllaSeLoggato(req, resp) {
+    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.connection.remoteAddress)
+    
     if (gestDB.nome == null) {
         //non è loggato ed ha modificato l'URL manualmente... lo mando alla pagina per loggarsi
         resp.redirect(301, "/accedi")
@@ -60,12 +72,19 @@ function controllaSeLoggato(resp) {
 }
 
 
-app.get("/esci", (req, resp) => {
+app.get("/logoutUtente", (req, resp) => {
+    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.connection.remoteAddress)
+    
     gestDB.resettaValori()
-    resp.redirect(301, "/")
+
+    resp.redirect(301, "/accedi")
 })
 
 app.get("/", (req, resp) => {
+    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.connection.remoteAddress)
+    
     let pagina = fs.readFileSync("./sitoWeb/home.html", "utf-8")
     let paginaConIP = rimpiazzaLocalhostConIP(pagina)
     let paginaConFooter = aggiungiFooterAllaPagina(paginaConIP)
@@ -96,7 +115,10 @@ app.get("/", (req, resp) => {
 })
 
 app.get("/profili", (req, resp) => {
-    if (controllaSeLoggato(resp)) {
+    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.connection.remoteAddress)
+    
+    if (controllaSeLoggato(req, resp)) {
 
         if (req.query.username != undefined) {
             gestDB.username = req.query.username
@@ -298,7 +320,10 @@ app.get("/profili", (req, resp) => {
 })
 
 app.post("/aggProfilo", (req, resp) => {
-    if (controllaSeLoggato(resp)) {
+    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.connection.remoteAddress)
+    
+    if (controllaSeLoggato(req, resp)) {
         //la query ci impiega un attimo a finire, e io devo fare la resp.send
         // QUANDO ha finito la query
         gestDB.aggiungiProfilo(req.body.username, function(flagAggiunto) {
@@ -307,20 +332,25 @@ app.post("/aggProfilo", (req, resp) => {
             } else {
                 resp.redirect(301, "/profili?agg=true&err=true")
             }
-
         })
     }
 })
 
 app.get("/esciDalProfilo", (req, resp) => {
-    if (controllaSeLoggato(resp)) {
+    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.connection.remoteAddress)
+    
+    if (controllaSeLoggato(req, resp)) {
         gestDB.esciDalProfilo()
         resp.redirect(301, "/profili")
     }
 })
 
 app.get("/eliminaProfilo", (req, resp) => {
-    if (controllaSeLoggato(resp)) {
+    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.connection.remoteAddress)
+    
+    if (controllaSeLoggato(req, resp)) {
         //la query ci impiega un attimo a finire, e io devo fare la resp.send
         // QUANDO ha finito la query
         gestDB.eliminaProfilo(req.query.username, function() {
@@ -338,6 +368,9 @@ app.get("/regole", (req, resp) => {
 })
 
 app.get("/contattaci", (req, resp) => {
+    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.connection.remoteAddress)
+    
     let paginaRegoleSenzaFooter = fs.readFileSync("./sitoWeb/contattaci.html", "utf-8")
     let paginaConFooter = aggiungiFooterAllaPagina(paginaRegoleSenzaFooter)
     let pagina = rimpiazzaLocalhostConIP(paginaConFooter)
@@ -385,6 +418,9 @@ app.get("/registrati", (req, resp) => {
     resp.send(paginaConIP)
 })
 app.post("/formRegistrati", (req, resp) => {
+    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.connection.remoteAddress)
+    
     //la query ci impiega un attimo a finire, e io devo fare la resp.send
     // QUANDO ha finito la query
 	let passwCritt = crypto.createHash("sha256").update(req.body.password).digest("hex")
@@ -413,6 +449,9 @@ app.get("/accedi", (req, resp) => {
     resp.send(paginaConIP)
 })
 app.post("/formAccedi", (req, resp) => {
+    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.connection.remoteAddress)
+    
     //la query ci impiega un attimo a finire, e io devo fare la resp.send
     // QUANDO ha finito la query
     let passwCritt = crypto.createHash("sha256").update(req.body.password).digest("hex")
@@ -444,7 +483,10 @@ app.get("/guida", (req, resp) => {
 //----------------------------------------------------------
 
 app.get("/CrazyGoose", (req, resp) => {
-    if (controllaSeLoggato(resp)) {
+    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.connection.remoteAddress)
+    
+    if (controllaSeLoggato(req, resp)) {
         let pagina = fs.readFileSync("./webApp/menu/homePage.html", "utf-8")
         let jsDom = new JSDOM(pagina)
 
@@ -455,7 +497,7 @@ app.get("/CrazyGoose", (req, resp) => {
 })
 
 app.get("/sceltaOche", (req, resp) => {
-    if (controllaSeLoggato(resp)) {
+    if (controllaSeLoggato(req, resp)) {
         let pagina = fs.readFileSync("./webApp/giocoWeb/scelta_oche.html", "utf-8")
         let paginaConIP = rimpiazzaLocalhostConIP(pagina)
 
@@ -464,7 +506,7 @@ app.get("/sceltaOche", (req, resp) => {
 })
 
 app.get("/credits", (req, resp) => {
-    if (controllaSeLoggato(resp)) {
+    if (controllaSeLoggato(req, resp)) {
         let pagina = fs.readFileSync("./webApp/menu/credits.html", "utf-8")
         let paginaConIP = rimpiazzaLocalhostConIP(pagina)
 
@@ -473,7 +515,7 @@ app.get("/credits", (req, resp) => {
 })
 
 app.get("/gioco", (req, resp) => {
-    if (controllaSeLoggato(resp)) {
+    if (controllaSeLoggato(req, resp)) {
         let pagina = fs.readFileSync("./webApp/giocoWeb/gioco.html", "utf-8")
         let paginaConIP = rimpiazzaLocalhostConIP(pagina)
         let jsDom = new JSDOM(paginaConIP)
@@ -485,7 +527,10 @@ app.get("/gioco", (req, resp) => {
 })
 
 app.get("/finePartita", (req, resp) => {
-    if (controllaSeLoggato(resp)) {
+    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.connection.remoteAddress)
+    
+    if (controllaSeLoggato(req, resp)) {
         let durata = req.query.durata
         let numMosse = req.query.numMosse
         let flagVittoria = req.query.vitt

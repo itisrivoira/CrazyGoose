@@ -2,20 +2,14 @@
 <html>
 
 <head>
-    <!-- if($nome != null){
-        $classDellaTestata = "class = \"col-10 d-flex justify-content-center\"";
-        $classDelMenuUtente = "class = \"col-2\"";
-        $styleDelMenuUtente = "display: inline-block;";
-        $msgDelMenuUtente = "Benvenuto<br><i><b>$nome $cognome</b></i>";
-        
-        if($username != null){
-        	$msgDelMenuUtente = "Benvenuto<br><i><b>$nome $cognome</b></i><br>Con profilo:<br><i><b>$username</b></i>"; 
-        }
-    }else{
-        $classDellaTestata = "class = \"col-12 d-flex justify-content-center\"";
-    } -->
-
     <meta charset="UTF-8">
+    <!-- MI SERVE XKE SE IL BROWSER MEMORIZZA IN CACHE DEI DATI DEL SITO
+        SMETTE DI ENTRARE IN ALCUNI ENDPOINT-->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
+    
     <title>Crazy Goose: Home</title>
 
     <!-- css per bootstrap -->
@@ -51,7 +45,7 @@
                         <a href="http://localhost:3000/profili">Profili</a>
                         <a id="linkVaiAlGioco" href="http://localhost:3000/CrazyGoose">Vai al gioco</a>
                         <a href="http://localhost:3000/download">Download<br>gioco</a>
-                        <a href="http://localhost:3000/esci">Esci</a>
+                        <a href="http://localhost:3000/logoutUtente">Esci</a>
                     </div>
                 </div>
             </div>

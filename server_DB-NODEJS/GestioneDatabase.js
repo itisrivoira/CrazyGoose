@@ -4,12 +4,13 @@ class GestioneDatabase {
         this.conn = mysql.createConnection({
             hostname: "localhost",
             user: "root",
-            passw: "",
+            passw: ""
             //database:"CrazyGoose"
             //la userò per creare il DB che magari ancora non esiste
         })
 
         this.resettaValori()
+        this.creaDB()
     }
 
     resettaValori() {
@@ -36,70 +37,84 @@ class GestioneDatabase {
 
     creaDB() {
         this.conn.connect(() => {
-            this.conn.query("CREATE DATABASE IF NOT EXISTS CrazyGoose;", (err, result) => {
-                if (this.controllaErrQuery(err)) {
+            this.conn.query("CREATE DATABASE CrazyGoose;", (err, result) => {
+                if(err.errno == 1007){ //Can't create database 'CrazyGoose'; database exists
+                    //questa connession non mi serve più, da ora userò
+                    // una connessione che si connette già in autom.
+                    // al DB appena creato
+                    this.conn.end()
 
-                    //------------creazione tabelle------------
-                    let tabUtenti = "CREATE TABLE IF NOT EXISTS Utenti ( \
-									email VARCHAR(40) NOT NULL PRIMARY KEY, \
-									nome VARCHAR(25) NOT NULL, \
-									cognome VARCHAR(30) NOT NULL, \
-									password VARCHAR(64) NOT NULL );"
-
-                    let tabProfili = "CREATE TABLE IF NOT EXISTS Profili ( \
-									username VARCHAR(20) PRIMARY KEY NOT NULL, \
-									grado VARCHAR(15) NOT NULL, \
-									partiteVinte INT NOT NULL, \
-									partitePerse INT NOT NULL, \
-									emailUtente VARCHAR(40) NOT NULL, \
-									FOREIGN KEY(emailUtente) REFERENCES Utenti(email) );"
-
-                    let tabPartite = "CREATE TABLE IF NOT EXISTS Partite ( \
-									ID_part INT PRIMARY KEY AUTO_INCREMENT NOT NULL, \
-									durata INT NOT NULL );"
-
-                    let tabPartecipare = "CREATE TABLE IF NOT EXISTS Partecipare ( \
-										ID_partita INT NOT NULL, \
-										username VARCHAR(20) NOT NULL, \
-										flagVittoria BOOLEAN NOT NULL, \
-										numMosse INT NOT NULL, \
-										PRIMARY KEY(ID_partita, username), \
-										FOREIGN KEY(ID_partita) REFERENCES Partite(ID_part), \
-										FOREIGN KEY(username) REFERENCES Profili(username) );"
-
-                    this.conn.query("USE CrazyGoose;", (e, r) => {
-
-                        this.conn.query(tabUtenti, (errUt, resultUt) => {
-                            if (this.controllaErrQuery(errUt)) {
-
-                                this.conn.query(tabProfili, (errPro, resultPro) => {
-                                    if (this.controllaErrQuery(errPro)) {
-
-                                        this.conn.query(tabPartite, (errPart, resultPart) => {
-                                            if (this.controllaErrQuery(errPart)) {
-
-                                                this.conn.query(tabPartecipare, (errPartec, resultPartec) => {
-                                                    if (this.controllaErrQuery(errPartec)) {
-                                                        //questa connession non mi serve più, da ora userò
-                                                        // una connessione che si connette già in autom.
-                                                        // al DB appena creato
-                                                        this.conn.end()
-
-                                                        this.conn = mysql.createConnection({
-                                                            hostname: "localhost",
-                                                            user: "root",
-                                                            passw: "",
-                                                            database: "CrazyGoose"
-                                                        })
-                                                    }
-                                                })
-                                            }
-                                        })
-                                    }
-                                })
-                            }
-                        })
+                    this.conn = mysql.createConnection({
+                        hostname: "localhost",
+                        user: "root",
+                        passw: "",
+                        database: "CrazyGoose"
                     })
+                }else{
+                    if (this.controllaErrQuery(err)) {
+
+                        //------------creazione tabelle------------
+                        let tabUtenti = "CREATE TABLE IF NOT EXISTS Utenti ( \
+                                        email VARCHAR(40) NOT NULL PRIMARY KEY, \
+                                        nome VARCHAR(25) NOT NULL, \
+                                        cognome VARCHAR(30) NOT NULL, \
+                                        password VARCHAR(64) NOT NULL );"
+
+                        let tabProfili = "CREATE TABLE IF NOT EXISTS Profili ( \
+                                        username VARCHAR(20) PRIMARY KEY NOT NULL, \
+                                        grado VARCHAR(15) NOT NULL, \
+                                        partiteVinte INT NOT NULL, \
+                                        partitePerse INT NOT NULL, \
+                                        emailUtente VARCHAR(40) NOT NULL, \
+                                        FOREIGN KEY(emailUtente) REFERENCES Utenti(email) );"
+
+                        let tabPartite = "CREATE TABLE IF NOT EXISTS Partite ( \
+                                        ID_part INT PRIMARY KEY AUTO_INCREMENT NOT NULL, \
+                                        durata INT NOT NULL );"
+
+                        let tabPartecipare = "CREATE TABLE IF NOT EXISTS Partecipare ( \
+                                            ID_partita INT NOT NULL, \
+                                            username VARCHAR(20) NOT NULL, \
+                                            flagVittoria BOOLEAN NOT NULL, \
+                                            numMosse INT NOT NULL, \
+                                            PRIMARY KEY(ID_partita, username), \
+                                            FOREIGN KEY(ID_partita) REFERENCES Partite(ID_part), \
+                                            FOREIGN KEY(username) REFERENCES Profili(username) );"
+
+                        this.conn.query("USE CrazyGoose;", (e, r) => {
+
+                            this.conn.query(tabUtenti, (errUt, resultUt) => {
+                                if (this.controllaErrQuery(errUt)) {
+
+                                    this.conn.query(tabProfili, (errPro, resultPro) => {
+                                        if (this.controllaErrQuery(errPro)) {
+
+                                            this.conn.query(tabPartite, (errPart, resultPart) => {
+                                                if (this.controllaErrQuery(errPart)) {
+
+                                                    this.conn.query(tabPartecipare, (errPartec, resultPartec) => {
+                                                        if (this.controllaErrQuery(errPartec)) {
+                                                            //questa connession non mi serve più, da ora userò
+                                                            // una connessione che si connette già in autom.
+                                                            // al DB appena creato
+                                                            this.conn.end()
+
+                                                            this.conn = mysql.createConnection({
+                                                                hostname: "localhost",
+                                                                user: "root",
+                                                                passw: "",
+                                                                database: "CrazyGoose"
+                                                            })
+                                                        }
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+                                }
+                            })
+                        })
+                    }
                 }
             })
         })
@@ -137,6 +152,7 @@ class GestioneDatabase {
     }
 
     accedi(email, passw, callback) {
+        
         let accessoEffettuato = true
 
         this.conn.connect(() => {
