@@ -271,10 +271,11 @@ app.get("/profili", (req, resp) => {
                             partite.forEach(datiSingolaPartita => {
                                 let ID_partita = datiSingolaPartita.ID_part
                                 let vinto_perso = ""
+								
                                 if (datiSingolaPartita.flagVittoria == 1) {
                                     vinto_perso = "<label style=\"color:greenyellow;\">VINTO</label>";
                                 } else {
-                                    vinto_perso = "<label style=\"color:red;\">PERSO</label>";
+                                    vinto_perso = "<label style=\"color:red;\">PERSO"+datiSingolaPartita.flagVittoria+"</label>";
                                 }
                                 let minuti = datiSingolaPartita.durata
                                 let dadiLanciati = datiSingolaPartita.numMosse
@@ -533,7 +534,13 @@ app.get("/finePartita", (req, resp) => {
     if (controllaSeLoggato(req, resp)) {
         let durata = req.query.durata
         let numMosse = req.query.numMosse
-        let flagVittoria = req.query.vitt
+        let flagVittoria = null
+        if(req.query.vitt == "true"){
+			flagVittoria = true
+        }else{
+	        flagVittoria = false
+        }
+		
 
         gestDB.registraPartitaPartecipazione(durata, numMosse, flagVittoria, function() {
             let pagina = fs.readFileSync("./webApp/giocoWeb/finePartita.html", "utf-8")
