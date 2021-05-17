@@ -38,7 +38,7 @@ class GestioneDatabase {
     creaDB() {
         this.conn.connect(() => {
             this.conn.query("CREATE DATABASE CrazyGoose;", (err, result) => {
-                if(err.errno == 1007){ //Can't create database 'CrazyGoose'; database exists
+                if(err != null && err.errno == 1007){ //Can't create database 'CrazyGoose'; database exists
                     //questa connession non mi serve più, da ora userò
                     // una connessione che si connette già in autom.
                     // al DB appena creato
