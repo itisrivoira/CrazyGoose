@@ -1,78 +1,9 @@
 <?php 
     class GestDB{
         public function __construct() {
-            $this->mysqli = new mysqli("localhost", "root", "", "CrazyGoose");
-            if($this->mysqli->connect_error){
-                if($this->mysqli->connect_errno == 1049){
-                    $this->creaDB();
-                }else{
-                    die("Errore:".$this->mysqli->connect_errno." per ".$this->mysqli->connect_error);
-                }
-            }
-        }
-        private function creaDB(){
-            //Questa funzione è richiamata SOLO se non esiste il DB (è richiamata nel costruttore
-            
-            $this->mysqli = new mysqli("localhost", "root", "");
+            $this->mysqli = new mysqli("localhost", "Giocatore", "1gioc!CrazyGoose?", "CrazyGoose");
             if($this->mysqli->connect_error){
                 die("Errore:".$this->mysqli->connect_errno." per ".$this->mysqli->connect_error);
-            }else{
-                if(!$this->mysqli->query("CREATE DATABASE CrazyGoose;")){
-                    die("ERRORE creazione DB: ".$this->mysqli->error." (".$this->mysqli->errno.")");
-                }else{
-                    //(non controllo nemmero che dia o meno errore...  il DB l'ho appena creato)
-                    $this->mysqli->query("USE CrazyGoose;");
-
-                    //creo tutte le varie tabelle
-
-                    if(!$this->mysqli->query("CREATE TABLE IF NOT EXISTS Utenti (
-                                            nome VARCHAR(25) NOT NULL,
-                                            cognome VARCHAR(30) NOT NULL,
-                                            email VARCHAR(40) PRIMARY KEY NOT NULL,
-                                            password VARCHAR(64) NOT NULL
-                                        );")){
-
-                        die("ERRORE CREAZIONE TAB Utenti: ".$this->mysqli->error." (".$this->mysqli->errno.")");
-                    }else{
-                        if(!$this->mysqli->query("CREATE TABLE IF NOT EXISTS Profili (
-                                                username VARCHAR(20) PRIMARY KEY NOT NULL,
-                                                grado VARCHAR(15) NOT NULL,
-                                                partiteVinte INT NOT NULL,
-                                                partitePerse INT NOT NULL,
-                                                emailUtente VARCHAR(40) NOT NULL,
-                                                FOREIGN KEY(emailUtente) REFERENCES Utenti(email)
-                                            );")){
-
-                            die("ERRORE CREAZIONE TAB Profili: ".$this->mysqli->error." (".$this->mysqli->errno.")");
-                        }else{
-                            if(!$this->mysqli->query("CREATE TABLE IF NOT EXISTS Partite (
-                                                    ID_part INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-                                                    durata INT NOT NULL
-                                                );")){
-
-                                die("ERRORE CREAZIONE TAB Partite: ".$this->mysqli->error." (".$this->mysqli->errno.")");
-                            }else{
-                                if(!$this->mysqli->query("CREATE TABLE IF NOT EXISTS Partecipare (
-                                                        ID_partita INT NOT NULL,
-                                                        username VARCHAR(20) NOT NULL,
-                                                        flagVittoria BOOLEAN NOT NULL,
-                                                        numMosse INT NOT NULL,
-                                                        PRIMARY KEY(ID_partita, username),
-                                                        FOREIGN KEY(ID_partita) REFERENCES Partite(ID_part),
-                                                        FOREIGN KEY(username) REFERENCES Profili(username)
-                                                    );")){
-
-                                    /* 					!!!!!!!!!!!!!!!!!!!!!
-                                    In realtà SQL non ha il tipo BOOLEAN true false quindi "flagVittoria" sara'
-                                    1-true o 0-false								
-                                                        !!!!!!!!!!!!!!!!!!!!!!! */
-
-                                    die("ERRORE CREAZIONE TAB Partecipare: ".$this->mysqli->error." (".$this->mysqli->errno.")");
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
         
