@@ -29,23 +29,116 @@ body {
     /*font size 1.6 volte superiore a com'era prima (di com'era di default)*/
     font-size: 1.6em;
     color: rgba(46, 11, 99, 0.973);
-    background-color: rgb(119, 0, 255);
     width: -moz-fit-content;
     width: fit-content;
     padding-top: 6px;
     padding-bottom: 6px;
     padding-right: 20px;
     padding-left: 20px;
+    /* QUESTO MARGIN L HO USATO PERCHE NON SAPEVO COME FARLO RESPONSIVE*/
+    margin-right:1500px;
+    font-weight: bold;
+    
+}
+
+#navbarDropdownMenuLink{
+    color: rgba(46, 11, 99, 0.973);
+    font-weight: bold;
+}
+
+#contenitoreRiga2{
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.945);
+    border: 3px solid rgba(46, 11, 99, 0.932);
+    height: 307px;
+    padding-top: auto;
+    padding-bottom: auto;
+    border-radius: 10px;
+}
+
+#mostra0{
+    margin-top:100px;
+    margin-left:60px;
+}
+#mostra1{
+    margin-top:100px;
+    margin-left:-30px;
+}
+#mostra2{
+    margin-top:100px;
+    margin-left:-30px;
+}
+
+#btnScegli0{
+    margin-top:100px;
+    margin-left:85px;
+}
+
+#btnScegli1{
+    margin-top:100px;
+    
+}
+
+#btnScegli2{
+    margin-top:100px;
+}
+
+#numPartite{
+    margin-top: 0px;
+    border: 5px solid rgba(46, 11, 99, 0.932);
+    border-radius:10px;
 }
 
 .divBtnScegliProfilo {
-    border-radius: 20%;
+    width:300px;
+    height: 300px;
+    border: 5px solid rgba(46, 11, 99, 0.932);
+    background-color: rgb(46, 11, 99, 0.932);
+    border-radius: 50%;
+}
+
+.divBtnScegliProfilo3{
+    margin-left: 380px;
+    width:300px;
+    height: 300px;
+    border: 5px solid rgba(46, 11, 99, 0.932);
+    background-color: rgb(46, 11, 99, 0.932);
+    border-radius: 50%;
 }
 
 .btnScegliProfilo:hover {
     background-color: #b93aca;
     cursor: pointer;
 }
+
+#grado{
+    margin-top: 10px;
+    width:900px;
+    height: 300px;
+    border: 5px solid rgba(46, 11, 99, 0.932);
+    border-radius: 10px;
+    background-color: white;
+    color:rgba(46, 11, 99, 0.932);
+}
+
+#colonnaElencoPartite{
+    float:right;
+    margin-top: 10px;
+    width:900px;
+    height: 300px;
+    border: 5px solid rgba(46, 11, 99, 0.932);
+    border-radius: 10px;
+    background-color: white;
+    color:rgba(46, 11, 99, 0.932);
+
+}
+
+
+
+#intestazioneGrado{
+    margin-left: 150px;
+}
+
 
 .linkImgCestino:hover {
     cursor: pointer;
@@ -56,22 +149,27 @@ body {
     margin-right: 5px;
 }
 
-#rowStatistiche1 {
-    margin-top: 25px;
-}
 
 #infoStatistUsername {
     /*Per la dimensione in firefox (non posso usare il semplice fit-content)*/
-    width: -moz-fit-content;
-    width: fit-content;
-    border: 0.25em blue solid;
-    border-radius: 25%;
+    margin-top:40px;
+    margin-bottom:40px;
+    width: 600px;
+    height:70px;
+    border: 3px solid white;
+    border-radius: 40px;
     background-color: blueviolet;
-    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    
 }
 
 #infoStatistUsername h4 {
     font-size: 1.6em;
+    font-weight: bold;
+    color: white;
 }
 
 #totPartite,
@@ -80,9 +178,10 @@ body {
     text-decoration: underline;
 }
 
+
+
 .numPartite {
     font-size: 1.3em;
-    margin-left: 20px;
 }
 
 #intestazioneGrado {
@@ -100,28 +199,25 @@ body {
     font-size: 2em;
 }
 
+#ulElencoGradi{
+    color:rgba(46, 11, 99, 0.932);
+}
+
 #divElencoGradi ul {
     list-style-type: "➭";
+    
 }
 
 .gradi {
     font-size: 1.2em;
-    color: rgba(230, 230, 230, 0.342);
+    color:rgba(46, 11, 99, 0.932);
 }
 
 .gradiNoTrasp {
     font-size: 1.2em;
-    color: rgba(230, 230, 230);
+    color:rgba(147, 87, 238, 0.932);
 }
 
-#colonnaElencoPartite {
-    border: 2px dotted black;
-    height: fit-content;
-}
-
-#colonnaElencoPartite a {
-    color: rgb(13, 44, 136);
-}
 
 #divElencoPartite li {
     font-size: 1.02em;

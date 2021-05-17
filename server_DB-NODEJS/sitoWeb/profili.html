@@ -70,93 +70,29 @@
 <body style="padding:2px;" onload="focusIniziale()">
     <div class="container-fluid">
         <div class="row" id="rowIntestazione">
-            <div class="col-9">
-                <center>
-                    <div id="infoQualeUtente"></div>
-                </center>
-            </div>
-            <div class="col-3">
-                <div id="menuUtente" style="padding:0px;">
-                    <div id="divDropdown">
-                        <button id="dropdownBtn">- - - MENU UTENTE - - -</button>
-                        <div id="dropdown-menu">
-                            <a href="http://localhost:3000/">Home</a>
-                            <a id="linkVaiAlGioco" href="http://localhost:3000/CrazyGoose">Vai al gioco</a>
-                            <a id="voceLogout" href="http://localhost:3000/esciDalProfilo"></a>
-                            <a href="http://localhost:3000/logoutUtente">Esci</a>
-                        </div>
+            <div class="col-12">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border-radius:10px; border:3px solid rgba(46, 11, 99, 0.932);">
+                    <a class="navbar-brand" id="infoQualeUtente" href="#"></a>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                      <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            MENU UTENTE
+                          </a>
+                          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="http://localhost:3000/">Home</a>
+                            <a class="dropdown-item" id="linkVaiAlGioco" href="http://localhost:3000/CrazyGoose">Vai al gioco</a>
+                            <a class="dropdown-item" id="voceLogout" href="http://localhost:3000/esciDalProfilo"></a>
+                            <a class="dropdown-item" href="http://localhost:3000/logoutUtente">Esci</a>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
-                </div>
+                  </nav>
             </div>
         </div>
-        <div class="row" id="rowSceltaProfilo">
-            <div class="col-4">
-                <center>
-                    <div class="divBtnScegliProfilo">
-                        <div id="mostra0">
-                            <img onclick="chiediConferma('__USERNAME0__')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
-                            <button onclick="profiloScelto('__USERNAME0__')" class="btnScegliProfilo">Profilo N.1<br><i><b>__USERNAME0__</i></b></button>
-                        </div>
 
-                        <button id="btnScegli0" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.1 <h3>➕</h3></button>
-                    </div>
-                </center>
-            </div>
-            <div class="col-4">
-                <center>
-                    <div class="divBtnScegliProfilo">
-                        <div id="mostra1">
-                            <img onclick="chiediConferma('__USERNAME1__')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
-                            <button onclick="profiloScelto('__USERNAME1__')" class="btnScegliProfilo">Profilo N.2<br><i><b>__USERNAME1__</i></b></button>
-                        </div>
 
-                        <button id="btnScegli1" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.2<h3>➕</h3></button>
-                    </div>
-                </center>
-            </div>
-            <div class="col-4">
-                <center>
-                    <div class="divBtnScegliProfilo">
-                        <div id="mostra2">
-                            <img onclick="chiediConferma('__USERNAME2__')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
-                            <button onclick="profiloScelto('__USERNAME2__')" class="btnScegliProfilo">Profilo N.3<br><i><b>__USERNAME2__</i></b></button>
-                        </div>
-
-                        <button id="btnScegli2" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.3<h3>➕</h3></button>
-                    </div>
-                </center>
-            </div>
-        </div>
-        <div id="usernameNotNull">
-            <div class="row" id="rowStatisitche">
-                <div class="col-12">
-                    <center>
-                        <div id="infoStatistUsername"></div>
-                    </center>
-                </div>
-            </div>
-            <div class="row" id="rowStatistiche1">
-                <div class="col-lg-6 col-12">
-                    <div id="totPartite"></div>
-                    <div id="numPartite">
-                        <div class="numPartite" id="partiteVinte"></div>
-                        <div class="numPartite" id="partitePerse"></div>
-                        <br><br>
-                    </div>
-                    <div id="grado">
-                        <div id="intestazioneGrado">Sei di grado:</div>
-                        <div id="divElencoGradi">
-                            <ul id="ulElencoGradi"></ul>
-                        </div>
-                    </div>
-                    <div id="msgMotivazionale"></div><br>
-                </div>
-                <div class="col-lg-6 col-12" id="colonnaElencoPartite">
-                    <div id="intestazionePartite">Cronologia partite:</div>
-                    <div id="divElencoPartite"></div>
-                </div>
-            </div>
-        </div>
         <div class="row" class="intestazionePagina" id="noProfiloScelto">
             <div class="col">
                 <center>
@@ -177,6 +113,96 @@
             </center>
         </div>
     </div>
+        <div class="container-fluid" id="contenitoreRiga2">
+            <div class="row" id="rowSceltaProfilo">
+                <div class="col-4 ">
+                        <div class="divBtnScegliProfilo">
+                            <div id="mostra0">
+                                <img onclick="chiediConferma('__USERNAME0__')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
+                                <button onclick="profiloScelto('__USERNAME0__')" class="btnScegliProfilo">Profilo N.1<br><i><b>__USERNAME0__</i></b></button>
+                            </div>
+
+                            <button id="btnScegli0" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.1 <h3>➕</h3></button>
+                        </div>
+                </div>
+                <div class="col-4">
+                    <center>
+                        <div class="divBtnScegliProfilo">
+                            <div id="mostra1">
+                                <img onclick="chiediConferma('__USERNAME1__')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
+                                <button onclick="profiloScelto('__USERNAME1__')" class="btnScegliProfilo">Profilo N.2<br><i><b>__USERNAME1__</i></b></button>
+                            </div>
+
+                            <button id="btnScegli1" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.2<h3>➕</h3></button>
+                        </div>
+                    </center>
+                </div>
+                <div class="col-4">
+                    <center>
+                        <div class="divBtnScegliProfilo3">
+                            <div id="mostra2">
+                                <img onclick="chiediConferma('__USERNAME2__')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
+                                <button onclick="profiloScelto('__USERNAME2__')" class="btnScegliProfilo">Profilo N.3<br><i><b>__USERNAME2__</i></b></button>
+                            </div>
+
+                            <button id="btnScegli2" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.3<h3>➕</h3></button>
+                        </div>
+                    </center>
+                </div>
+            </div>
+        </div>
+
+        <div id="usernameNotNull">
+            <div class="row" id="rowStatisitche">
+                <div class="col-12">
+                    <center>
+                        <div id="infoStatistUsername"></div>
+                    </center>
+                </div>
+            </div>
+
+            <div class="container-fluid col-12" id="rowStatistiche1">
+  
+                <!-- As a heading -->
+                
+                <div id="numPartite">
+                    <nav class="navbar navbar-light bg-light" style="border-radius:5px 5px 0px 0px;">
+                        <span class="navbar-brand mb-0 h1" id="totPartite">PARTITE TOTALI:0</span>
+                    </nav>
+                    <nav class="navbar navbar-light bg-light">
+                        <span class="navbar-brand mb-0 h1" id="partiteVinte">PARTITE VINTE:0</span>
+                    </nav>
+                    <nav class="navbar navbar-light bg-light" style="border-radius:0px 0px 5px 5px;">
+                        <span class="navbar-brand mb-0 h1" id="partitePerse">PARTITE PERSE:0</span>
+                    </nav>
+                </div>
+
+                <div class="container-fluid" id="gradoCronologia">
+                    <div id="colonnaElencoPartite">
+                        <div id="intestazionePartite">Cronologia partite:</div>
+                        <div id="divElencoPartite"></div>
+                    </div>
+                    <div id="grado">
+                        <div id="intestazioneGrado">Sei di grado:</div>
+                        <div id="divElencoGradi">
+                            <ul id="ulElencoGradi"></ul>
+                        </div>
+                        <div id="msgMotivazionale"></div><br>
+                    </div>
+                    
+                    
+                    
+                </div>
+        </div>
+        
+        
+    
+
+
+    <!--BOOTSTRAP-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 
 </html>
