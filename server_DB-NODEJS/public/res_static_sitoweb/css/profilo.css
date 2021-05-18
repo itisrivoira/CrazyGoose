@@ -174,6 +174,8 @@ body {
 
 #totPartite,
 #intestazionePartite {
+	margin-left:20px;
+	
     font-size: 1.7em;
     text-decoration: underline;
 }
@@ -190,6 +192,8 @@ body {
 }
 
 #msgMotivazionale {
+	margin-left:20px;
+	margin-top:70px;
     font-size: 1.4em;
     font-weight: bold;
     color: rgb(17, 17, 194);
@@ -219,7 +223,12 @@ body {
 }
 
 
+#divElencoPartite{
+	margin-left:20px;
+}
+
 #divElencoPartite li {
+	margin-left:20px;
     font-size: 1.02em;
 }
 
