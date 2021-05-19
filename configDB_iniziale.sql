@@ -1,5 +1,6 @@
 --https://www.strongdm.com/blog/mysql-create-user-manage-access-privileges-how-to
 
+DROP DATABASE IF EXISTS CrazyGoose;
 CREATE DATABASE IF NOT EXISTS CrazyGoose;
 USE CrazyGoose;
 
@@ -35,10 +36,12 @@ CREATE TABLE IF NOT EXISTS Partecipare (
 );
 
 
-
+DROP USER IF EXISTS Giocatore;
 CREATE USER 'Giocatore'@'%' IDENTIFIED BY '1gioc!CrazyGoose?';
 
 GRANT SELECT, INSERT, UPDATE ON CrazyGoose.Utenti TO 'Giocatore'@'%';
 GRANT SELECT, INSERT, UPDATE, DELETE ON CrazyGoose.Profili TO 'Giocatore'@'%';
 GRANT SELECT, INSERT, UPDATE, DELETE ON CrazyGoose.Partite TO 'Giocatore'@'%';
 GRANT SELECT, INSERT, UPDATE, DELETE ON CrazyGoose.Partecipare TO 'Giocatore'@'%';
+
+--PROVAI AD USARE LA GRANT CON TUTTE LE OPERAZIONI E POI LA "REVOKE" DELLA "DELETE" SULLA TABELLA Utenti, MA NON SONO RIUSCITO

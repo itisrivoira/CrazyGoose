@@ -10,10 +10,16 @@ const { JSDOM } = jsdom
 
 const express = require("express")
 const app = express()
+
+//Dizionario che avrà come chiave l'IP del client e valore il suo GestoreDB
 var gestDB_per_client = {}
 
 
 app.listen(3000, () => {
+    //Codice per ritornare l'IP DEL SERVER. Mi serve per sostituire i localhost
+    // nei file html con l'IP del server e così poter navigare anche da un PC (o telefono)
+    // in cui non gira il server
+
     require('dns').lookup(require('os').hostname(), function(err, address, fam) {
         IP = address
         console.log("SERVER IN ASCOLTO su: " + IP + ":3000")
@@ -24,17 +30,21 @@ app.use(bodyParser.json({ extended: true }))
 app.use(express.static("public"))
 
 
-function getGestDB_client(IP){
+function getGestDB_client(IP) {
+    //Ritorna il GestoreDB del client oppure gliene crea uno nuovo
+
     let gestDB_ritorno = gestDB_per_client[IP]
-    
-    if(gestDB_per_client[IP] == undefined){
-        gestDB_ritorno = gestDB_per_client[IP] = new GestioneDatabase()    
+
+    if (gestDB_per_client[IP] == undefined) {
+        gestDB_ritorno = gestDB_per_client[IP] = new GestioneDatabase()
     }
-    
+
     return gestDB_ritorno
 }
 
 function aggiungiFooterAllaPagina(pagina) {
+    //Legge il file contenente il footer e lo incolla in un div (sarà semplice testo)
+
     let jsDom = new JSDOM(pagina)
 
     let footer = fs.readFileSync("./sitoWeb/soloFooter.html", "utf-8")
@@ -45,12 +55,12 @@ function aggiungiFooterAllaPagina(pagina) {
 }
 
 function rimpiazzaLocalhostConIP(pagina) {
-    //leggo il file come semplice testo (stringa) e rimpiazzo ogni
+    //Leggo il file come semplice testo (stringa) e rimpiazzo ogni
     //  "localhost" con l'IP
 
-    //uso la "replace()", molto semplice ma sostituisce solo la prima occorenza
+    //Uso la "replace()", molto semplice ma sostituisce solo la PRIMA occorenza
     // di quello specificato come primo argomento. Quindi ciclo finchè non li
-    // ha sostituiti
+    // ha sostituiti TUTTI
     let paginaModif = pagina
     while (paginaModif.includes("localhost")) {
         paginaModif = paginaModif.replace("localhost", IP)
@@ -60,9 +70,9 @@ function rimpiazzaLocalhostConIP(pagina) {
 }
 
 function controllaSeLoggato(req, resp) {
-    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
-    let gestDB = getGestDB_client(req.connection.remoteAddress)
-    
+    //req.socket.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.socket.remoteAddress)
+
     if (gestDB.nome == null) {
         //non è loggato ed ha modificato l'URL manualmente... lo mando alla pagina per loggarsi
         resp.redirect(301, "/accedi")
@@ -73,22 +83,23 @@ function controllaSeLoggato(req, resp) {
 
 
 app.get("/logoutUtente", (req, resp) => {
-    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
-    let gestDB = getGestDB_client(req.connection.remoteAddress)
-    
+    //req.socket.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.socket.remoteAddress)
+
     gestDB.resettaValori()
 
-    resp.redirect(301, "/accedi")
+    //lo rimando alla home page
+    resp.redirect(301, "/")
 })
 
 app.get("/", (req, resp) => {
-    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
-    let gestDB = getGestDB_client(req.connection.remoteAddress)
-    
+    //req.socket.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.socket.remoteAddress)
+
     let pagina = fs.readFileSync("./sitoWeb/home.html", "utf-8")
-    let paginaConIP = rimpiazzaLocalhostConIP(pagina)
-    let paginaConFooter = aggiungiFooterAllaPagina(paginaConIP)
-    let jsDom = new JSDOM(paginaConFooter)
+    let paginaConFooter = aggiungiFooterAllaPagina(pagina)
+    let paginaConIP = rimpiazzaLocalhostConIP(paginaConFooter)
+    let jsDom = new JSDOM(paginaConIP)
 
     //(mi basta controllare che il nome non sia null, se è null lo è anche il congome)
     if (gestDB.nome != null) {
@@ -99,6 +110,7 @@ app.get("/", (req, resp) => {
         jsDom.window.document.getElementById("divDropdown").style.display = "inline-block"
 
         let msg = "Benvenuto<br><i><b>" + gestDB.nome + " " + gestDB.cognome + "</b></i>"
+
         if (gestDB.username != null) {
             msg = "Benvenuto<br><i><b>" + gestDB.nome + " " + gestDB.cognome + "</b></i><br>Con profilo:<br><i><b>" + gestDB.username + "</b></i>"
         } else {
@@ -115,22 +127,23 @@ app.get("/", (req, resp) => {
 })
 
 app.get("/profili", (req, resp) => {
-    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
-    let gestDB = getGestDB_client(req.connection.remoteAddress)
-    
+    //req.socket.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.socket.remoteAddress)
+
     if (controllaSeLoggato(req, resp)) {
 
+        //Se ha scelto un username questo si trova nell'URL in GET
         if (req.query.username != undefined) {
             gestDB.username = req.query.username
         }
 
+        //Se deve aggiungere un profilo ci sarà nell'URL in GET un flag settato
+        //Inoltre se aggiunge un nuovo profilo voglio che faccia il logout da quello vecchio
         let aggProfilo = req.query.agg
         if (aggProfilo != undefined) {
             gestDB.username = null
         }
 
-        //la query ci impiega un attimo a finire, e io devo fare la resp.send
-        // QUANDO ha finito la query
         gestDB.profiliRegistrati(function(arrayProfili) {
             let pagina = fs.readFileSync("./sitoWeb/profili.html", "utf-8")
             let paginaConIP = rimpiazzaLocalhostConIP(pagina)
@@ -185,7 +198,7 @@ app.get("/profili", (req, resp) => {
                 jsDom.window.document.getElementById("mostra2").style.display = "none"
             }
 
-            jsDom.window.document.getElementById("infoQualeUtente").innerHTML = "PROFILI di " + gestDB.nome + " " + gestDB.cognome
+            jsDom.window.document.getElementById("infoQualeUtente").innerHTML = ("PROFILI di " + gestDB.nome + " " + gestDB.cognome)
 
             if (gestDB.username != null && aggProfilo == undefined) {
 
@@ -211,7 +224,7 @@ app.get("/profili", (req, resp) => {
                             <del> mette una barra sulla scritta (per i gradi SUPERATI)
                             class="gradiNoTrasp" per il grado corrente */
                         let elencoGradi = ""
-                            //!!!!!!!! TODO FARE MEGLIO ELENCO DEI GRADI !!!!!!!!!!
+                            //!!!!!!!! TODO FARE MEGLIO ELENCO DEI GRADI, magari con ciclo !!!!!!!!!!
 
                         if (queryResult.grado == "Novellino") {
                             msgMotiv = "Roma non è stata costruita in un giorno...";
@@ -271,11 +284,11 @@ app.get("/profili", (req, resp) => {
                             partite.forEach(datiSingolaPartita => {
                                 let ID_partita = datiSingolaPartita.ID_part
                                 let vinto_perso = ""
-								
+
                                 if (datiSingolaPartita.flagVittoria == 1) {
                                     vinto_perso = "<label style=\"color:greenyellow;\">VINTO</label>";
                                 } else {
-                                    vinto_perso = "<label style=\"color:red;\">PERSO"+datiSingolaPartita.flagVittoria+"</label>";
+                                    vinto_perso = "<label style=\"color:red;\">PERSO" + datiSingolaPartita.flagVittoria + "</label>";
                                 }
                                 let minuti = datiSingolaPartita.durata
                                 let dadiLanciati = datiSingolaPartita.numMosse
@@ -300,6 +313,7 @@ app.get("/profili", (req, resp) => {
                 jsDom.window.document.getElementById("voceLogout").style.display = "none"
 
                 jsDom.window.document.getElementById("usernameNotNull").style.display = "none"
+                jsDom.window.document.getElementById("rowStatistiche").style.display = "none"
                 jsDom.window.document.getElementById("noProfiloScelto").style.display = "block"
 
                 jsDom.window.document.getElementById("usernameNotNull").display = "none"
@@ -321,9 +335,9 @@ app.get("/profili", (req, resp) => {
 })
 
 app.post("/aggProfilo", (req, resp) => {
-    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
-    let gestDB = getGestDB_client(req.connection.remoteAddress)
-    
+    //req.socket.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.socket.remoteAddress)
+
     if (controllaSeLoggato(req, resp)) {
         //la query ci impiega un attimo a finire, e io devo fare la resp.send
         // QUANDO ha finito la query
@@ -331,6 +345,7 @@ app.post("/aggProfilo", (req, resp) => {
             if (flagAggiunto) {
                 resp.redirect(301, "/profili")
             } else {
+                //stampo msg di errore MOSTRANDO il form per l'aggiunta del profilo
                 resp.redirect(301, "/profili?agg=true&err=true")
             }
         })
@@ -338,9 +353,9 @@ app.post("/aggProfilo", (req, resp) => {
 })
 
 app.get("/esciDalProfilo", (req, resp) => {
-    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
-    let gestDB = getGestDB_client(req.connection.remoteAddress)
-    
+    //req.socket.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.socket.remoteAddress)
+
     if (controllaSeLoggato(req, resp)) {
         gestDB.esciDalProfilo()
         resp.redirect(301, "/profili")
@@ -348,12 +363,10 @@ app.get("/esciDalProfilo", (req, resp) => {
 })
 
 app.get("/eliminaProfilo", (req, resp) => {
-    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
-    let gestDB = getGestDB_client(req.connection.remoteAddress)
-    
+    //req.socket.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.socket.remoteAddress)
+
     if (controllaSeLoggato(req, resp)) {
-        //la query ci impiega un attimo a finire, e io devo fare la resp.send
-        // QUANDO ha finito la query
         gestDB.eliminaProfilo(req.query.username, function() {
             resp.redirect(301, "/profili")
         })
@@ -369,9 +382,9 @@ app.get("/regole", (req, resp) => {
 })
 
 app.get("/contattaci", (req, resp) => {
-    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
-    let gestDB = getGestDB_client(req.connection.remoteAddress)
-    
+    //req.socket.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.socket.remoteAddress)
+
     let paginaRegoleSenzaFooter = fs.readFileSync("./sitoWeb/contattaci.html", "utf-8")
     let paginaConFooter = aggiungiFooterAllaPagina(paginaRegoleSenzaFooter)
     let pagina = rimpiazzaLocalhostConIP(paginaConFooter)
@@ -387,25 +400,22 @@ app.get("/contattaci", (req, resp) => {
     } else {
         pagina = pagina.replace("__DO_ALERT_SENT__", "false")
     }
-    
-    if(gestDB.email != null){
-		//se l'utente è loggato non inserisce più la sua email, MA quindi non viene
-		// inviata in POST a send.php... Allora faccio che aggiungerla in GET all'action del form
-    	pagina = pagina.replace("__emailUtente__", gestDB.email)
+
+    if (gestDB.email != null) {
+        //se l'utente è loggato non inserisce più la sua email. Ci sarà già scritta.
+        // il problema è che il form non invierà quel dato, quindi
+        // faccio che aggiungerla in GET all'action del form
+        pagina = pagina.replace("__emailUtente__", gestDB.email)
     }
-    
+
     jsDom = new JSDOM(pagina);
-    
-	let lblTuaEmail = "<label>La tua email:</label>"
-//                        <input id="tuaEmail" class="caselle" type="text" name="email" placeholder="giovannirossi@gmail.com..">"
-//<label id="tuaEmail"><?php echo $email; ?></label>
-	
-	if(gestDB.email != null){
-		lblTuaEmail += "<label id=\"tuaEmail\">"+gestDB.email+"</label>"
-	}else{
-		lblTuaEmail += "<input id=\"tuaEmail\" class=\"caselle\" type=\"text\" name=\"email\" placeholder=\"giovannirossi@gmail.com..\">"
-	}
-	
+
+    let lblTuaEmail = "<label>La tua email:</label>"
+    if (gestDB.email != null) {
+        lblTuaEmail += "<label id=\"tuaEmail\">" + gestDB.email + "</label>"
+    } else {
+        lblTuaEmail += "<input id=\"tuaEmail\" class=\"caselle\" type=\"text\" name=\"email\" placeholder=\"giovannirossi@gmail.com..\">"
+    }
 
     jsDom.window.document.getElementById("divTuaEmail").innerHTML = lblTuaEmail
 
@@ -419,13 +429,11 @@ app.get("/registrati", (req, resp) => {
     resp.send(paginaConIP)
 })
 app.post("/formRegistrati", (req, resp) => {
-    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
-    let gestDB = getGestDB_client(req.connection.remoteAddress)
-    
-    //la query ci impiega un attimo a finire, e io devo fare la resp.send
-    // QUANDO ha finito la query
-	let passwCritt = crypto.createHash("sha256").update(req.body.password).digest("hex")
-	
+    //req.socket.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.socket.remoteAddress)
+
+    let passwCritt = crypto.createHash("sha256").update(req.body.password).digest("hex")
+
     gestDB.registrati(req.body.nome, req.body.cognome, req.body.email, passwCritt, function(flagRegistrato) {
 
         if (!flagRegistrato) {
@@ -440,8 +448,6 @@ app.post("/formRegistrati", (req, resp) => {
             resp.redirect(301, "/accedi")
         }
     })
-
-
 })
 
 app.get("/accedi", (req, resp) => {
@@ -450,13 +456,11 @@ app.get("/accedi", (req, resp) => {
     resp.send(paginaConIP)
 })
 app.post("/formAccedi", (req, resp) => {
-    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
-    let gestDB = getGestDB_client(req.connection.remoteAddress)
-    
-    //la query ci impiega un attimo a finire, e io devo fare la resp.send
-    // QUANDO ha finito la query
+    //req.socket.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.socket.remoteAddress)
+
     let passwCritt = crypto.createHash("sha256").update(req.body.password).digest("hex")
-    
+
     gestDB.accedi(req.body.email, passwCritt, function(flagAccesso) {
 
         if (!flagAccesso) {
@@ -473,6 +477,7 @@ app.post("/formAccedi", (req, resp) => {
     })
 })
 
+//Non potendo mostrare via web uno zip/pdf partirà il download
 app.get("/download", (req, resp) => {
     resp.sendFile(__dirname + "/downloads/GiocoPython.zip")
 })
@@ -484,9 +489,9 @@ app.get("/guida", (req, resp) => {
 //----------------------------------------------------------
 
 app.get("/CrazyGoose", (req, resp) => {
-    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
-    let gestDB = getGestDB_client(req.connection.remoteAddress)
-    
+    //req.socket.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.socket.remoteAddress)
+
     if (controllaSeLoggato(req, resp)) {
         let pagina = fs.readFileSync("./webApp/menu/homePage.html", "utf-8")
         let jsDom = new JSDOM(pagina)
@@ -521,6 +526,9 @@ app.get("/gioco", (req, resp) => {
         let paginaConIP = rimpiazzaLocalhostConIP(pagina)
         let jsDom = new JSDOM(paginaConIP)
 
+        //Il modo più semplice che ho trovato per prendermi l'oca scelta è inserirla nell'URL in GET.
+        // ma da JS-client nel file html non posso prendere tale valore, quindi lo inserisco in una label
+        // che non verrà mai mostrata
         jsDom.window.document.getElementById("lblOcaNascosta").innerHTML = req.query.ocaScelta
 
         resp.send(jsDom.window.document.documentElement.outerHTML)
@@ -528,19 +536,20 @@ app.get("/gioco", (req, resp) => {
 })
 
 app.get("/finePartita", (req, resp) => {
-    //req.connection.remoteAddress ritorna l'IP del client che si è connesso
-    let gestDB = getGestDB_client(req.connection.remoteAddress)
-    
+    //req.socket.remoteAddress ritorna l'IP del client che si è connesso
+    let gestDB = getGestDB_client(req.socket.remoteAddress)
+
     if (controllaSeLoggato(req, resp)) {
         let durata = req.query.durata
         let numMosse = req.query.numMosse
+
         let flagVittoria = null
-        if(req.query.vitt == "true"){
-			flagVittoria = true
-        }else{
-	        flagVittoria = false
+            //(il valore sarà true o false, ma lo prende come stringa)
+        if (req.query.vitt == "true") {
+            flagVittoria = true
+        } else {
+            flagVittoria = false
         }
-		
 
         gestDB.registraPartitaPartecipazione(durata, numMosse, flagVittoria, function() {
             let pagina = fs.readFileSync("./webApp/giocoWeb/finePartita.html", "utf-8")
@@ -563,5 +572,5 @@ app.get("/finePartita", (req, resp) => {
 })
 
 app.use("*", (req, resp) => {
-    resp.send("<center><h1>ERROR 404</h1></center>")
+    resp.send("<center><h1><a href=\"http://" + IP + ":3000/\">ERROR 404</a></h1></center>")
 })

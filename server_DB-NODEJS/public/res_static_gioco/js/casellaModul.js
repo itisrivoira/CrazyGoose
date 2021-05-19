@@ -9,11 +9,7 @@ const BG_COLOR_DACAPO = "#FF0000"
 const BG_COLOR_VITTORIA = "#328CE6"
 
 class Casella {
-    constructor(indice, x, y, casellaVittoria, width = 90, height = 60) {
-        this.x = x
-        this.y = y
-        this.width = width
-        this.height = height
+    constructor(indice) {
         this.indice = indice
 
         this.numeroCasella = null

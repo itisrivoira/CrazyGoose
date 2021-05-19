@@ -667,55 +667,8 @@ class CrazyGoose {
     }
 
     posizionaLeCaselle() {
-        //POSIZIONA LE CASELLA CON I PIXEL
-        this.caselle.push(new Casella(1, 450, 625))
-        this.caselle.push(new Casella(2, 560, 625))
-        this.caselle.push(new Casella(3, 670, 625))
-        this.caselle.push(new Casella(4, 780, 625))
-        this.caselle.push(new Casella(5, 900, 625))
-        this.caselle.push(new Casella(6, 1015, 625))
-
-        this.caselle.push(new Casella(7, 1105, 570))
-        this.caselle.push(new Casella(8, 1155, 500))
-        this.caselle.push(new Casella(9, 1165, 430))
-        this.caselle.push(new Casella(10, 1155, 360))
-        this.caselle.push(new Casella(11, 1105, 290))
-
-        this.caselle.push(new Casella(12, 1030, 235))
-        this.caselle.push(new Casella(13, 920, 205))
-        this.caselle.push(new Casella(14, 820, 205))
-        this.caselle.push(new Casella(15, 700, 205))
-        this.caselle.push(new Casella(16, 590, 205))
-        this.caselle.push(new Casella(17, 490, 245))
-
-        this.caselle.push(new Casella(18, 445, 325))
-        this.caselle.push(new Casella(19, 445, 410))
-        this.caselle.push(new Casella(20, 455, 495))
-
-        this.caselle.push(new Casella(21, 535, 555))
-        this.caselle.push(new Casella(22, 645, 555))
-        this.caselle.push(new Casella(23, 755, 555))
-        this.caselle.push(new Casella(24, 865, 555))
-        this.caselle.push(new Casella(25, 975, 545))
-
-        this.caselle.push(new Casella(26, 1055, 490))
-        this.caselle.push(new Casella(27, 1055, 405))
-        this.caselle.push(new Casella(28, 1000, 330))
-
-        this.caselle.push(new Casella(29, 905, 285))
-        this.caselle.push(new Casella(30, 795, 285))
-        this.caselle.push(new Casella(31, 685, 285))
-
-        this.caselle.push(new Casella(32, 585, 320))
-        this.caselle.push(new Casella(33, 550, 395))
-        this.caselle.push(new Casella(34, 590, 470))
-
-        this.caselle.push(new Casella(35, 700, 485))
-        this.caselle.push(new Casella(36, 810, 485))
-        this.caselle.push(new Casella(37, 910, 465))
-
-        this.caselle.push(new Casella(38, 945, 395))
-        this.caselle.push(new Casella(39, 845, 360))
-        this.caselle.push(new Casella(40, 695, 380, true))
+        for (let i = 1; i <= 40; i++) {
+            this.caselle.push(new Casella(i))
+        }
     }
 }

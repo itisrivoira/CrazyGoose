@@ -24,7 +24,7 @@ form {
     padding-top: 40px;
 }
 
-.caselleDiTesto {
+.casDiTesto {
     width: 76%;
     color: rgb(38, 50, 56);
     font-weight: 700;
@@ -44,7 +44,7 @@ form {
     font-family: 'Ubuntu', sans-serif;
 }
 
-.caselleDiTesto:focus {
+.casDiTesto:focus {
     border: 2px solid rgba(0, 0, 0, 0.18) !important;
 }
 
@@ -59,11 +59,10 @@ form {
     padding-bottom: 10px;
     padding-top: 10px;
     font-family: 'Ubuntu', sans-serif;
-    margin-left: 35%;
+    margin-left: 33%;
     font-size: 13px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
     text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
-    color: #E1BEE7;
     text-decoration: none
 }
 

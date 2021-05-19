@@ -151,16 +151,15 @@ body {
     font-family: Ubuntu, "Sans-serif";
 }
 
-#imgSchedaCrazyGoose {
+.imgOca {
     width: 250px;
     height: 250px;
     margin: auto;
     display: inline-block;
     margin-top: 40px;
-    margin-left: 35%;
 }
 
-#imgAbilita {
+.imgAbilita {
     width: 70px;
     height: 70px;
     margin-left: 25px;

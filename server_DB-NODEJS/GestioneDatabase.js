@@ -1,16 +1,29 @@
 const mysql = require("mysql")
 class GestioneDatabase {
     constructor() {
+        /*Abbiamo già il file di configurazione del DB che crea un utente apposta, ma
+            non riusciamo ad usarlo qui:
+        this.conn = mysql.createConnection({
+            hostname: "localhost",
+            user: "Giocatore",
+            passw: "1gioc!CrazyGoose?",
+            database: "CrazyGoose"
+        })
+
+        Non da nessun log nel terminale, ma alla prima query da errore:
+        "Error: Cannot enqueue Query after fatal error"
+        */
+
+        //Crea la connessione per ora senza selezionare già il DB,
+        // dopo SE non esiste lo creerà.
         this.conn = mysql.createConnection({
             hostname: "localhost",
             user: "root",
             passw: ""
-            //database:"CrazyGoose"
-            //la userò per creare il DB che magari ancora non esiste
         })
+        this.creaDB()
 
         this.resettaValori()
-        this.creaDB()
     }
 
     resettaValori() {
@@ -24,8 +37,8 @@ class GestioneDatabase {
     }
 
     controllaErrQuery(err) {
-        //mi è utile questo metodo perchè non ho da fare ad ogni query
-        // l'if != null per stampare il log
+        //Questo metodo mi serve solo per comodità di non dover scrivere in ogni
+        // singola query il controllo se c'è stato un errore e stamparlo in quel caso
 
         if (err != null) {
             console.log(err)
@@ -38,8 +51,10 @@ class GestioneDatabase {
     creaDB() {
         this.conn.connect(() => {
             this.conn.query("CREATE DATABASE CrazyGoose;", (err, result) => {
-                if(err != null && err.errno == 1007){ //Can't create database 'CrazyGoose'; database exists
-                    //questa connession non mi serve più, da ora userò
+                if (err != null && err.errno == 1007) {
+                    //Codice 1007  =  "Can't create database 'CrazyGoose'; database exists"
+
+                    //Questa connession non mi serve più, da ora userò
                     // una connessione che si connette già in autom.
                     // al DB appena creato
                     this.conn.end()
@@ -50,7 +65,7 @@ class GestioneDatabase {
                         passw: "",
                         database: "CrazyGoose"
                     })
-                }else{
+                } else {
                     if (this.controllaErrQuery(err)) {
 
                         //------------creazione tabelle------------
@@ -82,7 +97,6 @@ class GestioneDatabase {
                                             FOREIGN KEY(username) REFERENCES Profili(username) );"
 
                         this.conn.query("USE CrazyGoose;", (e, r) => {
-
                             this.conn.query(tabUtenti, (errUt, resultUt) => {
                                 if (this.controllaErrQuery(errUt)) {
 
@@ -94,7 +108,8 @@ class GestioneDatabase {
 
                                                     this.conn.query(tabPartecipare, (errPartec, resultPartec) => {
                                                         if (this.controllaErrQuery(errPartec)) {
-                                                            //questa connession non mi serve più, da ora userò
+
+                                                            //Questa connession non mi serve più, da ora userò
                                                             // una connessione che si connette già in autom.
                                                             // al DB appena creato
                                                             this.conn.end()
@@ -121,6 +136,9 @@ class GestioneDatabase {
     }
 
     registrati(nome, cognome, email, passw, callback) {
+        //Controlla che NON ci sia nessun'altro utente con quella email,
+        // dopodichè fa la insert del nuovo utente
+
         let registrEffettuata = true
 
         this.conn.connect(() => {
@@ -152,7 +170,11 @@ class GestioneDatabase {
     }
 
     accedi(email, passw, callback) {
-        
+        //Controlla che esista un utente con quella email,
+        // e se esiste ne controlla la password (la query
+        // controllando la chiave primaria può restituire
+        // 0 oppure 1 record)
+
         let accessoEffettuato = true
 
         this.conn.connect(() => {
@@ -184,6 +206,9 @@ class GestioneDatabase {
     }
 
     aggiungiProfilo(username, callback) {
+        //Controlla che non vi siano già altri Profili con quel
+        // username e poi lo aggiunge (con dei valori di default)
+
         let profiloAggiunto = true
 
         this.conn.connect(() => {
@@ -218,6 +243,9 @@ class GestioneDatabase {
     }
 
     profiliRegistrati(callback) {
+        //Ritorna un array con tutti gli username dei profili
+        // di questo Utente
+
         this.conn.connect(() => {
             let datiProfilo = "SELECT username FROM Profili WHERE emailUtente = \"" + this.email + "\";"
 
@@ -229,6 +257,11 @@ class GestioneDatabase {
     }
 
     datiProfilo(callback) {
+        //Prende i dati dentro la tabella Profilo e tutti quelli delle partite,
+        // dopo aver controllato che il profilo appartenga proprio a quel utente
+        // (il profilo è scritto in GET e quindi uno potrebbe pensare di modificare
+        // l'URL per loggarsi con un profilo di qualcun'altro)
+
         this.conn.connect(() => {
             let datiProfilo = "SELECT * FROM Profili WHERE username = \"" + this.username + "\" AND emailUtente = \"" + this.email + "\";"
 
@@ -239,9 +272,7 @@ class GestioneDatabase {
 
                     this.conn.query(recupPartite, (errPart, resultPart) => {
                         if (this.controllaErrQuery(errPart)) {
-                            //dall'altra parte dovrò poi prendere i dati con: obj.campoDelDB
-                            // e per le partite fare un ciclo (e poi per prendere i singoli dati si
-                            // fa stesso modo)
+                            //(Ai dati si accederà con objResult.nomeCampo e objResultPart[indice].nomeCampo)
                             callback(result[0], resultPart)
                         } else {
                             callback(null, null)
@@ -264,7 +295,7 @@ class GestioneDatabase {
         //DEVO CANCELLARE IN ORDINE IL PROFILO E TUTTE LE SUE PARTITE !!!
         // Prima cancello il record di Partecipare (che non ha un ID particolare
         // che diventa chiave esterna da qualche parte)
-        // Ora posso eliminare la partita con il certo ID (prima non potevo xke era
+        // Poi posso eliminare la partita con il certo ID (prima non potevo xke era
         // chiave esterna in Partecipare)
         // E QUANDO HO FINITO TUTTI I PARTECIPARE/PARTITE POSSO ELIMINARE IL PROFILO
 
@@ -285,7 +316,6 @@ class GestioneDatabase {
                                 let elimPartita = "DELETE FROM Partite WHERE ID_part = \"" + id_partita + "\";"
 
                                 this.conn.query(elimPartita, (errElimPart, resultElimPart) => {
-                                    //ricordo che mi stampa nei log l'errore se questo capita
                                     this.controllaErrQuery(errElimPart)
                                 })
                             }
@@ -302,38 +332,15 @@ class GestioneDatabase {
         })
     }
 
-    recuperaDatiPerMenuUtente(callback) {
-        if (this.email != null) {
-            this.conn.connect(() => {
-                let query = "SELECT nome, cognome FROM Utenti WHERE email = \"" + this.email + "\";"
-
-                this.conn.query(query, (err, result) => {
-                    if (this.controllaErrQuery(err)) {
-                        let nome = result[0].nome
-                        let cognome = result[0].cognome
-                        let username = null
-
-                        if (this.username != null) {
-                            username = this.username
-                        }
-
-                        callback(nome, cognome, username)
-                    }
-                })
-            })
-        } else {
-            callback(null, null, null)
-        }
-    }
-
     registraPartitaPartecipazione(durata, numMosse, vitt, callback) {
+
         this.conn.connect(() => {
             let insertPartita = "INSERT INTO Partite (durata) VALUES (\"" + durata + "\");"
 
             this.conn.query(insertPartita, (err, result) => {
                 if (this.controllaErrQuery(err)) {
-                    //devo sapere che ID è stato dato alla Partita, è un AUTO
-                    // INCREMENT, e c'è una funzione apposta in MySQL
+                    //Devo sapere che ID è stato dato alla Partita (è un AUTO
+                    // INCREMENT): c'è una funzione apposta in MySQL
                     let lastAutoIncrQuery = "SELECT last_insert_id() AS lastAutoIncr;"
 
                     this.conn.query(lastAutoIncrQuery, (errAutoIncr, resultAutoIncr) => {
@@ -342,7 +349,8 @@ class GestioneDatabase {
                             let vittBit = 0
                             if (vitt == true) {
                                 vittBit = 1
-                            }
+                            } //else è settato a 0
+
                             let insertPartecipare = "INSERT INTO Partecipare VALUES (\"" + lastAutoIncr + "\", \"" + this.username + "\", \"" + vittBit + "\", \"" + numMosse + "\");"
 
                             this.conn.query(insertPartecipare, (errPartec, resultPartec) => {
@@ -387,7 +395,6 @@ class GestioneDatabase {
                                                     })
                                                 }
                                             })
-
                                         }
                                     })
                                 }
@@ -397,9 +404,6 @@ class GestioneDatabase {
                 }
             })
         })
-
-
-
     }
 }
 
