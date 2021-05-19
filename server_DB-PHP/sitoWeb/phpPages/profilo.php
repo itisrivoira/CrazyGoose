@@ -37,35 +37,88 @@
         }
         
         if($username != null){
-            $partite = $gestDB->partiteProfilo($username);
             $datiProfilo = $gestDB->datiProfilo($username);
             
             $grado = $datiProfilo["grado"];
-            $partiteVinte = $datiProfilo["partiteVinte"];
-            $partitePerse = $datiProfilo["partitePerse"];
+			/* class="gradi" Rende "trasparente" i gradi NON ANCORA raggiunti
+			<del> mette una barra sulla scritta (per i gradi SUPERATI)
+			class="gradiNoTrasp" per il grado corrente */
+            $elencoGradi = "";
+            
             switch ($grado){
                 case "Novellino":
                     $msgMotiv = "Roma non è stata costruita in un giorno...";
+                    
+                    $elencoGradi .= "<li class=\"gradiNoTrasp\">Novellino</li>";
+                    $elencoGradi .= "<li class=\"gradi\">Principiante</li>";
+                    $elencoGradi .= "<li class=\"gradi\">Intermedio</li>";
+                    $elencoGradi .= "<li class=\"gradi\">Esperto</li>";
+                    $elencoGradi .= "<li class=\"gradi\">Maestro</li>";
                     break;
                 case "Principiante":
                     $msgMotiv = "Sei un diamante ancora grezzo";
+                    
+                    $elencoGradi .= "<liclass=\"gradiNoTrasp\"><del>Novellino</del></li>";
+					$elencoGradi .= "<li class=\"gradiNoTrasp\">Principiante</li>";
+					$elencoGradi .= "<li class=\"gradi\">Intermedio</li>";
+					$elencoGradi .= "<li class=\"gradi\">Esperto</li>";
+					$elencoGradi .= "<li class=\"gradi\">Maestro</li>";
                     break;
                 case "Intermedio":
                     $msgMotiv = "Non si lascia il lavoro a met&agrave;";
+                    
+                    $elencoGradi .= "<li class=\"gradiNoTrasp\"><del>Novellino</del></li>";
+					$elencoGradi .= "<li class=\"gradiNoTrasp\"><del>Principiante</del></li>";
+					$elencoGradi .= "<li class=\"gradiNoTrasp\">Intermedio</li>";
+					$elencoGradi .= "<li class=\"gradi\">Esperto</li>";
+					$elencoGradi .= "<li class=\"gradi\">Maestro</li>";
                     break;
                 case "Esperto":
                     $msgMotiv = "Sei quasi al top";
+                    
+                    $elencoGradi .= "<li class=\"gradiNoTrasp\"><del>Novellino</del></li>";
+					$elencoGradi .= "<li class=\"gradiNoTrasp\"><del>Principiante</del></li>";
+					$elencoGradi .= "<li class=\"gradiNoTrasp\"><del>Intermedio</del></li>";
+					$elencoGradi .= "<li class=\"gradiNoTrasp\">Esperto</li>";
+					$elencoGradi .= "<li class=\"gradi\">Maestro</li>";
                     break;
                 case "Maestro":
                     $msgMotiv = "Lascia da parte la fortuna di qui in poi solo i migliori";
+                    
+                    $elencoGradi .= "<li class=\"gradiNoTrasp\"><del>Novellino</del></li>";
+					$elencoGradi .= "<li class=\"gradiNoTrasp\"><del>Principiante</del></li>";
+					$elencoGradi .= "<li class=\"gradiNoTrasp\"><del>Intermedio</del></li>";
+					$elencoGradi .= "<li class=\"gradiNoTrasp\"><del>Esperto</del></li>";
+					$elencoGradi .= "<li class=\"gradiNoTrasp\">Maestro</li>";
                     break;
                 default:
                     break;
             }
             
+            
+            $partite = $gestDB->partiteProfilo($username);
+            
+            $partiteVinte = $datiProfilo["partiteVinte"];
+            $partitePerse = $datiProfilo["partitePerse"];
+	
+			$elencoPartite = "";
+            $cont = sizeof($partite);
+            foreach($partite as $partita){
+				if($partita["flagVittoria"] == 1){
+					$vinto_perso = "<label style=\"color:greenyellow;\">VINTO</label>";
+				}else{
+					$vinto_perso = "<label style=\"color:red;\">PERSO</label>";
+				}
+				$min = $partita["durata"];
+				$N = $partita["numMosse"];
+
+				$elencoPartite .= "<li>Partita N.$cont: hai $vinto_perso. Nella partita, durata <b>".$min."min</b>, hai <b>tirato $N volte</b> il dado;</li>";
+                $cont -= 1;
+			}
         }else{
             $partite = null;
         }
+        
 ?>
 
 <!DOCTYPE html>
@@ -143,26 +196,100 @@
 <body style="padding:2px;" onload="focusIniziale()">
 	<div class="container-fluid">
 		<div class="row" id="rowIntestazione">
-			<div class="col-9">
-				<center><div id="infoQualeUtente">Profili di <b><i><?php echo $datiUtente["nome"]." ".$datiUtente["cognome"]; ?></i></b></div></center>
-			</div>
-			<div class="col-3">
-				<div id="menuUtente" style="padding:0px;">
-					<div id="divDropdown">
-						<button id="dropdownBtn">- - - MENU UTENTE - - -</button>
-						<div id="dropdown-menu">
-							<a href="http://<?php echo $IP; ?>:3000/">Home</a>
-							<?php if($username != null){ ?>
-								<a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco.php">Vai al gioco</a>
-                                <!-- Tornerò a questa pagina con un valore in GET. !!! non posso usare l'endpoint che mi sono fatto apposta per andare ad una pagina PHP perchè non posso passare volte "?" (ci sarebbe ?pagina=... .php?logout=1 nel link... non posso) -->
-                                <a href="http://<?php echo $IP; ?>:80/progetti/CrazyGoose/server_DB-PHP/sitoWeb/phpPages/profilo.php?logout=1">Logout da <i><b><?php echo $username; ?></i></b></a>
-							<?php } ?>
-							<a href="http://<?php echo $IP; ?>:3000/logoutUtente">Esci</a>
-						</div>
+			<div class="col-12">
+				<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border-radius:10px; border:3px solid rgba(46, 11, 99, 0.932);">
+					<a class="navbar-brand" id="infoQualeUtente" href="#"></a>
+					<div class="collapse navbar-collapse" id="navbarNavDropdown">
+						<ul class="navbar-nav">
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								MENU UTENTE
+								</a>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+									<a class="dropdown-item" href="http://<?php echo $IP ?>:3000/">Home</a>
+									<?php if($username != null){ ?>
+									<a class="dropdown-item" id="linkVaiAlGioco" href="http://<?php echo $IP ?>:3000/CrazyGoose">Vai al gioco</a>
+									<a class="dropdown-item" id="voceLogout" href="http://<?php echo $IP ?>:3000/esciDalProfilo"></a>
+									<?php } ?>
+									<a class="dropdown-item" href="http://<?php echo $IP ?>:3000/logoutUtente">Esci</a>
+								</div>
+							</li>
+						</ul>
 					</div>
-				</div>
+				</nav>
 			</div>
 		</div>
+		
+		<?php if($username == null && $flagAgg == false){ ?>
+		<div class="row" class="intestazionePagina" id="noProfiloScelto">
+            <div class="col">
+                <center>
+                    <div id="divNonHaAccesso">ACCEDI AD UNO DEI TUOI PROFILI O CREANE UNO NUOVO.<br>Puoi creare fino a 3 profili</div>
+                </center>
+            </div>
+        </div>
+		<?php } ?>
+		
+		<?php if($username == null && $flagAgg == true){ ?>
+		<div class="col-12">
+			<center>
+				<div style="padding:5px; border: 0.3em solid black; width: -moz-fit-content;">
+					<!-- NON HO MODO DI PASSARE CAMPI IN POST DA NODEJS A PAGINA PHP QUINDI VADO DIRETTAMENTE ALLA PAGINA PHP -->
+					<form action="http://<?php echo $IP ?>:80/progetti/CrazyGoose/server_DB-PHP/phpFiles/aggProfilo.php" method="post" name="formUsername" onsubmit="return(controllaUsername())">
+						<h3>Scegli un username <u>univoco</u>:</h3><br>
+						<input type="text" name="username" placeholder="es. giovannirossi01"><br><br>
+						<button type="submit" id="btnSubmit">CREA PROFILO</button>
+					</form>
+					<?php if(isset($_GET["err"])){ ?>
+						<br><label id="msgErroreUsername">USERNAME GI&Agrave; IN USO !</label>
+					<?php } ?>
+				</div>
+			</center>
+		</div>
+		<?php } ?>
+		
+		<div id="contenitoreRiga2">
+            <div class="row" id="rowSceltaProfilo">
+                <div class="col-4 ">
+                        <div class="divBtnScegliProfilo">
+                            <?php if(isset($profili[0])){ ?>
+                            <div id="mostra0">
+                                <img onclick="chiediConferma('<?php echo $profili[0]["username"];?>')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
+                                <button onclick="profiloScelto('0')" class="btnScegliProfilo">Profilo N.1<br><i><b><?php echo $profili[0]["username"];?></i></b></button>
+                            </div>
+                            <?php }else{ ?>
+                            <button id="btnScegli0" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.1 <h3>➕</h3></button>
+                            <?php } ?>
+                        </div>
+                </div>
+                <div class="col-4">
+                    <center>
+                        <div class="divBtnScegliProfilo">
+                            <div id="mostra1">
+                                <img onclick="chiediConferma('__USERNAME1__')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
+                                <button onclick="profiloScelto('__USERNAME1__')" class="btnScegliProfilo">Profilo N.2<br><i><b>__USERNAME1__</i></b></button>
+                            </div>
+
+                            <button id="btnScegli1" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.2<h3>➕</h3></button>
+                        </div>
+                    </center>
+                </div>
+                <div class="col-4">
+                    <center>
+                        <div class="divBtnScegliProfilo3">
+                            <div id="mostra2">
+                                <img onclick="chiediConferma('__USERNAME2__')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
+                                <button onclick="profiloScelto('__USERNAME2__')" class="btnScegliProfilo">Profilo N.3<br><i><b>__USERNAME2__</i></b></button>
+                            </div>
+
+                            <button id="btnScegli2" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.3<h3>➕</h3></button>
+                        </div>
+                    </center>
+                </div>
+            </div>
+        </div>
+		
+		
 		<div class="row" id="rowSceltaProfilo">
 			<div class="col-4">
 				<center>
@@ -227,54 +354,7 @@
 				<div id="grado">
 					<div id="intestazioneGrado">Sei di grado:</div>
 					<div id="divElencoGradi">
-						<ul>
-							<!-- !!! TODO rifare meglio !!! -->
-
-							<?php
-								/* class="gradi" Rende "trasparente" i gradi NON ANCORA raggiunti
-									<del> mette una barra sulla scritta (per i gradi SUPERATI)
-									class="gradiNoTrasp" per il grado corrente */
-								switch($grado){
-									case "Novellino":
-										echo "<li class=\"gradiNoTrasp\">Novellino</li>";
-										echo "<li class=\"gradi\">Principiante</li>";
-										echo "<li class=\"gradi\">Intermedio</li>";
-										echo "<li class=\"gradi\">Esperto</li>";
-										echo "<li class=\"gradi\">Maestro</li>";
-										break;
-									case "Principiante":
-										echo "<liclass=\"gradiNoTrasp\"><del>Novellino</del></li>";
-										echo "<li class=\"gradiNoTrasp\">Principiante</li>";
-										echo "<li class=\"gradi\">Intermedio</li>";
-										echo "<li class=\"gradi\">Esperto</li>";
-										echo "<li class=\"gradi\">Maestro</li>";
-										break;
-									case "Intermedio":
-										echo "<li class=\"gradiNoTrasp\"><del>Novellino</del></li>";
-										echo "<li class=\"gradiNoTrasp\"><del>Principiante</del></li>";
-										echo "<li class=\"gradiNoTrasp\">Intermedio</li>";
-										echo "<li class=\"gradi\">Esperto</li>";
-										echo "<li class=\"gradi\">Maestro</li>";
-										break;
-									case "Esperto":
-										echo "<li class=\"gradiNoTrasp\"><del>Novellino</del></li>";
-										echo "<li class=\"gradiNoTrasp\"><del>Principiante</del></li>";
-										echo "<li class=\"gradiNoTrasp\"><del>Intermedio</del></li>";
-										echo "<li class=\"gradiNoTrasp\">Esperto</li>";
-										echo "<li class=\"gradi\">Maestro</li>";
-										break;
-									case "Maestro":
-										echo "<li class=\"gradiNoTrasp\"><del>Novellino</del></li>";
-										echo "<li class=\"gradiNoTrasp\"><del>Principiante</del></li>";
-										echo "<li class=\"gradiNoTrasp\"><del>Intermedio</del></li>";
-										echo "<li class=\"gradiNoTrasp\"><del>Esperto</del></li>";
-										echo "<li class=\"gradiNoTrasp\">Maestro</li>";
-										break;
-									default:
-										break;
-								}
-								?>
-						</ul>
+						<ul><?php echo $elencoGradi; ?></ul>
 					</div>
 				</div>
 				<div id="msgMotivazionale">
@@ -285,23 +365,7 @@
 				<div id="intestazionePartite">Cronologia partite:</div>
 				<div id="divElencoPartite">
 					<?php if(!empty($partite)){ ?>
-					<ul>
-						<?php
-							$cont = sizeof($partite);
-                            foreach($partite as $partita){
-								if($partita["flagVittoria"] == 1){
-									$vinto_perso = "<label style=\"color:greenyellow;\">VINTO</label>";
-								}else{
-									$vinto_perso = "<label style=\"color:red;\">PERSO</label>";
-								}
-								$min = $partita["durata"];
-								$N = $partita["numMosse"];
-			
-								echo "<li>Partita N.$cont: hai $vinto_perso. Nella partita, durata <b>".$min."min</b>, hai <b>tirato $N volte</b> il dado;</li>";
-                                $cont -= 1;
-							}
-						?>
-					</ul>
+					<ul><?php echo $elencoPartite; ?></ul>
 					<?php
 						}else{
 							?>
@@ -315,31 +379,9 @@
 		</div>
 		<?php }else{
 				if(!$flagAgg){ ?>
-		<div class="row" class="intestazionePagina">
-			<div class="col">
-				<center>
-					<div id="divNonHaAccesso">ACCEDI AD UNO DEI TUOI PROFILI O CREANE UNO NUOVO.<br>Puoi creare fino a 3 profili</div>
-				</center>
-			</div>
-		</div>
-		<?php 		}else{ ?>
-			<div class="col-12">
-				<center>
-					<div style="padding:5px; border: 0.3em solid black; width: -moz-fit-content;">
-						<!-- NON HO MODO DI PASSARE CAMPI IN POST DA NODEJS A PAGINA PHP QUINDI VADO DIRETTAMENTE ALLA PAGINA PHP -->
-						<form action="http://<?php echo $IP ?>:80/progetti/CrazyGoose/server_DB-PHP/phpFiles/aggProfilo.php" method="post" name="formUsername" onsubmit="return(controllaUsername())">
-							<h3>Scegli un username <u>univoco</u>:</h3><br>
-							<input type="text" name="username" placeholder="es. giovannirossi01"><br><br>
-							<button type="submit" id="btnSubmit">CREA PROFILO</button>
-						</form>
-						<?php if(isset($_GET["err"])){ ?>
-							<br><label id="msgErroreUsername">USERNAME GI&Agrave; IN USO !</label>
-						<?php } ?>
-					</div>
-				</center>
-			</div>
-		<?php 		}
-			} ?>
+		
+		<?php 	}
+			}?>
 	</div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

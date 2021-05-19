@@ -42,5 +42,3 @@ GRANT SELECT, INSERT, UPDATE ON CrazyGoose.Utenti TO 'Giocatore'@'%';
 GRANT SELECT, INSERT, UPDATE, DELETE ON CrazyGoose.Profili TO 'Giocatore'@'%';
 GRANT SELECT, INSERT, UPDATE, DELETE ON CrazyGoose.Partite TO 'Giocatore'@'%';
 GRANT SELECT, INSERT, UPDATE, DELETE ON CrazyGoose.Partecipare TO 'Giocatore'@'%';
-
---REVOKE DELETE ON CrazyGoose.Utenti FROM 'Giocatore'@'%';

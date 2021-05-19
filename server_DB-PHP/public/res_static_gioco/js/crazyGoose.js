@@ -278,7 +278,7 @@ class CrazyGoose {
 
             this.toccaAlCOM(numEstratto)
         } else {
-            this.cambiaImgDado(numEstratto, this.imgDadoPL1, this.buttonDadoPL1, this.player)
+            this.cambiaImgDado(numEstratto, this.player)
 
             this.player.avanza(numEstratto, controllaCodCasella, incrDado)
 
@@ -465,7 +465,7 @@ class CrazyGoose {
 
             this.avanzaPlayer1(numEstratto, true, true)
         } else {
-            this.cambiaImgDado(numEstratto, this.imgDadoCOM, this.buttonDadoCOM, this.com)
+            this.cambiaImgDado(numEstratto, this.com)
 
             this.com.avanza(numEstratto)
 
@@ -588,7 +588,7 @@ class CrazyGoose {
         }, 700)
     }
 
-    cambiaImgDado(numEstratto, imgDado, buttonDado, giocatore) {
+    cambiaImgDado(numEstratto, giocatore) {
 
         let cube = null;
         //QuerySelector vengono usati per ricollegarsi ai css
