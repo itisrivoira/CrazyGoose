@@ -17,6 +17,7 @@
         session_start();
 
         $_SESSION["email"] = $email;
+        $_SESSION["passw"] = $password;
 
         //(in caso si stesse loggando con un altro utente ma durante la stessa sessione
         // non gli deve mostrare un profilo di un altro account utente)

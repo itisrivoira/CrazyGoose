@@ -8,7 +8,8 @@
     $IP = file("../../indirizzo_server.txt")[0];
     $gestDB = new GestDB();
     
-    if(isset($_SESSION["email"])){
+        //ricontrollo che nelle variabili di sessione ci siano i dati corretti (ulteriore sicurezza)
+    if(isset($_SESSION["email"]) && $gestDB->accedi($_SESSION["email"], $_SESSION["passw"])){
 		$flagAgg = false;
         if(isset($_GET["agg"]) ){
 			$flagAgg = true;
@@ -118,19 +119,12 @@
         }else{
             $partite = null;
         }
-        
 ?>
 
 <!DOCTYPE html>
 
 <head>
 	<meta charset="UTF-8">
-    <!-- MI SERVE XKE SE IL BROWSER MEMORIZZA IN CACHE DEI DATI DEL SITO
-        SMETTE DI ENTRARE IN ALCUNI ENDPOINT-->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    
     
 	<title>Crazy Goose: Scegli il profilo</title>
 
@@ -198,7 +192,7 @@
 		<div class="row" id="rowIntestazione">
 			<div class="col-12">
 				<nav class="navbar navbar-expand-lg navbar-light bg-light" style="border-radius:10px; border:3px solid rgba(46, 11, 99, 0.932);">
-					<a class="navbar-brand" id="infoQualeUtente" href="#"></a>
+					<a class="navbar-brand" id="infoQualeUtente">PROFILI di <?php echo $datiUtente["nome"]." ".$datiUtente["cognome"]; ?></a>
 					<div class="collapse navbar-collapse" id="navbarNavDropdown">
 						<ul class="navbar-nav">
 							<li class="nav-item dropdown">
@@ -209,7 +203,7 @@
 									<a class="dropdown-item" href="http://<?php echo $IP ?>:3000/">Home</a>
 									<?php if($username != null){ ?>
 									<a class="dropdown-item" id="linkVaiAlGioco" href="http://<?php echo $IP ?>:3000/CrazyGoose">Vai al gioco</a>
-									<a class="dropdown-item" id="voceLogout" href="http://<?php echo $IP ?>:3000/esciDalProfilo"></a>
+									<a class="dropdown-item" id="voceLogout" href="http://<?php echo $IP ?>:80/progetti/CrazyGoose/server_DB-PHP/sitoWeb/phpPages/profilo.php?logout=1">Logout da <i><b><?php echo $username; ?></i></b></a>
 									<?php } ?>
 									<a class="dropdown-item" href="http://<?php echo $IP ?>:3000/logoutUtente">Esci</a>
 								</div>
@@ -230,158 +224,114 @@
         </div>
 		<?php } ?>
 		
-		<?php if($username == null && $flagAgg == true){ ?>
-		<div class="col-12">
-			<center>
-				<div style="padding:5px; border: 0.3em solid black; width: -moz-fit-content;">
-					<!-- NON HO MODO DI PASSARE CAMPI IN POST DA NODEJS A PAGINA PHP QUINDI VADO DIRETTAMENTE ALLA PAGINA PHP -->
-					<form action="http://<?php echo $IP ?>:80/progetti/CrazyGoose/server_DB-PHP/phpFiles/aggProfilo.php" method="post" name="formUsername" onsubmit="return(controllaUsername())">
-						<h3>Scegli un username <u>univoco</u>:</h3><br>
-						<input type="text" name="username" placeholder="es. giovannirossi01"><br><br>
-						<button type="submit" id="btnSubmit">CREA PROFILO</button>
-					</form>
-					<?php if(isset($_GET["err"])){ ?>
-						<br><label id="msgErroreUsername">USERNAME GI&Agrave; IN USO !</label>
-					<?php } ?>
-				</div>
-			</center>
-		</div>
-		<?php } ?>
-		
-		<div id="contenitoreRiga2">
-            <div class="row" id="rowSceltaProfilo">
-                <div class="col-4 ">
-                        <div class="divBtnScegliProfilo">
-                            <?php if(isset($profili[0])){ ?>
-                            <div id="mostra0">
-                                <img onclick="chiediConferma('<?php echo $profili[0]["username"];?>')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
-                                <button onclick="profiloScelto('0')" class="btnScegliProfilo">Profilo N.1<br><i><b><?php echo $profili[0]["username"];?></i></b></button>
-                            </div>
-                            <?php }else{ ?>
-                            <button id="btnScegli0" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.1 <h3>➕</h3></button>
-                            <?php } ?>
-                        </div>
+        <?php if($username == null && $flagAgg == true){ ?>
+		<!-- nascosto se non sta aggiungendo un profilo -->
+        <div class="col-12" id="aggiungeProfilo">
+            <center>
+                <div style="padding:5px; border: 0.3em solid black; width: -moz-fit-content;">
+                    <form action="http://<?php echo $IP ?>:80/progetti/CrazyGoose/server_DB-PHP/phpFiles/aggProfilo.php" method="post" name="formUsername" onsubmit="return(controllaUsername())">
+                        <h3>Scegli un username <u>univoco</u>:</h3><br>
+                        <input type="text" name="username" placeholder="es. giovannirossi01"><br><br>
+                        <button type="submit" id="btnSubmit">CREA PROFILO</button>
+                    </form>
+                    <?php if(isset($_GET["err"])){ ?>
+                    <br><label id="msgErroreUsername">USERNAME GI&Agrave; IN USO !</label>
+                    <?php } ?>
                 </div>
-                <div class="col-4">
-                    <center>
-                        <div class="divBtnScegliProfilo">
-                            <div id="mostra1">
-                                <img onclick="chiediConferma('__USERNAME1__')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
-                                <button onclick="profiloScelto('__USERNAME1__')" class="btnScegliProfilo">Profilo N.2<br><i><b>__USERNAME1__</i></b></button>
-                            </div>
+            </center>
+        </div>
+        <?php } ?>
 
-                            <button id="btnScegli1" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.2<h3>➕</h3></button>
-                        </div>
-                    </center>
+        <div class="row justify-content-between" id="rowSceltaProfilo">
+            <div class="col-4 d-flex justify-content-center">
+                <div class="divBtnScegliProfilo">
+                    <?php if(isset($profili[0])){ ?>
+                    <div id="mostra0">
+                        <img onclick="chiediConferma('<?php echo $profili[0]["username"];?>')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
+                        <button onclick="profiloScelto('0')" class="btnScegliProfilo">Profilo N.1<br><i><b><?php echo $profili[0]["username"];?></i></b></button>
+                    </div>
+                    <?php }else{ ?>
+                    <button id="btnScegli0" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.1 <h3>➕</h3></button>
+                    <?php } ?>
                 </div>
-                <div class="col-4">
-                    <center>
-                        <div class="divBtnScegliProfilo3">
-                            <div id="mostra2">
-                                <img onclick="chiediConferma('__USERNAME2__')" class="imgCestino" src="/res_static_sitoweb/images/cestino.png">
-                                <button onclick="profiloScelto('__USERNAME2__')" class="btnScegliProfilo">Profilo N.3<br><i><b>__USERNAME2__</i></b></button>
-                            </div>
-
-                            <button id="btnScegli2" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.3<h3>➕</h3></button>
-                        </div>
-                    </center>
+            </div>
+            <div class="col-4 d-flex justify-content-center">
+                <div class="divBtnScegliProfilo">
+                    <?php if(isset($profili[1])){ ?>
+                    <div id="mostra1">
+                        <center>
+                            <img onclick="chiediConferma('<?php echo $profili[1]["username"];?>')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
+                            <button onclick="profiloScelto('1')" class="btnScegliProfilo">Profilo N.2<br><i><b><?php echo $profili[1]["username"];?></i></b></button>
+                        </center>
+                    </div>
+                    <?php }else{ ?>
+                    <button id="btnScegli1" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.2<h3>➕</h3></button>
+                    <?php } ?>
+                </div>
+            </div>
+            <div class="col-4 d-flex justify-content-center">
+                <div class="divBtnScegliProfilo3">
+                    <?php if(isset($profili[2])){ ?>
+                    <div id="mostra2">
+                        <img onclick="chiediConferma('<?php echo $profili[2]["username"];?>')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
+                        <button onclick="profiloScelto('2')" class="btnScegliProfilo">Profilo N.1<br><i><b><?php echo $profili[2]["username"];?></i></b></button>
+                    </div>
+                    <?php }else{ ?>
+                    <button id="btnScegli2" onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.3 <h3>➕</h3></button>
+                    <?php } ?>
                 </div>
             </div>
         </div>
-		
-		
-		<div class="row" id="rowSceltaProfilo">
-			<div class="col-4">
-				<center>
-					<div class="divBtnScegliProfilo">
-						<?php
-							if(isset($profili[0])){
-						?>
-						<img onclick="chiediConferma('<?php echo $profili[0]["username"];?>')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
-						<button onclick="profiloScelto(0)" class="btnScegliProfilo">Profilo N.1<br><i><b><?php echo $profili[0]["username"]; ?></i></b></button>
-						<?php }else{ ?>
-							<button onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.1 <h3>➕</h3></button>
-						<?php } ?>
-					</div>
-				</center>
-			</div>
-			<div class="col-4">
-				<center>
-					<div class="divBtnScegliProfilo">
-						<?php
-							if(isset($profili[1])){
-						?>
-						<img onclick="chiediConferma('<?php echo $profili[1]["username"];?>')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
-						<button onclick="profiloScelto(1)" class="btnScegliProfilo">Profilo N.2<br><i><b><?php echo $profili[1]["username"]; ?></i></b></button>
-						<?php }else{ ?>
-							<button onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.2<h3>➕</h3></button>
-						<?php } ?>
-					</div>
-				</center>
-			</div>
-			<div class="col-4">
-			<center>
-					<div class="divBtnScegliProfilo">
-						<?php
-							if(isset($profili[2])){
-						?>
-						<img onclick="chiediConferma('<?php echo $profili[2]["username"];?>')" class="imgCestino" src="../../public/res_static_sitoweb/images/cestino.png">
-						<button onclick="profiloScelto(2)" class="btnScegliProfilo">Profilo N.3<br><i><b><?php echo $profili[2]["username"]; ?></i></b></button>
-						<?php }else{ ?>
-							<button onclick="aggProfilo()" class="btnScegliProfilo">AGGIUNGI<br>PROFILO N.3<h3>➕</h3></button>
-						<?php } ?>
-					</div>
-				</center>
-			</div>
-		</div>
-		<?php if($username != null){?>
-		<div class="row" id="rowStatisitche">
-			<div class="col-12">
-				<center>
-					<div id="infoStatistUsername"><h4>Statistiche del profilo <i><b style="color:red;"><?php echo $username; ?></b></i></h4></div>
-				</center>
-			</div>
-		</div>
-		<div class="row" id="rowStatistiche1">
-			<div class="col-lg-6 col-12">
-				<div id="totPartite">In totale hai giocato <?php echo ($partiteVinte+$partitePerse); ?> partite</div>
-				<?php if($partiteVinte+$partitePerse > 0){ ?>
-				<div class="numPartite">&#8614; di cui ne hai vinte <?php echo $partiteVinte; ?> </div>
-				<div class="numPartite">&#8627; e ne hai perse <?php echo $partitePerse; ?></div>
-				<?php }else{ ?>
+
+        <?php if($username != null){?>
+        <div class="row" id="usernameNotNull">
+            <div class="col-12">
+                <center>
+                    <div id="infoStatistUsername"><h4>Statistiche del profilo <i><b style="color:red;"><?php echo $username; ?></b></i></h4></div>
+                </center>
+            </div>
+        </div>
+
+        <div class="row" id="rowStatistiche">
+            <div class="col-6" id="divNumPartite">
+                <nav class="navbar navbar-light bg-light" style="border-radius:5px 5px 0px 0px;">
+                    <span class="navbar-brand mb-0 h1" id="totPartite">In totale hai giocato <?php echo ($partiteVinte+$partitePerse); ?> partite</span>
+                </nav>
+                <?php if($partiteVinte+$partitePerse > 0){ ?>
+                <div id="numPartite">
+                    <nav class="navbar navbar-light bg-light">
+                        <span class="navbar-brand mb-0 h1" id="partiteVinte">&#8614; di cui ne hai vinte <?php echo $partiteVinte; ?></span>
+                    </nav>
+                    <nav class="navbar navbar-light bg-light" style="border-radius:0px 0px 5px 5px;">
+                        <span class="navbar-brand mb-0 h1" id="partitePerse">&#8627; e ne hai perse <?php echo $partitePerse; ?></span>
+                    </nav>
+                </div>
+                <?php }else{ ?>
 					<br><br>
 				<?php } ?>
-				<div id="grado">
-					<div id="intestazioneGrado">Sei di grado:</div>
-					<div id="divElencoGradi">
-						<ul><?php echo $elencoGradi; ?></ul>
-					</div>
-				</div>
-				<div id="msgMotivazionale">
-					<?php echo $msgMotiv; ?>
-				</div><br>
-			</div>
-			<div class="col-lg-6 col-12" id="colonnaElencoPartite">
-				<div id="intestazionePartite">Cronologia partite:</div>
-				<div id="divElencoPartite">
-					<?php if(!empty($partite)){ ?>
-					<ul><?php echo $elencoPartite; ?></ul>
-					<?php
-						}else{
-							?>
-							<label>Non hai ancora giocato nessuna partita... Forza 
-								<a href="http://<?php echo $IP;?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco.php">vai a divertirti</a>
-						</label>
-							<?php
-						} ?>
-				</div>
-			</div>
-		</div>
-		<?php }else{
-				if(!$flagAgg){ ?>
-		
-		<?php 	}
-			}?>
+            </div>
+
+            <div class="col-6" id="colonnaElencoPartite">
+                <div id="intestazionePartite">Cronologia partite:</div>
+                <div id="divElencoPartite">
+                    <?php if(!empty($partite)){ ?>
+                    <ul><?php echo $elencoPartite; ?></ul>
+					<?php }else{ ?>
+                    <label>Non hai ancora giocato nessuna partita... Forza 
+                        <a href="http://<?php echo $IP;?>:3000/CrazyGoose">vai a divertirti</a>
+                    </label>
+                    <?php } ?>
+                </div>
+            </div>
+            <div class="col-12" id="grado">
+                <div id="intestazioneGrado">Sei di grado:</div>
+                <div id="divElencoGradi">
+                    <ul id="ulElencoGradi"><?php echo $elencoGradi; ?></ul>
+                </div>
+                <div id="msgMotivazionale"><?php echo $msgMotiv; ?></div><br>
+            </div>
+        </div>
+        <?php }?>
 	</div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -389,4 +339,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>
-    <?php } ?>
+<?php }else{
+    header("Location: http://$IP:3000/accedi");
+} ?>

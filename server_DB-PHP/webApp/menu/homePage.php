@@ -11,16 +11,12 @@
     $styleDivImgTitolo = "";
     $styleDelMenuUtente = "";
     $msgDelMenuUtente = "";
-    if(isset($_SESSION["email"])){
+    if(isset($_SESSION["email"]) && isset($_SESSION["username"])){
        // !!! array associativo chiavi "nome" e "cognome"
         $datiUtente = $gestDB->datiUtente($_SESSION["email"]);
         if($datiUtente != null){
             
-            if(isset($_SESSION["username"])){
-            	$username = $_SESSION["username"];
-            }else{
-                $username = null;
-            }
+            $username = $_SESSION["username"];
             
             if($datiUtente["nome"] != null){
                 $styleDivImgTitolo = "margin-left: 130px;";
@@ -38,12 +34,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- MI SERVE XKE SE IL BROWSER MEMORIZZA IN CACHE DEI DATI DEL SITO
-        SMETTE DI ENTRARE IN ALCUNI ENDPOINT-->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    
     
     <title>Crazy Goose: Gioco</title>
 
@@ -82,7 +72,7 @@
         </div>
 
         <div id="divStart">
-            <a href="http://<?php echo $IP; ?>:3000/start" id="start" class="link">START</a>
+            <a href="http://<?php echo $IP; ?>:3000/sceltaOche" id="start" class="link">START</a>
         </div>
 
         <div id="divCredits">
@@ -94,5 +84,7 @@
 
 </html>
 <?php 
+    }else{
+        header("Location: http://$IP:3000/");
     }
 ?>

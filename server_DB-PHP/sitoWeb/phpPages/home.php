@@ -8,11 +8,12 @@
     $IP = file("../../indirizzo_server.txt")[0];
     $gestDB = new GestDB();
     
-    $classDellaTestata= "class = \"col-12 d-flex justify-content-center\"";
+    $classDellaTestata= "class = \"col-11 d-flex justify-content-center\"";
     $classDelMenuUtente = "";
     $styleDelMenuUtente = "";
     $msgDelMenuUtente = "";
-    if(isset($_SESSION["email"])){
+        //ricontrollo che nelle variabili di sessione ci siano i dati corretti (ulteriore sicurezza)
+    if(isset($_SESSION["email"]) && $gestDB->accedi($_SESSION["email"], $_SESSION["passw"])){
        // !!! array associativo chiavi "nome" e "cognome"
         $datiUtente = $gestDB->datiUtente($_SESSION["email"]);
         if($datiUtente != null){
@@ -23,7 +24,7 @@
                 $username = null;
             }
             
-            $classDellaTestata = "class = \"col-10 d-flex justify-content-center\"";
+            $classDellaTestata = "class = \"col-9 d-flex justify-content-center\"";
             $classDelMenuUtente = "class = \"col-2\"";
             $styleDelMenuUtente = "display: inline-block;";
             $msgDelMenuUtente = "Benvenuto<br><i><b>".$datiUtente["nome"]." ".$datiUtente["cognome"]."</b></i>";
@@ -42,12 +43,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- MI SERVE XKE SE IL BROWSER MEMORIZZA IN CACHE DEI DATI DEL SITO
-        SMETTE DI ENTRARE IN ALCUNI ENDPOINT-->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    
     
     <title>Crazy Goose: Home</title>
 
@@ -76,18 +71,32 @@
 
 <body style="background-color:rgba(92, 58, 142, 0.87);">
     <div class="container-fluid">
-        <div class="row">
+        <div class="row align-items-center">
+            <div id="menu" class="col-1">
+                <div>
+                    <a class="linkMenu" href="http://<?php echo $IP; ?>:3000/regole">
+                        <button class="btnMenu">Regolamento</button>
+                    </a>
+                </div>
+                <div style="margin-top:6px;">
+                    <a class="linkMenu" href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=sitoWeb/phpPages/contattaci.php">
+                        <button class="btnMenu">Contattaci</button>
+                    </a>
+                </div>
+            </div>
+            
             <div id="testataSito" <?php echo $classDellaTestata; ?> >
                 <img src="../../public/res_static_sitoweb/images/logo_130x130.png">
                 <img src="../../public/res_static_sitoweb/images/scrittaCrazyGoose_400x130_noBagliore.png">
             </div>
+            
             <div id="menuUtente" style="padding:0px;" <?php echo $classDelMenuUtente; ?> >
                 <div id="divDropdown" style="<?php echo $styleDelMenuUtente; ?>">
                     <button id="dropdownBtn"><?php echo $msgDelMenuUtente; ?></button>
                     <div id="dropdown-menu">
                         <a href="http://<?php echo $IP; ?>:3000/profilo">Profilo</a>
                         <?php if($username != null){ ?>
-                        <a href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco.php">Vai al gioco</a>
+                        <a href="http://<?php echo $IP ?>:3000/CrazyGoose">Vai al gioco</a>
                         <?php } ?>
                         <a href="http://<?php echo $IP; ?>:3000/download">Download<br>gioco</a>
                         <a href="http://<?php echo $IP; ?>:3000/logoutUtente">Esci</a>

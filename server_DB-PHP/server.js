@@ -139,12 +139,12 @@ app.get("/CrazyGoose", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
     let jsDom = new JSDOM(pagina)
 
-    jsDom.window.document.getElementById("percorso").innerHTML = "webApp/giocoWeb/gioco.php"
+    jsDom.window.document.getElementById("percorso").innerHTML = "webApp/menu/homePage.php"
 
     resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
 
-app.get("/start", (req, resp) => {
+app.get("/sceltaOche", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
     let jsDom = new JSDOM(pagina)
 
@@ -160,6 +160,15 @@ app.get("/credits", (req, resp) => {
     let sitoConIP = rimpiazzaLocalhostConIP(sito)
 
     resp.send(sitoConIP)
+})
+
+app.get("/gioco", (req, resp) => {
+    let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
+    let jsDom = new JSDOM(pagina)
+
+    jsDom.window.document.getElementById("percorso").innerHTML = "webApp/giocoWeb/gioco.php"
+
+    resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
 
 app.use("*", (req, resp) => {

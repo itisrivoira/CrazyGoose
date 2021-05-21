@@ -31,12 +31,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- MI SERVE XKE SE IL BROWSER MEMORIZZA IN CACHE DEI DATI DEL SITO
-        SMETTE DI ENTRARE IN ALCUNI ENDPOINT-->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    
     
     <title>Crazy Goose: Gioco</title>
 
@@ -285,7 +279,7 @@
             game = new CrazyGoose()
             game.start(ocaScelta)
 
-            alert("DE-ZOMMARE la pagina e dare Ctrl+R (per sistemare il layout del gioco)")
+            alert("Sistemare il layout del gioco con Ctrl-Meno\ne aggiornare la pagina con Ctrl-R")
         }
 
         function finePartita(pl1_ha_vinto) {
@@ -303,5 +297,7 @@
 </html>
 <?php 
         }
+    }else{
+        header("Location: http://$IP:3000/");
     }
 ?>

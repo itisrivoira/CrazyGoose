@@ -7,16 +7,16 @@
 	// a tutte le pagine... lo scrivo su un file e quando ne ho bisogno lo leggo
     $IP = file("../../indirizzo_server.txt")[0];
 	
-
-	if( isset($_SESSION["email"]) && isset($_SESSION["username"]) && isset($_SESSION["durata"]) &&
+    $gestDB = new GestDB();
+    
+        //ricontrollo che nelle variabili di sessione ci siano i dati corretti (ulteriore sicurezza)
+	if( isset($_SESSION["email"]) && $gestDB->accedi($_SESSION["email"], $_SESSION["passw"]) && isset($_SESSION["username"]) && isset($_SESSION["durata"]) &&
 		isset($_SESSION["numMosse"]) && isset($_SESSION["vitt"]) ){
 
         $username = $_SESSION["username"];
         $durata = $_SESSION["durata"];
         $numMosse = $_SESSION["numMosse"];
         $vitt = $_SESSION["vitt"];
-        
-        $gestDB = new GestDB();
         
         if($gestDB->aggiungiPartita($username, $durata, $numMosse, $vitt)){
             //ora non mi servono più queste variabili, inoltre distruggendole evito
@@ -33,12 +33,6 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-    <!-- MI SERVE XKE SE IL BROWSER MEMORIZZA IN CACHE DEI DATI DEL SITO
-        SMETTE DI ENTRARE IN ALCUNI ENDPOINT-->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    
     
 	<title>
 		<?php
@@ -71,14 +65,14 @@
 	<div id="vittoria" style="<?php echo $styleVittoria; ?>">
         <label id="msgHaiVinto"><center><b>HAI VINTO</b></center></label>
         <center>
-			<a class="premiPerUscire" href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco.php"><b>Premi per rigiocare</b></a>
+			<a class="premiPerUscire" href="http://<?php echo $IP; ?>:3000/CrazyGoose"><b>Premi per rigiocare</b></a>
 		</center>
     </div>
 
     <div id="sconfitta" style="<?php echo $styleSconfitta; ?>">
         <label id="msgHaiPerso"><center><b>HAI PERSO</b></center></label>
         <center>
-			<a class="premiPerUscire" href="http://<?php echo $IP; ?>:3000/passaAPaginaPHP?pagina=webApp/menu/homeGioco.php"><b>Premi per rigiocare</b></a>
+			<a class="premiPerUscire" href="http://<?php echo $IP; ?>:3000/CrazyGoose"><b>Premi per rigiocare</b></a>
 		</center>
     </div>
 	<br><br>
@@ -86,5 +80,7 @@
 </html>
 
 <?php 
-	}
+	}else{
+        header("Location: http://$IP:3000/");
+    }
 ?>

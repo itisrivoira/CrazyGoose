@@ -25,6 +25,16 @@ body {
     margin-bottom: 20px;
 }
 
+#rowSceltaProfilo {
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.945);
+    border: 3px solid rgba(46, 11, 99, 0.932);
+    height: 307px;
+    padding-top: auto;
+    padding-bottom: auto;
+    border-radius: 10px;
+}
+
 #infoQualeUtente {
     /*font size 1.6 volte superiore a com'era prima (di com'era di default)*/
     font-size: 1.6em;
@@ -36,70 +46,61 @@ body {
     padding-right: 20px;
     padding-left: 20px;
     /* QUESTO MARGIN L HO USATO PERCHE NON SAPEVO COME FARLO RESPONSIVE*/
-    margin-right:1500px;
+    margin-right: 70vw;
     font-weight: bold;
-    
 }
 
-#navbarDropdownMenuLink{
+#navbarDropdownMenuLink {
     color: rgba(46, 11, 99, 0.973);
     font-weight: bold;
 }
 
-#contenitoreRiga2{
-    margin-top: 20px;
-    background-color: rgba(255, 255, 255, 0.945);
-    border: 3px solid rgba(46, 11, 99, 0.932);
-    height: 307px;
-    padding-top: auto;
-    padding-bottom: auto;
+#mostra0 {
+    margin-top: 100px;
+    margin-left: 60px;
+}
+
+#mostra1 {
+    margin-top: 100px;
+    margin-left: -30px;
+}
+
+#mostra2 {
+    margin-top: 100px;
+    margin-left: -30px;
+}
+
+#btnScegli0 {
+    margin-top: 100px;
+    margin-left: 85px;
+}
+
+#btnScegli1 {
+    margin-top: 100px;
+    margin-left: 85px;
+}
+
+#btnScegli2 {
+    margin-top: 100px;
+    margin-left: 85px;
+}
+
+#numPartite {
+    margin-top: 0px;
+    border: 5px solid rgba(46, 11, 99, 0.932);
     border-radius: 10px;
 }
 
-#mostra0{
-    margin-top:100px;
-    margin-left:60px;
-}
-#mostra1{
-    margin-top:100px;
-    margin-left:-30px;
-}
-#mostra2{
-    margin-top:100px;
-    margin-left:-30px;
-}
-
-#btnScegli0{
-    margin-top:100px;
-    margin-left:85px;
-}
-
-#btnScegli1{
-    margin-top:100px;
-    
-}
-
-#btnScegli2{
-    margin-top:100px;
-}
-
-#numPartite{
-    margin-top: 0px;
-    border: 5px solid rgba(46, 11, 99, 0.932);
-    border-radius:10px;
-}
-
 .divBtnScegliProfilo {
-    width:300px;
+    width: 300px;
     height: 300px;
     border: 5px solid rgba(46, 11, 99, 0.932);
     background-color: rgb(46, 11, 99, 0.932);
     border-radius: 50%;
 }
 
-.divBtnScegliProfilo3{
-    margin-left: 380px;
-    width:300px;
+.divBtnScegliProfilo3 {
+    width: 300px;
     height: 300px;
     border: 5px solid rgba(46, 11, 99, 0.932);
     background-color: rgb(46, 11, 99, 0.932);
@@ -111,34 +112,35 @@ body {
     cursor: pointer;
 }
 
-#grado{
+#grado {
     margin-top: 10px;
-    width:900px;
+    width: 900px;
     height: 300px;
     border: 5px solid rgba(46, 11, 99, 0.932);
     border-radius: 10px;
     background-color: white;
-    color:rgba(46, 11, 99, 0.932);
+    color: rgba(46, 11, 99, 0.932);
 }
 
-#colonnaElencoPartite{
-    float:right;
-    margin-top: 10px;
-    width:900px;
+#divNumPartite {
+    border: 5px solid rgba(46, 11, 99, 0.932);
+    border-radius: 10px;
+    background-color: white;
+    color: rgba(46, 11, 99, 0.932);
+}
+
+#colonnaElencoPartite {
+    width: 900px;
     height: 300px;
     border: 5px solid rgba(46, 11, 99, 0.932);
     border-radius: 10px;
     background-color: white;
-    color:rgba(46, 11, 99, 0.932);
-
+    color: rgba(46, 11, 99, 0.932);
 }
 
-
-
-#intestazioneGrado{
+#intestazioneGrado {
     margin-left: 150px;
 }
-
 
 .linkImgCestino:hover {
     cursor: pointer;
@@ -149,13 +151,12 @@ body {
     margin-right: 5px;
 }
 
-
 #infoStatistUsername {
     /*Per la dimensione in firefox (non posso usare il semplice fit-content)*/
-    margin-top:40px;
-    margin-bottom:40px;
+    margin-top: 40px;
+    margin-bottom: 40px;
     width: 600px;
-    height:70px;
+    height: 70px;
     border: 3px solid white;
     border-radius: 40px;
     background-color: blueviolet;
@@ -163,7 +164,6 @@ body {
     padding-right: 30px;
     padding-top: 15px;
     padding-bottom: 10px;
-    
 }
 
 #infoStatistUsername h4 {
@@ -174,13 +174,10 @@ body {
 
 #totPartite,
 #intestazionePartite {
-	margin-left:20px;
-	
+    margin-left: 20px;
     font-size: 1.7em;
     text-decoration: underline;
 }
-
-
 
 .numPartite {
     font-size: 1.3em;
@@ -192,8 +189,8 @@ body {
 }
 
 #msgMotivazionale {
-	margin-left:20px;
-	margin-top:70px;
+    margin-left: 20px;
+    margin-top: 70px;
     font-size: 1.4em;
     font-weight: bold;
     color: rgb(17, 17, 194);
@@ -203,40 +200,34 @@ body {
     font-size: 2em;
 }
 
-#ulElencoGradi{
-    color:rgba(46, 11, 99, 0.932);
+#ulElencoGradi {
+    color: rgba(46, 11, 99, 0.932);
 }
 
 #divElencoGradi ul {
     list-style-type: "➭";
-    
 }
 
 .gradi {
     font-size: 1.2em;
-    color:rgba(46, 11, 99, 0.932);
+    color: rgba(46, 11, 99, 0.932);
 }
 
 .gradiNoTrasp {
     font-size: 1.2em;
-    color:rgba(147, 87, 238, 0.932);
+    color: rgba(147, 87, 238, 0.932);
 }
 
-
-#divElencoPartite{
-	margin-left:20px;
+#divElencoPartite {
+    margin-left: 20px;
 }
 
 #divElencoPartite li {
-	margin-left:20px;
+    margin-left: 20px;
     font-size: 1.02em;
 }
 
 #noProfiloScelto {
-    display: none;
-}
-
-#aggiungeProfilo {
     display: none;
 }
 
@@ -248,7 +239,6 @@ body {
 #msgErroreUsername {
     color: red;
     font-weight: bold;
-    display: none;
 }
 
 
