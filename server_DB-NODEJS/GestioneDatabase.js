@@ -6,7 +6,7 @@ class GestioneDatabase {
         this.conn = mysql.createConnection({
             hostname: "localhost",
             user: "Giocatore",
-            passw: "1gioc!CrazyGoose?",
+            passw: "#CrazyGoose1!",
             database: "CrazyGoose"
         })
 

@@ -103,7 +103,7 @@ app.get("/", (req, resp) => {
 
     //(mi basta controllare che il nome non sia null, se è null lo è anche il congome)
     if (gestDB.nome != null) {
-        jsDom.window.document.getElementById("testataSito").className = "col-10 d-flex justify-content-center"
+        jsDom.window.document.getElementById("testataSito").className = "col-9 d-flex justify-content-center"
 
         jsDom.window.document.getElementById("menuUtente").className = "col-2"
 
@@ -120,7 +120,7 @@ app.get("/", (req, resp) => {
         jsDom.window.document.getElementById("dropdownBtn").innerHTML = msg
 
     } else {
-        jsDom.window.document.getElementById("testataSito").className = "col-12 d-flex justify-content-center"
+        jsDom.window.document.getElementById("testataSito").className = "col-11 d-flex justify-content-center"
     }
 
     resp.send(jsDom.window.document.documentElement.outerHTML)

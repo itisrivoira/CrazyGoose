@@ -16,6 +16,25 @@ body {
     padding: 0px;
 }
 
+#menu {
+    padding: 0px;
+    padding-left: 10px;
+}
+
+.linkMenu {
+    text-decoration: none;
+    color:white;
+    font-weight: bold;
+}
+.btnMenu {
+    background-color: #ec00ff;
+    height:35px;
+}
+.btnMenu:hover {
+	background-color: #693be3;
+	color:white;
+	cursor:pointer;
+}
 
 /* - - - CSS per il dropdown menu  - - - */
 

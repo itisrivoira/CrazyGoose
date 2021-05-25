@@ -1,7 +1,7 @@
 <?php 
     class GestDB{
         public function __construct() {
-            $this->mysqli = new mysqli("localhost", "Giocatore", "1gioc!CrazyGoose?", "CrazyGoose");
+            $this->mysqli = new mysqli("localhost", "Giocatore", "#CrazyGoose1!", "CrazyGoose");
             if($this->mysqli->connect_error){
                 die("Errore:".$this->mysqli->connect_errno." per ".$this->mysqli->connect_error);
             }

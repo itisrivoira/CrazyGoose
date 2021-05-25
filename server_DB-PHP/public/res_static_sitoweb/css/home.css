@@ -30,6 +30,11 @@ body {
     background-color: #ec00ff;
     height:35px;
 }
+.btnMenu:hover {
+	background-color: #693be3;
+	color:white;
+	cursor:pointer;
+}
 
 /* - - - CSS per il dropdown menu  - - - */
 
