@@ -73,13 +73,13 @@ body {
 
 .numCasella40 {
     border-radius: 3px;
-    width: 20px;
-    font-size: 15px;
+    width: 30px;
+    font-size: 19px;
     font-weight: bold;
     text-align: center;
     background-color: rgb(0, 0, 0);
     color: rgb(255, 255, 255);
-    margin: -2px 0px 0px 220px;
+    margin: 0px 0px 0px 0px;
 }
 
 .caselle {
@@ -88,7 +88,7 @@ body {
     width: 150px;
     height: 120px;
     margin: 0px 0px 0px -4px;
-    border-radius: 0% 10% 10% 0%;
+    border-radius: 0% 0% 0% 0%;
 }
 
 .casella7,

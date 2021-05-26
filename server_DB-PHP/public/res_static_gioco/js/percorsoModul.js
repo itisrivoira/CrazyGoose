@@ -43,7 +43,7 @@ class Percorso {
             while (flagPosizioneNonValida) {
                 //ESCLUDO le ultime 2 pos che sono COSTANTI e la PRIMA, la lascio vuota
                 //  (la lascio vuota dato che vi è un effetto che riporta il giocatore sulla 1° casella)
-                var randomPos = Math.floor(Math.random() * (QTA_CASELLE_TOTALI - 1)) + 2
+                var randomPos = Math.floor(Math.random() * (QTA_CASELLE_TOTALI - 1-2)) + 2
                 if (Object.keys(this.dictCaselle).indexOf(randomPos) >= 0) {
                     flagPosizioneNonValida = true
                 } else { flagPosizioneNonValida = false }
@@ -98,6 +98,9 @@ class Percorso {
         }
         this.controllaPossibiliLoop()
         this.controllaQtaCaselleVicino()
+
+	console.log(this.dictCaselle[QTA_CASELLE_TOTALI - 1])
+	console.log(this.dictCaselle[QTA_CASELLE_TOTALI])
 
         this.dictCaselle[QTA_CASELLE_TOTALI - 1] = TORNA_ALL_INIZIO[0]
         this.dictCaselle[QTA_CASELLE_TOTALI] = VITTORIA[0]
