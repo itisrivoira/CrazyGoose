@@ -1,3 +1,13 @@
+#logoItis {
+    width: 90px;
+    height: 90px;
+    border: 1px solid black;
+    border-radius: 40%;
+    position: relative;
+    top: -55px;
+    left: 15px;
+}
+
 #footer {
     background-color: rgb(63, 1, 92);
     min-height: 250px;

@@ -97,15 +97,16 @@
         </div>
     </div>
     <div class="row" id="footer">
-            <?php
-                //legge il footer da un file (in questo modo si può modificare in quel file e in nessun altro)
-                $footer = file("../soloFooter.html");
+        <img style="left:30px;" id="logoItis" src="../../public/res_static_sitoweb/images/logo_itis.jpeg">
+        <?php
+            //legge il footer da un file (in questo modo si può modificare in quel file e in nessun altro)
+            $footer = file("../soloFooter.html");
 
-                //(legge riga per riga)
-                foreach($footer as $row){
-                    echo $row;
-                }
-            ?>
+            //(legge riga per riga)
+            foreach($footer as $row){
+                echo $row;
+            }
+        ?>
     </div>
 
     <script>

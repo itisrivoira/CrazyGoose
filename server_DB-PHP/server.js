@@ -28,7 +28,8 @@ function aggiungiFooterAllaPagina(pagina) {
 
     let footer = fs.readFileSync("./sitoWeb/soloFooter.html", "utf-8")
 
-    jsDom.window.document.getElementById("footer").innerHTML = footer
+    let logoItisGiaNelFooter = jsDom.window.document.getElementById("footer").innerHTML
+    jsDom.window.document.getElementById("footer").innerHTML = logoItisGiaNelFooter + footer
 
     return (jsDom.window.document.documentElement.outerHTML)
 }
@@ -58,7 +59,7 @@ app.get("/passaAPaginaPHP", (req, resp) => {
     resp.send(rimpiazzaLocalhostConIP(jsDom.window.document.documentElement.outerHTML))
 })
 
-app.get("/logoutUtente", (req, resp)=>{
+app.get("/logoutUtente", (req, resp) => {
     let pagina = fs.readFileSync("./sitoWeb/passaAPaginaPHP.html", "utf-8")
 
     let jsDom = new JSDOM(pagina)

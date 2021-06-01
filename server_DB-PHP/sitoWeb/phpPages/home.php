@@ -259,6 +259,7 @@
         </div>
 
         <div class="row" id="footer">
+            <img id="logoItis" src="../../public/res_static_sitoweb/images/logo_itis.jpeg">
             <?php
                 //legge il footer da un file (in questo modo si può modificare in quel file e in nessun altro)
                 $footer = file("../soloFooter.html");
