@@ -8,4 +8,4 @@ Gruppo di sviluppo del gioco dell'oca:
 - Hu Qiyan
 ***
 #### Il sito web è online !!!
-_Clicca qui per visitarlo [CrazyGoose](crazygoose.herokuapp.com)_
+_Clicca qui per visitarlo [CrazyGoose](https://crazygoose.herokuapp.com/)_
